@@ -1,0 +1,19 @@
+
+table.dataview {
+	width:100%;
+	border-radius:5px;	
+	font-size:2em;
+	border:1px solid black;
+}
+table.dataview th {
+	background:#444;
+	color:white;
+}
+table.dataview td {
+	border-bottom:1px dotted grey;
+}
+table.dataview tr:hover {
+	background:#EEE;
+	cursor:pointer;
+}
+

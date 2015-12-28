@@ -1,0 +1,93 @@
+/* Welcome to Compass.
+ * In this file you should write your main styles. (or centralize your imports)
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+
+$text_color: #000000;
+
+/*
+Colors are in the {default(""), lowContrast, dark, light, ultralight}, this is from ColorSchemeDesigners 3's export
+There will probably be visibly more secondary items on the screen, primary will be used sparingly as a highlight.
+
+Varieties of colors in the base are
+Accent
+Base
+Base2
+
+*/
+/* A gradient I'll keep handy for easy reference to black and white colors.
+*/
+$gray1: #111111;
+$gray2: #222222;
+$gray3: #333333;
+$gray4: #444444;
+$gray5: #555555;
+$gray6: #666666;
+$gray7: #777777;
+$gray8: #888888;
+$gray9: #999999;
+$grayA: #AAAAAA;
+$grayB: #BBBBBB;
+$grayC: #CCCCCC;
+$grayD: #DDDDDD;
+$grayE: #EEEEEE;
+
+$accent: #FF9F00;
+$accent_lowContrast: #806840;
+$accent_dark: #4D3000;
+$accent_light: #FFCF80;
+$accent_ultralight: #FFF5E6;
+
+$baseA: #003BFF;
+$baseA_lowContrast: #404F80;
+$baseA_dark: #00124D;
+$baseA_light: #809DFF;
+$baseA_ultralight: #E6EBFF;
+
+$baseB: #5b84bb;
+$baseB_lowContrast: #406880;
+$baseB_dark: #00304D;
+$baseB_light: #80D0FF;
+$baseB_ultralight: #E6F6FF;
+
+/* This will be the theme, with better names and mapping to the scheme. Easier swapping of scheme in future. */
+
+$header_background_color: $baseA_dark;
+$header_text_color: $accent_light;
+$header_border_color: $baseA_dark;
+
+$subheader_background_color: $baseB;
+$subheader_text_color: $baseB_ultralight;
+
+$mainsection_background_color: #FCFCFC;
+$mainsection_highlight_background_color: $gray2;
+$mainsection_text_color: $baseB_dark;
+$mainsection_link_color: $accent;
+$mainsection_border_color: $baseB_lowContrast;
+$mainsection_title_color: $accent;
+$mainsection_seperator_color: #FCFCFC;
+$subsection_background_color: #F7F7F7;
+$subsection_highlight_background_color: $baseB_lowContrast;
+$subsection_row1_color: $grayD;
+$subsection_row2_color: $grayE;
+$subsection_text_color: $baseB_dark;
+$subsection_link_color: $accent;
+$subsection_border_color: $baseB_lowContrast;
+$subsection_table_header_text_color: white;
+
+$sidebar_background_color: $gray3;
+$sidebar_text_color: $grayC;
+$column_width: 400px;
+/*
+These are global styles for the Admin and Forms
+
+Primary Color:
+2C36AE	3A3E6F	060C56	535CCE	6B73CE
+Complementary Color:
+FBC122	A08848	7C5C05	FDCE4D	FDD770
+
+*/
+@import "compass/reset";
+@import "base";
+
+

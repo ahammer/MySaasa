@@ -1,0 +1,954 @@
+
+$column_width: 600px;
+$header_height: 32px;
+$subheader_height: 25px;
+$subheader_section_width:50px;
+$sidebar_width: 300px;
+
+
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+
+.wupb-border {
+  width:auto !important;
+}
+
+@mixin section {
+  width:auto;
+}
+
+@mixin small_label {
+}
+
+@mixin pretty_corner_header {
+  color:$header_text_color;
+  background:$subheader_background_color;
+  border-bottom:2px solid $header_background_color;
+  border-right:2px solid $header_background_color;
+  border-radius: 0px 0px 10px 0px;
+
+  cursor:pointer;
+  text-align:center;
+  padding:0.5em;
+  overflow:hidden;
+  margin-bottom:0.1em;
+
+  .footer {
+    margin:0.5em;
+    font-size:0.7em;
+    opacity:0.8;
+  }
+}
+
+@mixin formDefault {
+  display:inline-block;
+  overflow-x:hidden;
+  padding:1em;
+  margin:1em;
+
+
+  border: 1px solid $subsection_border_color;
+  background:$subsection_background_color;
+  border-radius: 2px;
+
+  h1 {
+    font-size:24px;
+    font-weight: bolder;
+    margin-bottom:0.8em;
+  }
+
+  label {
+    width: ($column_width/3);
+    padding-right: 20px;
+    display: inline-block;
+  }
+  input {
+    
+    clear: right;
+  }
+}
+@mixin biggerSection {
+
+  .Content {
+    .date {
+      display: inline-block;
+      background-color: $mainsection_background_color;
+      font-size: 0.8em;
+    }
+    .Body {
+      background: white;
+      padding: 1em;
+      outline: 1px dotted grey;
+    }
+  }
+
+  ul {
+    list-style:square;
+    margin:15px;
+    margin-left:30px;
+  }
+
+  h1 {
+    margin: 10px;
+    color: $mainsection_title_color;
+    font-size: 3em;
+  }
+
+  h2 {
+    margin: 10px;
+    color: $mainsection_title_color;
+    font-size: 2em;
+  }
+  h3 {
+    margin: 10px;
+    color: $mainsection_title_color;
+    font-size: 1.3em;
+  }
+  p {
+    margin:15px;
+  }
+
+}
+
+.MainSectionPanel {
+
+  height:100%;
+
+}
+
+.Selected {
+  background: $subheader_background_color*1.2;
+
+}
+
+.headeritem {
+  display: inline-block;
+  width:auto;
+  //padding-left:0.2em;
+  //padding-right:0.2em;
+  padding-top:2px;
+
+  height:100%;
+  //background-color: $subheader_background_color * 1.1;
+  cursor: pointer;
+
+  color: $subheader_text_color;
+  a {
+    color: $subsection_link_color;
+  }
+
+  button {
+    color: black;
+
+  }
+
+
+}
+h1 {
+  font-size:2em;
+}
+h2 {
+  font-size:1.5em;
+}
+#header {
+  width: 100%;
+  font-weight: bolder;
+  height: $header_height;
+  background: $header_background_color;
+
+  img {
+    margin-left:1em;
+    margin-right:1em;
+    float:left;
+  }
+
+  h1 {
+    color: white;
+  }
+  .headeritem {
+    margin-top:5px;
+    height: $header_height - 10px;
+
+  }
+  z-index: 5;
+
+}
+
+#subHeader {
+  z-index: 5;
+
+  width: 100%;
+  height: $subheader_height;
+  color: $subheader_text_color;
+  background: $subheader_background_color;
+
+
+  .sections {
+    display:inline-block;
+    text-align: right;
+    list-style: none;
+
+    height:100%;
+    position: relative;
+    button {
+      color:black;
+    }
+
+    li {
+      font-size:0.75em;
+      margin-top:3px;
+      bottom:0px;
+      display: inline-block;
+      width:auto;
+      height:70%;
+      cursor: pointer;
+      padding-left:0.3em;
+      padding-right:0.3em;
+      .selected {
+        background:white;
+      }
+      a {
+        color: #ffffff;
+        text-decoration: none;
+        .dropDownMenu {
+          visibility: hidden;
+          background:$subheader_background_color;
+          border-bottom-left-radius: 5px;
+          border-bottom-right-radius: 5px;
+
+
+          position:relative;
+          z-index:50;
+          margin-top:2px;
+          padding:10px;
+        }
+
+      }
+
+
+
+      a:hover {
+        background:$subheader_background_color* 0.8;
+        .dropDownMenu {
+          visibility: visible;
+          background:$subheader_background_color* 0.8;
+        }
+      }
+    }
+
+
+    li:hover {
+      .dropDownMenu {
+        display:block;
+      }
+    }
+  }
+}
+.top {
+  position:absolute;
+  top:0px;
+  bottom:50%;
+  left:0px;
+  right:0px;
+  overflow-y:auto;
+  overflow-x:hidden;
+}
+.bottom {
+
+  position:absolute;
+  bottom:0px;
+  top:50%;
+  left:0px;
+  right:0px;
+  overflow-y:auto;
+  overflow-x:hidden;
+
+}
+
+
+#Sidebar {
+  position: absolute;
+  //Display: none to make it disapear
+  width:$sidebar_width;
+  border-right:3px solid $mainsection_border_color;
+  top:$header_height + $subheader_height;
+  bottom:0px;
+  overflow-y:auto;
+  hr { margin:1em;}
+  background: $sidebar_background_color;
+  color: $sidebar_text_color;
+
+
+
+}
+
+#mainSection {
+  position: absolute;
+  //Display: none to make it disapear
+  left: $sidebar_width;
+  right:0px;
+  top:$header_height + $subheader_height;
+  bottom:0px;
+  overflow:auto;
+  background: $mainsection_background_color;
+
+}
+
+.FeedbackHover {
+  position: absolute;
+  bottom: 0px;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  background: $subsection_background_color;
+  border: 2px inset $subsection_border_color;
+  color: $subsection_text_color;
+
+  ul li {
+
+    background: $mainsection_highlight_background_color;
+    display: inline-block;
+
+    border: 1px solid black;
+    padding: 1em;
+    margin: 0.5em;
+    border-radius: 5px;
+  }
+  a {
+    display: inline-block;
+
+    color: $accent_dark;
+    background: $baseB_light;
+    border: 2px outset;
+    border-radius: 5px;
+    padding: 1em;
+    margin: 0.5em;
+    :hover {
+      background: $baseB_ultralight;
+    }
+  }
+
+}
+
+.dataview {
+  @include biggerSection;
+  width:100%;
+  left:0px;
+
+  color:$subsection_highlight_background_color;
+  border: 1px solid black;
+  .headers {
+    th {
+
+
+      background: $subsection_highlight_background_color;
+      color: $subsection_table_header_text_color;
+      text-align: center;
+      font-size: 15px;
+      font-family: "Lucida Grande", "Lucida Sans Unicode", Tahoma, Verdana;
+
+      a {
+        color: $subsection_table_header_text_color;
+
+      }
+    }
+  }
+
+  tbody {
+    td {
+      padding:0px;
+      border-left: 1px solid $subsection_border_color;
+      border-right: 1px solid $subsection_border_color;
+      border-bottom: 2px solid $subsection_border_color;
+      color: $text_color;
+    }
+    .even {
+      background: $subsection_row1_color;
+
+    }
+    .odd {
+      background: $subsection_row2_color;
+    }
+
+    tr:hover {
+      background: $mainsection_background_color;
+      cursor: pointer;
+    }
+  }
+
+  /* The Ajax DataTables use the following style */
+
+}
+.Form {
+  @include formDefault;
+  display:inline-block;
+  vertical-align: top;
+  flex-grow:1;
+
+}
+.SidebarForm {
+  @include formDefault;
+  color: $mainsection_text_color;
+  width: $sidebar_width - 10px;
+  margin:0.1em;
+}
+
+
+.websiteWindow {
+  height:99%;
+  width:100%;
+  overflow-x:hidden;
+}
+
+
+/*Move each Module into it's own file */
+
+      .FileTreeItem {
+        min-height:1.5em;
+        font-size:0.7em;
+
+
+        a:hover {
+          border-bottom:1px solid black;
+          cursor: pointer;
+        }
+      }
+
+
+.MediaList {
+  @include section;
+  position:relative;
+  img {
+    border:1px solid black;
+    position:relative;
+    width:100%;
+
+  }
+  .info {
+    padding:0.5em;
+
+  }
+}
+
+.AutoCompleteMultiSelect {
+  @include section;
+
+  .AutoCompleteMultiSelectOption {
+
+  }
+  .NewOption {
+    padding:0.2em;
+    input {
+      width:65%;
+    }
+    button {
+      width:30%;
+      border:1px solid black;
+      float:right;
+    }
+
+  }
+}
+
+.Uploader {
+  @include section;
+
+}
+
+
+.Section {
+  @include biggerSection;
+}
+
+
+h1 {
+  margin-bottom:1em;
+}
+h2 {
+  margin-bottom:1em;
+  font-weight: lighter;
+}
+
+.field {
+  label {
+    display:inline-block;
+    width:100px;
+    margin-bottom:1em;
+
+    font-weight:lighter;
+
+  }
+  .EditableLabel:hover {
+    border-bottom: 1px solid #d3d3d3;
+  }
+  input {
+  }
+
+  .error {
+    margin-left:1em;
+    display:inline-block;
+    font-size:0.8em;
+    color:red;
+  }
+}
+
+
+
+.ApiDivider {
+  background:$subsection_background_color * 0.95;
+  font-size:2em;
+  padding:1em;
+  border-bottom:1px solid black;
+  width:100%;
+  display:block;
+}
+
+
+.ApiCalls {
+  div {
+    display:inline-block;
+
+  }
+}
+.ApiFunction {
+    display:inline-block;
+    border:3px solid $subsection_border_color;
+    background:$subsection_background_color * 0.95;
+    border-top:0px;
+    border-left:0px;
+    width:500px;
+    margin:0.5em;
+    border-radius:5px;
+    overflow-y:auto;
+  h1 {
+    font-size:1.2em;
+    padding:0.2em;
+    background: $subsection_background_color * 0.8;
+    border-bottom:2px solid $subsection_border_color;
+    color: $subsection_text_color;
+    ._class {
+
+
+
+
+    }
+    .function {
+
+    }
+  }
+
+  br {
+    margin-bottom:10px;
+  }
+  .params {
+    margin-left:6em;
+    margin-right:6em;
+    margin-bottom:0.5em;
+    border-radius: 2px;
+    display:block;
+    width:auto;
+    input {
+      float:right;
+    }
+  }
+}
+
+.OrderEditor {
+  position:relative;
+  height:100%;
+
+  label {
+    display:inline-block;
+    width:150px;
+    font-weight:bold;
+
+  }
+  span {
+    font-weight:ligher;
+  }
+
+  h2 {
+
+    font-size: 1.5em;
+    margin-bottom:0.2em;
+    font-weight: bolder;
+
+  }
+
+ .Left {
+   position:absolute;
+   top:0px;
+   bottom:0px;
+   left:0px;
+   right:35%;
+   border:1px solid $mainsection_border_color;
+   display:inline-block;
+   overflow-y:auto;
+   padding:1em;
+ }
+
+  .Right {
+    border:1px solid $mainsection_border_color;
+    position:absolute;
+    top:0px;bottom:0px;
+    overflow-y:auto;
+    height:100%;
+    right:0%;
+    left:65%;
+    padding:1em;
+
+  }
+
+}
+
+.PriceEditor {
+  @include section;
+  input {
+    width:75px;
+  }
+
+  table {
+    thead {
+      td {
+        text-align:center;
+        width:auto;
+        border:none;
+        background:none;
+        padding:0px;margin:0px;
+      }
+
+    }
+    td {
+      padding:0px;margin:0px;
+      width:auto;
+      border:none;
+      background:none;
+    }
+  }
+}
+
+/**
+This is the PaymentView.html styles
+**/
+.OrderPayments {
+  display:inline-block;
+
+.PaymentView {
+  width:300px;
+  height:150px;
+  overflow-y:auto;
+  display:block;
+  margin:0.2em;
+  padding:0.2em;
+  border:1px solid $subsection_border_color;
+  background:$subsection_background_color;
+  label {
+  width:100px;
+  }
+
+  h2 {
+    margin:0.5em;
+  }
+  border-radius: 5px;
+
+}
+}
+.StripePayment {
+  margin:1em;
+
+  label {
+    display:inline-block;
+    font-weight:bolder;
+    margin-bottom:0.5em;
+    width:150px;
+  }
+  div {
+    font-weight: lighter;
+  }
+}
+
+.AcePanel {
+  width:100%;
+  height:100%;
+  background:$mainsection_background_color;
+  border:0px;
+  .AceEditor {
+    position:absolute;
+    left:$sidebar_width;
+    right:0px;
+    top:0px;
+    bottom:0px;
+  }
+
+  #AceSidebar {
+    position: absolute;
+    //Display: none to make it disapear
+    width:$sidebar_width;
+  background:$sidebar_background_color;
+    border-right:3px solid $mainsection_border_color;
+    top:0px;
+    bottom:0px;
+    hr { margin:1em;}
+
+  }
+}
+.DropdownItem {
+  font-size:1.1em;
+  margin-top:0.5em;
+  margin-bottom:0.5em;
+  :hover {
+    background:$subheader_background_color*1.1;
+
+  }
+}
+
+.HostingRow {
+  label {
+    font-size: 0.7em;
+    margin:0.2em;
+  }
+  .value {
+    font-size: 0.7em;
+    font-weight:bold;
+    margin:0.2em;
+
+ }
+}
+
+.SidebarTitle {
+  @include pretty_corner_header;
+}
+.MainSectionTitle {
+   @include pretty_corner_header;
+  display:inline-block;
+  clear:both;
+  overflow:hidden;
+  margin:0px;
+ }
+
+.section_table {
+  width:100%;
+
+  border: 2px outset $subsection_border_color;
+
+
+  td {
+    vertical-align: top;
+    padding:1em;
+
+    padding-left:5em;
+    border-top:0px;
+    border-bottom:0px;
+    background:$subsection_background_color;
+  }
+
+}
+
+.help_icon {
+  opacity: 0.4;
+
+  font-size:12px;
+  width:1.2em;
+  height:1.2em;
+  text-align:center;
+  float:right;
+  display:inline-block;
+  background:#EEE;
+  color:#333;
+  border-radius:0.5em;
+  border:1px solid black;
+  cursor:help;
+}
+
+.help_section {
+  width:800px;
+
+  p {
+    padding:1em;
+  }
+  ul {
+    list-style:square;
+    li {
+      margin-left:2em;
+    }
+  }
+}
+
+.SidebarList {
+  li {
+    border:1px solid $subheader_background_color;
+    background:$subsection_table_header_text_color;
+    text-align:center;
+    margin:0.5em;
+    padding:0.3em;
+  }
+}
+
+.OrderItems {
+  border:1px solid $subsection_border_color;
+  background: $subsection_background_color;
+  margin:0.2em;
+}
+
+.OrderItemsSummary {
+  border-bottom:1px solid $subsection_background_color * 0.8;
+  background: $subsection_background_color * 1.5;
+  margin:0.2em;
+}
+
+
+.InvoiceTable {
+  padding:0px;
+  margin:0px;
+  margin:0.2em;
+  .col {
+    display:inline-block;
+    width:19%;
+    margin:0px;
+    height:1em; overflow-y:hidden;
+  }
+}
+
+.PayNowBox {
+  display:inline-block;
+  width:450px;
+  float:right;
+  border:1px solid $subsection_border_color;
+  background:$subsection_background_color;
+  img { float:left; }
+}
+
+.MessagePanel {
+  h1 {
+
+  }
+
+  .MessageHeader {
+    position:absolute;
+    top:0px;
+    height:5em;
+    width:100%;
+  }
+
+  .MessageHeader {
+    h1 {
+      margin:0.1em;
+    }
+    padding-left:2em;
+
+    position:absolute;
+    top:0px;
+    height:4em;
+    width:100%;
+    color:$subheader_text_color;
+    background:$subheader_background_color;
+    border-bottom:1px solid $subheader_background_color * 0.5;
+    border-top:1px solid  $subheader_background_color * 0.5;
+
+    padding-bottom:0.5em;
+    a {
+      color: $header_text_color;
+    }
+  }
+
+  .MessageList {
+    position:absolute;
+    bottom:5em;
+    top:4em;
+    width:100%;
+    overflow:scroll;
+  }
+
+  .MessageReply {
+    position:absolute;
+    bottom:0px;
+    height:5em;
+    width:100%;
+    textarea {
+      height:5em;
+      width:80%;
+    }
+    button {
+      float:right;
+      margin:0px;
+      padding:0px;
+      height: 5em;
+      width:20%;
+    }
+  }
+}
+
+.MessageRowUnread {
+  border-left:10px solid $mainsection_border_color * 1.5;
+}
+
+.MessageRowUnread:hover {
+  border-left:10px solid $mainsection_border_color * 2;
+  cursor:pointer;
+}
+
+.MessageRowRead {
+  border-left:10px solid $mainsection_background_color * 0.8;
+}
+
+.MessageView:hover {
+  border:3px solid $subsection_background_color * 1.1;
+}
+.MessageView {
+
+  border:3px solid $subsection_background_color * 1.1;
+  color: $subsection_text_color;
+  background:$subsection_background_color;
+
+  h1 {
+    display:inline-block;
+    margin:0em;
+    font-size:10px;
+    margin-left:2em;
+    font-weight:bolder;
+  }
+
+  h2 {
+
+    font-weight:bold;
+    margin:0em;
+    display:inline-block;
+    font-size:13px;
+    margin-left:2em;
+  }
+
+
+  pre {
+    border-radius: 0.3em;
+    background: $mainsection_background_color;
+    height:auto;
+    padding:0.2em;
+    border:1px solid $subsection_background_color * 0.9;
+  }
+
+  .Header {
+    border-radius: 0.3em;
+    background: $mainsection_background_color *0.9;
+    height:auto;
+    border:1px solid $subsection_background_color * 0.9;
+  }
+
+  .Expander {
+    color: $subsection_background_color * 0.5;
+    display:inline-block;
+    font-size: 20px;
+    margin:auto;
+    cursor: pointer;
+  }
+}
+
+.SearchCriteria {
+  background: $subsection_background_color;
+  border: 2px solid $subsection_border_color;
+  border-radius:3px;
+  margin:1px;
+  padding:0.4em;
+
+}

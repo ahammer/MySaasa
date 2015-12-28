@@ -1,0 +1,23 @@
+<html>
+<head><title>This is the Content of the websiteManager component</title></head>
+<body>
+<wicket:panel>
+    <div class="HostingRow">
+        <div class="production">
+            <div style="display: inline-block; float:right;">
+                <a wicket:id="hosting"><img src="/bundled_images/edit.png"/></a>&nbsp;&nbsp;&nbsp;
+                <a wicket:id="website"><img src="/bundled_images/view.png"/></a>&nbsp;&nbsp;&nbsp;
+            </div>
+
+            <div class="value" style="font-size:0.9em;margin-top:10px;" wicket:id="production"/>
+            <label>Organization:</label><span class="value" wicket:id="organization"/><br/>
+            <label> isVisible: </label><span class="value" wicket:id="isVisible"/><br/>
+            <label  wicket:id="aka_label">Aka:</label>
+            <ul>
+                <li wicket:id="aka"></li>
+            </ul>
+        </div>
+    </div>
+</wicket:panel>
+</body>
+</html>

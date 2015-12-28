@@ -1,0 +1,54 @@
+<html>
+<head>
+<title>This is the Content of the websiteManager component</title>
+</head>
+<body>
+	<wicket:panel>
+            <table class="section_table">
+                <tr>
+                    <td>
+                        <h1 wicket:id="EditLabel"> Edit User </h1>
+                        <h1 wicket:id="NewLabel"> New User </h1>
+
+                        <div class="field" style="display:inline-block;float:right">
+                            <div wicket:id="feedback">Feedback Panel</div>
+                        </div>
+
+                        <h2> Details </h2>
+
+                        <div class="field">
+                            <label> Username: </label>
+                            <span wicket:id="user.identifier" class="EditableLabel" /> <div class="error" wicket:id="feedbackIdentifier"/>
+                        </div>
+
+                        <div class="field">
+                            <label> Access: </label>
+                            <select wicket:id="user.accessLevel">
+
+                            </select>
+                        </div>
+
+                        <div class="field">
+                            <label> Password: </label>
+                            <a wicket:id="changePassword"> Click to Change</a>
+                            <div wicket:id="passwordModal"/>
+                        </div>
+
+                        <div class="field">
+                            <label> Organization: </label>
+                            <select wicket:id="user.organization" type="text" placeholder="Organization" />
+                        </div>
+
+                        <br/>
+                        <h2> Contact Info </h2>
+                        <div wicket:id="contactInfo"/>
+                        <!-- <button wicket:id="submitLink">Save</button> -->
+                        <div wicket:id="modal"/>
+                        <button wicket:id="deleteLink">Delete User</button>
+
+                    </td>
+                </tr>
+            </table>
+	</wicket:panel>
+</body>
+</html>

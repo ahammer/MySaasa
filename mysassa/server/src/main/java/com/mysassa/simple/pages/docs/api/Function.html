@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<wicket:panel>
+            <form method="post" wicket:id="form">
+            <h1>
+             /<span class="_class" wicket:id="class"> This is the class </span>/<span class="function" wicket:id="method">This is a API function</span>
+                <input type="submit" value="test" style="float:right"/>
+            </h1>
+            <br/>
+              <div wicket:id="params" class="params">
+                  <div class="param">
+                      <span wicket:id="type" class="type"></span>
+                      <span wicket:id="name" class="name"></span>
+                      <input wicket:id="field" type="text"/>
+                  </div>
+               </div>
+            <div wicket:id="feedback"/>
+            </form>
+
+</wicket:panel>
+</body>
+</html>

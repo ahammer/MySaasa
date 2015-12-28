@@ -1,0 +1,9 @@
+buildscript {
+    repositories {
+        mavenCentral()
+ 	    jcenter()
+    }
+    dependencies {
+     	classpath 'com.diffplug.gradle.spotless:spotless:1.0'
+    }
+}

@@ -1,0 +1,30 @@
+<html>
+<head><title>This is the Content of the websiteManager component</title></head>
+<body>
+<wicket:panel>
+    <div class="WebsiteControls">
+
+        <div class="field">
+            <label>Environment:</label>
+            <select wicket:id="environment"/>
+            <button wicket:id="Deploy"> Deploy </button>
+        </div>
+
+
+        <div class="field">
+            <label>Theme: </label>
+            <select wicket:id="themes"/>
+        </div>
+
+        <div class="field">
+            <label>Editor</label>
+            <input type="checkbox" wicket:id="editMode"/>
+        </div>
+        <div class="field">
+            <label>Poster</label>
+            <input type="checkbox" wicket:id="newPost" />
+        </div>
+    </div>
+</wicket:panel>
+</body>
+</html>

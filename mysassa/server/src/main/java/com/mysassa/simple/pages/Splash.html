@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org">
+
+<head>
+    <meta charset="utf-8"/>
+    <title>An easy path to a website.</title>
+    <link href='/jquery-ui-1.10.3.custom/css/smoothness/jquery-ui-1.10.3.custom.min.css' rel='stylesheet' type="text/css"/>
+
+    <wicket:link>
+        <link href="/styles/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css"/>
+        <link href='tree.css' rel='stylesheet' type='text/css'/>
+    </wicket:link>
+</head>
+
+<body>
+<!-- Main Header -->
+<div id="header">
+    <img src="/simple_logo.png"/>
+
+</div>
+<div id="subHeader"/>
+<div id="mainSection" style="left:0px;">
+
+    <div class="Section" style="float:right;width:300px;margin:1em;padding:1em;">
+        <div wicket:id="help" class="help_icon"/>
+        <form wicket:id="Signin">
+            <div class="field">
+                <label>Username</label>
+                <input class="label wide" wicket:id="identifier" type="text" placeholder="Username"/>
+            </div>
+            <div class="field">
+                <label>Password</label>
+                <input class="label wide" wicket:id="password" type="password" placeholder="Password"/>
+            </div>
+            <input class="label wide" style="text-align:center" type="submit" value="Sign In" wicket:id="Signin" />
+            <input class="label wide" style="text-align:center" type="submit" value="Reset Password" wicket:id="RecoverPassword" />
+            <div wicket:id="message"> Feedback </div>
+        </form>
+
+    </div>
+    <div class="Section">
+    <h1>
+        Simple Platform - Admin Gateway
+    </h1>
+    <br/>
+    <h3> Current Node: <span wicket:id="node">$RootDomain</span></h3>
+        <h3><a href="/ApiGuide"> Api Guide</a></h3>
+        <h3><a href="/TemplateGuide"> Template Guide</a></h3>
+    <br/>
+
+    </div>
+
+
+</div>
+</body>
+
+</html>

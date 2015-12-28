@@ -1,0 +1,72 @@
+<html>
+    <head>
+        <title>Blog Poster</title>
+    </head>
+    <body>
+    <wicket:panel>
+
+        <div id="BlogPoster">
+            <form wicket:id="BlogForm">
+                <table class="section_table">
+                    <tr>
+                        <td>
+                            <h1 wicket:id="EditLabel"> Edit Blog Post </h1>
+                            <h1 wicket:id="NewLabel"> New Blog Post </h1>
+
+                            <div class="field">
+                                <label> Title </label>
+                                <input wicket:id="title"  type="text" placeholder="Title"/>
+                            </div>
+
+                            <div class="field">
+                                <label> Subtitle </label>
+                                <input wicket:id="subtitle"  type="text" placeholder="Subtitle"/>
+                            </div>
+
+                            <div class="field">
+                                <label> Priority </label>
+                                <input class="Priority" wicket:id="priority"  type="text" placeholder="Priority"/>
+                            </div>
+                            <div class="field">
+                                <label> Visible </label>
+                                <input type="checkbox" wicket:id="visible"/>
+                            </div>
+
+
+                            <br/>
+                            <h2> Summary </h2>
+                            <textarea wicket:id="summary" style="width:95%"
+
+                                      name="textarea" rows="8" placeholder="summary"></textarea>
+
+
+                            <div style="margin:1em" class="Categories"  wicket:id="categories"> Groups </div>
+                            <div style="margin:1em"  class="MediaUploader"  wicket:id="uploader"> Upload Media</div>
+                            <div style="margin:1em" class="MediaList" wicket:id="media"/>
+
+                            <div class="submit_buttons Section">
+                                <button class="SaveButton" wicket:id="saveButton"> Save </button>
+                                <button class="DeleteButton" wicket:id="deleteButton"> Delete </button>
+                            </div>
+
+
+                            <div wicket:id="feedbackHover"/>
+                        </td>
+                        <td style="vertical-align:top;margin:0px;padding:0px;">
+                            <textarea wicket:id="body"
+                                      name="textarea" rows="8" placeholder="body or url"></textarea>
+
+
+
+                        </td>
+                    </tr>
+                </table>
+
+
+
+            </form>
+            </div>
+
+    </wicket:panel>
+    </body>
+</html>

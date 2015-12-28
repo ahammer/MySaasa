@@ -1,0 +1,35 @@
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+
+<wicket:panel>
+    <div class="AcePanel">
+        <form wicket:id="aceForm">
+
+        <div id="AceSidebar" class="WebsiteSidebar">
+            <div class="top">
+                <h2 class="SidebarTitle" >
+                    <div wicket:id="production" >Website </div>
+                    <div class="footer"  wicket:id="environment" >Environment </div>
+                </h2>
+                <div class="SidebarForm" wicket:id="fileDetails" > File Details </div>
+                <button wicket:id="submit" type="submit" style="width:100%;" > Save File </button>
+                <div class="Section">
+                    <input type="hidden" wicket:id="value"/>
+                </div>
+            </div>
+            <div class="bottom">
+                <div class="SidebarForm" style="min-height:98%" wicket:id="fileBrowser"/>
+            </div>
+        </div>
+
+
+            <div class="AceEditor" wicket:id="editor"></div>
+
+        </form>
+    </div>
+</wicket:panel>
+</body>
+</html>

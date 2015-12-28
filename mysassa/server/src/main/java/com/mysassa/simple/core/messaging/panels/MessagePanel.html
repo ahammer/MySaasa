@@ -1,0 +1,28 @@
+<html>
+<head><title>This is the Content of the websiteManager component</title></head>
+<body>
+<wicket:panel>
+    <div class="MessagePanel">
+
+
+
+        <div wicket:id="modal"/>
+        <div id="messageList" class="MessageList">
+            <div wicket:id="messageList">
+                <div wicket:id="message"/>
+            </div >
+        </div>
+        <div class="MessageHeader">
+            <button style="float:right;display:none;" wicket:id="delete">Delete</button>
+            <button style="float:right;display:none;" wicket:id="hideThread">Hide Thread</button>
+            <h1> <span wicket:id="title"></span></h1>
+            <em>From</em> <span wicket:id="sender.identifier"/> <em> to </em>
+            <span wicket:id="recipient.identifier"/>
+
+        </div>
+
+        <div class="MessageReply" wicket:id="reply"/>
+
+   </div>
+</wicket:panel>
+</body></html>

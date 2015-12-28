@@ -1,0 +1,1081 @@
+/* Welcome to Compass.
+ * In this file you should write your main styles. (or centralize your imports)
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+/*
+Colors are in the {default(""), lowContrast, dark, light, ultralight}, this is from ColorSchemeDesigners 3's export
+There will probably be visibly more secondary items on the screen, primary will be used sparingly as a highlight.
+
+Varieties of colors in the base are
+Accent
+Base
+Base2
+
+*/
+/* A gradient I'll keep handy for easy reference to black and white colors.
+*/
+/* This will be the theme, with better names and mapping to the scheme. Easier swapping of scheme in future. */
+/*
+These are global styles for the Admin and Forms
+
+Primary Color:
+2C36AE	3A3E6F	060C56	535CCE	6B73CE
+Complementary Color:
+FBC122	A08848	7C5C05	FDCE4D	FDD770
+
+*/
+/* line 5, ../../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+
+/* line 22, ../../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+html {
+  line-height: 1;
+}
+
+/* line 24, ../../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+ol, ul {
+  list-style: none;
+}
+
+/* line 26, ../../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* line 28, ../../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+caption, th, td {
+  text-align: left;
+  font-weight: normal;
+  vertical-align: middle;
+}
+
+/* line 30, ../../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+q, blockquote {
+  quotes: none;
+}
+/* line 103, ../../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+q:before, q:after, blockquote:before, blockquote:after {
+  content: "";
+  content: none;
+}
+
+/* line 32, ../../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+a img {
+  border: none;
+}
+
+/* line 116, ../../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
+  display: block;
+}
+
+/* line 9, ../sass/_base.scss */
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+/* line 14, ../sass/_base.scss */
+.wupb-border {
+  width: auto !important;
+}
+
+/* line 115, ../sass/_base.scss */
+.MainSectionPanel {
+  height: 100%;
+}
+
+/* line 121, ../sass/_base.scss */
+.Selected {
+  background: #6d9ee0;
+}
+
+/* line 126, ../sass/_base.scss */
+.headeritem {
+  display: inline-block;
+  width: auto;
+  padding-top: 2px;
+  height: 100%;
+  cursor: pointer;
+  color: #E6F6FF;
+}
+/* line 138, ../sass/_base.scss */
+.headeritem a {
+  color: #FF9F00;
+}
+/* line 142, ../sass/_base.scss */
+.headeritem button {
+  color: black;
+}
+
+/* line 149, ../sass/_base.scss */
+h1 {
+  font-size: 2em;
+}
+
+/* line 152, ../sass/_base.scss */
+h2 {
+  font-size: 1.5em;
+}
+
+/* line 155, ../sass/_base.scss */
+#header {
+  width: 100%;
+  font-weight: bolder;
+  height: 32px;
+  background: #00124D;
+  z-index: 5;
+}
+/* line 161, ../sass/_base.scss */
+#header img {
+  margin-left: 1em;
+  margin-right: 1em;
+  float: left;
+}
+/* line 167, ../sass/_base.scss */
+#header h1 {
+  color: white;
+}
+/* line 170, ../sass/_base.scss */
+#header .headeritem {
+  margin-top: 5px;
+  height: 22px;
+}
+
+/* line 179, ../sass/_base.scss */
+#subHeader {
+  z-index: 5;
+  width: 100%;
+  height: 25px;
+  color: #E6F6FF;
+  background: #5b84bb;
+}
+/* line 188, ../sass/_base.scss */
+#subHeader .sections {
+  display: inline-block;
+  text-align: right;
+  list-style: none;
+  height: 100%;
+  position: relative;
+}
+/* line 195, ../sass/_base.scss */
+#subHeader .sections button {
+  color: black;
+}
+/* line 199, ../sass/_base.scss */
+#subHeader .sections li {
+  font-size: 0.75em;
+  margin-top: 3px;
+  bottom: 0px;
+  display: inline-block;
+  width: auto;
+  height: 70%;
+  cursor: pointer;
+  padding-left: 0.3em;
+  padding-right: 0.3em;
+}
+/* line 209, ../sass/_base.scss */
+#subHeader .sections li .selected {
+  background: white;
+}
+/* line 212, ../sass/_base.scss */
+#subHeader .sections li a {
+  color: #ffffff;
+  text-decoration: none;
+}
+/* line 215, ../sass/_base.scss */
+#subHeader .sections li a .dropDownMenu {
+  visibility: hidden;
+  background: #5b84bb;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  position: relative;
+  z-index: 50;
+  margin-top: 2px;
+  padding: 10px;
+}
+/* line 232, ../sass/_base.scss */
+#subHeader .sections li a:hover {
+  background: #486995;
+}
+/* line 234, ../sass/_base.scss */
+#subHeader .sections li a:hover .dropDownMenu {
+  visibility: visible;
+  background: #486995;
+}
+/* line 243, ../sass/_base.scss */
+#subHeader .sections li:hover .dropDownMenu {
+  display: block;
+}
+
+/* line 249, ../sass/_base.scss */
+.top {
+  position: absolute;
+  top: 0px;
+  bottom: 50%;
+  left: 0px;
+  right: 0px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* line 258, ../sass/_base.scss */
+.bottom {
+  position: absolute;
+  bottom: 0px;
+  top: 50%;
+  left: 0px;
+  right: 0px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* line 271, ../sass/_base.scss */
+#Sidebar {
+  position: absolute;
+  width: 300px;
+  border-right: 3px solid #406880;
+  top: 57px;
+  bottom: 0px;
+  overflow-y: auto;
+  background: #333333;
+  color: #CCCCCC;
+}
+/* line 279, ../sass/_base.scss */
+#Sidebar hr {
+  margin: 1em;
+}
+
+/* line 287, ../sass/_base.scss */
+#mainSection {
+  position: absolute;
+  left: 300px;
+  right: 0px;
+  top: 57px;
+  bottom: 0px;
+  overflow: auto;
+  background: #FCFCFC;
+}
+
+/* line 299, ../sass/_base.scss */
+.FeedbackHover {
+  position: absolute;
+  bottom: 0px;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  background: #F7F7F7;
+  border: 2px inset #406880;
+  color: #00304D;
+}
+/* line 309, ../sass/_base.scss */
+.FeedbackHover ul li {
+  background: #222222;
+  display: inline-block;
+  border: 1px solid black;
+  padding: 1em;
+  margin: 0.5em;
+  border-radius: 5px;
+}
+/* line 319, ../sass/_base.scss */
+.FeedbackHover a {
+  display: inline-block;
+  color: #4D3000;
+  background: #80D0FF;
+  border: 2px outset;
+  border-radius: 5px;
+  padding: 1em;
+  margin: 0.5em;
+}
+/* line 328, ../sass/_base.scss */
+.FeedbackHover a :hover {
+  background: #E6F6FF;
+}
+
+/* line 335, ../sass/_base.scss */
+.dataview {
+  width: 100%;
+  left: 0px;
+  color: #406880;
+  border: 1px solid black;
+  /* The Ajax DataTables use the following style */
+}
+/* line 75, ../sass/_base.scss */
+.dataview .Content .date {
+  display: inline-block;
+  background-color: #FCFCFC;
+  font-size: 0.8em;
+}
+/* line 80, ../sass/_base.scss */
+.dataview .Content .Body {
+  background: white;
+  padding: 1em;
+  outline: 1px dotted grey;
+}
+/* line 87, ../sass/_base.scss */
+.dataview ul {
+  list-style: square;
+  margin: 15px;
+  margin-left: 30px;
+}
+/* line 93, ../sass/_base.scss */
+.dataview h1 {
+  margin: 10px;
+  color: #FF9F00;
+  font-size: 3em;
+}
+/* line 99, ../sass/_base.scss */
+.dataview h2 {
+  margin: 10px;
+  color: #FF9F00;
+  font-size: 2em;
+}
+/* line 104, ../sass/_base.scss */
+.dataview h3 {
+  margin: 10px;
+  color: #FF9F00;
+  font-size: 1.3em;
+}
+/* line 109, ../sass/_base.scss */
+.dataview p {
+  margin: 15px;
+}
+/* line 343, ../sass/_base.scss */
+.dataview .headers th {
+  background: #406880;
+  color: white;
+  text-align: center;
+  font-size: 15px;
+  font-family: "Lucida Grande", "Lucida Sans Unicode", Tahoma, Verdana;
+}
+/* line 352, ../sass/_base.scss */
+.dataview .headers th a {
+  color: white;
+}
+/* line 360, ../sass/_base.scss */
+.dataview tbody td {
+  padding: 0px;
+  border-left: 1px solid #406880;
+  border-right: 1px solid #406880;
+  border-bottom: 2px solid #406880;
+  color: #000000;
+}
+/* line 367, ../sass/_base.scss */
+.dataview tbody .even {
+  background: #DDDDDD;
+}
+/* line 371, ../sass/_base.scss */
+.dataview tbody .odd {
+  background: #EEEEEE;
+}
+/* line 375, ../sass/_base.scss */
+.dataview tbody tr:hover {
+  background: #FCFCFC;
+  cursor: pointer;
+}
+
+/* line 384, ../sass/_base.scss */
+.Form {
+  display: inline-block;
+  overflow-x: hidden;
+  padding: 1em;
+  margin: 1em;
+  border: 1px solid #406880;
+  background: #F7F7F7;
+  border-radius: 2px;
+  display: inline-block;
+  vertical-align: top;
+  flex-grow: 1;
+}
+/* line 56, ../sass/_base.scss */
+.Form h1 {
+  font-size: 24px;
+  font-weight: bolder;
+  margin-bottom: 0.8em;
+}
+/* line 62, ../sass/_base.scss */
+.Form label {
+  width: 200px;
+  padding-right: 20px;
+  display: inline-block;
+}
+/* line 67, ../sass/_base.scss */
+.Form input {
+  clear: right;
+}
+
+/* line 391, ../sass/_base.scss */
+.SidebarForm {
+  display: inline-block;
+  overflow-x: hidden;
+  padding: 1em;
+  margin: 1em;
+  border: 1px solid #406880;
+  background: #F7F7F7;
+  border-radius: 2px;
+  color: #00304D;
+  width: 290px;
+  margin: 0.1em;
+}
+/* line 56, ../sass/_base.scss */
+.SidebarForm h1 {
+  font-size: 24px;
+  font-weight: bolder;
+  margin-bottom: 0.8em;
+}
+/* line 62, ../sass/_base.scss */
+.SidebarForm label {
+  width: 200px;
+  padding-right: 20px;
+  display: inline-block;
+}
+/* line 67, ../sass/_base.scss */
+.SidebarForm input {
+  clear: right;
+}
+
+/* line 399, ../sass/_base.scss */
+.websiteWindow {
+  height: 99%;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/*Move each Module into it's own file */
+/* line 408, ../sass/_base.scss */
+.FileTreeItem {
+  min-height: 1.5em;
+  font-size: 0.7em;
+}
+/* line 413, ../sass/_base.scss */
+.FileTreeItem a:hover {
+  border-bottom: 1px solid black;
+  cursor: pointer;
+}
+
+/* line 420, ../sass/_base.scss */
+.MediaList {
+  width: auto;
+  position: relative;
+}
+/* line 423, ../sass/_base.scss */
+.MediaList img {
+  border: 1px solid black;
+  position: relative;
+  width: 100%;
+}
+/* line 429, ../sass/_base.scss */
+.MediaList .info {
+  padding: 0.5em;
+}
+
+/* line 435, ../sass/_base.scss */
+.AutoCompleteMultiSelect {
+  width: auto;
+}
+/* line 441, ../sass/_base.scss */
+.AutoCompleteMultiSelect .NewOption {
+  padding: 0.2em;
+}
+/* line 443, ../sass/_base.scss */
+.AutoCompleteMultiSelect .NewOption input {
+  width: 65%;
+}
+/* line 446, ../sass/_base.scss */
+.AutoCompleteMultiSelect .NewOption button {
+  width: 30%;
+  border: 1px solid black;
+  float: right;
+}
+
+/* line 455, ../sass/_base.scss */
+.Uploader {
+  width: auto;
+}
+
+/* line 75, ../sass/_base.scss */
+.Section .Content .date {
+  display: inline-block;
+  background-color: #FCFCFC;
+  font-size: 0.8em;
+}
+/* line 80, ../sass/_base.scss */
+.Section .Content .Body {
+  background: white;
+  padding: 1em;
+  outline: 1px dotted grey;
+}
+/* line 87, ../sass/_base.scss */
+.Section ul {
+  list-style: square;
+  margin: 15px;
+  margin-left: 30px;
+}
+/* line 93, ../sass/_base.scss */
+.Section h1 {
+  margin: 10px;
+  color: #FF9F00;
+  font-size: 3em;
+}
+/* line 99, ../sass/_base.scss */
+.Section h2 {
+  margin: 10px;
+  color: #FF9F00;
+  font-size: 2em;
+}
+/* line 104, ../sass/_base.scss */
+.Section h3 {
+  margin: 10px;
+  color: #FF9F00;
+  font-size: 1.3em;
+}
+/* line 109, ../sass/_base.scss */
+.Section p {
+  margin: 15px;
+}
+
+/* line 466, ../sass/_base.scss */
+h1 {
+  margin-bottom: 1em;
+}
+
+/* line 469, ../sass/_base.scss */
+h2 {
+  margin-bottom: 1em;
+  font-weight: lighter;
+}
+
+/* line 475, ../sass/_base.scss */
+.field label {
+  display: inline-block;
+  width: 100px;
+  margin-bottom: 1em;
+  font-weight: lighter;
+}
+/* line 483, ../sass/_base.scss */
+.field .EditableLabel:hover {
+  border-bottom: 1px solid #d3d3d3;
+}
+/* line 489, ../sass/_base.scss */
+.field .error {
+  margin-left: 1em;
+  display: inline-block;
+  font-size: 0.8em;
+  color: red;
+}
+
+/* line 499, ../sass/_base.scss */
+.ApiDivider {
+  background: #eaeaea;
+  font-size: 2em;
+  padding: 1em;
+  border-bottom: 1px solid black;
+  width: 100%;
+  display: block;
+}
+
+/* line 510, ../sass/_base.scss */
+.ApiCalls div {
+  display: inline-block;
+}
+
+/* line 515, ../sass/_base.scss */
+.ApiFunction {
+  display: inline-block;
+  border: 3px solid #406880;
+  background: #eaeaea;
+  border-top: 0px;
+  border-left: 0px;
+  width: 500px;
+  margin: 0.5em;
+  border-radius: 5px;
+  overflow-y: auto;
+}
+/* line 525, ../sass/_base.scss */
+.ApiFunction h1 {
+  font-size: 1.2em;
+  padding: 0.2em;
+  background: #c5c5c5;
+  border-bottom: 2px solid #406880;
+  color: #00304D;
+}
+/* line 542, ../sass/_base.scss */
+.ApiFunction br {
+  margin-bottom: 10px;
+}
+/* line 545, ../sass/_base.scss */
+.ApiFunction .params {
+  margin-left: 6em;
+  margin-right: 6em;
+  margin-bottom: 0.5em;
+  border-radius: 2px;
+  display: block;
+  width: auto;
+}
+/* line 552, ../sass/_base.scss */
+.ApiFunction .params input {
+  float: right;
+}
+
+/* line 558, ../sass/_base.scss */
+.OrderEditor {
+  position: relative;
+  height: 100%;
+}
+/* line 562, ../sass/_base.scss */
+.OrderEditor label {
+  display: inline-block;
+  width: 150px;
+  font-weight: bold;
+}
+/* line 568, ../sass/_base.scss */
+.OrderEditor span {
+  font-weight: ligher;
+}
+/* line 572, ../sass/_base.scss */
+.OrderEditor h2 {
+  font-size: 1.5em;
+  margin-bottom: 0.2em;
+  font-weight: bolder;
+}
+/* line 580, ../sass/_base.scss */
+.OrderEditor .Left {
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 35%;
+  border: 1px solid #406880;
+  display: inline-block;
+  overflow-y: auto;
+  padding: 1em;
+}
+/* line 592, ../sass/_base.scss */
+.OrderEditor .Right {
+  border: 1px solid #406880;
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  overflow-y: auto;
+  height: 100%;
+  right: 0%;
+  left: 65%;
+  padding: 1em;
+}
+
+/* line 606, ../sass/_base.scss */
+.PriceEditor {
+  width: auto;
+}
+/* line 608, ../sass/_base.scss */
+.PriceEditor input {
+  width: 75px;
+}
+/* line 614, ../sass/_base.scss */
+.PriceEditor table thead td {
+  text-align: center;
+  width: auto;
+  border: none;
+  background: none;
+  padding: 0px;
+  margin: 0px;
+}
+/* line 623, ../sass/_base.scss */
+.PriceEditor table td {
+  padding: 0px;
+  margin: 0px;
+  width: auto;
+  border: none;
+  background: none;
+}
+
+/**
+This is the PaymentView.html styles
+**/
+/* line 635, ../sass/_base.scss */
+.OrderPayments {
+  display: inline-block;
+}
+/* line 638, ../sass/_base.scss */
+.OrderPayments .PaymentView {
+  width: 300px;
+  height: 150px;
+  overflow-y: auto;
+  display: block;
+  margin: 0.2em;
+  padding: 0.2em;
+  border: 1px solid #406880;
+  background: #F7F7F7;
+  border-radius: 5px;
+}
+/* line 647, ../sass/_base.scss */
+.OrderPayments .PaymentView label {
+  width: 100px;
+}
+/* line 651, ../sass/_base.scss */
+.OrderPayments .PaymentView h2 {
+  margin: 0.5em;
+}
+
+/* line 658, ../sass/_base.scss */
+.StripePayment {
+  margin: 1em;
+}
+/* line 661, ../sass/_base.scss */
+.StripePayment label {
+  display: inline-block;
+  font-weight: bolder;
+  margin-bottom: 0.5em;
+  width: 150px;
+}
+/* line 667, ../sass/_base.scss */
+.StripePayment div {
+  font-weight: lighter;
+}
+
+/* line 672, ../sass/_base.scss */
+.AcePanel {
+  width: 100%;
+  height: 100%;
+  background: #FCFCFC;
+  border: 0px;
+}
+/* line 677, ../sass/_base.scss */
+.AcePanel .AceEditor {
+  position: absolute;
+  left: 300px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+}
+/* line 685, ../sass/_base.scss */
+.AcePanel #AceSidebar {
+  position: absolute;
+  width: 300px;
+  background: #333333;
+  border-right: 3px solid #406880;
+  top: 0px;
+  bottom: 0px;
+}
+/* line 693, ../sass/_base.scss */
+.AcePanel #AceSidebar hr {
+  margin: 1em;
+}
+
+/* line 697, ../sass/_base.scss */
+.DropdownItem {
+  font-size: 1.1em;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+/* line 701, ../sass/_base.scss */
+.DropdownItem :hover {
+  background: #6491cd;
+}
+
+/* line 708, ../sass/_base.scss */
+.HostingRow label {
+  font-size: 0.7em;
+  margin: 0.2em;
+}
+/* line 712, ../sass/_base.scss */
+.HostingRow .value {
+  font-size: 0.7em;
+  font-weight: bold;
+  margin: 0.2em;
+}
+
+/* line 720, ../sass/_base.scss */
+.SidebarTitle {
+  color: #FFCF80;
+  background: #5b84bb;
+  border-bottom: 2px solid #00124D;
+  border-right: 2px solid #00124D;
+  border-radius: 0px 0px 10px 0px;
+  cursor: pointer;
+  text-align: center;
+  padding: 0.5em;
+  overflow: hidden;
+  margin-bottom: 0.1em;
+}
+/* line 38, ../sass/_base.scss */
+.SidebarTitle .footer {
+  margin: 0.5em;
+  font-size: 0.7em;
+  opacity: 0.8;
+}
+
+/* line 723, ../sass/_base.scss */
+.MainSectionTitle {
+  color: #FFCF80;
+  background: #5b84bb;
+  border-bottom: 2px solid #00124D;
+  border-right: 2px solid #00124D;
+  border-radius: 0px 0px 10px 0px;
+  cursor: pointer;
+  text-align: center;
+  padding: 0.5em;
+  overflow: hidden;
+  margin-bottom: 0.1em;
+  display: inline-block;
+  clear: both;
+  overflow: hidden;
+  margin: 0px;
+}
+/* line 38, ../sass/_base.scss */
+.MainSectionTitle .footer {
+  margin: 0.5em;
+  font-size: 0.7em;
+  opacity: 0.8;
+}
+
+/* line 731, ../sass/_base.scss */
+.section_table {
+  width: 100%;
+  border: 2px outset #406880;
+}
+/* line 737, ../sass/_base.scss */
+.section_table td {
+  vertical-align: top;
+  padding: 1em;
+  padding-left: 5em;
+  border-top: 0px;
+  border-bottom: 0px;
+  background: #F7F7F7;
+}
+
+/* line 749, ../sass/_base.scss */
+.help_icon {
+  opacity: 0.4;
+  font-size: 12px;
+  width: 1.2em;
+  height: 1.2em;
+  text-align: center;
+  float: right;
+  display: inline-block;
+  background: #EEE;
+  color: #333;
+  border-radius: 0.5em;
+  border: 1px solid black;
+  cursor: help;
+}
+
+/* line 765, ../sass/_base.scss */
+.help_section {
+  width: 800px;
+}
+/* line 768, ../sass/_base.scss */
+.help_section p {
+  padding: 1em;
+}
+/* line 771, ../sass/_base.scss */
+.help_section ul {
+  list-style: square;
+}
+/* line 773, ../sass/_base.scss */
+.help_section ul li {
+  margin-left: 2em;
+}
+
+/* line 780, ../sass/_base.scss */
+.SidebarList li {
+  border: 1px solid #5b84bb;
+  background: white;
+  text-align: center;
+  margin: 0.5em;
+  padding: 0.3em;
+}
+
+/* line 789, ../sass/_base.scss */
+.OrderItems {
+  border: 1px solid #406880;
+  background: #F7F7F7;
+  margin: 0.2em;
+}
+
+/* line 795, ../sass/_base.scss */
+.OrderItemsSummary {
+  border-bottom: 1px solid #c5c5c5;
+  background: white;
+  margin: 0.2em;
+}
+
+/* line 802, ../sass/_base.scss */
+.InvoiceTable {
+  padding: 0px;
+  margin: 0px;
+  margin: 0.2em;
+}
+/* line 806, ../sass/_base.scss */
+.InvoiceTable .col {
+  display: inline-block;
+  width: 19%;
+  margin: 0px;
+  height: 1em;
+  overflow-y: hidden;
+}
+
+/* line 814, ../sass/_base.scss */
+.PayNowBox {
+  display: inline-block;
+  width: 450px;
+  float: right;
+  border: 1px solid #406880;
+  background: #F7F7F7;
+}
+/* line 820, ../sass/_base.scss */
+.PayNowBox img {
+  float: left;
+}
+
+/* line 828, ../sass/_base.scss */
+.MessagePanel .MessageHeader {
+  position: absolute;
+  top: 0px;
+  height: 5em;
+  width: 100%;
+}
+/* line 835, ../sass/_base.scss */
+.MessagePanel .MessageHeader {
+  padding-left: 2em;
+  position: absolute;
+  top: 0px;
+  height: 4em;
+  width: 100%;
+  color: #E6F6FF;
+  background: #5b84bb;
+  border-bottom: 1px solid #2d425d;
+  border-top: 1px solid #2d425d;
+  padding-bottom: 0.5em;
+}
+/* line 836, ../sass/_base.scss */
+.MessagePanel .MessageHeader h1 {
+  margin: 0.1em;
+}
+/* line 851, ../sass/_base.scss */
+.MessagePanel .MessageHeader a {
+  color: #FFCF80;
+}
+/* line 856, ../sass/_base.scss */
+.MessagePanel .MessageList {
+  position: absolute;
+  bottom: 5em;
+  top: 4em;
+  width: 100%;
+  overflow: scroll;
+}
+/* line 864, ../sass/_base.scss */
+.MessagePanel .MessageReply {
+  position: absolute;
+  bottom: 0px;
+  height: 5em;
+  width: 100%;
+}
+/* line 869, ../sass/_base.scss */
+.MessagePanel .MessageReply textarea {
+  height: 5em;
+  width: 80%;
+}
+/* line 873, ../sass/_base.scss */
+.MessagePanel .MessageReply button {
+  float: right;
+  margin: 0px;
+  padding: 0px;
+  height: 5em;
+  width: 20%;
+}
+
+/* line 883, ../sass/_base.scss */
+.MessageRowUnread {
+  border-left: 10px solid #609cc0;
+}
+
+/* line 887, ../sass/_base.scss */
+.MessageRowUnread:hover {
+  border-left: 10px solid #80d0ff;
+  cursor: pointer;
+}
+
+/* line 892, ../sass/_base.scss */
+.MessageRowRead {
+  border-left: 10px solid #c9c9c9;
+}
+
+/* line 896, ../sass/_base.scss */
+.MessageView:hover {
+  border: 3px solid white;
+}
+
+/* line 899, ../sass/_base.scss */
+.MessageView {
+  border: 3px solid white;
+  color: #00304D;
+  background: #F7F7F7;
+}
+/* line 905, ../sass/_base.scss */
+.MessageView h1 {
+  display: inline-block;
+  margin: 0em;
+  font-size: 10px;
+  margin-left: 2em;
+  font-weight: bolder;
+}
+/* line 913, ../sass/_base.scss */
+.MessageView h2 {
+  font-weight: bold;
+  margin: 0em;
+  display: inline-block;
+  font-size: 13px;
+  margin-left: 2em;
+}
+/* line 923, ../sass/_base.scss */
+.MessageView pre {
+  border-radius: 0.3em;
+  background: #FCFCFC;
+  height: auto;
+  padding: 0.2em;
+  border: 1px solid #dedede;
+}
+/* line 931, ../sass/_base.scss */
+.MessageView .Header {
+  border-radius: 0.3em;
+  background: #e2e2e2;
+  height: auto;
+  border: 1px solid #dedede;
+}
+/* line 938, ../sass/_base.scss */
+.MessageView .Expander {
+  color: #7b7b7b;
+  display: inline-block;
+  font-size: 20px;
+  margin: auto;
+  cursor: pointer;
+}
+
+/* line 947, ../sass/_base.scss */
+.SearchCriteria {
+  background: #F7F7F7;
+  border: 2px solid #406880;
+  border-radius: 3px;
+  margin: 1px;
+  padding: 0.4em;
+}

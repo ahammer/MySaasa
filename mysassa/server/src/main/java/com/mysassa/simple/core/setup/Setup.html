@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Simple Setup</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/simple-sidebar.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <style type="text/css">
+        label {
+            display:inline-block;
+            width:200px;
+            text-align: right;
+            margin-right:1em;
+        }
+        input {
+            width:300px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                        <img src="simple_logo.png"/>
+                </li>
+
+
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        <div class="Form" >
+
+                                <h1> Database Settings </h1>
+                                <p>
+                                Database Settings (Defaults to Embedded H2 Database, no changes required.
+                                    External database recommended for heavier usages.)
+                                </p>
+
+                                <label>URL</label><span wicket:id="url" type="text"/><br/>
+                                <label>DriverName</label><select wicket:id="driverName"> <option>org.h2.driver (embedded)</option><option>com.mysql.jdbc.Driver</option></select> <br/>
+                                <label>Name</label><span wicket:id="db_username" type="text"/><br/>
+                                <label>Password</label><span wicket:id="db_password" type="password"/><br/>
+
+                                <div wicket:id="feedback"/> <br/>
+                        </div>
+                        <hr/>
+                        <div class="Form">
+                            <h1> Basic Setup </h1>
+                            <label> Base Domain </label> <span wicket:id="baseDomain" type="text" placeholder="simpletest.ca for dev or your Domain"/> *If using simpletest.ca add Host Entries. <br/>
+                            <label> Admin Username: </label> <span wicket:id="username" type="text" placeholder="username (required)"/> <br/>
+                            <label> Admin Password: </label> <span wicket:id="password" type="password" placeholder="password (required)"/> <br/>
+                            <label>Organization: </label> <span wicket:id="organization" type="text" placeholder="You or Your Company"/><br/>
+                            <label>Server Port: </label> <span wicket:id="port" type="text" /> <br/>
+                            <label>Secure Port: </label> <span wicket:id="securePort" type="text" /> <br/>
+
+                            <br/>
+
+                        </div>
+
+                        <div class="Form">
+                            <h1> Smtp Setup </h1>
+                            <label> Mail Host </label> <span wicket:id="mail_host" type="text" /> <br/>
+                            <label> Mail Port: </label> <span wicket:id="mail_port" type="text" /><br/>
+                            <label> Mail Username: </label> <span wicket:id="mail_user" type="text" /> <br/>
+                            <label> Mail Password: </label> <span wicket:id="mail_password" type="password" /> <br/>
+                            <br/>
+                        </div>
+                        <div class="Form">
+                            <h1> Security Keys </h1>
+                            <label> Gcm Key </label> <span wicket:id="gcmKey" type="text" /> <br/>
+
+                            <br/>
+                        </div>
+
+
+                        <a wicket:id="continue">Continue</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Menu Toggle Script -->
+    <script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+    </script>
+
+</body>
+
+</html>

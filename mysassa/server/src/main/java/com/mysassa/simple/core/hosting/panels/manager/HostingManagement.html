@@ -1,0 +1,41 @@
+<html>
+<head><title>This is the Content of the websiteManager component</title></head>
+<body>
+<wicket:panel>
+    <div class="Form">
+        <form wicket:id="websiteForm">
+            <h1 wicket:id="EditLabel"> Edit Hosting Record </h1>
+            <h1 wicket:id="NewLabel"> New Hosting Record </h1>
+            <div class="field">
+                <label> Organization </label>
+                <select wicket:id="organization" type="text"/> <br/>
+            </div>
+            <div class="field">
+                <label> Production </label>
+                <input wicket:id="production" type="text" placeholder="Production Domain"/> <a wicket:id="goProduction"> Go </a><br/>
+            </div>
+
+            <div class="field">
+                <label> Staging </label>
+                <input wicket:id="staging" type="text" placeholder="Staging Domain"/> <a wicket:id="goStaging">Go </a> <br/>
+            </div>
+            <div class="field">
+                <label> Visible: </label>
+                 <input wicket:id="isVisible" type="checkbox"/> <br/>
+            </div>
+
+                <hr/>
+                Additional Domains <br/>
+                <div wicket:id="domains"/>
+
+
+            <div wicket:id="feedback"> Feedback Panel</div>
+            <hr/>
+            <button wicket:id="submitLink"> Save Website </button>
+            <button wicket:id="deleteLink">Delete Website</button> <br/>
+
+        </form>
+    </div>
+</wicket:panel>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0"
+             xmlns="http://java.sun.com/xml/ns/persistence"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+    <persistence-unit name="Simple" transaction-type="RESOURCE_LOCAL">
+
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+            <class>com.mysassa.simple.core.event_log.model.Event</class>
+            <class>com.mysassa.simple.core.users.model.User</class>
+            <class>com.mysassa.simple.core.messaging.model.Message</class>
+            <class>com.mysassa.simple.core.messaging.model.MessageReadReceipt</class>
+            <class>com.mysassa.simple.core.users.model.ContactInfo</class>
+            <class>com.mysassa.simple.core.inventory.model.Warehouse</class>
+            <class>com.mysassa.simple.core.inventory.model.Inventory</class>
+            <class>com.mysassa.simple.core.inventory.model.Product</class>
+            <class>com.mysassa.simple.core.inventory.model.Pricing</class>
+            <class>com.mysassa.simple.core.orders.model.Cart</class>
+            <class>com.mysassa.simple.core.orders.model.OrderItem</class>
+            <class>com.mysassa.simple.core.orders.model.Payment</class>
+            <class>com.mysassa.simple.core.orders.model.Tax</class>
+            <class>com.mysassa.simple.core.website.model.Website</class>
+            <class>com.mysassa.simple.core.website.model.Domain</class>
+            <class>com.mysassa.simple.core.website.model.Content</class>
+            <class>com.mysassa.simple.core.website.model.ContentBinding</class>
+            <class>com.mysassa.simple.core.bitcoin.model.OrderBitcoinInfo</class>
+            <class>com.mysassa.simple.core.bitcoin.model.BitcoinPriceData</class>
+            <class>com.mysassa.simple.core.bitcoin.model.BitcoinTransactionData</class>
+            <class>com.mysassa.simple.core.blog.model.BlogPost</class>
+            <class>com.mysassa.simple.core.categories.model.Category</class>
+            <class>com.mysassa.simple.core.blog.model.BlogComment</class>
+            <class>com.mysassa.simple.core.media.model.Media</class>
+            <class>com.mysassa.simple.core.organization.model.Organization</class>
+            <class>com.mysassa.simple.core.database.model.Property</class>
+        <properties>
+
+            <!--
+            <property name="openjpa.ConnectionURL" value="jdbc:h2:simple"/>
+            <property name="openjpa.ConnectionDriverName" value="org.h2.Driver"/>
+            <property name="openjpa.ConnectionUserName" value="simple"/>
+            <property name="openjpa.ConnectionPassword" value="password"/>
+
+            A temporary server on my lan
+            <property name="openjpa.ConnectionURL" value="jdbc:mysql://192.168.1.108:3306/simple"/>
+            <property name="openjpa.ConnectionDriverName" value="com.mysql.jdbc.Driver"/>
+            <property name="openjpa.ConnectionUserName" value="adam"/>
+            <property name="openjpa.ConnectionPassword" value="GalleryPasswordSnookums"/>
+            -->
+
+            <property name="hibernate.DynamicEnhancementAgent" value="true"/>
+            <property name="hibernate.RuntimeUnenhancedClasses" value="supported"/>
+            <property name="hibernate.Log" value="SQL=TRACE"/>
+            <property name="hibernate.ConnectionFactoryProperties"
+                      value="PrettyPrint=true, PrettyPrintLineLength=72, PrintParameters=true, MaxActive=10, MaxIdle=5, MinIdle=2, MaxWait=60000"/>
+            <property name="hibernate.jdbc.SynchronizeMappings" value="buildSchema(ForeignKeys=true)"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+        </properties>
+
+    </persistence-unit>
+</persistence>

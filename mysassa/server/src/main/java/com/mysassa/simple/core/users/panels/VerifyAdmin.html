@@ -1,0 +1,31 @@
+<html>
+<head><title>This is the Content of the websiteManager component</title></head>
+<body>
+<wicket:panel>
+    <form wicket:id="updatePasswordForm">
+    <table class="section_table">
+
+        <tr>
+            <td>
+                <h2> Enter Admin Credentials to Continue </h2>
+                <div class="field" style="display:inline-block;float:right">
+                    <div class="error" wicket:id="feedback"/>
+                </div>
+
+                <div class="field">
+                    <label> Username: </label>
+                    <input wicket:id="username" type="text"/>
+                </div>
+                <div class="field">
+                    <label> Password: </label>
+                    <input wicket:id="password" type="password"/>
+                </div>
+                <input type="submit" wicket:id="submit" value="Verify Access"/>
+
+            </td>
+        </tr>
+    </table>
+    </form>
+</wicket:panel>
+</body>
+</html>

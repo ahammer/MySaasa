@@ -1,0 +1,25 @@
+<html>
+<head><title>This is the Content of the websiteManager component</title></head>
+<body>
+<wicket:panel>
+    <div id="WebsiteAdmin">
+        <div class="WebsiteSidebar">
+            <div class="top">
+                <h2 class="SidebarTitle" >
+                    <div wicket:id="help" class="help_icon"/>
+
+                    <div wicket:id="production" >Website </div>
+                    <div class="footer" wicket:id="environment" >Environment </div>
+                </h2>
+                <div class="SidebarForm" wicket:id="details"> File Info </div>
+                <button class="details Section" wicket:id="templateOptions"> Install Template into Staging </button>
+                <div class="SidebarForm" wicket:id="website_controls"/>
+            </div>
+            <div class="bottom">
+                <div class="SidebarForm" style="min-height:98%" wicket:id="fileBrowser"/>
+            </div>
+        </div>
+    </div>
+</wicket:panel>
+</body>
+</html>
