@@ -4,6 +4,21 @@ apply plugin: 'application'
 
 mainClassName = "com.mysassa.simple.StartDaemon"
 
+
+def Properties versionProps = new Properties()
+
+def versionPropsFile = file('version.properties')
+if(versionPropsFile.exists())
+    versionProps.load(new FileInputStream(versionPropsFile))
+def code = (versionProps['VERSION_CODE'] ?: "0").toInteger() + 1
+versionProps['VERSION_CODE'] = code.toString()
+versionProps.store(versionPropsFile.newWriter(), null)
+
+
+group = 'com.metalrain.simple'
+version = '0.5.'+versionProps['VERSION_CODE']
+description = """MySassa Server"""
+
 spotless {
     java {
         eclipseFormatFile 'spotless.eclipseformat.xml'  // XML file dumped out by the Eclipse formatter
@@ -77,3 +92,29 @@ dependencies {
     compile 'javax.mail:mail:1.4.1'
     testCompile 'junit:junit:4.10'
 }
+
+
+/**
+ * We need to find the files from the subprojects, and include them in the builds
+ *
+ * So we get all the project dependencies
+ * Then we collect some folders, and flatten the array.
+ * What we get is a list of paths that we want to copy files from
+ */
+
+task copySrc(type:Copy) {
+    into "$buildDir/src/main/webapp"
+    from "src/deployment/webapp"
+    from "src/main/webapp"
+    from "src/main/java"
+}
+
+build.dependsOn copySrc
+run.dependsOn build
+
+tasks.run.workingDir = "$buildDir"
+
+applicationDistribution.from(copySrc) {
+    into "bin/src/main/webapp"
+}
+
