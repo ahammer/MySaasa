@@ -59,7 +59,7 @@ public class BlogDataTable extends AjaxFallbackDefaultDataTable {
 	@Override
 	protected org.apache.wicket.markup.repeater.Item newRowItem(java.lang.String id, int index, org.apache.wicket.model.IModel model) {
 		final Item item = super.newRowItem(id, index, model);
-		item.add(new AjaxEventBehavior("onClick") {
+		item.add(new AjaxEventBehavior("click") {
 			@Override
 			protected void onEvent(final AjaxRequestTarget target) {
 				MessageHelpers.editEventMessage(target, new Model((BlogPost) item.getModelObject()));
