@@ -1,0 +1,48 @@
+<html>
+<head>
+    <title>This is the Content of the websiteManager component</title>
+</head>
+<body>
+<wicket:panel>
+
+        <table class="section_table">
+            <tr>
+                <td colspan="2">
+                    <h1 wicket:id="EditLabel"> Edit Organization </h1>
+                    <h1 wicket:id="NewLabel"> New Organization </h1>
+                </td>
+            </tr>
+            <tr>
+                <td class="right_pane">
+                    <h2> Details </h2>
+                    <div class="field">
+                        <label> Name </label>
+                        <span wicket:id="name"/><div class="error" wicket:id="feedback"/>
+                    </div>
+
+                    <div class="field">
+                        <label> <a target="_blank" href="http://www.stripe.com"> Stripe key </a></label>
+                        <span wicket:id="stripeKey"/>
+                    </div>
+
+                    <br/>
+
+                    <br/>
+                </td>
+                <td>
+                    <h2> Organization Contact Info </h2>
+                    <div wicket:id="contactInfo"/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div wicket:id="modal"/>
+                    <button wicket:id="deleteLink">Disable</button>
+                </td>
+            </tr>
+        </table>
+
+
+</wicket:panel>
+</body>
+</html>

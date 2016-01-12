@@ -4,32 +4,32 @@
     <persistence-unit name="Simple" transaction-type="RESOURCE_LOCAL">
 
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
-            <class>com.mysassa.simple.core.event_log.model.Event</class>
-            <class>com.mysassa.simple.core.users.model.User</class>
-            <class>com.mysassa.simple.core.messaging.model.Message</class>
-            <class>com.mysassa.simple.core.messaging.model.MessageReadReceipt</class>
-            <class>com.mysassa.simple.core.users.model.ContactInfo</class>
-            <class>com.mysassa.simple.core.inventory.model.Warehouse</class>
-            <class>com.mysassa.simple.core.inventory.model.Inventory</class>
-            <class>com.mysassa.simple.core.inventory.model.Product</class>
-            <class>com.mysassa.simple.core.inventory.model.Pricing</class>
-            <class>com.mysassa.simple.core.orders.model.Cart</class>
-            <class>com.mysassa.simple.core.orders.model.OrderItem</class>
-            <class>com.mysassa.simple.core.orders.model.Payment</class>
-            <class>com.mysassa.simple.core.orders.model.Tax</class>
-            <class>com.mysassa.simple.core.website.model.Website</class>
-            <class>com.mysassa.simple.core.website.model.Domain</class>
-            <class>com.mysassa.simple.core.website.model.Content</class>
-            <class>com.mysassa.simple.core.website.model.ContentBinding</class>
-            <class>com.mysassa.simple.core.bitcoin.model.OrderBitcoinInfo</class>
-            <class>com.mysassa.simple.core.bitcoin.model.BitcoinPriceData</class>
-            <class>com.mysassa.simple.core.bitcoin.model.BitcoinTransactionData</class>
-            <class>com.mysassa.simple.core.blog.model.BlogPost</class>
-            <class>com.mysassa.simple.core.categories.model.Category</class>
-            <class>com.mysassa.simple.core.blog.model.BlogComment</class>
-            <class>com.mysassa.simple.core.media.model.Media</class>
-            <class>com.mysassa.simple.core.organization.model.Organization</class>
-            <class>com.mysassa.simple.core.database.model.Property</class>
+            <class>com.mysassa.core.event_log.model.Event</class>
+            <class>com.mysassa.core.users.model.User</class>
+            <class>com.mysassa.core.messaging.model.Message</class>
+            <class>com.mysassa.core.messaging.model.MessageReadReceipt</class>
+            <class>com.mysassa.core.users.model.ContactInfo</class>
+            <class>com.mysassa.core.inventory.model.Warehouse</class>
+            <class>com.mysassa.core.inventory.model.Inventory</class>
+            <class>com.mysassa.core.inventory.model.Product</class>
+            <class>com.mysassa.core.inventory.model.Pricing</class>
+            <class>com.mysassa.core.orders.model.Cart</class>
+            <class>com.mysassa.core.orders.model.OrderItem</class>
+            <class>com.mysassa.core.orders.model.Payment</class>
+            <class>com.mysassa.core.orders.model.Tax</class>
+            <class>com.mysassa.core.website.model.Website</class>
+            <class>com.mysassa.core.website.model.Domain</class>
+            <class>com.mysassa.core.website.model.Content</class>
+            <class>com.mysassa.core.website.model.ContentBinding</class>
+            <class>com.mysassa.core.bitcoin.model.OrderBitcoinInfo</class>
+            <class>com.mysassa.core.bitcoin.model.BitcoinPriceData</class>
+            <class>com.mysassa.core.bitcoin.model.BitcoinTransactionData</class>
+            <class>com.mysassa.core.blog.model.BlogPost</class>
+            <class>com.mysassa.core.categories.model.Category</class>
+            <class>com.mysassa.core.blog.model.BlogComment</class>
+            <class>com.mysassa.core.media.model.Media</class>
+            <class>com.mysassa.core.organization.model.Organization</class>
+            <class>com.mysassa.core.database.model.Property</class>
         <properties>
 
             <!--
