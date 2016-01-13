@@ -1,17 +1,8 @@
 package com.mysassa.core.organization.services;
 
-import com.mysassa.core.blog.model.BlogPost;
-import com.mysassa.core.categories.model.Category;
 import com.mysassa.core.users.model.User;
-import com.mysassa.core.users.service.UserService;
-import com.mysassa.core.website.model.Website;
 import com.mysassa.interfaces.annotations.SimpleService;
 import com.mysassa.Simple;
-import com.mysassa.core.blog.services.BlogService;
-import com.mysassa.core.categories.CategoryService;
-import com.mysassa.core.hosting.service.HostingService;
-import com.mysassa.core.website.model.ContentBinding;
-import com.mysassa.core.website.services.WebsiteService;
 import com.mysassa.core.organization.model.Organization;
 import org.slf4j.Logger;
 
@@ -21,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkNotNull;/* See the file "LICENSE" for the full license governing this code. */
 
 @SimpleService
 public class OrganizationService {
