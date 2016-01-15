@@ -6,21 +6,47 @@ MySassa Server
 A CMS/SaaS/API/Android Suite designed for customizable websites and apps.
 
 Table Of Contents
-	1. FAQ
-	1.1. What is this?
-	1.2. Who is it for?
-	1.3. Why do I want it?
-	1.4. Why not X or Y?
-	1.5. I want to use this for Commercial Uses, what are my options?
-	1.6. How would I get started?
-	1.7. What are the core building blocks.
-	1.8. I want an Android App, how do I get started with that?
-	1.9. I want to contribute, what can I do?
-	1.10. I want support on the platform, how can I official get support?
+	2. FAQ
+	2.1. What is this?
+	2.2. Who is it for?
+	2.3. Why do I want it?
+	2.4. Why not X or Y?
+	2.5. I want to use this for Commercial Uses, what are my options?
+	2.6. How would I get started?
+	2.7. What are the core building blocks.
+	2.8. I want an Android App, how do I get started with that?
+	2.9. I want to contribute, what can I do?
+	2.10. I want support on the platform, how can I official get support?
 
-1. FAQ
+1. Getting Started
 
-1.1. What is this?
+	To Run: "./gradlew run"
+    If all is good, you can access the Admin from localhost:8080
+
+    DNS Setup:
+        The system can register an arbitrary amount of domains. These domains can be linked to organizations and share data.
+        For simple usage, your system hostfile can be used. However I highly recommend using a local DNS server for
+        development and demonstration setup.
+
+        The local DNS server can handle wildcard subdomains, where hostfiles can not. This allows the mechanism
+        for inline website editing to work from the Admin. MySassa uses sub domains created on the fly to link the users
+        website and admin session across domains. It can also host staging environments. Given the wide range of domains
+        it may wish to refer to itself as, a wildcard domain simplifies development.
+
+	Prerequisites:
+	A directory for Data and Settings.
+		Default Value: 	/opt/simple  on Linux/Mac 
+				C:\SIMPLE_CONFIG\ on windows
+
+	Java JDK/JRE 1.8 for Server Development/Deployment
+    Java JDK/JRE 1.7 for Java Client/Android Developments
+    Android SDK 4.0+ for Android Development
+
+
+
+2. FAQ
+
+2.1. What is this?
 
 A Java based http server that specializes in providing organizations with the ability to have API Driven websites and Apps that are easily extensible. 
 
@@ -41,7 +67,7 @@ And 3 External components (Apache Licensed, Java 7 for Android Support)
 		Pre-built application to give a Website an App, can be used as the basis for a branded/customized android application.
 
 
-1.2. Who is it for?
+2.2. Who is it for?
 
 Intermediate to advanced users and developers.
 
@@ -54,7 +80,7 @@ On the developer side, it's for SaaS or API driven projects. Ideal projects woul
 
 It's also for people who just want a API driven project that may/may not have a website attached. I'm hoping to provide a special license for indepedent game developers to use this server to provide data-driven API access to their games, which is a major burden for creating network attached games.
 
-1.3. Why do I want it?
+2.3. Why do I want it?
 
 - Because it gives you an entire Stack in a box (Server/Websites/API/Admin), and does so in a tidy and neat package designed for extension.
 - There is minimal config (however some understanding of DNS is a must for the person setting up websites).
@@ -63,18 +89,18 @@ It's also for people who just want a API driven project that may/may not have a 
 - Provides some easy to use templates to help users get started with their first website and apps
 - Open Source, with Commercial options available if your business requires it
 
-1.4. Why not X or Y?
+2.4. Why not X or Y?
 
 Architecturally, this system was designed as a easy to use, self contained SaaS platform. If you want to run multiple websites or have a managed API written in Java, this provides the framework for it.
 
 If you just want to host HTML websites, this may not be the ideal solution. Additionally, this is targetting advanced Java developers and intermediate level web developers for two different roles. One being the power-web developer managing several websites with a CMS, and the other being the power-java developer, creating next level CMS/SaaS systems that provide branded solutions to specialized industries.
 
 
-1.5. I want to use for Commercial Uses, what are my options?
+2.5. I want to use for Commercial Uses, what are my options?
 
 This project can be offered under alternative licenses, please contact Adam Hammer 1(604)339-2620 to discuss licensing, development and support options that may be well suited to you.
 
-1.6 How do I get started (Windows, Linux, OSX all supported)
+2.6 How do I get started (Windows, Linux, OSX all supported)
 Developer Getting Started
 - Install Java 8 JDK 
 - Check out Code
@@ -85,7 +111,7 @@ User Getting Started
 - Extract Archive
 - run [EXTRACTED_FOLDER]/bin/Server to start
 
-1.7 What are the Core building blocks.
+2.7 What are the Core building blocks.
 
 This piece of software is built on the shoulders of other great projects
 
@@ -96,7 +122,7 @@ This piece of software is built on the shoulders of other great projects
 - Google GSON and Guava (Used to provide JSON serialization/deserialization for API support)
 + Many more (Check the build.gradle's for exact usages amd versions)
 
-1.8. I want an Android App, how do I get started with that?
+2.8. I want an Android App, how do I get started with that?
 Step 1: Create and setup a server and website.
 Step 2: Check out Android components (Link TBD)
 Step 3: Create a build flavour in the White Label project
@@ -104,14 +130,14 @@ Step 4: Start extending your application
 
 The Client tools will be released under a more permissive license, meaning you are not obliged to release or distribute the source.
 
-1.9. I would like to contribute, what can I do?
+2.9. I would like to contribute, what can I do?
 
 Code contributions to the master branch will not be accepted by default, so please contact me before contributing.
 I'll eventually offer an official policy for bounties on features/bugs/enhancements. 
 I want to pay for all contributions to keep copyright/licensing straightforward.
 
 
-1.10. I want support on the platform, how can I official get support?
+2.10. I want support on the platform, how can I official get support?
 
 	Support on the AGPL code base is subject to acceptance to the AGPL core. Otherwise, flat rates apply, bought in 10 hour increments.
 

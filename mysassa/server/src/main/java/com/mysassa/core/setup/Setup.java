@@ -51,7 +51,7 @@ public class Setup extends WebPage {
 		String db_password = "";
 		String baseDomain = "simpletest.ca";
 		String username = "admin";
-		String password = RandomStringUtils.randomAlphanumeric(6).toUpperCase();
+		String password = "admin";
 		String organization = "Default";
 
 		String mail_host = "yourmailserver.host";
@@ -70,7 +70,7 @@ public class Setup extends WebPage {
 		}
 
 		String securePort = "8443";
-		String gcmKey = "AIzaSyCAnDiCuaeISfI2sYVhLpPP9ESx8vnKL0k";
+		String gcmKey = "Your GCM Key here"; //https://console.cloud.google.com/apis/api -> Cloud Messaging For Android
 		String keystorePassword = "password";
 
 		public void writeToProperties() {
