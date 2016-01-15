@@ -52,7 +52,8 @@ public class Organization implements Serializable {
 
 	@Column(name = "enabled")
 	public Boolean isEnabled() {
-		if (enabled == null) return true;
+		if (enabled == null)
+			return true;
 		return enabled;
 	}
 
