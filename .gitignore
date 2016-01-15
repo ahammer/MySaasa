@@ -16,3 +16,5 @@ build/
 log.out
 velocity.log
 .idea/
+
+.gradle/
