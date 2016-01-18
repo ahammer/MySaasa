@@ -35,20 +35,20 @@ public class CategoryService {
 		EntityManager em = Simple.getEm();
 		List<Category> list;
 		if (o != null) {
-			list = ListUtils.unmodifiableList(em.createQuery("SELECT C FROM Category C WHERE C.name=:name AND C.organization=:org AND C.type=:type ORDER BY C.id DESC")
+			list = ListUtils.unmodifiableList(em.createQuery("SELECT C FROM Category C WHERE C.name=:name AND C.organization=:org AND C.type=:cattype ORDER BY C.id DESC")
 					.setParameter("name", name)
 					.setParameter("org", o)
-					.setParameter("type", type.getSimpleName())
+					.setParameter("cattype", type.getSimpleName())
 					.getResultList());
 		} else {
-			list = ListUtils.unmodifiableList(em.createQuery("SELECT C FROM Category C WHERE C.name=:name AND C.type=:type ORDER BY C.id DESC")
+			list = ListUtils.unmodifiableList(em.createQuery("SELECT C FROM Category C WHERE C.name=:name AND C.type=:cattype ORDER BY C.id DESC")
 					.setParameter("name", name)
-					.setParameter("type", type.getSimpleName())
+					.setParameter("cattype", type.getSimpleName())
 					.getResultList());
 
 		}
 		if (list.size() == 0) {
-			Category category = new Category(type.getName(), o);
+			Category category = new Category(type.getSimpleName(), o);
 			category.setName(name);
 			em.close();
 			return saveCategory(category);
@@ -57,6 +57,7 @@ public class CategoryService {
 		em.close();
 		return list.get(0);
 	}
+
 
 	public Category saveCategory(Category blogCategory) {
 		EntityManager em = Simple.getEm();
@@ -68,11 +69,19 @@ public class CategoryService {
 		return tracked;
 	}
 
-	public List<Category> getCategories(Organization organization) {
+	public List<Category> getCategories(Organization organization, Class type) {
 		EntityManager em = Simple.getEm();
-		return ListUtils.unmodifiableList(em.createQuery("SELECT C FROM Category C WHERE C.organization=:org ORDER BY C.type")
-				.setParameter("org", organization)
-				.getResultList());
+        if (type != null) {
+            return ListUtils.unmodifiableList(em.createQuery("SELECT C FROM Category C WHERE C.organization=:org AND C.type=:cattype ORDER BY C.type")
+                    .setParameter("org", organization)
+                    .setParameter("cattype", type.getSimpleName())
+                    .getResultList());
+        } else {
+            return ListUtils.unmodifiableList(em.createQuery("SELECT C FROM Category C WHERE C.organization=:org ORDER BY C.type")
+                    .setParameter("org", organization)
+                    .getResultList());
+
+        }
 	}
 
 	public void deleteCategory(Category cat) {

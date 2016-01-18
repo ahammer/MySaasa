@@ -16,7 +16,7 @@ public class CategorySidebar extends Panel {
 		super(id);
 		CategoriesDataProvider provider;
 		CategoriesDataTable table;
-		add(table = new CategoriesDataTable("CategoriesDataTable", provider = new CategoriesDataProvider()) {
+		add(table = new CategoriesDataTable("CategoriesDataTable", provider = new CategoriesDataProvider(null)) {
 			@Override
 			public void onRowClick(AjaxRequestTarget target, Category u) {
 				MessageHelpers.editEventMessage(target, new Model(u));
