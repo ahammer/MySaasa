@@ -15,17 +15,17 @@ import java.util.Iterator;
 
 public class CategoriesDataProvider extends SortableDataProvider<Category, String> {
 	private static final long serialVersionUID = 1L;
-    private final Class type;
+	private final Class type;
 
-    public CategoriesDataProvider(Class type) {
-        this.type = type;
-    }
+	public CategoriesDataProvider(Class type) {
+		this.type = type;
+	}
 
 	@Override
 	public Iterator<? extends Category> iterator(long first, long count) {
 		new ArrayList<User>();
 		EntityManager em = Simple.getEm();
-		final Iterator<? extends Category> result = CategoryService.get().getCategories(SecurityContext.get().getUser().getOrganization(),type).subList((int) first, (int) (first + count)).iterator();
+		final Iterator<? extends Category> result = CategoryService.get().getCategories(SecurityContext.get().getUser().getOrganization(), type).subList((int) first, (int) (first + count)).iterator();
 		em.close();
 		return result;
 	}
@@ -37,6 +37,6 @@ public class CategoriesDataProvider extends SortableDataProvider<Category, Strin
 
 	@Override
 	public long size() {
-		return CategoryService.get().getCategories(SecurityContext.get().getUser().getOrganization(),type).size();
+		return CategoryService.get().getCategories(SecurityContext.get().getUser().getOrganization(), type).size();
 	}
 }

@@ -33,7 +33,6 @@ public class BlogService {
 		return Simple.get().getInjector().getProvider(BlogService.class).get();
 	}
 
-
 	public List<BlogPost> getBlogPostsByCategory(Organization organization, Category c, String order, String direction) {
 		List<Category> l = new ArrayList();
 		l.add(c);

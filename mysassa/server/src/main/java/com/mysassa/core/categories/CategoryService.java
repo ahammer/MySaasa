@@ -58,7 +58,6 @@ public class CategoryService {
 		return list.get(0);
 	}
 
-
 	public Category saveCategory(Category blogCategory) {
 		EntityManager em = Simple.getEm();
 		em.getTransaction().begin();
@@ -71,17 +70,17 @@ public class CategoryService {
 
 	public List<Category> getCategories(Organization organization, Class type) {
 		EntityManager em = Simple.getEm();
-        if (type != null) {
-            return ListUtils.unmodifiableList(em.createQuery("SELECT C FROM Category C WHERE C.organization=:org AND C.type=:cattype ORDER BY C.type")
-                    .setParameter("org", organization)
-                    .setParameter("cattype", type.getSimpleName())
-                    .getResultList());
-        } else {
-            return ListUtils.unmodifiableList(em.createQuery("SELECT C FROM Category C WHERE C.organization=:org ORDER BY C.type")
-                    .setParameter("org", organization)
-                    .getResultList());
+		if (type != null) {
+			return ListUtils.unmodifiableList(em.createQuery("SELECT C FROM Category C WHERE C.organization=:org AND C.type=:cattype ORDER BY C.type")
+					.setParameter("org", organization)
+					.setParameter("cattype", type.getSimpleName())
+					.getResultList());
+		} else {
+			return ListUtils.unmodifiableList(em.createQuery("SELECT C FROM Category C WHERE C.organization=:org ORDER BY C.type")
+					.setParameter("org", organization)
+					.getResultList());
 
-        }
+		}
 	}
 
 	public void deleteCategory(Category cat) {

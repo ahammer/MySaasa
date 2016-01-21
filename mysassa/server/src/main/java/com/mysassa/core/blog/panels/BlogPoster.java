@@ -170,7 +170,7 @@ public class BlogPoster extends Panel {
 
 			@Override
 			public Iterator<Category> getChoices() {
-				return CategoryService.get().getCategories(SecurityContext.get().getUser().getOrganization(),BlogPost.class).iterator();
+				return CategoryService.get().getCategories(SecurityContext.get().getUser().getOrganization(), BlogPost.class).iterator();
 			}
 
 			@Override
