@@ -145,7 +145,8 @@ public class UserService {
 
 	public void disableUser(User u) {
 		u.setEnabled(false);
-		saveUser(u);
+		u = saveUser(u);
+		System.out.println("Disabled: "+u);
 	}
 
 	/**
@@ -178,7 +179,6 @@ public class UserService {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-
 		}
 
 		return user2;
@@ -290,7 +290,8 @@ public class UserService {
 
 	public int getUserCount() {
 		EntityManager em = Simple.getEm();
-		Query q = em.createQuery("SELECT count(x) FROM User x");
+		Query q = em.createQuery("SELECT count(x) FROM User U WHERE " +
+				"(U.enabled!=FALSE or U.enabled IS NULL) AND (U.organization.enabled!=FALSE or U.organization.enabled IS NULL)");
 		Number result = (Number) q.getSingleResult();
 		return result.intValue();
 	}
@@ -298,7 +299,8 @@ public class UserService {
 	public List<User> getUsers(Organization organization) {
 		checkNotNull(organization);
 		EntityManager em = Simple.getEm();
-		List<User> results = em.createQuery("SELECT U FROM User U WHERE U.organization=:organization").setParameter("organization", organization)
+		List<User> results = em.createQuery("SELECT U FROM User U WHERE U.organization=:organization AND" +
+				"((U.enabled!=FALSE or U.enabled IS NULL) AND (U.organization.enabled!=FALSE or U.organization.enabled IS NULL))").setParameter("organization", organization)
 				.getResultList();
 		em.close();
 		return results;
@@ -306,7 +308,8 @@ public class UserService {
 
 	public List<User> getAllUsers() {
 		EntityManager em = Simple.getEm();
-		List<User> results = em.createQuery("SELECT U FROM User U")
+		List<User> results = em.createQuery("SELECT U FROM User U WHERE " +
+				"(U.enabled!=FALSE or U.enabled IS NULL) AND (U.organization.enabled!=FALSE or U.organization.enabled IS NULL)")
 				.getResultList();
 		em.close();
 		return results;

@@ -28,7 +28,7 @@ public class OrganizationService {
 	 * @throws IllegalStateException
 	 */
 	public void disableOrganization(Organization organization) throws IllegalStateException {
-		EntityManager em = Simple.getEm();
+		//EntityManager em = Simple.getEm();
 		checkNotNull(organization);
 		organization.setEnabled(false);
 		saveOrganization(organization);
