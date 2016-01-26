@@ -1,6 +1,5 @@
 package com.mysassa.core.media.panels;
 
-
 import com.mysassa.SimpleImpl;
 import com.mysassa.core.media.model.Media;
 import com.mysassa.core.media.services.MediaService;

@@ -2,7 +2,7 @@ apply plugin: 'java'
 apply plugin: 'com.diffplug.gradle.spotless'
 apply plugin: 'application'
 
-mainClassName = "StartDaemon"
+mainClassName = "com.mysassa.StartDaemon"
 
 
 def Properties versionProps = new Properties()
@@ -15,7 +15,7 @@ versionProps['VERSION_CODE'] = code.toString()
 versionProps.store(versionPropsFile.newWriter(), null)
 
 
-group = 'com.metalrain.simple'
+group = 'com.mysassa'
 version = '0.5.'+versionProps['VERSION_CODE']
 description = """MySassa Server"""
 

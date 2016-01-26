@@ -33,16 +33,6 @@ public class BlogService {
 		return Simple.get().getInjector().getProvider(BlogService.class).get();
 	}
 
-	public List<Category> searchCategoryChoices(Class type, Organization o) {
-		EntityManager em = Simple.getEm();
-		List<Category> Categories = em.createQuery("SELECT BC FROM Category BC WHERE BC.type=:type AND BC.organization=:org")
-				.setParameter("type", type.getName())
-				.setParameter("org", o)
-				.getResultList();
-		em.close();
-		return Categories;
-	}
-
 	public List<BlogPost> getBlogPostsByCategory(Organization organization, Category c, String order, String direction) {
 		List<Category> l = new ArrayList();
 		l.add(c);

@@ -3,6 +3,7 @@ package com.mysassa.core.blog.panels;
 import com.mysassa.SimpleImpl;
 import com.mysassa.core.blog.model.BlogPost;
 import com.mysassa.core.blog.services.BlogService;
+import com.mysassa.core.categories.CategoryService;
 import com.mysassa.core.categories.model.Category;
 import com.mysassa.core.media.model.Media;
 import com.mysassa.core.media.panels.MediaView;
@@ -169,7 +170,7 @@ public class BlogPoster extends Panel {
 
 			@Override
 			public Iterator<Category> getChoices() {
-				return BlogService.get().searchCategoryChoices(BlogPost.class, SecurityContext.get().getUser().getOrganization()).iterator();
+				return CategoryService.get().getCategories(SecurityContext.get().getUser().getOrganization(), BlogPost.class).iterator();
 			}
 
 			@Override

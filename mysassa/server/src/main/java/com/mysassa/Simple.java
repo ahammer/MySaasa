@@ -160,12 +160,12 @@ public abstract class Simple extends WebApplication {
 	 * @throws java.io.IOException
 	 */
 	public static Properties getProperties() {
-
+		File propertiesFile = new File(getConfigPath() + "/" + SETTINGS_FILE);
 		try {
 			if (PROPERTIES == null) {
-				File propertiesFile = null;
+
 				new File(getConfigPath()).mkdirs();
-				propertiesFile = new File(getConfigPath() + "/" + SETTINGS_FILE);
+
 				if (!propertiesFile.exists()) {
 					propertiesFile.createNewFile();
 				}
@@ -174,10 +174,10 @@ public abstract class Simple extends WebApplication {
 			}
 
 			if (PROPERTIES == null)
-				throw new RuntimeException("Can't load properties");
+				throw new RuntimeException("Can't load properties: " + propertiesFile.getAbsolutePath());
 			return PROPERTIES;
 		} catch (IOException e) {
-			throw new RuntimeException("Can not load or create the properies file");
+			throw new RuntimeException("Can not load or create the properies file " + propertiesFile.getAbsolutePath());
 		}
 	}
 
