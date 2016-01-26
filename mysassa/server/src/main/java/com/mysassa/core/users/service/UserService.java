@@ -1,6 +1,7 @@
 package com.mysassa.core.users.service;
 
 import com.google.android.gcm.server.Sender;
+import com.mysassa.api.ApiNotAuthorized;
 import com.mysassa.core.blog.model.BlogPost;
 import com.mysassa.core.users.model.User;
 import com.mysassa.interfaces.annotations.SimpleService;
@@ -212,7 +213,7 @@ public class UserService {
 		return u;
 	}
 
-	public User findUser(String identifier, String password) {
+	public User findUser(String identifier, String password) throws UserDisabledException {
 		EntityManager em = Simple.getEm();
 		final Query q = em.createQuery("SELECT U FROM User U WHERE UPPER(U.identifier)=:identifier");
 		q.setParameter("identifier", identifier.toUpperCase());
@@ -221,8 +222,10 @@ public class UserService {
 		if (list.size() > 0) {
 			for (User u : list) {
 				try {
-					if (PasswordHash.validatePassword(password, u.getPassword_md5()))
+					if (PasswordHash.validatePassword(password, u.getPassword_md5())) {
+						if ((u.getEnabled() == false) || u.organization.isEnabled() == false) throw new UserDisabledException();
 						return u;
+					}
 				} catch (NoSuchAlgorithmException e) {
 
 				} catch (InvalidKeySpecException e) {

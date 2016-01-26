@@ -141,4 +141,5 @@ public class Organization implements Serializable {
 	public String toString() {
 		return name;
 	}
+
 }

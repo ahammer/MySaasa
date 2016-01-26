@@ -2,6 +2,7 @@ package com.mysassa.core.users.panels;
 
 import com.mysassa.core.security.services.session.SecurityContext;
 import com.mysassa.core.users.model.User;
+import com.mysassa.core.users.service.UserDisabledException;
 import com.mysassa.core.users.service.UserService;
 import com.mysassa.messages.MessageHelpers;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -76,7 +77,13 @@ public abstract class ChangePassword extends Panel {
 				public void validate(IValidatable<String> validatable) {
 					if (!SecurityContext.get().nonce_signin || SecurityContext.get().getUser().accessLevel == User.AccessLevel.ROOT) {
 						User u = (User) ChangePassword.this.getDefaultModelObject();
-						User found = UserService.get().findUser(u.getIdentifier(), validatable.getValue());
+						User found = null;
+						try {
+							found = UserService.get().findUser(u.getIdentifier(), validatable.getValue());
+						} catch (UserDisabledException e) {
+							validatable.error(new ValidationError("User appears disabled"));
+							return;
+						}
 						if (found != null && found.id == u.id) {
 							return;
 						}

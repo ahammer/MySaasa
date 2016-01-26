@@ -118,7 +118,7 @@ public class WebsiteService {
 	/** Installs the getting started stuff */
 	public void installGettingStarted(Website dest) {
 		checkNotNull(dest);
-		File sourceFile = new File(Simple.getConfigPath() + "websites/gettingstarted." + Simple.getBaseDomain());
+		File sourceFile = new File(Simple.getConfigPath() + "websites/gettingstarted.dev");
 		try {
 			FileUtils.deleteDirectory(dest.calculateProductionRoot());
 			FileUtils.deleteDirectory(dest.calculateStagingRoot());

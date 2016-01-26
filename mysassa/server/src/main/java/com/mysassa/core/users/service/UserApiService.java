@@ -92,7 +92,12 @@ public class UserApiService implements IApiService {
 		Session s = Session.get();
 		SessionService.get().unregisterSession(s);
 		//Look for user
-		User u = UserService.get().findUser(identifier, password);
+		User u = null;
+		try {
+			u = UserService.get().findUser(identifier, password);
+		} catch (UserDisabledException e) {
+			return new ApiError("User is disabled");
+		}
 		//Todo Move sign in to security Service
 		if (u == null) {
 			return new ApiError("Username and/or password was incorrect");

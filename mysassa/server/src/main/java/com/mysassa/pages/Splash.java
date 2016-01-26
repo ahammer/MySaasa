@@ -7,6 +7,7 @@ import com.mysassa.core.help.panels.HelpPanel;
 import com.mysassa.core.security.services.SecurityService;
 import com.mysassa.core.security.services.SessionService;
 import com.mysassa.core.security.services.session.SecurityContext;
+import com.mysassa.core.users.service.UserDisabledException;
 import com.mysassa.core.users.service.UserService;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -128,7 +129,14 @@ public class Splash extends WebPage {
 				@Override
 				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 					super.onSubmit(target, form);
-					User u = UserService.get().findUser(data.getIdentifier(), data.getPassword());
+					User u = null;
+					try {
+						u = UserService.get().findUser(data.getIdentifier(), data.getPassword());
+					} catch (UserDisabledException e) {
+						setMessage("User Disabled");
+						target.add(label);
+						return;
+					}
 					//Todo Move sign in to security Service
 					if (u == null) {
 						setMessage("Invalid Username/Password");

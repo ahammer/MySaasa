@@ -25,7 +25,6 @@ public class UsersDataProvider extends SortableDataProvider<User, String> {
 		List<User> userlist = UserService.get().getAllUsers();
 		if (userlist.size() <= count) return userlist.iterator();
 		final Iterator<? extends User> result = userlist.subList((int) first, (int) (first + count)).iterator();
-
 		return result;
 	}
 

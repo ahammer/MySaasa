@@ -1,6 +1,7 @@
 package com.mysassa.core.users.panels;
 
 import com.mysassa.core.users.model.User;
+import com.mysassa.core.users.service.UserDisabledException;
 import com.mysassa.core.users.service.UserService;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
@@ -47,7 +48,14 @@ public abstract class VerifyAdmin extends Panel {
 						target.add(MyForm.this);
 						return;
 					}
-					User found = UserService.get().findUser(u.getIdentifier(), password);
+					User found = null;
+					try {
+						found = UserService.get().findUser(u.getIdentifier(), password);
+					} catch (UserDisabledException e) {
+						MyForm.this.error("User is disabled");
+						target.add(MyForm.this);
+						return;
+					}
 					if (found != null && found.id == u.id && u.accessLevel == User.AccessLevel.ROOT) {
 						grantAccessTemporarily(target);
 
