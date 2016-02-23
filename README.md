@@ -1,9 +1,16 @@
-MySassa Server Readme
+mysaasa Server Readme
 Copyright 2015, Adam Hammer
 
 
-MySassa Server
+mysaasa Server
 A CMS/SaaS/API/Android Suite designed for customizable websites and apps.
+
+Getting Started
+
+1. With a clean install of Linux/OSX or Windows, perform the following
+    a) Install the JDK 1.8 or higher
+    b) From a command line, $PATH_TO_FOLDER/gradlew
+    c
 
 Table Of Contents
 	2. FAQ
@@ -29,14 +36,14 @@ Table Of Contents
         development and demonstration setup.
 
         The local DNS server can handle wildcard subdomains, where hostfiles can not. This allows the mechanism
-        for inline website editing to work from the Admin. MySassa uses sub domains created on the fly to link the users
+        for inline website editing to work from the Admin. mysaasa uses sub domains created on the fly to link the users
         website and admin session across domains. It can also host staging environments. Given the wide range of domains
         it may wish to refer to itself as, a wildcard domain simplifies development.
 
 	Prerequisites:
 	A directory for Data and Settings.
-		Default Value: 	/opt/simple  on Linux/Mac 
-				C:\SIMPLE_CONFIG\ on windows
+		Default Value: 	/opt/mysaasa  on Linux/Mac 
+				C:\opt/mysaasa\ on windows
 
 	Java JDK/JRE 1.8 for Server Development/Deployment
     Java JDK/JRE 1.7 for Java Client/Android Developments

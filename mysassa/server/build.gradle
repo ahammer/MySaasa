@@ -2,7 +2,7 @@ apply plugin: 'java'
 apply plugin: 'com.diffplug.gradle.spotless'
 apply plugin: 'application'
 
-mainClassName = "com.mysassa.StartDaemon"
+mainClassName = "com.mysaasa.StartDaemon"
 
 
 def Properties versionProps = new Properties()
@@ -15,9 +15,9 @@ versionProps['VERSION_CODE'] = code.toString()
 versionProps.store(versionPropsFile.newWriter(), null)
 
 
-group = 'com.mysassa'
+group = 'com.mysaasa'
 version = '0.5.'+versionProps['VERSION_CODE']
-description = """MySassa Server"""
+description = """mysaasa Server"""
 
 spotless {
     java {
