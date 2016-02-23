@@ -61,7 +61,7 @@ public class MessageHelpers {
 
 	public static void loadWebsiteEditor(AjaxRequestTarget target, Website website, TemplateFile file) {
 		if (file == null) {
-			System.out.println("Error loading website: "+website);
+			System.out.println("Error loading website: " + website);
 			return;
 		}
 		checkNotNull(website);

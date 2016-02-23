@@ -144,7 +144,7 @@ public class UserService {
 	public void disableUser(User u) {
 		u.setEnabled(false);
 		u = saveUser(u);
-		System.out.println("Disabled: "+u);
+		System.out.println("Disabled: " + u);
 	}
 
 	/**
@@ -220,7 +220,8 @@ public class UserService {
 			for (User u : list) {
 				try {
 					if (PasswordHash.validatePassword(password, u.getPassword_md5())) {
-						if ((u.getEnabled() == false) || u.organization.isEnabled() == false) throw new UserDisabledException();
+						if ((u.getEnabled() == false) || u.organization.isEnabled() == false)
+							throw new UserDisabledException();
 						return u;
 					}
 				} catch (NoSuchAlgorithmException e) {
@@ -290,8 +291,7 @@ public class UserService {
 
 	public int getUserCount() {
 		EntityManager em = Simple.getEm();
-		Query q = em.createQuery("SELECT count(x) FROM User U WHERE " +
-				"(U.enabled!=FALSE or U.enabled IS NULL) AND (U.organization.enabled!=FALSE or U.organization.enabled IS NULL)");
+		Query q = em.createQuery("SELECT count(x) FROM User U WHERE " + "(U.enabled!=FALSE or U.enabled IS NULL) AND (U.organization.enabled!=FALSE or U.organization.enabled IS NULL)");
 		Number result = (Number) q.getSingleResult();
 		return result.intValue();
 	}
@@ -299,8 +299,7 @@ public class UserService {
 	public List<User> getUsers(Organization organization) {
 		checkNotNull(organization);
 		EntityManager em = Simple.getEm();
-		List<User> results = em.createQuery("SELECT U FROM User U WHERE U.organization=:organization AND" +
-				"((U.enabled!=FALSE or U.enabled IS NULL) AND (U.organization.enabled!=FALSE or U.organization.enabled IS NULL))").setParameter("organization", organization)
+		List<User> results = em.createQuery("SELECT U FROM User U WHERE U.organization=:organization AND" + "((U.enabled!=FALSE or U.enabled IS NULL) AND (U.organization.enabled!=FALSE or U.organization.enabled IS NULL))").setParameter("organization", organization)
 				.getResultList();
 		em.close();
 		return results;
@@ -308,8 +307,7 @@ public class UserService {
 
 	public List<User> getAllUsers() {
 		EntityManager em = Simple.getEm();
-		List<User> results = em.createQuery("SELECT U FROM User U WHERE " +
-				"(U.enabled!=FALSE or U.enabled IS NULL) AND (U.organization.enabled!=FALSE or U.organization.enabled IS NULL)")
+		List<User> results = em.createQuery("SELECT U FROM User U WHERE " + "(U.enabled!=FALSE or U.enabled IS NULL) AND (U.organization.enabled!=FALSE or U.organization.enabled IS NULL)")
 				.getResultList();
 		em.close();
 		return results;
