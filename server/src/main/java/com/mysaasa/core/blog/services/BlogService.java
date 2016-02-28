@@ -249,7 +249,7 @@ public class BlogService {
 		List<Category> list;
 		list = ListUtils.unmodifiableList(em.createQuery("SELECT C FROM Category C WHERE  C.organization=:org AND C.type=:type ORDER BY C.id DESC")
 				.setParameter("org", o)
-				.setParameter("type", BlogPost.class.getName())
+				.setParameter("type", BlogPost.class.getSimpleName())
 				.getResultList());
 		em.close();
 		return list;

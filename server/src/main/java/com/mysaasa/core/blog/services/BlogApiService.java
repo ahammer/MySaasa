@@ -65,9 +65,7 @@ public class BlogApiService implements IApiService {
 	@ApiCall
 	public ApiResult updateBlogPost(long id, String title, String subtitle, String summary, String body) {
 		try {
-
 			User u = SecurityContext.get().getUser();
-
 			BlogPost blogPost = BlogService.get().getBlogPostById(id);
 			if (u == null || blogPost == null || blogPost.author.id != u.id)
 				return new ApiNotAuthorized();
@@ -90,7 +88,9 @@ public class BlogApiService implements IApiService {
 			Category c = Category.fromString(category, BlogPost.class, Website.getCurrent().getOrganization());
 			List<Category> l = new ArrayList<>();
 			l.add(c);
-			return new ApiSuccess(BlogService.get().getBlogPostsByCategory(Website.getCurrent().getOrganization(), l, page, take, order, direction));
+			List<BlogPost> blogPosts;
+			ApiSuccess result = new ApiSuccess(blogPosts=BlogService.get().getBlogPostsByCategory(Website.getCurrent().getOrganization(), l, page, take, order, direction));
+			return result;
 		} catch (Exception e) {
 			return new ApiError(e);
 		}
