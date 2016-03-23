@@ -2,6 +2,7 @@ package com.mysaasa.api;
 
 import com.mysaasa.SimpleImpl;
 
+import javax.naming.NoPermissionException;
 import java.lang.reflect.InvocationTargetException;
 
 /**
@@ -44,13 +45,13 @@ public class ApiRequest {
 					.get();
 			return (ApiResult<?>) apiMapping.getMethod().invoke(obj, parameters);
 		} catch (IllegalAccessException e) {
-			return new ApiError("Bad, you do not have permission");
+			return new ApiError(e);
 		} catch (InvocationTargetException e) {
 			e.printStackTrace();
-			return new ApiError("Usually, this means you are not on a website or the function crashed " + e.getLocalizedMessage());
+			return new ApiError(e);
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
-			return new ApiError(e.getLocalizedMessage() + " " + apiMapping.getMethod().getParameterTypes().length + " = " + parameters.length);
+			return new ApiError(e);
 		}
 	}
 }

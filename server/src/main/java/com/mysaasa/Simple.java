@@ -248,7 +248,7 @@ public abstract class Simple extends WebApplication {
 		HttpsConfig config = new HttpsConfig();
 		config.setHttpsPort(getSecurePort());
 
-		CodeGen.generateJavaApiFunctions();
+		CodeGen.generateRetrofitCode();
 	}
 
 	@Override

@@ -106,9 +106,9 @@ public class BlogApiService implements IApiService {
 	}
 
 	@ApiCall
-	public ApiResult getBlogComments(long id, int count) {
+	public ApiResult getBlogComments(long post_id, int count) {
 		try {
-			return new ApiSuccess(BlogService.get().getBlogComments(id, count));
+			return new ApiSuccess(BlogService.get().getBlogComments(post_id, count));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ApiError(e);
@@ -128,7 +128,9 @@ public class BlogApiService implements IApiService {
 	public ApiResult postComment(long post_id, String comment) {
 		try {
 			BlogComment bc = new BlogComment();
-			bc.setAuthor(SecurityContext.get().getUser());
+			SecurityContext sc = SecurityContext.get();
+
+			bc.setAuthor(sc.getUser());
 			bc.setPost(BlogService.get().getBlogPostById(post_id));
 			bc.setContent(comment);
 			bc = BlogService.get().saveBlogComment(bc);
@@ -151,7 +153,7 @@ public class BlogApiService implements IApiService {
 				bc = BlogService.get().saveBlogComment(bc);
 				return new ApiSuccess(bc);
 			} else {
-				return new ApiError("Not found/Deleted");
+				return new ApiError(new RuntimeException("This comment can not be found"));
 			}
 
 		} catch (Exception e) {

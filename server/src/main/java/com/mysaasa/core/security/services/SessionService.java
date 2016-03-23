@@ -63,7 +63,6 @@ public class SessionService {
 	}
 
 	public SecurityContext getSecurityContext(Session mSession) {
-
 		return authenticationMap.get(mSession);
 	}
 

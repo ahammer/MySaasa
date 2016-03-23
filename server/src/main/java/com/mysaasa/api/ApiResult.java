@@ -12,6 +12,9 @@ import com.mysaasa.interfaces.IApiSerializable;
  * Created by Adam on 3/12/14.
  */
 public abstract class ApiResult<T> implements IApiSerializable {
+	@Expose
+	String message;
+
 	//success for success.
 	@Expose
 	boolean success;
@@ -20,13 +23,12 @@ public abstract class ApiResult<T> implements IApiSerializable {
 	private T data;
 
 	public ApiResult(Exception e) {
-
-		data = (T) e.getMessage();
-
+		message = e.getMessage();
 	}
 
 	public ApiResult(T s) {
 		setData(s);
+		message = "ok";
 	}
 
 	@Override
