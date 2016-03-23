@@ -27,7 +27,7 @@ public class CategoryApiService implements IApiService {
 
 	@ApiCall
 	public ApiResult getProductCategories() {
-		return new ApiError("Not Implemented");
+		return new ApiError(new RuntimeException("Not Implemented"));
 		/*
 		try {
 			return new ApiSuccess(InventoryService.get().getProductCategories(Website.getCurrent().getOrganization()));

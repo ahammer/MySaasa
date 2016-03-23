@@ -1,5 +1,7 @@
 package com.mysaasa.api;
 
+import com.thoughtworks.xstream.alias.ClassMapper;
+
 /**
  * When the API has an error, we return this.
  *
@@ -10,13 +12,18 @@ package com.mysaasa.api;
  */
 public class ApiError<T> extends ApiResult<T> {
 
-	public ApiError(T s) {
+	private ApiError(T s) {
 		super(s);
+		message = s.toString();
 		success = false;
 	}
 
 	public ApiError(Exception e) {
 		super((Exception) e);
+		if (e instanceof NullPointerException) {
+			message = "Server Error: NullPointerException";
+		} else {
+			message = e.toString();
+		}
 	}
-
 }

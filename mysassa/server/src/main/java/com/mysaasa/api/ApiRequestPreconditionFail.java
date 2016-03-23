@@ -22,6 +22,6 @@ public class ApiRequestPreconditionFail extends ApiRequest {
 	}
 
 	public ApiResult<?> invoke() {
-		return new ApiError(data);
+		return new ApiError(new RuntimeException(data));
 	}
 }

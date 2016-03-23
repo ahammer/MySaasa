@@ -250,7 +250,7 @@ public abstract class Simple extends WebApplication {
 		config.setHttpsPort(getSecurePort());
 
 
-		CodeGen.generateJavaApiFunctions();
+		CodeGen.generateRetrofitCode();
 	}
 
 	@Override

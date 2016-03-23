@@ -61,14 +61,14 @@ public class UserApiService implements IApiService {
 		try {
 			UserService userService = SimpleImpl.get().getInjector().getProvider(UserService.class).get();
 			if (userService.userExists(identifier)) {
-				return new ApiError("User already exists");
+				return new ApiError(new IllegalStateException("User already exists"));
 			}
 
 			User u = userService.createUser(identifier, password, Website.getCurrent().getOrganization());
 			return new ApiSuccess(u);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ApiError<String>("Could not create: " + e.getMessage());
+			return new ApiError<String>(new IllegalStateException("Could not create: " + e.getMessage()));
 		}
 	}
 
@@ -96,11 +96,11 @@ public class UserApiService implements IApiService {
 		try {
 			u = UserService.get().findUser(identifier, password);
 		} catch (UserDisabledException e) {
-			return new ApiError("User is disabled");
+			return new ApiError(new IllegalStateException("User is disabled"));
 		}
 		//Todo Move sign in to security Service
 		if (u == null) {
-			return new ApiError("Username and/or password was incorrect");
+			return new ApiError(new IllegalStateException("Username and/or password was incorrect"));
 		} else {
 			SessionService.get().registerUser(Session.get(), u);
 			Session.get().bind();
@@ -112,7 +112,7 @@ public class UserApiService implements IApiService {
 	public ApiResult getSession() {
 		SecurityContext sc = SessionService.get().getSecurityContext(Session.get());
 		if (sc == null)
-			return new ApiError(false);
+			return new ApiError(new RuntimeException("No Session"));
 		return new ApiSuccess(sc);
 	}
 
