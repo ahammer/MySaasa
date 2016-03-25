@@ -33,7 +33,8 @@ public class User implements Serializable {
 
 	@Column(name = "enabled")
 	public Boolean getEnabled() {
-		if (enabled == null) return true;
+		if (enabled == null)
+			return true;
 		return enabled;
 	}
 

@@ -120,7 +120,7 @@ public abstract class Simple extends WebApplication {
 	public static String getPathDefault() {
 		String osName = System.getProperty("os.name");
 		boolean isWindows = osName.toLowerCase().contains("windows");
-		return isWindows?PATH_DEFAULT_WIN:PATH_DEFAULT_NIX;
+		return isWindows ? PATH_DEFAULT_WIN : PATH_DEFAULT_NIX;
 	}
 
 	/**
@@ -146,7 +146,6 @@ public abstract class Simple extends WebApplication {
 	 * @return
 	 */
 	public static String getConfigPath() {
-
 
 		try {
 			String path = System.getenv(PATH_ENVIRONMENT_VARIABLE).replace('\\', '/');
@@ -248,7 +247,6 @@ public abstract class Simple extends WebApplication {
 		getRootRequestMapperAsCompound().add(new SimpleRequestMapper());
 		HttpsConfig config = new HttpsConfig();
 		config.setHttpsPort(getSecurePort());
-
 
 		CodeGen.generateRetrofitCode();
 	}
