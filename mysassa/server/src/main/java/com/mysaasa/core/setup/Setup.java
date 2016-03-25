@@ -48,7 +48,7 @@ public class Setup extends WebPage {
 		String driverName = "org.h2.Driver";
 		String db_username = "root";
 		String db_password = "";
-		String baseDomain = "simpletest.ca";
+		String baseDomain = "test";
 		String username = "admin";
 		String password = "admin";
 		String organization = "Default";
