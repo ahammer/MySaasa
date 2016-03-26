@@ -4,10 +4,10 @@ import com.mysaasa.Simple;
 import com.mysaasa.interfaces.annotations.ApiCall;
 import com.mysaasa.interfaces.IApiService;
 import com.mysaasa.interfaces.annotations.SimpleService;
-import org.apache.wicket.request.IRequestParameters;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.util.string.StringValue;
 
+import java.io.StringWriter;
 import java.lang.reflect.Method;
 import java.util.*;
 
@@ -103,52 +103,86 @@ public class ApiHelperService {
 	}
 
 	public ApiRequest getApiRequest(String path, Request request) {
-		if (!getPathMapping().containsKey(path))
-			throw new IndexOutOfBoundsException("Attempt to access void space in the hash");
+		if (!getPathMapping().containsKey(path)) return new ApiRequestPreconditionFail("This API Path does not exist: "+path);
 		ApiMapping mapping = getPathMapping().get(path);
 
-		if (request.getPostParameters().getParameterNames().size() != mapping.getParameters().size()) {
-
-			return new ApiRequestPreconditionFail("Incorrect number of arguments\ncurrent mapping: " + mapping + " : " + mapping.getParameters().size() + " != " + request.getPostParameters().getParameterNames().size());
+		//Check arguments
+		if (!hasCorrectParameterCount(request, mapping)) {
+			return processApiError(mapping, request, new IllegalArgumentException("Wrong number of parameters"));
 		}
-		if (request.getPostParameters().getParameterNames().size() == mapping.getParameters().size() && request.getPostParameters().getParameterNames().size() == 0) {
-			return new ApiRequest(mapping);
-		} else {
-			Iterator<String> itr = request.getPostParameters().getParameterNames().iterator();
-			Object[] args = new Object[mapping.getParameters().size()];
-			//("Args: "+args.length);
-			int pos = 0;
-			try {
-				Set<String> parameters = new HashSet<String>();
 
-				do {
-					String input_name = itr.next();
-					parameters.add(input_name);
-				} while (itr.hasNext());
-
-				if (parameters.size() != args.length) {
-					throw new IllegalArgumentException("Incorrect number of arguments " + parameters);
-				}
-
-				for (ApiParameter apiParameter : mapping.getParameters()) {
-					args[pos] = parseQueryStringObject(request.getPostParameters(), apiParameter, apiParameter.getName());
-					pos++;
-				}
-			} catch (NumberFormatException e) {
-				return new ApiRequestPreconditionFail("Expected a number but instead had a parse error " + e.getLocalizedMessage());
-			}
-			//("Created a set of args: "+args.length);
-			return new ApiRequest(mapping, args);
-
-		}
+		if (isNoArgsRequest(request, mapping)) return new ApiRequest(mapping);
+		else return processHasArgsRequest(request, mapping);
 	}
 
-	private Object parseQueryStringObject(IRequestParameters queryParameters, ApiParameter p, String qName) {
-		StringValue queryStringValue = queryParameters.getParameterValue(qName);
-		if (p.get_class().equals(String.class))
-			return queryStringValue.toString();
-		if (p.get_class().isPrimitive())
-			return Integer.parseInt(queryStringValue.toString());
+	private ApiRequest processHasArgsRequest(Request request, ApiMapping mapping) {
+		Object[] args = new Object[mapping.getParameters().size()];
+		//("Args: "+args.length);
+		int pos = 0;
+		try {
+            Set<String> parameters = buildParamSet(request);
+
+            if (parameters.size() != args.length) {
+                throw new IllegalArgumentException("Incorrect number of arguments " + parameters);
+            }
+
+            for (ApiParameter apiParameter : mapping.getParameters()) {
+                args[pos] = castArgumentStringToObject(apiParameter, request.getPostParameters().getParameterValue(apiParameter.getName()));
+                pos++;
+            }
+        } catch (Exception e) {
+            return processApiError(mapping, request, e);
+        }
+		//("Created a set of args: "+args.length);
+		return new ApiRequest(mapping, args);
+	}
+
+	private boolean isNoArgsRequest(Request request, ApiMapping mapping) {
+		return request.getPostParameters().getParameterNames().size() == mapping.getParameters().size() && request.getPostParameters().getParameterNames().size() == 0;
+	}
+
+	private Set<String> buildParamSet(Request request) {
+		Iterator<String> itr = request.getPostParameters().getParameterNames().iterator();
+		Set<String> parameters = new HashSet<String>();
+
+		do {
+            String input_name = itr.next();
+            parameters.add(input_name);
+        } while (itr.hasNext());
+		return parameters;
+	}
+
+	private ApiRequest processApiError(ApiMapping apiMapping, Request request, Exception e) {
+		Set<String> params = buildParamSet(request);
+		Set<String> paramsAndValues = new HashSet<String>();
+		for (String param:params) {
+			paramsAndValues.add(param+" = "+request.getPostParameters().getParameterValue(param).toString());
+		}
+
+		String message = e.getMessage();
+		if (message == null) message = "N/A";
+
+		String result = "Found ApiMapping = "+apiMapping.toString() + "\n Input: " + paramsAndValues.toString() + "\n Exception Message: " + message;
+
+		return new ApiRequestPreconditionFail(result);
+	}
+
+	/**
+	 * Checks to see if a particular Request object has enough parameters
+	 * @param request
+	 * @param mapping
+     * @return
+     */
+	private boolean hasCorrectParameterCount(Request request, ApiMapping mapping) {
+		return request.getPostParameters().getParameterNames().size() == mapping.getParameters().size();
+	}
+
+
+	private Object castArgumentStringToObject(ApiParameter apiParameter, StringValue parameterValue) {
+		if (apiParameter.get_class().equals(String.class))
+			return parameterValue.toString();
+		if (apiParameter.get_class().isPrimitive())
+			return Integer.parseInt(parameterValue.toString());
 		return 0;
 	}
 
