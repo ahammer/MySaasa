@@ -41,8 +41,10 @@ public class MessagingService {
 		User u = msg.getRecipient();
 		if (initialId == 0 && notify) {
 			MessageCreatedPushMessage message = new MessageCreatedPushMessage(msg);
+
 			UserService.get().pushMessageToUser(msg.getRecipient(), message);
-			UserService.get().pushMessageToUser(msg.getSender(), message);
+			if (!msg.getSender().equals(msg.getRecipient()))
+				UserService.get().pushMessageToUser(msg.getSender(), message);
 		}
 		return msg;
 	}

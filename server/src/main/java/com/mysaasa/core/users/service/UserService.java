@@ -206,7 +206,7 @@ public class UserService {
 		u.setOrganization(organization);
 		u.setIdentifier(identifier);
 		u.setPassword_md5(PasswordHash.createHash(password));
-		saveUser(u);
+		u = saveUser(u);
 		return u;
 	}
 

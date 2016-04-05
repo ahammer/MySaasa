@@ -65,6 +65,8 @@ public class UserApiService implements IApiService {
 			}
 
 			User u = userService.createUser(identifier, password, Website.getCurrent().getOrganization());
+			SessionService.get().registerUser(Session.get(), u);
+			Session.get().bind();
 			return new ApiSuccess(u);
 		} catch (Exception e) {
 			e.printStackTrace();

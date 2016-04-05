@@ -10,6 +10,6 @@ public class ApiNotAuthorized extends ApiError {
 	final boolean authorizationFailure = true;
 
 	public ApiNotAuthorized() {
-		super(new SecurityException());
+		super(new SecurityException("No User Signed In"));
 	}
 }
