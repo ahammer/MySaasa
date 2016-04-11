@@ -6,6 +6,7 @@ import com.mysaasa.api.ApiNotAuthorized;
 import com.mysaasa.api.ApiResult;
 import com.mysaasa.api.ApiSuccess;
 import com.mysaasa.core.media.model.Media;
+import com.mysaasa.core.security.model.SessionSummary;
 import com.mysaasa.core.security.services.SessionService;
 import com.mysaasa.core.security.services.session.SecurityContext;
 import com.mysaasa.core.users.model.User;
@@ -67,7 +68,7 @@ public class UserApiService implements IApiService {
 			User u = userService.createUser(identifier, password, Website.getCurrent().getOrganization());
 			SessionService.get().registerUser(Session.get(), u);
 			Session.get().bind();
-			return new ApiSuccess(u);
+			return new ApiSuccess(new SessionSummary());
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ApiError<String>(new IllegalStateException("Could not create: " + e.getMessage()));
@@ -100,13 +101,14 @@ public class UserApiService implements IApiService {
 		} catch (UserDisabledException e) {
 			return new ApiError(new IllegalStateException("User is disabled"));
 		}
-		//Todo Move sign in to security Service
+
 		if (u == null) {
 			return new ApiError(new IllegalStateException("Username and/or password was incorrect"));
 		} else {
 			SessionService.get().registerUser(Session.get(), u);
 			Session.get().bind();
-			return new ApiSuccess(u);
+
+			return new ApiSuccess(new SessionSummary());
 		}
 	}
 
