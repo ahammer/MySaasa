@@ -6,9 +6,12 @@ import com.mysaasa.core.organization.model.Organization;
 import com.mysaasa.core.organization.services.OrganizationService;
 import com.mysaasa.core.security.PasswordHash;
 import com.mysaasa.core.users.service.UserService;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -40,7 +43,7 @@ public class User implements Serializable {
 
     public Boolean enabled = true;
 
-    public List<String> gcmKeys;
+    public List<GcmKey> gcmKeys;
 
     public User() {}
 
@@ -223,20 +226,26 @@ public class User implements Serializable {
     }
 
 
-    @ElementCollection
-    @CollectionTable(name="GcmKeys", joinColumns=@JoinColumn(name="id"))
-    @Column(name="gcmkey")
-    public List<String> getGcmKeys() {
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(cascade = {CascadeType.ALL})
+    @JoinTable
+    public List<GcmKey> getGcmKeys() {
         return gcmKeys;
     }
 
-    public void setGcmKeys(List<String> gcmKeys) {
+    public void setGcmKeys(List<GcmKey> gcmKeys) {
         this.gcmKeys = gcmKeys;
     }
 
     @Override
     public String toString() {
         return "User{" + "id=" + getId() + ", identifier='" + getIdentifier() + '\'' + ", password_md5='" + getPassword_md5() + '\'' + ", contactInfo=" + getContactInfo() + '}';
+    }
+
+    public void addGcmKey(GcmKey gc_reg_id) {
+        if (gcmKeys == null) gcmKeys = new ArrayList<>();
+        if (gcmKeys.contains(gc_reg_id)) return;
+        gcmKeys.add(gc_reg_id);
     }
 
     public enum AccessLevel {

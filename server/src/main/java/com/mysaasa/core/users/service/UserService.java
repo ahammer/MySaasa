@@ -1,6 +1,7 @@
 package com.mysaasa.core.users.service;
 
 import com.google.android.gcm.server.Sender;
+import com.mysaasa.core.users.model.GcmKey;
 import com.mysaasa.core.users.model.User;
 import com.mysaasa.interfaces.annotations.SimpleService;
 import com.mysaasa.messages.SimpleWebSocketPushMessage;
@@ -35,7 +36,6 @@ public class UserService {
 	}
 
 	public final Map<User, List<UserWebsocketEntry>> WebsocketUserRegistry = new HashMap();
-	public final Map<User, List<String>> GcmUserRegistry = new HashMap();
 
 	public final Sender gcmSender = new Sender(Simple.getProperties().getProperty("GCM.KEY", ""));
 
@@ -44,13 +44,9 @@ public class UserService {
 	}
 
 	public void RegisterUserGcm(User u, String gc_reg_id) {
-		List<String> list = GcmUserRegistry.get(u);
-		if (list == null) {
-			list = new ArrayList();
-		}
-		if (!list.contains(gc_reg_id))
-			list.add(gc_reg_id);
-		GcmUserRegistry.put(u, list);
+		checkNotNull(gc_reg_id);
+		u.addGcmKey(new GcmKey(gc_reg_id));
+		UserService.get().saveUser(u);
 	}
 
 	public Message findMessageById(long id) {
@@ -124,17 +120,16 @@ public class UserService {
 				}
 			}
 
-		if (GcmUserRegistry.get(u) != null)
-			for (String gcm_sender_id : GcmUserRegistry.get(u)) {
-				//Send to GCM
+		for (GcmKey gcmKey:u.getGcmKeys()) {
+			if (gcmKey.getKey() != null) {
 				com.google.android.gcm.server.Message m = new com.google.android.gcm.server.Message.Builder().addData("class", message.getPushMessage()).build();
 				try {
-					gcmSender.sendNoRetry(m, gcm_sender_id);
+					gcmSender.sendNoRetry(m, gcmKey.getKey());
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
-
+		}
 	}
 
 	public UserService() {
