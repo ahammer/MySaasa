@@ -9,6 +9,8 @@ import com.mysaasa.core.users.service.UserService;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 
 /*
  * A user, identified by a email and a password, with some Contact Info for good measure 
@@ -16,214 +18,237 @@ import java.io.Serializable;
 @Entity
 @Table(name = "User")
 public class User implements Serializable {
-	public static final long serialVersionUID = 1L;
-	public AccessLevel accessLevel = AccessLevel.ORG;
+    public static final long serialVersionUID = 1L;
 
-	public String password_md5;
-	@Expose
-	public long id;
-	@Expose
-	public String identifier;
-	@Expose
-	public Organization organization;
-	@Expose
-	public Website website;
-	public ContactInfo contactInfo = new ContactInfo();
-	public Boolean enabled = true;
+    public AccessLevel accessLevel = AccessLevel.ORG;
 
-	@Column(name = "enabled")
-	public Boolean getEnabled() {
-		if (enabled == null)
-			return true;
-		return enabled;
-	}
+    public String password_md5;
 
-	public void setEnabled(Boolean enabled) {
-		this.enabled = enabled;
-	}
+    @Expose
+    public String identifier;
 
-	@Column(name = "accessLevel")
-	public AccessLevel getAccessLevel() {
-		return accessLevel;
-	}
+    @Expose
+    public long id;
 
-	public void setAccessLevel(AccessLevel level) {
-		this.accessLevel = level;
-	};
+    @Expose
+    public Organization organization;
 
-	public Organization findOrganization() {
-		return OrganizationService.get().findUsersOrganization(this);
-	}
+    @Expose
+    public Website website;
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
+    public ContactInfo contactInfo = new ContactInfo();
 
-		User user = (User) o;
+    public Boolean enabled = true;
 
-		if (id != user.id)
-			return false;
-		if (accessLevel != user.accessLevel)
-			return false;
-		if (identifier != null ? !identifier.equals(user.identifier) : user.identifier != null)
-			return false;
+    public List<String> gcmKeys;
 
-		return true;
-	}
+    public User() {}
 
-	@Override
-	public int hashCode() {
-		int result = (int) (id ^ (id >>> 32));
-		result = 31 * result + identifier.hashCode();
-		return result;
-	}
+    public User(String identifier, String password, AccessLevel access_level) {
+        contactInfo = new ContactInfo();
+        this.accessLevel = access_level;
+        this.identifier = identifier;
+        this.setPassword_md5(PasswordHash.createHash(password));
+    }
 
-	public void setOrganization(Organization organization) {
-		this.organization = organization;
-	}
+    public User(String identifier, String password, Organization org) {
+        contactInfo = new ContactInfo();
+        this.accessLevel = AccessLevel.ORG;
+        this.identifier = identifier;
+        this.setPassword_md5(PasswordHash.createHash(password));
+        this.organization = org;
+    }
 
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
-	@JoinColumn(name = "organization")
-	public Organization getOrganization() {
-		return organization;
-	}
+    /*
+ * Converts a PlainText password into a hashed password.
+ *
+ * @Param password
+ * @Throws NullPointerException if password = null
+ * @Throws IllegalStateException if Password can't be hashed because of Exception.
+ */
+    public static String calculatePasswordHash(String password) {
+        if (password == null)
+            throw new NullPointerException("password can not be null");
+        return (PasswordHash.createHash(password));
+    }
 
-	public static enum AccessLevel {
-		ROOT(100), //All Access (hosting+all)
-		ORG(70), //All Organization Access (blog+website+users)
 
-		WWW(30), //All Website access (blog+website)
-		GUEST(0); //Visitors, Members, whatever you want to call them, but not Admin users
-		public final int priority;
+    public static User fromContactInfo(Organization o, ContactInfo ci) {
+        User u = UserService.get().findUserByEmail(ci.getEmail());
+        if (u == null) {
+            u = new User();
+            u.setAccessLevel(AccessLevel.GUEST);
+            String identifier = ci.getEmail().split("@")[0];
+            User taken = null;
+            int pos = 1;
+            do {
+                if (pos == 1) {
+                    taken = UserService.get().getUser(identifier);
+                } else {
+                    taken = UserService.get().getUser(identifier + pos);
+                }
+                pos++;
+            } while (taken != null);
+            String finalIdentifier = (pos == 1) ? identifier : identifier + pos;
+            u.setIdentifier(finalIdentifier);
+            u.setContactInfo(new ContactInfo(ci));
+            u.setOrganization(o);
+            u = UserService.get().saveUser(u);
+        }
+        return u;
+    }
 
-		AccessLevel(int i) {
-			this.priority = i;
-		}
+    @Column(name = "enabled")
+    public Boolean getEnabled() {
+        if (enabled == null)
+            return true;
+        return enabled;
+    }
 
-	}
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
 
-	public User() {}
+    @Column(name = "accessLevel")
+    public AccessLevel getAccessLevel() {
+        return accessLevel;
+    }
 
-	public User(String identifier, String password, AccessLevel access_level) {
-		contactInfo = new ContactInfo();
-		this.accessLevel = access_level;
-		this.identifier = identifier;
-		this.setPassword_md5(PasswordHash.createHash(password));
-	}
+    public void setAccessLevel(AccessLevel level) {
+        this.accessLevel = level;
+    }
 
-	public User(String identifier, String password, Organization org) {
-		contactInfo = new ContactInfo();
-		this.accessLevel = AccessLevel.ORG;
-		this.identifier = identifier;
-		this.setPassword_md5(PasswordHash.createHash(password));
-		this.organization = org;
-	}
+    public Organization findOrganization() {
+        return OrganizationService.get().findUsersOrganization(this);
+    }
 
-	@Override
-	public String toString() {
-		return "User{" + "id=" + getId() + ", identifier='" + getIdentifier() + '\'' + ", password_md5='" + getPassword_md5() + '\'' + ", contactInfo=" + getContactInfo() + '}';
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
 
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "contact")
-	public ContactInfo getContactInfo() {
-		return contactInfo;
-	}
+        User user = (User) o;
 
-	@Column(name = "identifier")
-	public String getIdentifier() {
-		return identifier;
-	}
+        if (id != user.id)
+            return false;
+        if (accessLevel != user.accessLevel)
+            return false;
+        if (identifier != null ? !identifier.equals(user.identifier) : user.identifier != null)
+            return false;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	public long getId() {
-		return id;
-	}
+        return true;
+    }
 
-	@Column(name = "password_md5")
-	public String getPassword_md5() {
-		return password_md5;
-	}
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + identifier.hashCode();
+        return result;
+    }
 
-	public void setContactInfo(ContactInfo contactInfo) {
-		if (contactInfo == null)
-			contactInfo = new ContactInfo(); //Fix for old accounts without default Contact Info
-		this.contactInfo = contactInfo;
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "organization")
+    public Organization getOrganization() {
+        return organization;
+    }
 
-	}
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
+    }
 
-	/**
-	 * @Throws illegalArgumentException if validate fails
-	 * @param identifier
-	 */
-	public void setIdentifier(String identifier) {
-		//validate(identifier);
-		this.identifier = identifier;
 
-	}
 
-	public void setId(long id) {
-		this.id = id;
-	}
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "contact")
+    public ContactInfo getContactInfo() {
+        return contactInfo;
+    }
 
-	public void setPassword_md5(String password_md5) {
-		this.password_md5 = password_md5;
-	}
+    public void setContactInfo(ContactInfo contactInfo) {
+        if (contactInfo == null)
+            contactInfo = new ContactInfo(); //Fix for old accounts without default Contact Info
+        this.contactInfo = contactInfo;
 
-	/*
-	 * Converts a PlainText password into a hashed password.
-	 *
-	 * @Param password
-	 * @Throws NullPointerException if password = null
-	 * @Throws IllegalStateException if Password can't be hashed because of Exception.
-	 */
-	public static String calculatePasswordHash(String password) {
-		if (password == null)
-			throw new NullPointerException("password can not be null");
-		return (PasswordHash.createHash(password));
-	}
+    }
 
-	//Hashes and set's the password
-	public void setPassword(String password) {
-		setPassword_md5(PasswordHash.createHash(password));
-	}
+    @Column(name = "identifier")
+    public String getIdentifier() {
+        return identifier;
+    }
 
-	@OneToOne(cascade = CascadeType.DETACH)
-	@JoinColumn(name = "website")
-	public Website getWebsite() {
-		return website;
-	}
+    /**
+     * @param identifier
+     * @Throws illegalArgumentException if validate fails
+     */
+    public void setIdentifier(String identifier) {
+        //validate(identifier);
+        this.identifier = identifier;
 
-	public void setWebsite(Website website) {
-		this.website = website;
-	}
+    }
 
-	public static User fromContactInfo(Organization o, ContactInfo ci) {
-		User u = UserService.get().findUserByEmail(ci.getEmail());
-		if (u == null) {
-			u = new User();
-			u.setAccessLevel(AccessLevel.GUEST);
-			String identifier = ci.getEmail().split("@")[0];
-			User taken = null;
-			int pos = 1;
-			do {
-				if (pos == 1) {
-					taken = UserService.get().getUser(identifier);
-				} else {
-					taken = UserService.get().getUser(identifier + pos);
-				}
-				pos++;
-			} while (taken != null);
-			String finalIdentifier = (pos == 1) ? identifier : identifier + pos;
-			u.setIdentifier(finalIdentifier);
-			u.setContactInfo(new ContactInfo(ci));
-			u.setOrganization(o);
-			u = UserService.get().saveUser(u);
-		}
-		return u;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    @Column(name = "password_md5")
+    public String getPassword_md5() {
+        return password_md5;
+    }
+
+    public void setPassword_md5(String password_md5) {
+        this.password_md5 = password_md5;
+    }
+
+    //Hashes and set's the password
+    public void setPassword(String password) {
+        setPassword_md5(PasswordHash.createHash(password));
+    }
+
+    @OneToOne(cascade = CascadeType.DETACH)
+    @JoinColumn(name = "website")
+    public Website getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(Website website) {
+        this.website = website;
+    }
+
+
+    @ElementCollection
+    @CollectionTable(name="GcmKeys", joinColumns=@JoinColumn(name="id"))
+    @Column(name="gcmkey")
+    public List<String> getGcmKeys() {
+        return gcmKeys;
+    }
+
+    public void setGcmKeys(List<String> gcmKeys) {
+        this.gcmKeys = gcmKeys;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" + "id=" + getId() + ", identifier='" + getIdentifier() + '\'' + ", password_md5='" + getPassword_md5() + '\'' + ", contactInfo=" + getContactInfo() + '}';
+    }
+
+    public enum AccessLevel {
+        ROOT(100),  //All Access (hosting+all)
+        ORG(70),    //All Organization Access (blog+website+users)
+        WWW(30),    //All Website access (blog+website)
+        GUEST(0);   //Visitors, Members, whatever you want to call them, but not Admin users
+        public final int priority;
+        AccessLevel(int i) {
+            this.priority = i;
+        }
+    }
+
+
 }

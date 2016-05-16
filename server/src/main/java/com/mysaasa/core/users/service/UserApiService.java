@@ -105,6 +105,7 @@ public class UserApiService implements IApiService {
 		if (u == null) {
 			return new ApiError(new IllegalStateException("Username and/or password was incorrect"));
 		} else {
+			Session.get().clear();
 			SessionService.get().registerUser(Session.get(), u);
 			Session.get().bind();
 
