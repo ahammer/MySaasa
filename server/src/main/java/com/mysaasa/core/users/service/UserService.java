@@ -1,6 +1,7 @@
 package com.mysaasa.core.users.service;
 
 import com.google.android.gcm.server.Sender;
+import com.google.gson.Gson;
 import com.mysaasa.core.users.model.GcmKey;
 import com.mysaasa.core.users.model.User;
 import com.mysaasa.interfaces.annotations.SimpleService;
@@ -30,6 +31,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 @SimpleService
 public class UserService {
+
+	private final Gson gson = new Gson();
 
 	public static UserService get() {
 		return Simple.get().getInjector().getProvider((UserService.class)).get();
@@ -122,7 +125,11 @@ public class UserService {
 
 		for (GcmKey gcmKey:u.getGcmKeys()) {
 			if (gcmKey.getKey() != null) {
-				com.google.android.gcm.server.Message m = new com.google.android.gcm.server.Message.Builder().addData("class", message.getPushMessage()).build();
+				com.google.android.gcm.server.Message m = new com.google.android.gcm.server.Message.Builder()
+						.addData("class", message.getPushMessage())
+						.addData("json", gson.toJson(message))
+						.build();
+
 				try {
 					gcmSender.sendNoRetry(m, gcmKey.getKey());
 				} catch (IOException e) {
