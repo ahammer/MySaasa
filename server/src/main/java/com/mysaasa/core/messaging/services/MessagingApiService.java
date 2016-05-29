@@ -72,6 +72,7 @@ public class MessagingApiService implements IApiService {
 			MessagingService service = MessagingService.get();
 			return new ApiSuccess(service.replyMessage(service.findMessage(message_id), message));
 		} catch (Exception e) {
+			e.printStackTrace();
 			return new ApiError(e);
 		}
 	}

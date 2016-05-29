@@ -47,13 +47,8 @@ public class Message implements Serializable {
 
 	//Reply from message
 	public Message(Message message) {
-		if (RequestCycle.get() != null && SecurityContext.get() != null && SecurityContext.get().getUser() != null) {
-			setSender(SecurityContext.get().getUser());
-		}
-
 		this.messageThreadRoot = message;
 		this.title = message.getTitle();
-
 	}
 
 	@Id
@@ -145,13 +140,17 @@ public class Message implements Serializable {
 		this.timeSent = timeSent;
 	}
 
-	@Override
-	public String toString() {
-		return "Message{" + "senderContactInfo=" + senderContactInfo + ", recipient=" + recipient + ", title='" + title + '\'' + ", timeSent=" + timeSent + '}';
-	}
-
 	public boolean hasBeenRead(User user) {
 		return MessagingService.get().hasBeenRead(this, user);
 	}
 
+	@Override
+	public String toString() {
+		return "Message{" +
+				"sender=" + sender +
+				", recipient=" + recipient +
+				", title='" + title + '\'' +
+				", body='" + body + '\'' +
+				'}';
+	}
 }

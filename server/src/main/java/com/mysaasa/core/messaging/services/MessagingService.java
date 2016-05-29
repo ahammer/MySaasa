@@ -10,6 +10,7 @@ import com.mysaasa.interfaces.annotations.SimpleService;
 import com.mysaasa.Simple;
 import com.mysaasa.core.messaging.model.Message;
 import com.mysaasa.core.messaging.panels.MessageThreadUpdatedMessaged;
+import org.apache.wicket.request.cycle.RequestCycle;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -30,6 +31,8 @@ public class MessagingService {
 	}
 
 	public Message saveMessage(Message msg, boolean notify) {
+		System.out.println("Saving Message: "+msg.toString());
+
 		long initialId = msg.getId();
 		EntityManager em = Simple.getEm();
 		em.getTransaction().begin();
@@ -38,13 +41,10 @@ public class MessagingService {
 		em.getTransaction().commit();
 		em.close();
 		//TODO send a message, which can be used to intercept this in panels that use websocket
-		User u = msg.getRecipient();
+
 		if (initialId == 0 && notify) {
 			MessageCreatedPushMessage message = new MessageCreatedPushMessage(msg);
-
 			UserService.get().pushMessageToUser(msg.getRecipient(), message);
-			if (!msg.getSender().equals(msg.getRecipient()))
-				UserService.get().pushMessageToUser(msg.getSender(), message);
 		}
 		return msg;
 	}
@@ -152,30 +152,33 @@ public class MessagingService {
 	}
 
 	public Message replyMessage(Message m, String response) {
-		User sender = m.getSender() != null ? m.getSender()
-				: User.fromContactInfo(SecurityContext.get().getUser().getOrganization(), m.getSenderContactInfo());
-		if (m.getSender() == null) {
 
-			m.setSender(sender);
+		//Add sender data to source message
+		Message replyMessage = new Message(m);
+		replyMessage.setBody(response);
 
-			m = MessagingService.get().saveMessage(m, true);
+		User signedInUser = null;
+		try {
+			signedInUser = SecurityContext.get().getUser();
+		} catch (NullPointerException e) {
+			throw new IllegalStateException("No user signed in");
 		}
 
-		Message replyMessage = new Message(m);
-		//replyMessage.setRecipient(sender);
-		replyMessage.setBody(response);
-		replyMessage.setSender(SecurityContext.get().getUser());
+		User otherUser = m.getSender();
+		if (otherUser.equals(signedInUser)) {
+			otherUser = m.getRecipient();
+		}
+
+		replyMessage.setRecipient(otherUser);
+		replyMessage.setSender(signedInUser);
 		replyMessage = MessagingService.get().saveMessage(replyMessage, true);
 
 		//Notify users in thread
 
 		if (m.getMessageThreadRoot() != null)
 			m = m.getMessageThreadRoot();
-		List<User> users = Lists.newArrayList(m.getRecipient(), m.getSender());
 
-		for (User user : users) {
-			UserService.get().pushMessageToUser(user, new MessageThreadUpdatedMessaged(m));
-		}
+
 		return replyMessage;
 	}
 
