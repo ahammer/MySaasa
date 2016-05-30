@@ -1,6 +1,5 @@
 package com.mysaasa.core.messaging.services;
 
-import com.google.common.collect.Lists;
 import com.mysaasa.core.messaging.model.MessageReadReceipt;
 import com.mysaasa.core.security.services.session.SecurityContext;
 import com.mysaasa.core.users.messages.MessageCreatedPushMessage;
@@ -9,8 +8,6 @@ import com.mysaasa.core.users.service.UserService;
 import com.mysaasa.interfaces.annotations.SimpleService;
 import com.mysaasa.Simple;
 import com.mysaasa.core.messaging.model.Message;
-import com.mysaasa.core.messaging.panels.MessageThreadUpdatedMessaged;
-import org.apache.wicket.request.cycle.RequestCycle;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;

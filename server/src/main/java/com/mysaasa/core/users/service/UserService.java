@@ -112,7 +112,6 @@ public class UserService {
 
 	public void pushMessageToUser(User u, SimpleWebSocketPushMessage message) {
 		if (u == null) return;
-		System.out.println("Sending to user: " + u + " Message: " + message);
 		List<UserWebsocketEntry> entries = WebsocketUserRegistry.get(u);
 		Application application = Simple.get();
 		IWebSocketSettings webSocketSettings = WebSocketSettings.Holder.get(application);
@@ -128,6 +127,8 @@ public class UserService {
 		if (u.getGcmKeys() != null)
 		for (GcmKey gcmKey:u.getGcmKeys()) {
 			if (gcmKey.getKey() != null) {
+				System.out.println("Sending to user: " + u + " Message: " + message + " " + gcmKey.getKey());
+
 				com.google.android.gcm.server.Message m = new com.google.android.gcm.server.Message.Builder()
 						.addData("class", message.getPushMessage())
 						.addData("json", gson.toJson(message))
@@ -135,7 +136,7 @@ public class UserService {
 
 				try {
 					gcmSender.sendNoRetry(m, gcmKey.getKey());
-				} catch (IOException e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}

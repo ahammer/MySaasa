@@ -237,11 +237,6 @@ public class User implements Serializable {
         this.gcmKeys = gcmKeys;
     }
 
-    @Override
-    public String toString() {
-        return "User{" + "id=" + getId() + ", identifier='" + getIdentifier() + '\'' + ", password_md5='" + getPassword_md5() + '\'' + ", contactInfo=" + getContactInfo() + '}';
-    }
-
     public void addGcmKey(GcmKey gc_reg_id) {
         if (gcmKeys == null) gcmKeys = new ArrayList<>();
         if (gcmKeys.contains(gc_reg_id)) return;
@@ -259,5 +254,18 @@ public class User implements Serializable {
         }
     }
 
-
+    @Override
+    public String toString() {
+        return "User{" +
+                "accessLevel=" + accessLevel +
+                ", password_md5='" + password_md5 + '\'' +
+                ", identifier='" + identifier + '\'' +
+                ", id=" + id +
+                ", organization=" + organization +
+                ", website=" + website +
+                ", contactInfo=" + contactInfo +
+                ", enabled=" + enabled +
+                ", gcmKeys=" + gcmKeys +
+                '}';
+    }
 }
