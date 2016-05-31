@@ -241,4 +241,11 @@ public class MessagingService {
 		em.close();
 		return list;
 	}
+
+	public Message getMessageById(long id) {
+		EntityManager em = Simple.getEm();
+		Message m = em.find(Message.class, id);
+		em.close();
+		return m;
+	}
 }

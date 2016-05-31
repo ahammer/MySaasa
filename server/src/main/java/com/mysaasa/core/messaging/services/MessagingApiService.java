@@ -76,4 +76,13 @@ public class MessagingApiService implements IApiService {
 			return new ApiError(e);
 		}
 	}
+
+	@ApiCall
+	public ApiResult getMessageById(long message_id) {
+		try {
+			return new ApiSuccess<>(MessagingService.get().getMessageById(message_id));
+		} catch (Exception e) {
+			return new ApiError<>(e);
+		}
+	}
 }

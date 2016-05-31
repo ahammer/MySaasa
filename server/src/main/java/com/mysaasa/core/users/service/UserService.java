@@ -131,7 +131,7 @@ public class UserService {
 
 				com.google.android.gcm.server.Message m = new com.google.android.gcm.server.Message.Builder()
 						.addData("class", message.getPushMessage())
-						.addData("json", gson.toJson(message))
+						.addData("data", gson.toJson(message.getData()))
 						.build();
 
 				try {
