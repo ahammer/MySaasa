@@ -24,15 +24,16 @@ public class MessageCreatedPushMessage extends SimpleWebSocketPushMessage {
 		String title = message.getTitle();
 		String body = message.getBody();
 
-		if (title.length() > 50) title = title.substring(0,50);
-		if (body.length() > 50) body = body.substring(0,50);
-
+		if (title.length() > 50)
+			title = title.substring(0, 50);
+		if (body.length() > 50)
+			body = body.substring(0, 50);
 
 		data.put("id", String.valueOf(message.getId()));
 		data.put("title", title);
 		data.put("body", body);
 		data.put("sender", message.getSender().getIdentifier());
-}
+	}
 
 	@Override
 	public String getPushMessage() {

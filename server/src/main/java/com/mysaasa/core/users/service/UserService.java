@@ -111,7 +111,8 @@ public class UserService {
 	}
 
 	public void pushMessageToUser(User u, SimpleWebSocketPushMessage message) {
-		if (u == null) return;
+		if (u == null)
+			return;
 		List<UserWebsocketEntry> entries = WebsocketUserRegistry.get(u);
 		Application application = Simple.get();
 		IWebSocketSettings webSocketSettings = WebSocketSettings.Holder.get(application);
@@ -125,22 +126,22 @@ public class UserService {
 			}
 
 		if (u.getGcmKeys() != null)
-		for (GcmKey gcmKey:u.getGcmKeys()) {
-			if (gcmKey.getKey() != null) {
-				System.out.println("Sending to user: " + u + " Message: " + message + " " + gcmKey.getKey());
+			for (GcmKey gcmKey : u.getGcmKeys()) {
+				if (gcmKey.getKey() != null) {
+					System.out.println("Sending to user: " + u + " Message: " + message + " " + gcmKey.getKey());
 
-				com.google.android.gcm.server.Message m = new com.google.android.gcm.server.Message.Builder()
-						.addData("class", message.getPushMessage())
-						.addData("data", gson.toJson(message.getData()))
-						.build();
+					com.google.android.gcm.server.Message m = new com.google.android.gcm.server.Message.Builder()
+							.addData("class", message.getPushMessage())
+							.addData("data", gson.toJson(message.getData()))
+							.build();
 
-				try {
-					gcmSender.sendNoRetry(m, gcmKey.getKey());
-				} catch (Exception e) {
-					e.printStackTrace();
+					try {
+						gcmSender.sendNoRetry(m, gcmKey.getKey());
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 			}
-		}
 	}
 
 	public UserService() {

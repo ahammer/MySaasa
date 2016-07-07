@@ -103,7 +103,8 @@ public class ApiHelperService {
 	}
 
 	public ApiRequest getApiRequest(String path, Request request) {
-		if (!getPathMapping().containsKey(path)) return new ApiRequestPreconditionFail("This API Path does not exist: "+path);
+		if (!getPathMapping().containsKey(path))
+			return new ApiRequestPreconditionFail("This API Path does not exist: " + path);
 		ApiMapping mapping = getPathMapping().get(path);
 
 		//Check arguments
@@ -111,8 +112,10 @@ public class ApiHelperService {
 			return processApiError(mapping, request, new IllegalArgumentException("Wrong number of parameters"));
 		}
 
-		if (isNoArgsRequest(request, mapping)) return new ApiRequest(mapping);
-		else return processHasArgsRequest(request, mapping);
+		if (isNoArgsRequest(request, mapping))
+			return new ApiRequest(mapping);
+		else
+			return processHasArgsRequest(request, mapping);
 	}
 
 	private ApiRequest processHasArgsRequest(Request request, ApiMapping mapping) {
@@ -120,19 +123,19 @@ public class ApiHelperService {
 		//("Args: "+args.length);
 		int pos = 0;
 		try {
-            Set<String> parameters = buildParamSet(request);
+			Set<String> parameters = buildParamSet(request);
 
-            if (parameters.size() != args.length) {
-                throw new IllegalArgumentException("Incorrect number of arguments " + parameters);
-            }
+			if (parameters.size() != args.length) {
+				throw new IllegalArgumentException("Incorrect number of arguments " + parameters);
+			}
 
-            for (ApiParameter apiParameter : mapping.getParameters()) {
-                args[pos] = castArgumentStringToObject(apiParameter, request.getPostParameters().getParameterValue(apiParameter.getName()));
-                pos++;
-            }
-        } catch (Exception e) {
-            return processApiError(mapping, request, e);
-        }
+			for (ApiParameter apiParameter : mapping.getParameters()) {
+				args[pos] = castArgumentStringToObject(apiParameter, request.getPostParameters().getParameterValue(apiParameter.getName()));
+				pos++;
+			}
+		} catch (Exception e) {
+			return processApiError(mapping, request, e);
+		}
 		//("Created a set of args: "+args.length);
 		return new ApiRequest(mapping, args);
 	}
@@ -146,23 +149,24 @@ public class ApiHelperService {
 		Set<String> parameters = new HashSet<String>();
 
 		do {
-            String input_name = itr.next();
-            parameters.add(input_name);
-        } while (itr.hasNext());
+			String input_name = itr.next();
+			parameters.add(input_name);
+		} while (itr.hasNext());
 		return parameters;
 	}
 
 	private ApiRequest processApiError(ApiMapping apiMapping, Request request, Exception e) {
 		Set<String> params = buildParamSet(request);
 		Set<String> paramsAndValues = new HashSet<String>();
-		for (String param:params) {
-			paramsAndValues.add(param+" = "+request.getPostParameters().getParameterValue(param).toString());
+		for (String param : params) {
+			paramsAndValues.add(param + " = " + request.getPostParameters().getParameterValue(param).toString());
 		}
 
 		String message = e.getMessage();
-		if (message == null) message = "N/A";
+		if (message == null)
+			message = "N/A";
 
-		String result = "Found ApiMapping = "+apiMapping.toString() + "\n Input: " + paramsAndValues.toString() + "\n Exception Message: " + message;
+		String result = "Found ApiMapping = " + apiMapping.toString() + "\n Input: " + paramsAndValues.toString() + "\n Exception Message: " + message;
 
 		return new ApiRequestPreconditionFail(result);
 	}
@@ -171,12 +175,11 @@ public class ApiHelperService {
 	 * Checks to see if a particular Request object has enough parameters
 	 * @param request
 	 * @param mapping
-     * @return
-     */
+	 * @return
+	 */
 	private boolean hasCorrectParameterCount(Request request, ApiMapping mapping) {
 		return request.getPostParameters().getParameterNames().size() == mapping.getParameters().size();
 	}
-
 
 	private Object castArgumentStringToObject(ApiParameter apiParameter, StringValue parameterValue) {
 		if (apiParameter.get_class().equals(String.class))

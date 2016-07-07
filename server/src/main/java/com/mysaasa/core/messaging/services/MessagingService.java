@@ -28,7 +28,7 @@ public class MessagingService {
 	}
 
 	public Message saveMessage(Message msg, boolean notify) {
-		System.out.println("Saving Message: "+msg.toString());
+		System.out.println("Saving Message: " + msg.toString());
 
 		long initialId = msg.getId();
 		EntityManager em = Simple.getEm();
@@ -174,7 +174,6 @@ public class MessagingService {
 
 		if (m.getMessageThreadRoot() != null)
 			m = m.getMessageThreadRoot();
-
 
 		return replyMessage;
 	}

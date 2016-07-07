@@ -18,37 +18,36 @@ import java.util.Date;
  * So they can make more informed decisions about whether to login or not
  */
 public class SessionSummary {
-    @Expose
-    final int lengthSeconds;
+	@Expose
+	final int lengthSeconds;
 
-    @Expose
-    final Date timestamp = new Date();
+	@Expose
+	final Date timestamp = new Date();
 
-    @Expose
-    SecurityContext context;
+	@Expose
+	SecurityContext context;
 
-    public SessionSummary() {
-            context = SecurityContext.get();
-            Request request = RequestCycle.get().getRequest();
-            if(request instanceof WebRequest) {
-                ServletWebRequest wr = (ServletWebRequest) request;
-                HttpSession session = wr.getContainerRequest().getSession();
-                this.lengthSeconds = session.getMaxInactiveInterval();
-            } else {
-                this.lengthSeconds = 0; //Unknown
-            }
-    }
+	public SessionSummary() {
+		context = SecurityContext.get();
+		Request request = RequestCycle.get().getRequest();
+		if (request instanceof WebRequest) {
+			ServletWebRequest wr = (ServletWebRequest) request;
+			HttpSession session = wr.getContainerRequest().getSession();
+			this.lengthSeconds = session.getMaxInactiveInterval();
+		} else {
+			this.lengthSeconds = 0; //Unknown
+		}
+	}
 
+	public int getLengthSeconds() {
+		return lengthSeconds;
+	}
 
-    public int getLengthSeconds() {
-        return lengthSeconds;
-    }
+	public User getUser() {
+		return context.getUser();
+	}
 
-    public User getUser() {
-        return context.getUser();
-    }
-
-    public Date getTimestamp() {
-        return timestamp;
-    }
+	public Date getTimestamp() {
+		return timestamp;
+	}
 }

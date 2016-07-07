@@ -21,18 +21,14 @@ public class CodeGen {
 		ApiHelperService service = ApiHelperService.get();
 		for (String path : service.getPathMapping().keySet()) {
 			ApiMapping mapping = service.getMapping(path);
-			String function_name =
-					"\n\n@FormUrlEncoded\n" +
-					"@POST(\""+path+"\")\n" +
-							"Call<"+
-							upperCaseFirstChar(mapping.getMethod().getName())+"Response> "+mapping.getMethod().getName();
+			String function_name = "\n\n@FormUrlEncoded\n" + "@POST(\"" + path + "\")\n" + "Call<" + upperCaseFirstChar(mapping.getMethod().getName()) + "Response> " + mapping.getMethod().getName();
 			String params = "(";
 			int count = 0;
 			for (ApiParameter param : mapping.getParameters()) {
 				if (count > 0) {
 					params += ", ";
 				}
-				params += "@Field(\""+param.getName()+"\")";
+				params += "@Field(\"" + param.getName() + "\")";
 				String type = param.get_class().toString();
 
 				if (param.get_class() == String.class) {
@@ -50,8 +46,8 @@ public class CodeGen {
 
 	private static String upperCaseFirstChar(String name) {
 		checkNotNull(name);
-		String c1 = ""+name.charAt(0);
-		return c1.toUpperCase()+name.substring(1);
+		String c1 = "" + name.charAt(0);
+		return c1.toUpperCase() + name.substring(1);
 	}
 
 }

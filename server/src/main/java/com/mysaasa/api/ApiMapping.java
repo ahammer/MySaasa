@@ -43,10 +43,7 @@ public class ApiMapping implements Serializable {
 
 	@Override
 	public String toString() {
-		return "ApiMapping{" +
-				"parameters=" + parameters +
-				", method=" + method +
-				'}';
+		return "ApiMapping{" + "parameters=" + parameters + ", method=" + method + '}';
 	}
 
 }

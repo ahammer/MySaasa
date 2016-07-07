@@ -9,5 +9,6 @@ import java.util.Map;
  */
 public abstract class SimpleWebSocketPushMessage implements IWebSocketPushMessage {
 	public abstract String getPushMessage();
-	public abstract Map<String,String> getData();
+
+	public abstract Map<String, String> getData();
 }

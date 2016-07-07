@@ -146,11 +146,6 @@ public class Message implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Message{" +
-				"sender=" + sender +
-				", recipient=" + recipient +
-				", title='" + title + '\'' +
-				", body='" + body + '\'' +
-				'}';
+		return "Message{" + "sender=" + sender + ", recipient=" + recipient + ", title='" + title + '\'' + ", body='" + body + '\'' + '}';
 	}
 }

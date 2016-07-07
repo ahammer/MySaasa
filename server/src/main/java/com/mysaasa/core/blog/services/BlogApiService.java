@@ -89,7 +89,7 @@ public class BlogApiService implements IApiService {
 			List<Category> l = new ArrayList<>();
 			l.add(c);
 			List<BlogPost> blogPosts;
-			ApiSuccess result = new ApiSuccess(blogPosts=BlogService.get().getBlogPostsByCategory(Website.getCurrent().getOrganization(), l, page, take, order, direction));
+			ApiSuccess result = new ApiSuccess(blogPosts = BlogService.get().getBlogPostsByCategory(Website.getCurrent().getOrganization(), l, page, take, order, direction));
 			return result;
 		} catch (Exception e) {
 			return new ApiError(e);
