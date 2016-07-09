@@ -1,0 +1,14 @@
+As a developer I would like a localhost development mode
+
+- Instead of session prefix for edit more, use edit- prefix
+- only supports one user
+- Set in config
+
+
+User Stories
+- As a user I'd like to enable dev mode from config file
+single_dev_mode = true
+in Application class. isSingleUserMode
+
+
+- As a developer I'd like to see edit hosted properly at http://edit_test
