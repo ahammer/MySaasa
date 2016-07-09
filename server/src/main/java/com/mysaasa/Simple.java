@@ -117,10 +117,28 @@ public abstract class Simple extends WebApplication {
 		return getProperties().getProperty("baseDomain", null);
 	}
 
+	/**
+	 * Get's the default setting/config path for the OS
+	 * There is one for windows and another for linux/mac
+	 *
+	 * @return PATH_DEFAULT_WIN for windows, PATH_DEFAULT_NIX for other
+     */
 	public static String getPathDefault() {
 		String osName = System.getProperty("os.name");
 		boolean isWindows = osName.toLowerCase().contains("windows");
 		return isWindows ? PATH_DEFAULT_WIN : PATH_DEFAULT_NIX;
+	}
+
+	/**
+	 * Check to see if Local Dev Mode is enabled
+	 *
+	 * When local dev mode is enabled, we use a simplified edit mode
+	 * that can work with the localhost file and not wildcard domains
+	 *
+	 * @return True if in Local Mode, Otherwise False
+     */
+	public static boolean isLocalDevMode() {
+		return Boolean.valueOf(getProperties().getProperty("localDevMode","false"));
 	}
 
 	/**

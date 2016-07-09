@@ -150,7 +150,7 @@ public class Website implements Serializable {
 	 * @param file
 	 * @return
 	 */
-	public String getUrl(File file, boolean debug) {
+	public String getUrl(File file, boolean editMode) {
 		checkNotNull(file);
 		boolean secure = RequestCycle.get().getRequest().getUrl().getProtocol().equalsIgnoreCase("https");
 		final String path = file.getAbsolutePath();
@@ -180,10 +180,11 @@ public class Website implements Serializable {
 		final String end = HostingService.normalizePath(path.substring(pos + domain.length()));
 
 		String url;
-		if (debug) {
-			String host = RequestCycle.get().getRequest().getClientUrl().getHost();
+		if (editMode) {
 			Session s = Session.get();
-			domain = HostingService.EDITOR_PREFIX + s.getId() + "_" + domain;
+			domain = HostingService.EDITOR_PREFIX
+					+ (Simple.isLocalDevMode()?"":(s.getId() + "_"))	//Include Session when not in Local Dev Mode
+					+ domain;
 		}
 		if (secure) {
 			url = "https://" + domain + ((port != 443) ? ":" + secure_port : "") + end;

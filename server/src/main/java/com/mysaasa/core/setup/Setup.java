@@ -343,8 +343,6 @@ public class Setup extends WebPage {
 		post.setTitle("Sample Blog Post");
 		post.setBody("Lorem Ipsum Dolor");
 		post.setAuthor(UserService.get().getAllUsers().get(0));
-
 		BlogService.get().saveBlogPost(post);
-
 	}
 }

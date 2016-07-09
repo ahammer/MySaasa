@@ -77,14 +77,21 @@ public class HostingService {
 
 	public static String Session(String clientUrl) {
 		String without_prefix = clientUrl.substring(HostingService.EDITOR_PREFIX.length());
+		if (Simple.isLocalDevMode()) {
+			return "";
+		}
 		return without_prefix.substring(0, without_prefix.indexOf("_"));
 
 	}
 
 	public static String RealDomain(String clientUrl) {
 		String without_prefix = clientUrl.substring(HostingService.EDITOR_PREFIX.length());
-		String session_part = without_prefix.substring(0, without_prefix.indexOf("_"));
-		return without_prefix.substring(session_part.length() + 1);
+		if (Simple.isLocalDevMode()) {
+			return without_prefix;
+		} else {
+			String session_part = without_prefix.substring(0, without_prefix.indexOf("_"));
+			return without_prefix.substring(session_part.length() + 1);
+		}
 	}
 
 	/**
