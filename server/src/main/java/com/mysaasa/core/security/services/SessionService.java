@@ -20,6 +20,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class SessionService {
 	public static final String NAME = "SecurityService";
 
+	//These fields are for the current local Session
+	private Session currentLocalSession;
+	private User currentLocalUser;
+
 	public String getName() {
 		return NAME;
 	}
@@ -34,7 +38,6 @@ public class SessionService {
 		Simple s = Simple.get();
 		Injector i = s.getInjector();
 		return i.getProvider((SessionService.class)).get();
-
 	}
 
 	public SessionService() {
@@ -63,6 +66,10 @@ public class SessionService {
 	}
 
 	public SecurityContext getSecurityContext(Session mSession) {
+		//When we are in Local Dev mode we will always use the last registered sess
+		if (Simple.isLocalDevMode()) {
+			return authenticationMap.get(currentLocalSession);
+		}
 		return authenticationMap.get(mSession);
 	}
 
@@ -78,9 +85,14 @@ public class SessionService {
 		sessionMap.remove(mSession.getId());
 		authenticationMap.remove(mSession);
 
+
 		SecurityContext context = createSecurityContext(user);
 		sessionMap.put(mSession.getId(), mSession);
 		authenticationMap.put(mSession, context);
+		if (Simple.isLocalDevMode()) {
+			setCurrentLocalSession(mSession);
+			setCurrentLocalUser(user);
+		}
 	}
 
 	public boolean hasAdminSession(String session) {
@@ -154,5 +166,21 @@ public class SessionService {
 
 		return null;
 
+	}
+
+	public void setCurrentLocalSession(Session currentLocalSession) {
+		this.currentLocalSession = currentLocalSession;
+	}
+
+	public Session getCurrentLocalSession() {
+		return currentLocalSession;
+	}
+
+	public void setCurrentLocalUser(User currentLocalUser) {
+		this.currentLocalUser = currentLocalUser;
+	}
+
+	public User getCurrentLocalUser() {
+		return currentLocalUser;
 	}
 }

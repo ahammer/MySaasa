@@ -141,6 +141,8 @@ public abstract class Simple extends WebApplication {
 		return Boolean.valueOf(getProperties().getProperty("localDevMode","false"));
 	}
 
+
+
 	/**
 	 * Dependency injection yay.
 	 *
