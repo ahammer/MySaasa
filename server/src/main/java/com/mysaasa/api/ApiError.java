@@ -12,16 +12,12 @@ import com.thoughtworks.xstream.alias.ClassMapper;
  */
 public class ApiError<T> extends ApiResult<T> {
 
-	private ApiError(T s) {
-		super(s);
-		message = s.toString();
-		success = false;
-	}
+	static final String NPE_ERROR_MESSAGE = "Server Error: NullPointerException";
 
 	public ApiError(Exception e) {
-		super((Exception) e);
+		super(e);
 		if (e instanceof NullPointerException) {
-			message = "Server Error: NullPointerException";
+			message = NPE_ERROR_MESSAGE;
 		} else {
 			message = e.toString();
 		}

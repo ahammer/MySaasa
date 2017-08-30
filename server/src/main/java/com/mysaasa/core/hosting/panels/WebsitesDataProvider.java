@@ -1,5 +1,6 @@
 package com.mysaasa.core.hosting.panels;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class WebsitesDataProvider extends SortableDataProvider<Website, String> 
 
 		//Edge Cases
 		if (list.size() == 0)
-			return Iterators.emptyIterator();
+			return Collections.EMPTY_LIST.iterator();
 
 		//Clipping
 		if (list.size() < first + count)
