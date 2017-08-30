@@ -1,6 +1,7 @@
 package com.mysaasa.api;
 
 import com.google.gson.annotations.Expose;
+import com.mysaasa.api.model.ApiError;
 
 /**
  * Created by Adam on 1/11/2015.

@@ -1,9 +1,9 @@
 package com.mysaasa.core.messaging.services;
 
-import com.mysaasa.api.ApiError;
+import com.mysaasa.api.model.ApiError;
 import com.mysaasa.api.ApiNotAuthorized;
-import com.mysaasa.api.ApiResult;
-import com.mysaasa.api.ApiSuccess;
+import com.mysaasa.api.model.ApiResult;
+import com.mysaasa.api.model.ApiSuccess;
 import com.mysaasa.core.security.services.SessionService;
 import com.mysaasa.core.security.services.session.SecurityContext;
 import com.mysaasa.core.users.model.ContactInfo;

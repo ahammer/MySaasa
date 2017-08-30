@@ -1,4 +1,4 @@
-package com.mysaasa.api;
+package com.mysaasa.api.model;
 
 /**
  * A successful message

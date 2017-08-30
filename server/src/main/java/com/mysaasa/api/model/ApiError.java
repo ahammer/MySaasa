@@ -1,6 +1,4 @@
-package com.mysaasa.api;
-
-import com.thoughtworks.xstream.alias.ClassMapper;
+package com.mysaasa.api.model;
 
 /**
  * When the API has an error, we return this.

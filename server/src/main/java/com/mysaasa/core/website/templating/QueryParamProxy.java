@@ -1,6 +1,6 @@
 package com.mysaasa.core.website.templating;
 
-import com.mysaasa.api.ApiSuccess;
+import com.mysaasa.api.model.ApiSuccess;
 import org.apache.wicket.request.IRequestParameters;
 
 /**

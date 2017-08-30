@@ -35,13 +35,13 @@ import java.util.*;
  */
 @SimpleService
 public class ApiHelperService {
-	public static ApiHelperService get() {
-		return Simple.get().getInjector().getProvider(ApiHelperService.class).get();
-	}
+	private Map<String, ApiMapping> pathMapping = new HashMap<String, ApiMapping>();
 
 	public ApiHelperService() {}
 
-	private Map<String, ApiMapping> pathMapping = new HashMap<String, ApiMapping>();
+	public static ApiHelperService get() {
+		return Simple.get().getInjector().getProvider(ApiHelperService.class).get();
+	}
 
 	public ApiMapping getMapping(String s) {
 		return getPathMapping().get(s);

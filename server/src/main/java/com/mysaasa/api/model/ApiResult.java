@@ -1,4 +1,4 @@
-package com.mysaasa.api;
+package com.mysaasa.api.model;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

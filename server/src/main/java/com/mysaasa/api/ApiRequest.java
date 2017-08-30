@@ -1,8 +1,9 @@
 package com.mysaasa.api;
 
 import com.mysaasa.SimpleImpl;
+import com.mysaasa.api.model.ApiError;
+import com.mysaasa.api.model.ApiResult;
 
-import javax.naming.NoPermissionException;
 import java.lang.reflect.InvocationTargetException;
 
 /**

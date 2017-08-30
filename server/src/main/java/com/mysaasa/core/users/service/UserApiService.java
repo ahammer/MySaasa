@@ -1,10 +1,10 @@
 package com.mysaasa.core.users.service;
 
 import com.mysaasa.SimpleImpl;
-import com.mysaasa.api.ApiError;
+import com.mysaasa.api.model.ApiError;
 import com.mysaasa.api.ApiNotAuthorized;
-import com.mysaasa.api.ApiResult;
-import com.mysaasa.api.ApiSuccess;
+import com.mysaasa.api.model.ApiResult;
+import com.mysaasa.api.model.ApiSuccess;
 import com.mysaasa.core.media.model.Media;
 import com.mysaasa.core.security.model.SessionSummary;
 import com.mysaasa.core.security.services.SessionService;

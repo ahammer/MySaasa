@@ -1,5 +1,6 @@
 package com.mysaasa.api;
 
+import com.mysaasa.api.model.ApiResult;
 import org.apache.wicket.request.IRequestCycle;
 import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.http.WebResponse;

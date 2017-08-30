@@ -1,5 +1,8 @@
 package com.mysaasa.api;
 
+import com.mysaasa.api.model.ApiError;
+import com.mysaasa.api.model.ApiResult;
+
 /**
  * This represents a Request on the API
  *

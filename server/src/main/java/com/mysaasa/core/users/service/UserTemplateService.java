@@ -1,6 +1,6 @@
 package com.mysaasa.core.users.service;
 
-import com.mysaasa.api.ApiResult;
+import com.mysaasa.api.model.ApiResult;
 import com.mysaasa.interfaces.ITemplateService;
 
 /**

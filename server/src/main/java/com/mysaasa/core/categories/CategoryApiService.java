@@ -1,11 +1,11 @@
 package com.mysaasa.core.categories;
 
-import com.mysaasa.api.ApiResult;
-import com.mysaasa.api.ApiSuccess;
+import com.mysaasa.api.model.ApiResult;
+import com.mysaasa.api.model.ApiSuccess;
 import com.mysaasa.core.website.model.Website;
 import com.mysaasa.interfaces.annotations.ApiCall;
 import com.mysaasa.interfaces.annotations.SimpleService;
-import com.mysaasa.api.ApiError;
+import com.mysaasa.api.model.ApiError;
 import com.mysaasa.core.blog.services.BlogService;
 import com.mysaasa.interfaces.IApiService;
 

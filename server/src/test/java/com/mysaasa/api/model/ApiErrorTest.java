@@ -1,4 +1,4 @@
-package com.mysaasa.api;
+package com.mysaasa.api.model;
 
 import org.junit.Test;
 
@@ -10,24 +10,17 @@ public class ApiErrorTest {
     public void testApiError() throws Exception {
         Exception e = new RuntimeException("Exception");
         ApiError<Exception> error = new ApiError(e);
-
-        //The Message is the Exception toString()
         assertEquals(error.message, e.toString());
-
-        //The Data is null
         assertEquals(error.getData(), null);
+        assertFalse(error.isSuccess());
     }
 
     @Test
     public void testApiErrorNPE() throws Exception {
         Exception e = new NullPointerException();
         ApiError<Exception> error = new ApiError(e);
-
-        //The Message is the Exception toString()
         assertEquals(error.message, ApiError.NPE_ERROR_MESSAGE);
-
-        //The Data is null
         assertEquals(error.getData(), null);
-
+        assertFalse(error.isSuccess());
     }
 }

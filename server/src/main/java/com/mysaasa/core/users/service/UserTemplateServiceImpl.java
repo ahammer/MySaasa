@@ -1,11 +1,11 @@
 package com.mysaasa.core.users.service;
 
-import com.mysaasa.api.ApiSuccess;
+import com.mysaasa.api.model.ApiSuccess;
 import com.mysaasa.core.users.model.User;
 import com.mysaasa.interfaces.annotations.SimpleService;
-import com.mysaasa.api.ApiError;
+import com.mysaasa.api.model.ApiError;
 import com.mysaasa.api.ApiNotAuthorized;
-import com.mysaasa.api.ApiResult;
+import com.mysaasa.api.model.ApiResult;
 import com.mysaasa.core.security.services.SecurityService;
 import com.mysaasa.core.security.services.session.SecurityContext;
 

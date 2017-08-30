@@ -1,7 +1,7 @@
 package com.mysaasa.core.media.services;
 
 import com.mysaasa.interfaces.annotations.ApiCall;
-import com.mysaasa.api.ApiResult;
+import com.mysaasa.api.model.ApiResult;
 import com.mysaasa.interfaces.IApiService;
 
 /**

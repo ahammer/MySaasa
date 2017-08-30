@@ -1,12 +1,12 @@
 package com.mysaasa.core.messaging.services;
 
-import com.mysaasa.api.ApiSuccess;
+import com.mysaasa.api.model.ApiSuccess;
 import com.mysaasa.core.users.model.User;
 import com.mysaasa.core.users.service.UserService;
 import com.mysaasa.interfaces.ITemplateService;
 import com.mysaasa.interfaces.annotations.SimpleService;
-import com.mysaasa.api.ApiError;
-import com.mysaasa.api.ApiResult;
+import com.mysaasa.api.model.ApiError;
+import com.mysaasa.api.model.ApiResult;
 import com.mysaasa.core.messaging.model.Message;
 import com.mysaasa.core.users.model.ContactInfo;
 
