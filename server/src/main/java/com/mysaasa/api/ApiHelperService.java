@@ -192,8 +192,4 @@ public class ApiHelperService {
 	public Map<String, ApiMapping> getPathMapping() {
 		return pathMapping;
 	}
-
-	public void setPathMapping(Map<String, ApiMapping> pathMapping) {
-		this.pathMapping = pathMapping;
-	}
 }
