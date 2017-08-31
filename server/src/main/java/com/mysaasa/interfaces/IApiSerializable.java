@@ -5,6 +5,4 @@ package com.mysaasa.interfaces;
  */
 public interface IApiSerializable {
 	String toJson();
-
-	String toXml();
 }

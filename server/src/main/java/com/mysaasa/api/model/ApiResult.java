@@ -11,7 +11,7 @@ import com.mysaasa.interfaces.IApiSerializable;
  * uses lazy GSON to serialize it to json.</p>
  * Created by Adam on 3/12/14.
  */
-public abstract class ApiResult<T> implements IApiSerializable {
+public abstract  class ApiResult<T> implements IApiSerializable {
 	@Expose
 	String message;
 
@@ -20,26 +20,23 @@ public abstract class ApiResult<T> implements IApiSerializable {
 	boolean success;
 
 	@Expose
-	private T data;
+	public final T data;
 
 	public ApiResult(Exception e) {
 		message = e.getMessage();
+		data = null;
 	}
 
 	public ApiResult(T s) {
-		setData(s);
 		message = "ok";
+		data = s;
 	}
 
 	@Override
 	public String toJson() {
 		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-		return gson.toJson(this);
-	}
-
-	@Override
-	public String toXml() {
-		throw new RuntimeException("Not Implemented");
+		String json = gson.toJson(this);
+		return json;
 	}
 
 	public boolean isSuccess() {
@@ -48,10 +45,6 @@ public abstract class ApiResult<T> implements IApiSerializable {
 
 	public T getData() {
 		return data;
-	}
-
-	public void setData(T data) {
-		this.data = data;
 	}
 
 	@Override

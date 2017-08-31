@@ -13,4 +13,11 @@ public class ApiSuccessTest {
         assertEquals(apiSuccess.getData(), "Hello");
     }
 
+    @Test
+    public void testToJson() throws Exception {
+        ApiSuccess apiSuccess = new ApiSuccess<>("Hello");
+        String expectedJson = "{\"message\":\"ok\",\"success\":true,\"data\":\"Hello\"}";
+        assertEquals(apiSuccess.toJson(), expectedJson);
+        assertEquals(apiSuccess.toString(), expectedJson);
+    }
 }
