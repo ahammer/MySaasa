@@ -2,6 +2,7 @@ package com.mysaasa.api;
 
 import com.mysaasa.Simple;
 import com.mysaasa.SimpleImpl;
+import com.mysaasa.api.model.ApiError;
 import com.mysaasa.api.model.ApiResult;
 import com.mysaasa.api.model.ApiSuccess;
 import com.mysaasa.interfaces.IApiService;
@@ -52,11 +53,52 @@ public class ApiHelperServiceTest {
         MockWebRequest mockWebRequest = new MockWebRequest(Url.parse("http://test:8080/TestService/addTwo"));
         mockWebRequest.getPostParameters().addParameterValue("a", "3");
         mockWebRequest.getPostParameters().addParameterValue("b", "5");
-
         ApiRequest apiRequest = service.getApiRequest(mockWebRequest);
         ApiResult<?> result = apiRequest.invoke();
         assertEquals(result.toJson(), "{\"message\":\"ok\",\"success\":true,\"data\":8}");
+    }
 
+    @Test
+    public void testBadArgNames() throws Exception {
+        MockWebRequest mockWebRequest = new MockWebRequest(Url.parse("http://test:8080/TestService/addTwo"));
+        mockWebRequest.getPostParameters().addParameterValue("c", "3");
+        mockWebRequest.getPostParameters().addParameterValue("d", "5");
+        ApiRequest apiRequest = service.getApiRequest(mockWebRequest);
+        ApiResult<?> result = apiRequest.invoke();
+        assertFalse(result.isSuccess());
+    }
+
+
+    @Test
+    public void testBadUrl() throws Exception {
+        MockWebRequest mockWebRequest = new MockWebRequest(Url.parse("http://test:8080/Junk/Junk"));
+        ApiRequest apiRequest = service.getApiRequest(mockWebRequest);
+        ApiResult<?> result = apiRequest.invoke();
+        assertFalse(result.isSuccess());
+    }
+
+    @Test
+    public void testIncorrectArgCount() throws Exception {
+        MockWebRequest mockWebRequest = new MockWebRequest(Url.parse("http://test:8080/TestService/addTwo"));
+        mockWebRequest.getPostParameters().addParameterValue("a", "3");
+        mockWebRequest.getPostParameters().addParameterValue("b", "5");
+        mockWebRequest.getPostParameters().addParameterValue("c", "5");
+        ApiRequest apiRequest = service.getApiRequest(mockWebRequest);
+        ApiResult<?> result = apiRequest.invoke();
+        assertFalse(result.isSuccess());
+    }
+
+    @Test
+    public void testFailingMethod() throws Exception {
+        MockWebRequest mockWebRequest = new MockWebRequest(Url.parse("http://test:8080/TestService/throwsUp"));
+        ApiRequest request = service.getApiRequest(mockWebRequest);
+        ApiResult<?> result = request.invoke();
+        assertTrue(result instanceof ApiError);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testBadMethodRegistration() throws Exception {
+        service.registerMethod(TestService.class.getMethod("noAnnotation"));
     }
 
     @SimpleService
@@ -70,6 +112,10 @@ public class ApiHelperServiceTest {
         @ApiCall
         public ApiResult<?> throwsUp() {
             throw new RuntimeException("This is Exception");
+        }
+
+        public ApiResult<?> noAnnotation() {
+            return new ApiSuccess<>("STUB");
         }
     }
 }

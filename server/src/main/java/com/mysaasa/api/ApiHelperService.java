@@ -94,7 +94,7 @@ public class ApiHelperService {
 	 *
 	 * @param method a java method we are mounting, it should have the @ApiCall annotation
 	 */
-	private void registerMethod(Method method) {
+	void registerMethod(Method method) {
 		if (!method.isAnnotationPresent(ApiCall.class))
 			throw new IllegalArgumentException("Not a ApiCall function");
 		String className = method.getDeclaringClass().getSimpleName();
@@ -124,11 +124,11 @@ public class ApiHelperService {
 		//("Args: "+args.length);
 		int pos = 0;
 		try {
-			Set<String> parameters = buildParamSet(request);
-
-			if (parameters.size() != args.length) {
-				throw new IllegalArgumentException("Incorrect number of arguments " + parameters);
-			}
+			//I think this is dead
+			//Set<String> parameters = buildParamSet(request);
+			// /if (parameters.size() != args.length) {
+			//	throw new IllegalArgumentException("Incorrect number of arguments " + parameters);
+			//}
 
 			for (ApiParameter apiParameter : mapping.getParameters()) {
 				args[pos] = castArgumentStringToObject(apiParameter, request.getPostParameters().getParameterValue(apiParameter.getName()));

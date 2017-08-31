@@ -48,10 +48,8 @@ public class ApiRequest {
 		} catch (IllegalAccessException e) {
 			return new ApiError(e);
 		} catch (InvocationTargetException e) {
-			e.printStackTrace();
 			return new ApiError(e);
 		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
 			return new ApiError(e);
 		}
 	}
