@@ -79,7 +79,7 @@ public class SimpleRequestMapper implements IRequestMapper {
 		if (path.contains("/")) {
 			ApiHelperService apiHelperService = ApiHelperService.get();
 			if (apiHelperService.isApiPathBound(path)) {
-				return new ApiRequestHandler(apiHelperService.getApiRequest(path, request));
+				return new ApiRequestHandler(apiHelperService.getApiRequest(request));
 			}
 		}
 		return null;
