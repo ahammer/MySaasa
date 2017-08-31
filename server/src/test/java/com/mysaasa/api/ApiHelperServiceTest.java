@@ -7,6 +7,7 @@ import com.mysaasa.api.model.ApiSuccess;
 import com.mysaasa.interfaces.IApiService;
 import com.mysaasa.interfaces.annotations.ApiCall;
 import com.mysaasa.interfaces.annotations.SimpleService;
+import com.sun.net.httpserver.Authenticator;
 import org.apache.wicket.mock.MockWebRequest;
 import org.apache.wicket.request.Url;
 import org.junit.Before;
@@ -22,36 +23,53 @@ import static org.junit.Assert.assertTrue;
 
 public class ApiHelperServiceTest {
 
-    Simple simple;
+    private Simple simple;
+    private ApiHelperService service;
 
     @Before
     public void setup() throws Exception {
         simple = new SimpleImpl();
-    }
-
-    @Test
-    public void apiHelperServiceTest() throws Exception {
-        ApiHelperService service = new ApiHelperService();
+        service = new ApiHelperService();
         TestService mockApiService = new TestService();
         service.bindApiService(mockApiService);
         Map<String, ApiMapping> mapping = service.getPathMapping();
-        assertEquals(mapping.size(), 1);
+        assertEquals(mapping.size(), 3);
         assertEquals(mapping.get("TestService/test").getMethod(), mockApiService.getClass().getMethod("test"));
         assertTrue(service.isApiPathBound("TestService/test"));
         assertFalse(service.isApiPathBound("NotA/Service"));
+    }
 
+    @Test
+    public void testSimpleFunction() throws Exception {
         MockWebRequest mockWebRequest = new MockWebRequest(Url.parse("http://test:8080/TestService/test"));
         ApiRequest apiRequest = service.getApiRequest(mockWebRequest);
-
-        System.out.println(apiRequest);
-        assertNotNull(apiRequest);
         ApiResult<?> result = apiRequest.invoke();
         assertEquals(result.toJson(), "{\"message\":\"ok\",\"success\":true,\"data\":\"test\"}");
+    }
+
+    @Test
+    public void testTwoArg() throws Exception {
+        MockWebRequest mockWebRequest = new MockWebRequest(Url.parse("http://test:8080/TestService/addTwo"));
+        mockWebRequest.getPostParameters().addParameterValue("a", "3");
+        mockWebRequest.getPostParameters().addParameterValue("b", "5");
+
+        ApiRequest apiRequest = service.getApiRequest(mockWebRequest);
+        ApiResult<?> result = apiRequest.invoke();
+        assertEquals(result.toJson(), "{\"message\":\"ok\",\"success\":true,\"data\":8}");
+
     }
 
     @SimpleService
     public static class TestService implements IApiService {
         @ApiCall
         public ApiResult<String> test(){return new ApiSuccess<>("test");};
+
+        @ApiCall
+        public ApiResult<Integer> addTwo(int a, int b) { return new ApiSuccess<>(a+b);}
+
+        @ApiCall
+        public ApiResult<?> throwsUp() {
+            throw new RuntimeException("This is Exception");
+        }
     }
 }

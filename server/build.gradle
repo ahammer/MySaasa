@@ -42,6 +42,14 @@ compileJava {
     options.forkOptions.executable = 'javac'
 }
 
+compileTestJava {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+    options.compilerArgs << '-parameters'
+    options.fork = true
+    options.forkOptions.executable = 'javac'
+}
+
 sourceSets {
     main {
         java {
