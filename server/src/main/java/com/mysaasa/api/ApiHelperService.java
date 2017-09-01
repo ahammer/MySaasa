@@ -43,8 +43,8 @@ public class ApiHelperService {
 		return Simple.get().getInjector().getProvider(ApiHelperService.class).get();
 	}
 
-	public ApiMapping getMapping(String s) {
-		return getPathMapping().get(s);
+	public ApiMapping getMapping(String path) {
+		return getPathMapping().get(path);
 	}
 
 	/**
@@ -124,12 +124,6 @@ public class ApiHelperService {
 		//("Args: "+args.length);
 		int pos = 0;
 		try {
-			//I think this is dead
-			//Set<String> parameters = buildParamSet(request);
-			// /if (parameters.size() != args.length) {
-			//	throw new IllegalArgumentException("Incorrect number of arguments " + parameters);
-			//}
-
 			for (ApiParameter apiParameter : mapping.getParameters()) {
 				args[pos] = castArgumentStringToObject(apiParameter, request.getPostParameters().getParameterValue(apiParameter.getName()));
 				pos++;
@@ -142,17 +136,22 @@ public class ApiHelperService {
 	}
 
 	private boolean isNoArgsRequest(Request request, ApiMapping mapping) {
-		return request.getPostParameters().getParameterNames().size() == mapping.getParameters().size() && request.getPostParameters().getParameterNames().size() == 0;
+		boolean a = mapping.getParameters().size() == 0;
+		//boolean b = request.getPostParameters().getParameterNames().size() == 0;
+		return a;// && b;
+
 	}
 
 	private Set<String> buildParamSet(Request request) {
 		Iterator<String> itr = request.getPostParameters().getParameterNames().iterator();
 		Set<String> parameters = new HashSet<String>();
 
-		do {
-			String input_name = itr.next();
-			parameters.add(input_name);
-		} while (itr.hasNext());
+		if (itr.hasNext()) {
+			do {
+				String input_name = itr.next();
+				parameters.add(input_name);
+			} while (itr.hasNext());
+		}
 		return parameters;
 	}
 
@@ -164,8 +163,6 @@ public class ApiHelperService {
 		}
 
 		String message = e.getMessage();
-		if (message == null)
-			message = "N/A";
 
 		String result = "Found ApiMapping = " + apiMapping.toString() + "\n Input: " + paramsAndValues.toString() + "\n Exception Message: " + message;
 
@@ -185,9 +182,8 @@ public class ApiHelperService {
 	private Object castArgumentStringToObject(ApiParameter apiParameter, StringValue parameterValue) {
 		if (apiParameter.get_class().equals(String.class))
 			return parameterValue.toString();
-		if (apiParameter.get_class().isPrimitive())
+		else
 			return Integer.parseInt(parameterValue.toString());
-		return 0;
 	}
 
 	public Map<String, ApiMapping> getPathMapping() {
