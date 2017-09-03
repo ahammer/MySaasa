@@ -98,10 +98,10 @@ It's also for people who just want a API driven project that may/may not have a 
 
 2.4. Why not X or Y?
 
-Architecturally, this system was designed as a easy to use, self contained SaaS platform. If you want to run multiple websites or have a managed API written in Java, this provides the framework for it.
+Because MySaasa is awesome. From one website to 100 website/app combo's, MySaasa is designed to scale to your needs.
 
-If you just want to host HTML websites, this may not be the ideal solution. Additionally, this is targetting advanced Java developers and intermediate level web developers for two different roles. One being the power-web developer managing several websites with a CMS, and the other being the power-java developer, creating next level CMS/SaaS systems that provide branded solutions to specialized industries.
-
+I designed it after watching so many companies build in house solutions that don't scale, and so many people abusing
+WordPress and PHP for everything web.
 
 2.5. I want to use for Commercial Uses, what are my options?
 

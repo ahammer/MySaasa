@@ -202,7 +202,7 @@ public class HostingService {
 		return results.get(0);
 	}
 
-	public List<Domain> createDomains(ArrayList<String> domains) {
+	public List<Domain> createDomains(List<String> domains) {
 		ArrayList<Domain> list = new ArrayList<>();
 		for (String domain : domains) {
 			Domain d = findDomain(domain);

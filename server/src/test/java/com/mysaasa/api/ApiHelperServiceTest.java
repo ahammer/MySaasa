@@ -158,7 +158,9 @@ public class ApiHelperServiceTest {
     @SimpleService
     public static class TestService implements IApiService {
         @ApiCall
-        public ApiResult<String> test(){return new ApiSuccess<>("test");};
+        public ApiResult<String> test(){
+            return new ApiSuccess<>("test");
+        };
 
         @ApiCall
         public ApiResult<Integer> addTwo(int a, int b) { return new ApiSuccess<>(a+b);}

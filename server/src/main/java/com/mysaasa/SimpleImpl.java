@@ -16,6 +16,11 @@ public class SimpleImpl extends Simple {
 		injector = Guice.createInjector(simpleGuiceModule = new SimpleGuiceModuleImpl());
 	}
 
+	public SimpleImpl(boolean b) {
+		super(b);
+		injector = Guice.createInjector(simpleGuiceModule = new SimpleGuiceModuleImpl());
+	}
+
 	@Override
 	public Injector getInjector() {
 		return injector;

@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.mysaasa.SimpleImpl;
-import com.mysaasa.SimpleRequestMapper;
+import com.mysaasa.MysaasaRequestMapper;
 import com.mysaasa.core.website.model.Website;
 import com.mysaasa.Simple;
 import com.mysaasa.core.hosting.service.HostingService;
@@ -275,7 +275,7 @@ public class TemplatedSiteRequestHandler implements IRequestHandler {
 					String json2 = "<script type=\"text/javascript\" src=\"/json2/json2.js\"></script>\n";
 
 					//Notifies the admin with the current document.URL
-					String checkIframeScript = "if (window.self == window.top) {\n" + "if (window.location.indexOf(\"?\") > -1) {" + "window.location=window.location+'&" + SimpleRequestMapper.CANCEL_SESSION_LINK + "'" + "} else {" + "window.location=window.location+'?&" + SimpleRequestMapper.CANCEL_SESSION_LINK + "'" + "}" + "}" + "\n";
+					String checkIframeScript = "if (window.self == window.top) {\n" + "if (window.location.indexOf(\"?\") > -1) {" + "window.location=window.location+'&" + MysaasaRequestMapper.CANCEL_SESSION_LINK + "'" + "} else {" + "window.location=window.location+'?&" + MysaasaRequestMapper.CANCEL_SESSION_LINK + "'" + "}" + "}" + "\n";
 
 					String notifyAdminScript = "window.parent.postMessage(" + "{" + "   title:''," + "   subtitle:''," + "   categories:''," + "   method:'load'," + "   content:''," + "   summary:''," + "   id:document.URL" + "},'*');";
 

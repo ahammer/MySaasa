@@ -20,27 +20,30 @@ import org.apache.wicket.request.Url;
 
 * Created by Adam on 2/13/14.
 */
-public class SimpleRequestMapper implements IRequestMapper {
+public class MysaasaRequestMapper implements IRequestMapper {
 	public static final String CANCEL_SESSION_LINK = "CancelSessionLink";
+	public static final int NO_MATCH = Integer.MIN_VALUE;
+	public static final int MATCHING_SCORE = Integer.MIN_VALUE + 2;
 	private final VelocityEngine mEngine;
 
-	public SimpleRequestMapper() {
+	public MysaasaRequestMapper() {
 		mEngine = new VelocityEngine();
 	}
 
 	/**
-	 * If the website can be found, say we are compatible,
+	 * If the website can be found, say we are compatible by returning MIN+2;
 	 * If a website can't be found, INTEGER_MIN_VALUE (not compatible)
 	 *
+	 * TODO: It looks like we can have one RequestMapper for each type
+	 * Media/QR/Template/API
 	 * @param request
 	 * @return
 	 */
 	@Override
 	public int getCompatibilityScore(Request request) {
 		HostingService service = HostingService.get();
-		Website website = service.findWebsite(request.getClientUrl());
-		return (website == null) ? Integer.MIN_VALUE //True
-				: Integer.MIN_VALUE + 2; //False
+		Website website = service.findWebsite(request.getUrl());
+		return (website == null) ? NO_MATCH : MATCHING_SCORE;
 	}
 
 	@Override

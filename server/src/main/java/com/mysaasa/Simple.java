@@ -37,6 +37,7 @@ import java.util.Properties;
  */
 public abstract class Simple extends WebApplication {
 	private static Simple INSTANCE;
+
 	public static boolean BitcoinEnabled = true;
 	public static final String PREF_DB_DRIVER = "databaseDriver";
 	public static final String PREF_DB_URL = "databaseUrl";
@@ -59,6 +60,7 @@ public abstract class Simple extends WebApplication {
 	private static final String PATH_DEFAULT_WIN = "C:\\opt\\mysaasa\\";
 	public static final Object SETTINGS_FILE = "settings.properties";
 	public static Properties PROPERTIES = null;
+	private final boolean inMemoryDatabase;
 	protected SimpleGuiceModuleImpl simpleGuiceModule;
 	protected final Logger logger = org.slf4j.LoggerFactory.getLogger(SimpleImpl.class);
 	private ModuleManager moduleManager;
@@ -68,8 +70,13 @@ public abstract class Simple extends WebApplication {
 	 */
 	public Simple() {
 		INSTANCE = this;
+		inMemoryDatabase = false;
 	}
 
+	public Simple(boolean inMemoryDatabase) {
+		INSTANCE = this;
+		this.inMemoryDatabase = inMemoryDatabase;
+	}
 	/**
 	 * Get's this, there is only one Application class, and it's a singleton, so this is access
 	 * to the cast version of it. Ultimately it's a convenience so we don't need to do unsafe
@@ -233,6 +240,10 @@ public abstract class Simple extends WebApplication {
 		String driver = getProperties().getProperty(PREF_DB_DRIVER);
 		String username = getProperties().getProperty(PREF_DB_USERNAME);
 		String password = getProperties().getProperty(PREF_DB_PASS);
+
+		if (inMemoryDatabase) {
+			url = "jdbc:h2:mem:";
+		}
 		map.put("javax.persistence.jdbc.url", url);
 		map.put("javax.persistence.jdbc.driver", driver);
 		map.put("javax.persistence.jdbc.user", username);
@@ -264,7 +275,7 @@ public abstract class Simple extends WebApplication {
 		mountPage("/ApiGuide", ApiGuide.class);
 		mountPage("/TemplateGuide", TemplateGuide.class);
 
-		getRootRequestMapperAsCompound().add(new SimpleRequestMapper());
+		getRootRequestMapperAsCompound().add(new MysaasaRequestMapper());
 		HttpsConfig config = new HttpsConfig();
 		config.setHttpsPort(getSecurePort());
 
