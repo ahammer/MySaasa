@@ -1,10 +1,15 @@
 package com.mysaasa;
 
+import com.mysaasa.api.ApiHelperService;
+import com.mysaasa.api.ApiRequestHandler;
 import com.mysaasa.core.hosting.service.HostingService;
 import com.mysaasa.core.website.model.Domain;
 import com.mysaasa.core.website.model.Website;
+import com.mysaasa.test.mocks.TestService;
 import org.apache.wicket.mock.MockWebRequest;
+import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.Url;
+import org.apache.wicket.request.cycle.RequestCycle;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -25,8 +30,13 @@ public class MysaasaRequestMapperTest {
     @Before
     public void initialize() throws Exception {
         new SimpleImpl(true);
+        TestService mockApiService = new TestService();
+        ApiHelperService.get().bindApiService(mockApiService);
+
         HostingService service = HostingService.get();
         Website testWebsite = new Website();
+        testWebsite.setProduction("www.test.com");
+        testWebsite.setStaging("www.staging.com");
         List<String> urls = Arrays.asList(TEST_DOMAIN);
         List<Domain> domains = service.createDomains(urls);
         testWebsite.setDomains(domains);
@@ -50,8 +60,26 @@ public class MysaasaRequestMapperTest {
     }
 
     @Test
-    public void testMapHandler() throws Exception {
+    public void testApiResolution() throws Exception {
+        Url parse = Url.parse("http://"+TEST_DOMAIN+"/TestService/test");
+        MockWebRequest webRequest = new MockWebRequest(parse);
+        int compatibility = mapper.getCompatibilityScore(webRequest);
+        assertEquals(compatibility, MysaasaRequestMapper.MATCHING_SCORE);
+        IRequestHandler result = mapper.mapRequest(webRequest);
+        assertNotNull(result);
+        assertEquals(result.getClass(), ApiRequestHandler.class);
+        ApiRequestHandler handler = (ApiRequestHandler) result;
+        assertEquals(handler.getResponseJson(), "{\"message\":\"ok\",\"success\":true,\"data\":\"test\"}");
+    }
 
+    @Test
+    public void testJunk() throws Exception {
+        Url parse = Url.parse("http://"+TEST_DOMAIN+"/Not/Real");
+        MockWebRequest webRequest = new MockWebRequest(parse);
+        int compatibility = mapper.getCompatibilityScore(webRequest);
+        assertEquals(compatibility, MysaasaRequestMapper.MATCHING_SCORE);
+        IRequestHandler result = mapper.mapRequest(webRequest);
+        assertNull(result);
     }
 
     @Test

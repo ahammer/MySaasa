@@ -18,12 +18,17 @@ public class ApiRequestHandler implements IRequestHandler {
 
 	@Override
 	public void respond(IRequestCycle requestCycle) {
-		ApiResult<?> result = apiRequest.invoke();
-		result.toJson();
+
+		final byte[] data = getResponseJson().getBytes();
 		final WebResponse response = (WebResponse) requestCycle.getResponse();
-		final byte[] data = result.toJson().getBytes();
 		response.setContentLength(data.length);
 		response.write(data);
+	}
+
+
+	public String getResponseJson() {
+		ApiResult<?> result = apiRequest.invoke();
+		return result.toJson();
 	}
 
 	@Override

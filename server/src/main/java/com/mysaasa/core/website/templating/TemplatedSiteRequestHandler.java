@@ -57,7 +57,7 @@ public class TemplatedSiteRequestHandler implements IRequestHandler {
 	 */
 	public static boolean IsValidRequest(final Request request) {
 		HostingService service = HostingService.get();
-		String host = request.getClientUrl().getHost();
+		String host = request.getUrl().getHost();
 		String session_part = "";
 
 		if (HostingService.isSessionLinked(host)) {
@@ -68,7 +68,7 @@ public class TemplatedSiteRequestHandler implements IRequestHandler {
 		}
 
 		String filename = getRequestedFile(request);
-		Website website = service.findWebsite(request.getClientUrl());
+		Website website = service.findWebsite(request.getUrl());
 		Website theme = null;
 
 		//TODO look up admin session via Session Service and URL
@@ -102,12 +102,12 @@ public class TemplatedSiteRequestHandler implements IRequestHandler {
 	public TemplatedSiteRequestHandler(VelocityEngine mEngine, final Request request) {
 		checkNotNull(mEngine);
 		checkNotNull(context);
-		String host = request.getClientUrl().getHost();
+		String host = request.getUrl().getHost();
 		String session_part = "";
 
-		if (HostingService.isSessionLinked(host)) {
-			int second_part = host.indexOf("_", 2);
-			session_part = host.substring(2, second_part);
+			if (HostingService.isSessionLinked(host)) {
+				int second_part = host.indexOf("_", 2);
+				session_part = host.substring(2, second_part);
 		}
 
 		HostingService service = HostingService.get();
