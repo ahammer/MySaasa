@@ -9,8 +9,14 @@ import org.apache.wicket.request.http.WebResponse;
 import java.io.ByteArrayOutputStream;
 
 /**
+ * Generates QR Codes for BitCoin orders
+ * I'm going to mark this deprecated, it can probably be deleted from this branch
+ *
+ *
  * Created by adam on 2014-10-21.
  */
+
+@Deprecated
 public class QrGenerator implements IRequestHandler {
 	private String[] parts;
 
