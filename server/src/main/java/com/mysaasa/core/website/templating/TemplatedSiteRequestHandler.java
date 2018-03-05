@@ -105,9 +105,9 @@ public class TemplatedSiteRequestHandler implements IRequestHandler {
 		String host = request.getUrl().getHost();
 		String session_part = "";
 
-			if (HostingService.isSessionLinked(host)) {
-				int second_part = host.indexOf("_", 2);
-				session_part = host.substring(2, second_part);
+		if (HostingService.isSessionLinked(host)) {
+			int second_part = host.indexOf("_", 2);
+			session_part = host.substring(2, second_part);
 		}
 
 		HostingService service = HostingService.get();

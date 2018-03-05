@@ -302,7 +302,7 @@ public class BlogPost implements Serializable {
 	@JoinTable
 	public List<Media> getMedia() {
 		if (media == null) {
-			media = new ArrayList<Media>();
+			media = new ArrayList<>();
 		}
 		return media;
 	}

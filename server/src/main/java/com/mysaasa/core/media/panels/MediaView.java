@@ -19,10 +19,6 @@ import org.apache.wicket.request.resource.DynamicImageResource;
 
 import java.util.Collection;
 
-/**
- * This should
- * Created by Adam on 3/1/14.
- */
 public class MediaView extends Panel {
 	private final WebMarkupContainer empty;
 
@@ -32,7 +28,7 @@ public class MediaView extends Panel {
 		empty.setVisible((((Collection) getDefaultModelObject()).size() == 0));
 	}
 
-	public MediaView(String id, IModel<Collection<? extends Media>> model) {
+	public MediaView(String id, IModel<Collection<Media>> model) {
 		super(id, model);
 		setOutputMarkupId(true);
 

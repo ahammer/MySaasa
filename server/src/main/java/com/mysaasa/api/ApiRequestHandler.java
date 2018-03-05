@@ -25,7 +25,6 @@ public class ApiRequestHandler implements IRequestHandler {
 		response.write(data);
 	}
 
-
 	public String getResponseJson() {
 		ApiResult<?> result = apiRequest.invoke();
 		return result.toJson();

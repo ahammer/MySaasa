@@ -183,7 +183,7 @@ public class Website implements Serializable {
 		if (editMode) {
 			Session s = Session.get();
 			domain = HostingService.EDITOR_PREFIX
-					+ (Simple.isLocalDevMode()?"":(s.getId() + "_"))	//Include Session when not in Local Dev Mode
+					+ (Simple.isLocalDevMode() ? "" : (s.getId() + "_")) //Include Session when not in Local Dev Mode
 					+ domain;
 		}
 		if (secure) {

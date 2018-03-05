@@ -11,7 +11,7 @@ import com.mysaasa.interfaces.IApiSerializable;
  * uses lazy GSON to serialize it to json.</p>
  * Created by Adam on 3/12/14.
  */
-public abstract  class ApiResult<T> implements IApiSerializable {
+public abstract class ApiResult<T> implements IApiSerializable {
 	@Expose
 	String message;
 

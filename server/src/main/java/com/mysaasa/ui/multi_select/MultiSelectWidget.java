@@ -7,11 +7,13 @@ import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.DefaultCssAutoCompleteTextField;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListItemModel;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.util.ListModel;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -127,7 +129,7 @@ public abstract class MultiSelectWidget<T> extends Panel {
 	 */
 	public class SelectedChoicesListView extends ListView<T> {
 		public SelectedChoicesListView(List<? extends T> list) {
-			super("selected", list);
+			super("selected",  new ListModel(list));
 		}
 
 		@Override

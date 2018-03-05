@@ -85,7 +85,6 @@ public class SessionService {
 		sessionMap.remove(mSession.getId());
 		authenticationMap.remove(mSession);
 
-
 		SecurityContext context = createSecurityContext(user);
 		sessionMap.put(mSession.getId(), mSession);
 		authenticationMap.put(mSession, context);

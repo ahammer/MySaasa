@@ -12,7 +12,6 @@ import com.mysaasa.core.messaging.model.Message;
 import com.mysaasa.core.organization.model.Organization;
 import com.mysaasa.core.security.PasswordHash;
 import org.apache.wicket.Application;
-import org.apache.wicket.protocol.ws.IWebSocketSettings;
 import org.apache.wicket.protocol.ws.WebSocketSettings;
 import org.apache.wicket.protocol.ws.api.IWebSocketConnection;
 import org.apache.wicket.protocol.ws.api.registry.IKey;
@@ -115,7 +114,7 @@ public class UserService {
 			return;
 		List<UserWebsocketEntry> entries = WebsocketUserRegistry.get(u);
 		Application application = Simple.get();
-		IWebSocketSettings webSocketSettings = WebSocketSettings.Holder.get(application);
+		WebSocketSettings webSocketSettings = WebSocketSettings.Holder.get(application);
 		IWebSocketConnectionRegistry webSocketConnectionRegistry = webSocketSettings.getConnectionRegistry();
 		if (entries != null)
 			for (UserWebsocketEntry entry : entries) {

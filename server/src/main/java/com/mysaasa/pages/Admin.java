@@ -113,7 +113,9 @@ public class Admin extends WebPage implements IHeaderContributor, AdminInterface
 				MessageHelpers.loadWebsiteEditor(target, selectedWebsite);
 			}
 		});
-		add(websiteLabel = new DropDownChoice<Website>("website", new PropertyModel(this, "selectedWebsite"), website_list, new IChoiceRenderer<Website>() {
+		add(websiteLabel = new DropDownChoice<Website>("website",
+				new PropertyModel(this, "selectedWebsite"),
+				website_list, new IChoiceRenderer<Website>() {
 			@Override
 			public Object getDisplayValue(Website object) {
 				return object.getProduction();
@@ -122,6 +124,16 @@ public class Admin extends WebPage implements IHeaderContributor, AdminInterface
 			@Override
 			public String getIdValue(Website object, int index) {
 				return String.valueOf(object.getId());
+			}
+
+			@Override
+			public Website getObject(String id, IModel<? extends List<? extends Website>> choices) {
+				//TODO this cod
+				List<? extends Website> objects = choices.getObject();
+				for (Website w: objects) {
+					if (w.getId() == Integer.valueOf(id)) return w;
+				}
+				return null;
 			}
 		}));
 

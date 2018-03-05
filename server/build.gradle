@@ -95,14 +95,10 @@ dependencies {
     compile 'org.eclipse.jetty.websocket:websocket-server:9.2.+'
     compile 'javax.websocket:javax.websocket-api:1.0'
     compile 'log4j:log4j:1.+'
-    compile ('org.apache.wicket:wicket-native-websocket-javax:7.+') {
-        exclude group:'org.apache.wicket', module:'wicket-core'
-        exclude group:'org.apache.wicket', module:'wicket-native-websocket-core'
-        exclude group:'org.apache.wicket', module:'wicket-extensions'
-    }
-    compile group: 'org.apache.wicket', name: 'wicket-core', version:'6.+'
-    compile group: 'org.apache.wicket', name: 'wicket-extensions', version:'6.+'
-    compile group: 'org.apache.wicket', name: 'wicket-native-websocket-core', version:'6.+'
+    compile ('org.apache.wicket:wicket-native-websocket-javax:7.+')
+    compile group: 'org.apache.wicket', name: 'wicket-core', version:'7.+'
+    compile group: 'org.apache.wicket', name: 'wicket-extensions', version:'7.+'
+    compile group: 'org.apache.wicket', name: 'wicket-native-websocket-core', version:'7.+'
     compile 'commons-io:commons-io:2.4'
     compile 'commons-daemon:commons-daemon:1.0.15'
     compile 'javax.mail:mail:1.4.1'

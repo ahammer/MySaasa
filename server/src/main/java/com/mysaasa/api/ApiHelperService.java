@@ -86,7 +86,8 @@ public class ApiHelperService {
 	}
 
 	public boolean isApiPathBound(String path) {
-		if (path.startsWith("/")) path = path.substring(1);
+		if (path.startsWith("/"))
+			path = path.substring(1);
 		return getPathMapping().containsKey(path);
 	}
 

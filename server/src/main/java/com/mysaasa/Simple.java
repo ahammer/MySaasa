@@ -77,6 +77,7 @@ public abstract class Simple extends WebApplication {
 		INSTANCE = this;
 		this.inMemoryDatabase = inMemoryDatabase;
 	}
+
 	/**
 	 * Get's this, there is only one Application class, and it's a singleton, so this is access
 	 * to the cast version of it. Ultimately it's a convenience so we don't need to do unsafe
@@ -129,7 +130,7 @@ public abstract class Simple extends WebApplication {
 	 * There is one for windows and another for linux/mac
 	 *
 	 * @return PATH_DEFAULT_WIN for windows, PATH_DEFAULT_NIX for other
-     */
+	 */
 	public static String getPathDefault() {
 		String osName = System.getProperty("os.name");
 		boolean isWindows = osName.toLowerCase().contains("windows");
@@ -143,12 +144,10 @@ public abstract class Simple extends WebApplication {
 	 * that can work with the localhost file and not wildcard domains
 	 *
 	 * @return True if in Local Mode, Otherwise False
-     */
+	 */
 	public static boolean isLocalDevMode() {
-		return Boolean.valueOf(getProperties().getProperty("localDevMode","false"));
+		return Boolean.valueOf(getProperties().getProperty("localDevMode", "false"));
 	}
-
-
 
 	/**
 	 * Dependency injection yay.
