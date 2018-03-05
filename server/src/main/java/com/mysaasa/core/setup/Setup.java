@@ -273,7 +273,7 @@ public class Setup extends WebPage {
 	 * We need to install resources/bundled_sites into the websites folder, so they can be used/modified.
 	 */
 	private void installDefaultData() {
-		if (new File(Simple.getConfigPath() + "websites/gettingstarted." + Simple.getBaseDomain() + "/").exists())
+		if (new File(Simple.getConfigPath() + "websites/gettingstarted.test").exists())
 			return; //Short circuit for install
 		try {
 			installIncludedThemes();

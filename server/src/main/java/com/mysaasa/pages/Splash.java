@@ -89,7 +89,6 @@ public class Splash extends WebPage {
 			sites.add(new AjaxFormComponentUpdatingBehavior("onchange") {
 				@Override
 				protected void onUpdate(AjaxRequestTarget target) {
-					System.out.println(data.selected.toString());
 					throw new RedirectToUrlException("http://"+data.selected.production+":"+Simple.getPort());
 				}
 			});

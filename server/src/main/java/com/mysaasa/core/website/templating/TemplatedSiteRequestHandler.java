@@ -18,6 +18,7 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.ResourceNotFoundException;
+import org.apache.wicket.Session;
 import org.apache.wicket.request.*;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.http.WebResponse;
@@ -262,7 +263,7 @@ public class TemplatedSiteRequestHandler implements IRequestHandler {
 				context.put("post", new QueryParamProxy(request.getPostParameters()));
 				context.put("self", request.getClientUrl().toString());
 				context.put("file", request.getClientUrl().getProtocol() + "://" + request.getClientUrl().getHost() + ":" + request.getClientUrl().getPort() + "/" + request.getClientUrl().getPath());
-				context.put("baseDomain", Simple.getBaseDomain());
+				context.put("baseDomain", Simple.getCurrentDomain());
 				context.put("port", Simple.getPort());
 
 				template.merge(context, writer);
@@ -331,7 +332,7 @@ public class TemplatedSiteRequestHandler implements IRequestHandler {
 	 * @return
 	 */
 	private AdminSession getAdminSession(final IRequestCycle requestCycle) {
-		return SessionService.get().getAdminSessionFromDomain(requestCycle.getRequest().getClientUrl().getHost());
+		return SessionService.get().getAdminSession(Session.get());
 	}
 
 	private String lookupContentType() {

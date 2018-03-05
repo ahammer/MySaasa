@@ -1,5 +1,7 @@
 package com.mysaasa.pages;
 
+import com.mysaasa.Simple;
+import com.mysaasa.core.hosting.service.HostingService;
 import com.mysaasa.core.splash.SplashModule;
 import com.mysaasa.core.users.model.User;
 import com.mysaasa.core.website.model.Website;
@@ -37,6 +39,8 @@ import org.apache.wicket.protocol.ws.api.WebSocketRequestHandler;
 import org.apache.wicket.protocol.ws.api.message.ClosedMessage;
 import org.apache.wicket.protocol.ws.api.message.ConnectedMessage;
 import org.apache.wicket.protocol.ws.api.message.IWebSocketPushMessage;
+import org.apache.wicket.request.cycle.RequestCycle;
+import org.apache.wicket.request.flow.RedirectToUrlException;
 
 import java.util.List;
 
@@ -56,7 +60,8 @@ public class Admin extends WebPage implements IHeaderContributor, AdminInterface
 		super();
 		setWasCreatedBookmarkable(false);
 
-		Website initialWebsite = null;
+		String host = RequestCycle.get().getRequest().getClientUrl().getHost();
+		Website initialWebsite = HostingService.get().findWebsite(host);
 		SecurityContext securityContext = SecurityContext.get();
 		DropDownChoice<Website> websiteLabel;
 
@@ -78,9 +83,7 @@ public class Admin extends WebPage implements IHeaderContributor, AdminInterface
 				return -1;
 			return o1.production.compareTo(o2.production);
 		} );
-		if (website_list != null && website_list.size() > 0) {
-			initialWebsite = website_list.get(0);
-		}
+
 
 		selectedWebsite = initialWebsite;
 
@@ -115,27 +118,7 @@ public class Admin extends WebPage implements IHeaderContributor, AdminInterface
 		});
 		add(websiteLabel = new DropDownChoice<Website>("website",
 				new PropertyModel(this, "selectedWebsite"),
-				website_list, new IChoiceRenderer<Website>() {
-			@Override
-			public Object getDisplayValue(Website object) {
-				return object.getProduction();
-			}
-
-			@Override
-			public String getIdValue(Website object, int index) {
-				return String.valueOf(object.getId());
-			}
-
-			@Override
-			public Website getObject(String id, IModel<? extends List<? extends Website>> choices) {
-				//TODO this cod
-				List<? extends Website> objects = choices.getObject();
-				for (Website w: objects) {
-					if (w.getId() == Integer.valueOf(id)) return w;
-				}
-				return null;
-			}
-		}));
+				website_list, new WebsiteChoiceRenderer()));
 
 		if (securityContext.getUser().accessLevel == User.AccessLevel.ROOT || securityContext.getUser().accessLevel == User.AccessLevel.ORG) {
 			organization.add(new AjaxEventBehavior("click") {
@@ -152,8 +135,9 @@ public class Admin extends WebPage implements IHeaderContributor, AdminInterface
 		websiteLabel.add(new AjaxFormComponentUpdatingBehavior("change") {
 			@Override
 			protected void onUpdate(AjaxRequestTarget target) {
+
 				if (selectedWebsite != null)
-					MessageHelpers.loadWebsiteEditor(target, selectedWebsite);
+					throw new RedirectToUrlException("http://"+selectedWebsite.production+":"+ Simple.getPort());
 
 			}
 		});

@@ -292,7 +292,7 @@ public abstract class Simple extends WebApplication {
 		return moduleManager.getClassPanelAdapter(aClass);
 	}
 
-	public static String getBaseDomain() {
+	public static String getCurrentDomain() {
 		return RequestCycle.get().getRequest().getClientUrl().getHost();
 	}
 }

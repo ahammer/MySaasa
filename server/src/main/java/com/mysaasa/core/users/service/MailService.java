@@ -47,7 +47,7 @@ public class MailService {
 		}
 
 		String to = email;
-		String from = "SignupNotification@" + Simple.getBaseDomain();
+		String from = "SignupNotification@" + Simple.getCurrentDomain();
 
 		final String user = properties.getProperty("mail.smtp.user");
 		final String password = properties.getProperty("mail.smtp.password");
@@ -68,15 +68,15 @@ public class MailService {
 		if (current != null) {
 			message.setSubject("Signup Notification @ " + current.getProduction());
 		} else {
-			message.setSubject("Signup Notification @ " + Simple.getBaseDomain());
+			message.setSubject("Signup Notification @ " + Simple.getCurrentDomain());
 
 		}
 		BodyPart messageBodyPart = new MimeBodyPart();
 
 		messageBodyPart.setText(
-				"An account has been created @ " + Simple.getBaseDomain()
+				"An account has been created @ " + Simple.getCurrentDomain()
 						+ "\nUsername: " + u.getIdentifier()
-						+ "\nAdmin Link: " + Simple.getBaseDomain() + "?user=" + u.getIdentifier() + "\n" + "\n" + "This account may have been auto-generated. To set a password, follow this link." + "Follow this link to access your account and update your password in the User Settings. This direct link will self-destruct once used. \n http://admin." + Simple.getBaseDomain() + ":" + Simple.getPort() + "?nonce=" + SecurityService.get().generateNonce(u));
+						+ "\nAdmin Link: " + Simple.getCurrentDomain() + "?user=" + u.getIdentifier() + "\n" + "\n" + "This account may have been auto-generated. To set a password, follow this link." + "Follow this link to access your account and update your password in the User Settings. This direct link will self-destruct once used. \n http://admin." + Simple.getCurrentDomain() + ":" + Simple.getPort() + "?nonce=" + SecurityService.get().generateNonce(u));
 
 		Multipart multipart = new MimeMultipart();
 
@@ -109,7 +109,7 @@ public class MailService {
 		}
 
 		String to = email;
-		String from = "AccessControl@" + Simple.getBaseDomain();
+		String from = "AccessControl@" + Simple.getCurrentDomain();
 
 		final String user = properties.getProperty("mail.smtp.user");
 		final String password = properties.getProperty("mail.smtp.password");
@@ -127,7 +127,7 @@ public class MailService {
 				new InternetAddress(to));
 		message.setSubject("Signup Notification");
 		BodyPart messageBodyPart = new MimeBodyPart();
-		messageBodyPart.setContent("Follow this link to access your account and update your password in the User Settings. This direct link will self-destruct once used. \n http://admin." + Simple.getBaseDomain() + ":" + Simple.getPort() + "?nonce=" + SecurityService.get().generateNonce(u), "text/html");
+		messageBodyPart.setContent("Follow this link to access your account and update your password in the User Settings. This direct link will self-destruct once used. \n http://admin." + Simple.getCurrentDomain() + ":" + Simple.getPort() + "?nonce=" + SecurityService.get().generateNonce(u), "text/html");
 
 		Multipart multipart = new MimeMultipart();
 		multipart.addBodyPart(messageBodyPart);
