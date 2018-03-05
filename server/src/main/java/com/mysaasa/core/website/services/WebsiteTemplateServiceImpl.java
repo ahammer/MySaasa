@@ -1,6 +1,7 @@
 package com.mysaasa.core.website.services;
 
 import com.mysaasa.SimpleImpl;
+import com.mysaasa.core.hosting.service.HostingService;
 import com.mysaasa.core.website.model.Website;
 import com.mysaasa.core.website.templating.TemplateHelperService;
 import com.mysaasa.interfaces.annotations.SimpleService;
@@ -8,6 +9,7 @@ import com.mysaasa.interfaces.templating.WebsiteTemplateService;
 import com.mysaasa.Simple;
 import com.mysaasa.core.security.services.SecurityService;
 import com.mysaasa.core.website.model.ContentBinding;
+import org.apache.wicket.request.cycle.RequestCycle;
 
 /**
  * Created by Adam on 3/15/14.
@@ -45,8 +47,8 @@ public class WebsiteTemplateServiceImpl extends WebsiteTemplateService {
 	public String getAdminLink() {
 		String nonce = SecurityService.get().generateNonce();
 		if (!nonce.equals("")) {
-			return Simple.getBaseDomain() + ":" + Simple.getPort() + "?nonce=" + nonce;
+			return RequestCycle.get().getRequest().getClientUrl().getHost() + ":" + Simple.getPort() + "/admin?nonce=" + nonce;
 		}
-		return Simple.getBaseDomain() + ":" + Simple.getPort();
+		return RequestCycle.get().getRequest().getClientUrl().getHost() + ":" + Simple.getPort();
 	}
 }

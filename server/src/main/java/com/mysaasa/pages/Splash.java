@@ -16,6 +16,8 @@ import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.protocol.https.RequireHttps;
+import org.apache.wicket.request.cycle.RequestCycle;
+import org.apache.wicket.request.flow.RedirectToUrlException;
 
 import java.io.Serializable;
 import java.util.List;
@@ -39,7 +41,8 @@ public class Splash extends WebPage {
 			return;
 		}
 
-		add(new Label("node", Simple.getBaseDomain()));
+
+		add(new Label("node", "N/A").setVisible(false));
 
 		//If a nonce is provided, use it to log in
 		if (getRequest().getQueryParameters().getParameterNames().contains("nonce")) {
@@ -71,8 +74,14 @@ public class Splash extends WebPage {
 
 		public SelectSiteForm() {
 			super("ChooseSite");
+			String host = RequestCycle.get().getRequest().getClientUrl().getHost();
 			List<Website> websites = HostingService.get().getWebsites();
-
+			Website website;
+			if ((website = HostingService.get().findWebsite(host)) != null) {
+				data.selected = website;
+			} else {
+				throw new RedirectToUrlException("http://"+websites.get(0).production+":"+Simple.getPort());
+			}
 			sites = new DropDownChoice("sites", new PropertyModel(data, "selected"), websites, new WebsiteChoiceRenderer());
 			add(sites);
 

@@ -78,7 +78,6 @@ public class Setup extends WebPage {
 			p.setProperty(Simple.PREF_DB_USERNAME, db_username);
 			p.setProperty(Simple.PREF_DB_DRIVER, driverName);
 			p.setProperty(Simple.PREF_DB_URL, url);
-			p.setProperty(Simple.PREF_BASE_DOMAIN, baseDomain);
 
 			p.setProperty(Simple.PREF_MAIL_SMTP_HOST, mail_host);
 			p.setProperty(Simple.PREF_MAIL_SMTP_PASSWORD, mail_password);

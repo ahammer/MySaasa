@@ -16,6 +16,7 @@ import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.protocol.https.HttpsConfig;
+import org.apache.wicket.request.cycle.RequestCycle;
 import org.slf4j.Logger;
 
 import javax.persistence.EntityManager;
@@ -43,7 +44,6 @@ public abstract class Simple extends WebApplication {
 	public static final String PREF_DB_URL = "databaseUrl";
 	public static final String PREF_DB_USERNAME = "databaseUsername";
 	public static final String PREF_DB_PASS = "databasePassword";
-	public static final String PREF_BASE_DOMAIN = "baseDomain";
 
 	public static final String PREF_MAIL_SMTP_HOST = "mail.smtp.host";
 	public static final String PREF_MAIL_SMTP_PORT = "mail.smtp.port";
@@ -112,18 +112,6 @@ public abstract class Simple extends WebApplication {
 		return Integer.parseInt(getProperties().getProperty(PREF_SECURE_PORT, "443"));
 	}
 
-	/**
-	 * This is the Base domain, it's configured in the settings.properties, and it's the root central hosting.
-	 *
-	 * The admin should be accessible here and any static assets.
-	 *
-	 * @return
-	 */
-	public static String getBaseDomain() {
-		if (!getProperties().containsKey("baseDomain"))
-			throw new RuntimeException("Put a baseDomain in settings.properties, it specifies the root for shared contentca");
-		return getProperties().getProperty("baseDomain", null);
-	}
 
 	/**
 	 * Get's the default setting/config path for the OS
@@ -271,6 +259,7 @@ public abstract class Simple extends WebApplication {
 		super.init();
 		moduleManager = new ModuleManager();
 		getMarkupSettings().setStripWicketTags(true); // IMPORTANT!
+		mountPage("/Admin", Splash.class);
 		mountPage("/ApiGuide", ApiGuide.class);
 		mountPage("/TemplateGuide", TemplateGuide.class);
 
@@ -303,4 +292,7 @@ public abstract class Simple extends WebApplication {
 		return moduleManager.getClassPanelAdapter(aClass);
 	}
 
+	public static String getBaseDomain() {
+		return RequestCycle.get().getRequest().getClientUrl().getHost();
+	}
 }
