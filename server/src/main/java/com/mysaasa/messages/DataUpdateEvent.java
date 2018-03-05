@@ -5,7 +5,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Data has been updated, moving to a generic event
+ * SignInData has been updated, moving to a generic event
  * Created by adam on 2014-10-17.
  */
 public class DataUpdateEvent extends AjaxIntent {

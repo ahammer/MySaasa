@@ -22,7 +22,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * service to manage BlogTemplateService Data, to keep it all DA consistent in the module.
+ * service to manage BlogTemplateService SignInData, to keep it all DA consistent in the module.
  */
 @SimpleService
 public class BlogService {

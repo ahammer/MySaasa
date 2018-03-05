@@ -12,7 +12,7 @@ public class ACTIONS {
 	public static final String ACTION_WEBSITE_CREATED = "/Website/Created";
 	public static final String ACTION_WEBSITE_IFRAME_PAGELOAD = "/Website/IFrame/Pageload"; //The Admin iframe messaging when a page loads
 	public static final String ACTION_USER_PREFS_UPDATED = "/User/Prefs/Updated";
-	public static final String ACTION_DATA_UPDATED = "/Data/Updated";
+	public static final String ACTION_DATA_UPDATED = "/SignInData/Updated";
 	public static final String ACTION_MODULE_CLICKED = "/Module/Selected";
 	public static final String ACTION_WEBSITE_FILE_CREATED = "/Website/File/Created";
 }
