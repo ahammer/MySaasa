@@ -62,7 +62,6 @@ public class MysaasaRequestMapper implements IRequestMapper {
 		deltaTime = (deltaTime * 200 + tmpDeltaTime) / 201l;
 		timeMillis = currentTime;
 
-		//System.out.println("Request #"+(Requests++)+ " Request Time: " + (int)(1.0/(deltaTime/1000000000.0)) + " Requests/Second");
 		String path = request.getUrl().getPath();
 		if (path.startsWith("media/")) {
 			return new MediaRequestHandler(request);

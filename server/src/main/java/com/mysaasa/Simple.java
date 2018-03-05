@@ -281,7 +281,7 @@ public abstract class Simple extends WebApplication {
 	public Class<? extends WebPage> getHomePage() {
 
 		if (hasBeenInstalled()) {
-			return Splash.class;
+			return null;
 		} else {
 			return Setup.class;
 		}
