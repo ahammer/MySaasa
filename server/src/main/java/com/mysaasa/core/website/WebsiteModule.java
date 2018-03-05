@@ -64,7 +64,6 @@ public class WebsiteModule extends AbstractModule {
 				return new WebViewer(id, new Model(templateFileModel));
 			} catch (Exception e) {
 				e.printStackTrace();
-				;
 				return new Label(id, model.getObject().getClass() + " Not setup yet " + e.getMessage());
 			}
 		}

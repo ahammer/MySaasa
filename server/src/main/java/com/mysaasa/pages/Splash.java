@@ -7,13 +7,13 @@ import com.mysaasa.core.security.services.SecurityService;
 import com.mysaasa.core.security.services.SessionService;
 import com.mysaasa.core.security.services.session.SecurityContext;
 import com.mysaasa.core.website.model.Website;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 
-import org.apache.wicket.markup.html.form.IChoiceRenderer;
-import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.protocol.https.RequireHttps;
 import org.apache.wicket.request.cycle.RequestCycle;
@@ -76,37 +76,26 @@ public class Splash extends WebPage {
 			super("ChooseSite");
 			String host = RequestCycle.get().getRequest().getClientUrl().getHost();
 			List<Website> websites = HostingService.get().getWebsites();
-			Website website;
-			if ((website = HostingService.get().findWebsite(host)) != null) {
-				data.selected = website;
+			Website currentWebsite = HostingService.get().findWebsite(host);
+
+			if (currentWebsite != null) {
+				data.selected = currentWebsite;
 			} else {
 				throw new RedirectToUrlException("http://"+websites.get(0).production+":"+Simple.getPort());
 			}
+
 			sites = new DropDownChoice("sites", new PropertyModel(data, "selected"), websites, new WebsiteChoiceRenderer());
+
+			sites.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+				@Override
+				protected void onUpdate(AjaxRequestTarget target) {
+					System.out.println(data.selected.toString());
+					throw new RedirectToUrlException("http://"+data.selected.production+":"+Simple.getPort());
+				}
+			});
+
 			add(sites);
 
-		}
-	}
-
-	private static class WebsiteChoiceRenderer implements IChoiceRenderer<Website> {
-
-		@Override
-		public Object getDisplayValue(Website object) {
-			return object.production;
-		}
-
-		@Override
-		public String getIdValue(Website object, int index) {
-			return String.valueOf(object.getId());
-		}
-
-		@Override
-		public Website getObject(String id, IModel<? extends List<? extends Website>> choices) {
-			for (Website obj : choices.getObject()) {
-				if (String.valueOf(obj.getId()).equalsIgnoreCase(id))
-					return  obj;
-			}
-			return null;
 		}
 	}
 

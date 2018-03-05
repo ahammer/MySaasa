@@ -41,7 +41,7 @@ public class TemplateFile extends File {
 	}
 
 	public String getDebugUrl() {
-		String result = website.getUrl(this, true);
+		String result = website.getUrl(this);
 		return result;
 	}
 
