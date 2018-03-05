@@ -35,12 +35,10 @@ public class Splash extends WebPage {
 		add(siteSelectForm = new SelectSiteForm());
 		add(new HelpPanel("help", HelpPanel.Sections.SplashSignin));
 
-
 		if (SessionService.get().getSecurityContext(getSession()) != null) {
 			setResponsePage(Admin.class);
 			return;
 		}
-
 
 		add(new Label("node", "N/A").setVisible(false));
 
@@ -54,16 +52,14 @@ public class Splash extends WebPage {
 				setResponsePage(Admin.class);
 
 			}
+		}
 	}
-	}
-
 
 	public SigninForm getSignInForm() {
 		return signInForm;
 	}
 
 	public static class SelectSiteForm<T> extends Form<T> {
-
 
 		private final DropDownChoice sites;
 		private final Data data = new Data();
@@ -81,7 +77,7 @@ public class Splash extends WebPage {
 			if (currentWebsite != null) {
 				data.selected = currentWebsite;
 			} else {
-				throw new RedirectToUrlException("http://"+websites.get(0).production+":"+Simple.getPort());
+				throw new RedirectToUrlException("http://" + websites.get(0).production + ":" + Simple.getPort());
 			}
 
 			sites = new DropDownChoice("sites", new PropertyModel(data, "selected"), websites, new WebsiteChoiceRenderer());
@@ -89,7 +85,7 @@ public class Splash extends WebPage {
 			sites.add(new AjaxFormComponentUpdatingBehavior("onchange") {
 				@Override
 				protected void onUpdate(AjaxRequestTarget target) {
-					throw new RedirectToUrlException("http://"+data.selected.production+":"+Simple.getPort());
+					throw new RedirectToUrlException("http://" + data.selected.production + ":" + Simple.getPort());
 				}
 			});
 

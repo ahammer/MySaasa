@@ -129,7 +129,7 @@ public abstract class MultiSelectWidget<T> extends Panel {
 	 */
 	public class SelectedChoicesListView extends ListView<T> {
 		public SelectedChoicesListView(List<? extends T> list) {
-			super("selected",  new ListModel(list));
+			super("selected", new ListModel(list));
 		}
 
 		@Override

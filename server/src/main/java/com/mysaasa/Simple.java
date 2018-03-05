@@ -112,7 +112,6 @@ public abstract class Simple extends WebApplication {
 		return Integer.parseInt(getProperties().getProperty(PREF_SECURE_PORT, "443"));
 	}
 
-
 	/**
 	 * Get's the default setting/config path for the OS
 	 * There is one for windows and another for linux/mac

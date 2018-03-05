@@ -84,7 +84,6 @@ public class Admin extends WebPage implements IHeaderContributor, AdminInterface
 			return o1.production.compareTo(o2.production);
 		} );
 
-
 		selectedWebsite = initialWebsite;
 
 		add(new AjaxLink("logo") {
@@ -137,7 +136,7 @@ public class Admin extends WebPage implements IHeaderContributor, AdminInterface
 			protected void onUpdate(AjaxRequestTarget target) {
 
 				if (selectedWebsite != null)
-					throw new RedirectToUrlException("http://"+selectedWebsite.production+":"+ Simple.getPort());
+					throw new RedirectToUrlException("http://" + selectedWebsite.production + ":" + Simple.getPort());
 
 			}
 		});
