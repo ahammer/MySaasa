@@ -1,10 +1,16 @@
 package com.mysaasa;
 
 import com.mysaasa.core.hosting.service.HostingService;
-import com.stripe.model.Account;
+
+import com.mysaasa.core.website.model.Website;
+import com.mysaasa.messages.data.Bundle;
+import org.apache.commons.collections4.map.UnmodifiableMap;
+import org.shredzone.acme4j.Authorization;
 import org.shredzone.acme4j.Registration;
 import org.shredzone.acme4j.RegistrationBuilder;
 import org.shredzone.acme4j.Session;
+import org.shredzone.acme4j.challenge.Challenge;
+import org.shredzone.acme4j.challenge.Http01Challenge;
 import org.shredzone.acme4j.exception.AcmeConflictException;
 import org.shredzone.acme4j.exception.AcmeException;
 import org.shredzone.acme4j.util.KeyPairUtils;
@@ -15,7 +21,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.security.KeyPair;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -24,6 +34,9 @@ public class SSLGen {
 
 	private KeyPair applicationKeyPair;
 	private Session session;
+	private Registration registration;
+
+	public static Map<String, Http01Challenge> activeChallengeMap = new ConcurrentHashMap();
 
 	public SSLGen() {}
 
@@ -59,12 +72,16 @@ public class SSLGen {
 		RegistrationBuilder builder = new RegistrationBuilder();
 		builder.addContact("mailto:acme@example.com");
 
-		Registration registration = null;
+
 		try {
 			registration = builder.create(session);
 		} catch (AcmeConflictException e) {
 			registration = Registration.bind(session, e.getLocation());
 		}
+		registration.modify()
+				.setAgreement(registration.getAgreement())
+				.commit();
+
 		URL accountLocationUrl = registration.getLocation();
 		System.out.println("Connected Successfully to LetsEncrypt: "+accountLocationUrl.toString());
 
@@ -103,8 +120,35 @@ public class SSLGen {
 				.collect(Collectors.toList());
 	}
 
-	private void getCertsForSites(List<String> sites) {
+	private void getCertsForSites(List<String> sites) throws AcmeException {
+		checkNotNull(registration, "Must be registered to do this");
+		for (String site : sites) {
+			authorizeDomain(site);
+		}
+
 
 	}
 
+	private void authorizeDomain(String s) throws AcmeException {
+		Authorization auth = registration.authorizeDomain(s);
+		Http01Challenge challenge = auth.findChallenge(Http01Challenge.TYPE);
+		activeChallengeMap.put(s, challenge);
+		challenge.trigger();
+
+	}
+
+	public static boolean hasActiveChallenge(String filename, Website website) {
+		if (activeChallengeMap.containsKey(website.production)) {
+			Http01Challenge challenge = activeChallengeMap.get(website.production);
+			return (filename.equalsIgnoreCase(".well-known/acme-challenge/"+challenge.getToken()));
+		}
+		return false;
+	}
+
+	public static String getAuthorization(Website website) {
+		if (!activeChallengeMap.containsKey(website.production)) {
+			return "";
+		}
+		return activeChallengeMap.get(website.production).getAuthorization();
+	}
 }

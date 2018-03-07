@@ -6,6 +6,7 @@ import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.mysaasa.SSLGen;
 import com.mysaasa.SimpleImpl;
 import com.mysaasa.MysaasaRequestMapper;
 import com.mysaasa.core.website.model.Website;
@@ -50,6 +51,7 @@ public class TemplatedSiteRequestHandler implements IRequestHandler {
 	private final Map<Website, VelocityEngine> engines = new HashMap<>();
 
 	private final VelocityContext context = new VelocityContext();
+	private final String path;
 
 	/**
 	 * Checks to see if this is a ValidRequest for this handler
@@ -83,7 +85,12 @@ public class TemplatedSiteRequestHandler implements IRequestHandler {
 		if (website == null)
 			return false;
 
+		if (SSLGen.hasActiveChallenge(filename, website)) {
+			return true;
+		}
+
 		Website selected = (theme != null) ? theme : website;
+
 
 		if (website.getProduction().equals(host)
 				|| HostingService.get().findDomain(host) != null) {
@@ -117,6 +124,7 @@ public class TemplatedSiteRequestHandler implements IRequestHandler {
 		website = service.findWebsite(request.getClientUrl());
 		theme = (SessionService.get().hasAdminSession(session_part)) ? AdminSession.get().getTheme() : null;
 
+		path = request.getClientUrl().getPath();
 		if (request.getClientUrl().getHost().equals(website.getStaging())) {
 			file = new File(((theme != null) ? theme : website).calculateStagingRoot() + "/" + filename);
 		} else {
@@ -172,6 +180,11 @@ public class TemplatedSiteRequestHandler implements IRequestHandler {
 			}
 		} catch (final FileNotFoundException | ResourceNotFoundException e) {
 
+			//Maybe this is a challenge?
+			if (SSLGen.hasActiveChallenge(path, website)) {
+				stringResponse(response, SSLGen.getAuthorization(website));
+				return;
+			}
 			_404Response(response);
 		} catch (final Exception e) {
 			throw new RuntimeException(e);
@@ -208,7 +221,7 @@ public class TemplatedSiteRequestHandler implements IRequestHandler {
 		}
 	}
 
-	private void StringResponse(WebResponse response, String s) {
+	private void stringResponse(WebResponse response, String s) {
 		final byte[] data = s.getBytes();
 		response.setStatus(200);
 		response.setContentLength(data.length);
