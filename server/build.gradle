@@ -103,6 +103,9 @@ dependencies {
     compile 'commons-io:commons-io:2.4'
     compile 'commons-daemon:commons-daemon:1.0.15'
     compile 'javax.mail:mail:1.4.1'
+    compile 'org.shredzone.acme4j:acme4j-client:0.14'
+    compile 'org.shredzone.acme4j:acme4j-utils:0.14'
+
     testCompile 'junit:junit:4.10'
 }
 

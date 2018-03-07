@@ -38,6 +38,7 @@ import java.util.Properties;
  * Created by Adam on 3/30/14.
  */
 public abstract class Simple extends WebApplication {
+	private static final String PREF_CONTACT_EMAIL = "contactEmail";
 	private static Simple INSTANCE;
 
 	public static boolean BitcoinEnabled = true;
@@ -113,6 +114,9 @@ public abstract class Simple extends WebApplication {
 		return Integer.parseInt(getProperties().getProperty(PREF_SECURE_PORT, "443"));
 	}
 
+	public static String getContactEmail() {
+		return getProperties().getProperty(PREF_CONTACT_EMAIL, null);
+	}
 	/**
 	 * Get's the default setting/config path for the OS
 	 * There is one for windows and another for linux/mac
@@ -268,6 +272,9 @@ public abstract class Simple extends WebApplication {
 		config.setHttpsPort(getSecurePort());
 
 		CodeGen.generateRetrofitCode();
+
+		new SSLGen().doSSLMagic();
+
 	}
 
 	@Override
