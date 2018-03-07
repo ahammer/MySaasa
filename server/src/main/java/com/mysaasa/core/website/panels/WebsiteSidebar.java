@@ -134,7 +134,15 @@ public class WebsiteSidebar extends Panel {
 	private AbstractDefaultAjaxBehavior ajaxInlineEditorCallback;
 
 	private enum BlogButtonMethod {
-		save, publish, delete, edit, load
+		save, publish, delete, edit, load, nil;
+
+		static BlogButtonMethod lookup(String name) {
+			try {
+				return BlogButtonMethod.valueOf(name);
+			} catch (Exception e) {
+				return nil;
+			}
+		}
 	}
 
 	private void addEditorCallbackAjaxBehaviour() {
@@ -163,7 +171,7 @@ public class WebsiteSidebar extends Panel {
 					i.getExtras().put("file", f.getAbsolutePath());
 					i.send();
 				} else if (id.startsWith("BlogPostTitle")) {
-					switch (BlogButtonMethod.valueOf(method)) {
+					switch (BlogButtonMethod.lookup(method)) {
 					case save:
 
 						inlineSaveBlogPost(target, title, subtitle, summary, msg, id, json, false);
@@ -180,7 +188,7 @@ public class WebsiteSidebar extends Panel {
 
 					}
 				} else {
-					switch (BlogButtonMethod.valueOf(method)) {
+					switch (BlogButtonMethod.lookup(method)) {
 					case save:
 						updateWebsiteContent(msg, origin, id);
 						break;

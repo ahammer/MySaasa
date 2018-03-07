@@ -3,6 +3,7 @@ package com.mysaasa;
 import com.google.inject.Injector;
 
 import com.mysaasa.core.ModuleManager;
+import com.mysaasa.core.hosting.service.HostingService;
 import com.mysaasa.core.setup.Setup;
 import com.mysaasa.development.CodeGen;
 import com.mysaasa.injection.SimpleGuiceModuleImpl;
@@ -279,8 +280,8 @@ public abstract class Simple extends WebApplication {
 	@Override
 	public Class<? extends WebPage> getHomePage() {
 
-		if (hasBeenInstalled()) {
-			return null;
+		if (hasBeenInstalled() && HostingService.get().findWebsite(RequestCycle.get().getRequest().getClientUrl().getHost()) == null) {
+			return Splash.class;
 		} else {
 			return Setup.class;
 		}
