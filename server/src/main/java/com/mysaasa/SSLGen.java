@@ -3,14 +3,12 @@ package com.mysaasa;
 import com.mysaasa.core.hosting.service.HostingService;
 
 import com.mysaasa.core.website.model.Website;
-import com.mysaasa.messages.data.Bundle;
-import org.apache.commons.collections4.map.UnmodifiableMap;
-import org.apache.http.impl.bootstrap.HttpServer;
 import org.shredzone.acme4j.*;
-import org.shredzone.acme4j.challenge.Challenge;
 import org.shredzone.acme4j.challenge.Http01Challenge;
 import org.shredzone.acme4j.exception.AcmeConflictException;
 import org.shredzone.acme4j.exception.AcmeException;
+import org.shredzone.acme4j.util.CSRBuilder;
+import org.shredzone.acme4j.util.CertificateUtils;
 import org.shredzone.acme4j.util.KeyPairUtils;
 
 import java.io.File;
@@ -19,8 +17,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.security.KeyPair;
-import java.util.Collection;
-import java.util.Collections;
+import java.security.cert.X509Certificate;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -118,13 +115,45 @@ public class SSLGen {
 				.collect(Collectors.toList());
 	}
 
-	private void getCertsForSites(List<String> sites) throws AcmeException, InterruptedException {
+	private void getCertsForSites(List<String> sites) throws AcmeException, InterruptedException, IOException {
 		checkNotNull(registration, "Must be registered to do this");
 		for (String site : sites) {
 			authorizeDomain(site);
+			downloadCert(site);
 		}
 
 
+	}
+
+	private void downloadCert(String site) throws IOException, AcmeException {
+		checkNotNull(registration, "Need a registration to do this");
+		KeyPair domainKeyPair = KeyPairUtils.createKeyPair(2048);
+		CSRBuilder csrb = new CSRBuilder();
+		csrb.addDomain(site);
+		csrb.setOrganization("MySaasa");
+		csrb.sign(domainKeyPair);
+		byte[] csr = csrb.getEncoded();
+
+		FileWriter fw = new FileWriter(getCertPath() + site + ".csr");
+		csrb.write(fw);
+		Certificate certificate = registration.requestCertificate(csr);
+		X509Certificate cert = certificate.download();
+		X509Certificate[] chain = certificate.downloadChain();
+
+		fw = new FileWriter(getCertPath()+site+"-cert-chain.crt");
+		CertificateUtils.writeX509CertificateChain(fw, cert, chain);
+
+		fw = new FileWriter(getCertPath()+site+"-cert.pem");
+		CertificateUtils.writeX509Certificate(cert, fw);
+
+		fw = new FileWriter(getCertPath()+site+"-chain.pem");
+		CertificateUtils.writeX509CertificateChain(fw, null, chain);
+
+
+	}
+
+	private String getCertPath() {
+		return Simple.getConfigPath() + "certificates/";
 	}
 
 	private void authorizeDomain(String domain) throws AcmeException, InterruptedException {
