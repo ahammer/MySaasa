@@ -5,10 +5,8 @@ import com.mysaasa.core.hosting.service.HostingService;
 import com.mysaasa.core.website.model.Website;
 import com.mysaasa.messages.data.Bundle;
 import org.apache.commons.collections4.map.UnmodifiableMap;
-import org.shredzone.acme4j.Authorization;
-import org.shredzone.acme4j.Registration;
-import org.shredzone.acme4j.RegistrationBuilder;
-import org.shredzone.acme4j.Session;
+import org.apache.http.impl.bootstrap.HttpServer;
+import org.shredzone.acme4j.*;
 import org.shredzone.acme4j.challenge.Challenge;
 import org.shredzone.acme4j.challenge.Http01Challenge;
 import org.shredzone.acme4j.exception.AcmeConflictException;
@@ -120,7 +118,7 @@ public class SSLGen {
 				.collect(Collectors.toList());
 	}
 
-	private void getCertsForSites(List<String> sites) throws AcmeException {
+	private void getCertsForSites(List<String> sites) throws AcmeException, InterruptedException {
 		checkNotNull(registration, "Must be registered to do this");
 		for (String site : sites) {
 			authorizeDomain(site);
@@ -129,11 +127,33 @@ public class SSLGen {
 
 	}
 
-	private void authorizeDomain(String s) throws AcmeException {
-		Authorization auth = registration.authorizeDomain(s);
+	private void authorizeDomain(String domain) throws AcmeException, InterruptedException {
+		Authorization auth = registration.authorizeDomain(domain);
 		Http01Challenge challenge = auth.findChallenge(Http01Challenge.TYPE);
-		activeChallengeMap.put(s, challenge);
+		activeChallengeMap.put(domain, challenge);
 		challenge.trigger();
+
+		long timeout = 500;
+		int count = 0;
+		boolean currentlyValid = false;
+		while (!currentlyValid && count < 10) {
+
+			challenge.update();
+			currentlyValid = challenge.getStatus() == Status.VALID;
+			if (currentlyValid) break;
+			Thread.sleep(timeout);
+			count++;
+			timeout *= 2;
+			if (timeout > 5000) timeout = 5000;
+
+		}
+
+		if (currentlyValid) {
+			System.out.println("Verified Domain: "+domain);
+		} else {
+			System.out.println("Could not verify domain: "+domain);
+		}
+
 
 	}
 
