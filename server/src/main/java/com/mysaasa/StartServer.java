@@ -29,17 +29,21 @@ public class StartServer {
 		ServerConnector https = null;
 		if (keystoreFile.exists()) {
 			SslContextFactory sslContextFactory = new SslContextFactory();
+
 			sslContextFactory.setKeyStorePath(keystoreFile.getAbsolutePath());
+			sslContextFactory.setTrustStorePath(keystoreFile.getAbsolutePath());
 			sslContextFactory.setKeyStorePassword(Simple.getProperties().getProperty(Simple.PREF_KEYSTORE_PASSWORD));
 			sslContextFactory.setKeyManagerPassword(Simple.getProperties().getProperty(Simple.PREF_KEYSTORE_PASSWORD));
 			HttpConfiguration https_config = new HttpConfiguration(http_config);
 			https_config.addCustomizer(new SecureRequestCustomizer());
+
+
 			https = new ServerConnector(server,
 					new SslConnectionFactory(sslContextFactory, HttpVersion.HTTP_1_1.asString()),
 					new HttpConnectionFactory(https_config));
+
 			https.setPort(Simple.getSecurePort());
 			https.setIdleTimeout(500000);
-
 		}
 
 		WebAppContext bb = new WebAppContext();

@@ -11,12 +11,16 @@ import org.shredzone.acme4j.util.CSRBuilder;
 import org.shredzone.acme4j.util.CertificateUtils;
 import org.shredzone.acme4j.util.KeyPairUtils;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.KeyPair;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
 import java.security.cert.X509Certificate;
 import java.util.List;
 import java.util.Map;
@@ -25,8 +29,13 @@ import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+
+// -> Root
+//
 public class SSLGen {
 
+	static final String ROOT_KEY_URL = "https://letsencrypt.org/certs/isrgrootx1.pem.txt";
+	static final String INTERMEDIATE_KEY_URL = "https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem.txt";
 	private KeyPair applicationKeyPair;
 	private Session session;
 	private Registration registration;
@@ -44,24 +53,46 @@ public class SSLGen {
 	 * -
 	 */
 	public void doSSLMagic() {
-		System.out.println("Updating Certificate Process");
-		List<String> sites = getApplicableDomains();
+		//if (1==1) return;
+		new Thread(()-> {
+			System.out.println("Updating Certificate Process");
+			List<String> sites = getApplicableDomains();
 
-		//We need to generate certs for this instance
-		try {
-			loadApplicationCertificate();
-
-			connectToLetsEncrypt();
-			getCertsForSites(sites);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+			//We need to generate certs for this instance
+			try {
+				downloadBasicCerts();
+				loadApplicationCertificate();
+				connectToLetsEncrypt();
+				getCertsForSites(sites);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}).start();
 
 	}
 
+	/**
+	 * We will need the root/intermediate certs for the keychain
+	 *
+	 * @throws IOException
+	 */
+	private void downloadBasicCerts() throws IOException {
+		downloadFile(ROOT_KEY_URL, "root.pem");
+		downloadFile(INTERMEDIATE_KEY_URL, "intermediate.pem");
+		return;
+	}
+
+	private void downloadFile(String url, String file) throws IOException {
+		URL website = new URL(url);
+		ReadableByteChannel rbc = Channels.newChannel(website.openStream());
+		FileOutputStream fos = new FileOutputStream(getCertPath()+file);
+		fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+	}
+
+
 	private void connectToLetsEncrypt() throws AcmeException {
 		checkNotNull(applicationKeyPair, "We couldn't load an application key pair");
-		session = new Session("https://acme-staging.api.letsencrypt.org/directory", applicationKeyPair);
+		session = new Session("acme://letsencrypt.org/staging", applicationKeyPair);
 		String contactEmail = Simple.getContactEmail();
 		checkNotNull(contactEmail, "contactEmail required in settings.properties to connect to lets encrypt");
 		RegistrationBuilder builder = new RegistrationBuilder();
@@ -95,9 +126,9 @@ public class SSLGen {
 		File accountCertFile = new File(accountCertPath);
 		if (!accountCertFile.exists()) {
 			applicationKeyPair = KeyPairUtils.createKeyPair(2048);
-			try (FileWriter fw = new FileWriter(accountCertPath)) {
-				KeyPairUtils.writeKeyPair(applicationKeyPair, fw);
-			}
+			FileWriter fw = new FileWriter(accountCertPath);
+			KeyPairUtils.writeKeyPair(applicationKeyPair, fw);
+
 		} else {
 			applicationKeyPair = KeyPairUtils.readKeyPair(new FileReader(accountCertFile));
 		}
@@ -115,7 +146,7 @@ public class SSLGen {
 				.collect(Collectors.toList());
 	}
 
-	private void getCertsForSites(List<String> sites) throws AcmeException, InterruptedException, IOException {
+	private void getCertsForSites(List<String> sites) throws Exception {
 		checkNotNull(registration, "Must be registered to do this");
 		for (String site : sites) {
 			authorizeDomain(site);
@@ -125,23 +156,27 @@ public class SSLGen {
 
 	}
 
-	private void downloadCert(String site) throws IOException, AcmeException {
+	private void downloadCert(String site) throws Exception {
 		checkNotNull(registration, "Need a registration to do this");
 		KeyPair domainKeyPair = KeyPairUtils.createKeyPair(2048);
+		FileWriter fw = new FileWriter(getCertPath()+site+"-priv.pem");
+		KeyPairUtils.writeKeyPair(domainKeyPair, fw);
+
 		CSRBuilder csrb = new CSRBuilder();
 		csrb.addDomain(site);
 		csrb.setOrganization("MySaasa");
 		csrb.sign(domainKeyPair);
 		byte[] csr = csrb.getEncoded();
 
-		FileWriter fw = new FileWriter(getCertPath() + site + ".csr");
+		fw = new FileWriter(getCertPath() + site + ".csr");
 		csrb.write(fw);
 		Certificate certificate = registration.requestCertificate(csr);
 		X509Certificate cert = certificate.download();
 		X509Certificate[] chain = certificate.downloadChain();
 
-		fw = new FileWriter(getCertPath()+site+"-cert-chain.crt");
+		fw = new FileWriter(getCertPath()+site+"-combined.pem");
 		CertificateUtils.writeX509CertificateChain(fw, cert, chain);
+
 
 		fw = new FileWriter(getCertPath()+site+"-cert.pem");
 		CertificateUtils.writeX509Certificate(cert, fw);
@@ -149,6 +184,14 @@ public class SSLGen {
 		fw = new FileWriter(getCertPath()+site+"-chain.pem");
 		CertificateUtils.writeX509CertificateChain(fw, null, chain);
 
+
+
+		KeyStore keyStore = KeyStore.getInstance("PKCS12");
+		keyStore.load(null, null);//
+
+		keyStore.setKeyEntry(site, domainKeyPair.getPrivate(),"password".toCharArray(), new java.security.cert.Certificate[]{cert});
+
+		keyStore.store(new FileOutputStream(new File(getCertPath()+site+".p12")), "password".toCharArray());
 
 	}
 
@@ -165,15 +208,17 @@ public class SSLGen {
 		long timeout = 500;
 		int count = 0;
 		boolean currentlyValid = false;
-		while (!currentlyValid && count < 10) {
+		System.out.println("Waiting to authorize domain: "+domain+"/.well-known/acme-challenge/"+challenge.getToken());
+		while (!currentlyValid && count < 100) {
 
+			System.out.println(count+"/"+100);
 			challenge.update();
 			currentlyValid = challenge.getStatus() == Status.VALID;
 			if (currentlyValid) break;
 			Thread.sleep(timeout);
 			count++;
 			timeout *= 2;
-			if (timeout > 5000) timeout = 5000;
+			if (timeout > 10000) timeout = 10000;
 
 		}
 

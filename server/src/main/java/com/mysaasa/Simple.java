@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.security.Security;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -79,6 +80,7 @@ public abstract class Simple extends WebApplication {
 		INSTANCE = this;
 		this.inMemoryDatabase = inMemoryDatabase;
 	}
+
 
 	/**
 	 * Get's this, there is only one Application class, and it's a singleton, so this is access
