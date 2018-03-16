@@ -31,14 +31,19 @@ import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-// -> Root
-//
+/**
+ * Think of this class as a script.
+ *
+ * It attempts to get certificates and prepare a .jks file that
+ * jetty can use to host SSL for MySaasa domains
+ *
+ */
 public class SSLGen {
 
 	static final String ROOT_KEY_URL = "https://letsencrypt.org/certs/isrgrootx1.pem.txt";
 	static final String INTERMEDIATE_KEY_URL = "https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem.txt";
 	public static final int CERTIFICATE_LOOK_AHEAD_TIME_MS = 1000 * 60 * 60 * 24 * 14;
-	public static final String LETS_ENCRYPT_URL = "acme://letsencrypt.org/staging";
+	public static final String LETS_ENCRYPT_URL = "acme://letsencrypt.org/";
 	private KeyPair applicationKeyPair;
 	private Session session;
 	private Registration registration;
