@@ -1,0 +1,66 @@
+apply plugin: 'java'
+apply plugin: 'com.diffplug.gradle.spotless'
+apply plugin: "jacoco"
+
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination = "${buildDir}/jacocoHtml"
+    }
+}
+
+
+
+
+
+group = 'com.mysaasa.base'
+version = '1.0'
+description = "Base MySaasa Dependencies"
+
+spotless {
+    java {
+        eclipseFormatFile 'spotless.eclipseformat.xml'  // XML file dumped out by the Eclipse formatter
+    }
+}
+
+
+compileJava {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+    options.compilerArgs << '-parameters'
+    options.fork = true
+    options.forkOptions.executable = 'javac'
+}
+
+compileTestJava {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+    //Keeps the Param Names
+    options.compilerArgs << '-parameters'
+    options.fork = true
+    options.forkOptions.executable = 'javac'
+}
+
+
+repositories {
+    mavenCentral()
+    maven { url "http://repo.jfrog.org/artifactory/plugins-releases"}
+    maven { url "http://mvnrepository.com"}
+}
+
+dependencies {
+    compile 'org.hibernate:hibernate-core:5.2.13.Final'
+    compile 'org.hibernate:hibernate-entitymanager:5.2.13.Final'
+    compile 'org.slf4j:slf4j-log4j12:1.+'
+    compile 'log4j:log4j:1.+'
+    compile 'org.apache.wicket:wicket-native-websocket-javax:7.+'
+    compile 'org.apache.wicket:wicket-core:7.+'
+    compile 'org.apache.wicket:wicket-extensions:7.+'
+    compile 'org.apache.wicket:wicket-native-websocket-core:7.+'
+
+    testCompile 'junit:junit:4.10'
+}
+
+
+
