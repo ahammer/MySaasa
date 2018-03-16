@@ -81,7 +81,6 @@ public abstract class Simple extends WebApplication {
 		this.inMemoryDatabase = inMemoryDatabase;
 	}
 
-
 	/**
 	 * Get's this, there is only one Application class, and it's a singleton, so this is access
 	 * to the cast version of it. Ultimately it's a convenience so we don't need to do unsafe
@@ -119,6 +118,7 @@ public abstract class Simple extends WebApplication {
 	public static String getContactEmail() {
 		return getProperties().getProperty(PREF_CONTACT_EMAIL, null);
 	}
+
 	/**
 	 * Get's the default setting/config path for the OS
 	 * There is one for windows and another for linux/mac

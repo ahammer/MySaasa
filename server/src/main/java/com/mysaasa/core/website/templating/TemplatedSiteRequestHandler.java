@@ -91,7 +91,6 @@ public class TemplatedSiteRequestHandler implements IRequestHandler {
 
 		Website selected = (theme != null) ? theme : website;
 
-
 		if (website.getProduction().equals(host)
 				|| HostingService.get().findDomain(host) != null) {
 			File file = new File(selected.calculateWebsiteRootAsString() + filename);

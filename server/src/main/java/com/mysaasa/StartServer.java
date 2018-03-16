@@ -37,7 +37,6 @@ public class StartServer {
 			HttpConfiguration https_config = new HttpConfiguration(http_config);
 			https_config.addCustomizer(new SecureRequestCustomizer());
 
-
 			https = new ServerConnector(server,
 					new SslConnectionFactory(sslContextFactory, HttpVersion.HTTP_1_1.asString()),
 					new HttpConnectionFactory(https_config));
