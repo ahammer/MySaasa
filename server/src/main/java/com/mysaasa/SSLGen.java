@@ -20,7 +20,10 @@ import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
+import java.security.cert.CertificateExpiredException;
+import java.security.cert.CertificateNotYetValidException;
 import java.security.cert.X509Certificate;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -34,6 +37,8 @@ public class SSLGen {
 
 	static final String ROOT_KEY_URL = "https://letsencrypt.org/certs/isrgrootx1.pem.txt";
 	static final String INTERMEDIATE_KEY_URL = "https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem.txt";
+	public static final int CERTIFICATE_LOOK_AHEAD_TIME_MS = 1000 * 60 * 60 * 24 * 14;
+	public static final String LETS_ENCRYPT_URL = "acme://letsencrypt.org/staging";
 	private KeyPair applicationKeyPair;
 	private Session session;
 	private Registration registration;
@@ -60,7 +65,15 @@ public class SSLGen {
 			//We need to generate certs for this instance
 
 			try {
-				createKeyStore();
+				loadKeyStore();
+
+				try {
+					isKeystoreValid();
+					System.out.println("Keystore looks valid, skipping this step");
+					return;
+				} catch (Exception e) {
+					//Continue
+				}
 
 				downloadBasicCerts();
 				loadApplicationCertificate();
@@ -72,6 +85,19 @@ public class SSLGen {
 			}
 		} ).start();
 
+	}
+
+	/**
+	 * Is the keystore still valid or do we need to renew?
+	 *
+	 * This will throw exceptions if the cert isn't valid
+	 */
+	private void isKeystoreValid() throws KeyStoreException, CertificateNotYetValidException, CertificateExpiredException {
+		for (String domain:getApplicableDomains()) {
+			if (!mainKeyStore.containsAlias(domain)) throw new IllegalStateException("Cert not in keystore for "+domain);
+			X509Certificate cert = (X509Certificate) mainKeyStore.getCertificate(domain);
+			cert.checkValidity(new Date(System.currentTimeMillis() + CERTIFICATE_LOOK_AHEAD_TIME_MS));
+		}
 	}
 
 	/**
@@ -95,7 +121,7 @@ public class SSLGen {
 
 	private void connectToLetsEncrypt() throws AcmeException {
 		checkNotNull(applicationKeyPair, "We couldn't load an application key pair");
-		session = new Session("acme://letsencrypt.org/staging", applicationKeyPair);
+		session = new Session(getAcmeUrl(), applicationKeyPair);
 		String contactEmail = Simple.getContactEmail();
 		checkNotNull(contactEmail, "contactEmail required in settings.properties to connect to lets encrypt");
 		RegistrationBuilder builder = new RegistrationBuilder();
@@ -113,6 +139,10 @@ public class SSLGen {
 		URL accountLocationUrl = registration.getLocation();
 		System.out.println("Connected Successfully to LetsEncrypt: " + accountLocationUrl.toString());
 
+	}
+
+	private String getAcmeUrl() {
+		return LETS_ENCRYPT_URL;
 	}
 
 	/**
@@ -249,14 +279,24 @@ public class SSLGen {
 		return activeChallengeMap.get(website.production).getAuthorization();
 	}
 
-	public void createKeyStore() throws Exception {
+	public void loadKeyStore() throws Exception {
+		File file = getKeystoreFile();
 		mainKeyStore = KeyStore.getInstance("JKS");
-		mainKeyStore.load(null, null);
+
+		if (!file.exists()) {
+			mainKeyStore.load(null, null);
+		} else {
+			mainKeyStore.load(new FileInputStream(getKeystoreFile()), getPasswordChars());
+		}
 		saveKeystore();
 	}
 
+	private File getKeystoreFile() {
+		return new File(getCertPath()+"main.jks");
+	}
+
 	private void saveKeystore() throws IOException, NoSuchAlgorithmException, CertificateException, KeyStoreException {
-		File file = new File(getCertPath()+"main.jks");
+		File file = getKeystoreFile();
 		mainKeyStore.store(new FileOutputStream(file), getPasswordChars());
 	}
 }
