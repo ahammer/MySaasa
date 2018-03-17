@@ -74,7 +74,7 @@ public class SSLGen {
 
 			try {
 				loadKeyStore();
-				downloadBasicCerts();
+				//downloadBasicCerts();
 				loadApplicationCertificate();
 				connectToLetsEncrypt();
 				getCertsForSites();
@@ -104,13 +104,14 @@ public class SSLGen {
 	 * We will need the root/intermediate certs for the keychain
 	 *
 	 * @throws IOException
-	 */
+
 	private void downloadBasicCerts() throws IOException {
 		downloadFile(ROOT_KEY_URL, "root.pem");
 		downloadFile(INTERMEDIATE_KEY_URL, "intermediate.pem");
 
 		return;
 	}
+	 */
 
 	private void downloadFile(String url, String file) throws IOException {
 		URL website = new URL(url);
@@ -151,10 +152,10 @@ public class SSLGen {
 	 * /opt/mysaasa/certificates/domain/certificate.?
 	 */
 	private void loadApplicationCertificate() throws IOException {
-		String certificatePath = Simple.getConfigPath() + "certificates";
+		String certificatePath = getCertPath();
 		new File(certificatePath).mkdir();
 
-		String accountCertPath = Simple.getConfigPath() + "certificates/instance.pem";
+		String accountCertPath = getCertPath()+"instance-private-key.pem";
 		File accountCertFile = new File(accountCertPath);
 		if (!accountCertFile.exists()) {
 			applicationKeyPair = KeyPairUtils.createKeyPair(2048);
@@ -196,17 +197,11 @@ public class SSLGen {
 	private void downloadCert(String site) throws Exception {
 		checkNotNull(registration, "Need a registration to do this");
 		KeyPair domainKeyPair = KeyPairUtils.createKeyPair(2048);
-		FileWriter fw = new FileWriter(getCertPath() + site + "-priv.pem");
-		KeyPairUtils.writeKeyPair(domainKeyPair, fw);
-
 		CSRBuilder csrb = new CSRBuilder();
 		csrb.addDomain(site);
 		csrb.setOrganization("MySaasa");
 		csrb.sign(domainKeyPair);
 		byte[] csr = csrb.getEncoded();
-
-		fw = new FileWriter(getCertPath() + site + ".csr");
-		csrb.write(fw);
 
 		Certificate certificate = registration.requestCertificate(csr);
 		X509Certificate cert = certificate.download();
