@@ -15,7 +15,7 @@ public class StartServer {
 
 	public static void main(String[] args) throws Exception {
 
-		String keystorePath = Simple.getConfigPath() + "/keystore.jks";
+		String keystorePath = Simple.getConfigPath() + "/certificates/main.jks";
 		File keystoreFile = new File(keystorePath);
 
 		HttpConfiguration http_config = new HttpConfiguration();
