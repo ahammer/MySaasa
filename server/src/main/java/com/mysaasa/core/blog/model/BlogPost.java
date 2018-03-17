@@ -318,7 +318,9 @@ public class BlogPost implements Serializable {
 		p.setBody("Body");
 		p.setSummary("Summary");
 		p.setSubtitle("Subtitle");
-		AdminSession as = SessionService.get().getAdminSession(Session.get());
+		Session session = Session.get();
+		SessionService sessionService = SessionService.get();
+		AdminSession as = sessionService.getAdminSession(session);
 		p.setAuthor(as.getContext().getUser());
 		return p;
 	}

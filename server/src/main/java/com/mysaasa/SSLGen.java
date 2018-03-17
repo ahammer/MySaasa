@@ -37,6 +37,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * It attempts to get certificates and prepare a .jks file that
  * jetty can use to host SSL for MySaasa domains
  *
+ *
+ * Edit: Revise to be like this
+ * 1) Create Keystore if none exists
+ * 2) Iterate over the certificates and if they are valid
+ * 3) If missing or old, get auth and add to keystore
+ * 5) Notify SSL to regenerate
  */
 public class SSLGen {
 
@@ -65,25 +71,13 @@ public class SSLGen {
 		//if (1==1) return;
 		new Thread(() -> {
 			System.out.println("Updating Certificate Process");
-			List<String> sites = getApplicableDomains();
-
-			//We need to generate certs for this instance
 
 			try {
 				loadKeyStore();
-
-				try {
-					isKeystoreValid();
-					System.out.println("Keystore looks valid, skipping this step");
-					return;
-				} catch (Exception e) {
-					//Continue
-				}
-
 				downloadBasicCerts();
 				loadApplicationCertificate();
 				connectToLetsEncrypt();
-				getCertsForSites(sites);
+				getCertsForSites();
 				saveKeystore();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -92,16 +86,17 @@ public class SSLGen {
 
 	}
 
-	/**
-	 * Is the keystore still valid or do we need to renew?
-	 *
-	 * This will throw exceptions if the cert isn't valid
-	 */
-	private void isKeystoreValid() throws KeyStoreException, CertificateNotYetValidException, CertificateExpiredException {
-		for (String domain:getApplicableDomains()) {
-			if (!mainKeyStore.containsAlias(domain)) throw new IllegalStateException("Cert not in keystore for "+domain);
+
+	private boolean isDomainValid(String domain) throws KeyStoreException, CertificateExpiredException, CertificateNotYetValidException {
+		try {
+			if (!mainKeyStore.containsAlias(domain))
+				throw new IllegalStateException("Cert not in keystore for " + domain);
 			X509Certificate cert = (X509Certificate) mainKeyStore.getCertificate(domain);
 			cert.checkValidity(new Date(System.currentTimeMillis() + CERTIFICATE_LOOK_AHEAD_TIME_MS));
+			return true;
+		} catch (Exception e) {
+			//If not valid, or not existing, we return false
+			return false;
 		}
 	}
 
@@ -183,15 +178,19 @@ public class SSLGen {
 				.collect(Collectors.toList());
 	}
 
-	private void getCertsForSites(List<String> sites) throws Exception {
+	private void getCertsForSites() throws Exception {
+		List<String> sites = getApplicableDomains();
+
 		checkNotNull(registration, "Must be registered to do this");
 		for (String site : sites) {
-			authorizeDomain(site);
-			downloadCert(site);
+			if (!isDomainValid(site)) {
+				System.out.println("Getting Certificate For: "+site);
+				authorizeDomain(site);
+				downloadCert(site);
+			} else {
+				System.out.println("Domain cert already valid: "+site);
+			}
 		}
-
-
-
 	}
 
 	private void downloadCert(String site) throws Exception {
@@ -208,24 +207,15 @@ public class SSLGen {
 
 		fw = new FileWriter(getCertPath() + site + ".csr");
 		csrb.write(fw);
+
 		Certificate certificate = registration.requestCertificate(csr);
 		X509Certificate cert = certificate.download();
-		X509Certificate[] chain = certificate.downloadChain();
 
-		fw = new FileWriter(getCertPath() + site + "-combined.pem");
-		CertificateUtils.writeX509CertificateChain(fw, cert, chain);
-
-		fw = new FileWriter(getCertPath() + site + "-cert.pem");
-		CertificateUtils.writeX509Certificate(cert, fw);
-
-		fw = new FileWriter(getCertPath() + site + "-chain.pem");
-		CertificateUtils.writeX509CertificateChain(fw, null, chain);
-
+		//Wipe and reload
+		if (mainKeyStore.containsAlias(site)) {
+			mainKeyStore.deleteEntry(site);
+		}
 		mainKeyStore.setKeyEntry(site, domainKeyPair.getPrivate(), getPasswordChars(), new java.security.cert.Certificate[]{cert});
-
-		//keyStore.store(new FileOutputStream(new File(getCertPath() + site + ".p12")), getPasswordChars());
-
-
 	}
 
 	private char[] getPasswordChars() {
