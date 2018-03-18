@@ -174,7 +174,13 @@ public class SSLGen {
 				.get()
 				.getWebsites()
 				.stream()
-				.filter(website -> !website.production.contains(".test"))
+				.filter(website -> {
+					try {
+						return !website.production.contains(".test");
+					} catch (Exception e) {
+						return false;
+					}
+				})
 				.map(website -> website.production)
 				.collect(Collectors.toList());
 	}
