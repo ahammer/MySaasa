@@ -56,7 +56,7 @@ public class SSLGen {
 
 	public static Map<String, Http01Challenge> activeChallengeMap = new ConcurrentHashMap();
 	private KeyStore mainKeyStore;
-	private boolean rateLimitHit;
+
 
 	public SSLGen() {}
 
@@ -190,7 +190,6 @@ public class SSLGen {
 
 		checkNotNull(registration, "Must be registered to do this");
 		for (String site : sites) {
-			if (rateLimitHit) return;
 			if (!isDomainValid(site)) {
 				System.out.println("Getting Certificate For: " + site);
 				authorizeDomain(site);
@@ -221,7 +220,8 @@ public class SSLGen {
 			mainKeyStore.setKeyEntry(site, domainKeyPair.getPrivate(), getPasswordChars(), new java.security.cert.Certificate[]{cert});
 			saveMainKeystore();
 		} catch (AcmeRateLimitExceededException e) {
-			rateLimitHit = true;
+			//Skip this one
+
 			//Rate Limit Exceeded
 		}
 	}
