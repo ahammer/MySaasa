@@ -2,6 +2,7 @@ package com.mysaasa;
 
 import com.mysaasa.core.hosting.service.HostingService;
 
+import com.mysaasa.core.website.model.Domain;
 import com.mysaasa.core.website.model.Website;
 import org.shredzone.acme4j.*;
 import org.shredzone.acme4j.challenge.Http01Challenge;
@@ -23,11 +24,13 @@ import java.security.cert.CertificateException;
 import java.security.cert.CertificateExpiredException;
 import java.security.cert.CertificateNotYetValidException;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -56,7 +59,6 @@ public class SSLGen {
 
 	public static Map<String, Http01Challenge> activeChallengeMap = new ConcurrentHashMap();
 	private KeyStore mainKeyStore;
-
 
 	public SSLGen() {}
 
@@ -175,13 +177,19 @@ public class SSLGen {
 				.getWebsites()
 				.stream()
 				.filter(website -> {
-					try {
+						if (website == null) return false;
+						if (website.production == null) return false;
+						if (!website.organization.enabled) return false;
 						return !website.production.contains(".test");
-					} catch (Exception e) {
-						return false;
-					}
-				} )
-				.map(website -> website.production)
+				})
+				.flatMap(website -> {
+					ArrayList<String> activeDomains = new ArrayList<>();
+					if (website.production != null) activeDomains.add(website.production);
+					if (website.staging != null) activeDomains.add(website.staging);
+					List<Domain> domains = website.getDomains();
+					domains.forEach(domain->activeDomains.add(domain.domain));
+					return activeDomains.stream();
+				})
 				.collect(Collectors.toList());
 	}
 
