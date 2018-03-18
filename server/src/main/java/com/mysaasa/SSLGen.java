@@ -7,8 +7,8 @@ import org.shredzone.acme4j.*;
 import org.shredzone.acme4j.challenge.Http01Challenge;
 import org.shredzone.acme4j.exception.AcmeConflictException;
 import org.shredzone.acme4j.exception.AcmeException;
+import org.shredzone.acme4j.exception.AcmeRateLimitExceededException;
 import org.shredzone.acme4j.util.CSRBuilder;
-import org.shredzone.acme4j.util.CertificateUtils;
 import org.shredzone.acme4j.util.KeyPairUtils;
 
 import java.io.*;
@@ -56,6 +56,7 @@ public class SSLGen {
 
 	public static Map<String, Http01Challenge> activeChallengeMap = new ConcurrentHashMap();
 	private KeyStore mainKeyStore;
+	private boolean rateLimitHit;
 
 	public SSLGen() {}
 
@@ -78,14 +79,13 @@ public class SSLGen {
 				loadApplicationCertificate();
 				connectToLetsEncrypt();
 				getCertsForSites();
-				saveKeystore();
+				saveMainKeystore();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		} ).start();
 
 	}
-
 
 	private boolean isDomainValid(String domain) throws KeyStoreException, CertificateExpiredException, CertificateNotYetValidException {
 		try {
@@ -104,11 +104,11 @@ public class SSLGen {
 	 * We will need the root/intermediate certs for the keychain
 	 *
 	 * @throws IOException
-
+	
 	private void downloadBasicCerts() throws IOException {
 		downloadFile(ROOT_KEY_URL, "root.pem");
 		downloadFile(INTERMEDIATE_KEY_URL, "intermediate.pem");
-
+	
 		return;
 	}
 	 */
@@ -126,7 +126,7 @@ public class SSLGen {
 		String contactEmail = Simple.getContactEmail();
 		checkNotNull(contactEmail, "contactEmail required in settings.properties to connect to lets encrypt");
 		RegistrationBuilder builder = new RegistrationBuilder();
-		builder.addContact("mailto:"+contactEmail);
+		builder.addContact("mailto:" + contactEmail);
 
 		try {
 			registration = builder.create(session);
@@ -155,7 +155,7 @@ public class SSLGen {
 		String certificatePath = getCertPath();
 		new File(certificatePath).mkdir();
 
-		String accountCertPath = getCertPath()+"instance-private-key.pem";
+		String accountCertPath = getCertPath() + "instance-private-key.pem";
 		File accountCertFile = new File(accountCertPath);
 		if (!accountCertFile.exists()) {
 			applicationKeyPair = KeyPairUtils.createKeyPair(2048);
@@ -180,7 +180,7 @@ public class SSLGen {
 					} catch (Exception e) {
 						return false;
 					}
-				})
+				} )
 				.map(website -> website.production)
 				.collect(Collectors.toList());
 	}
@@ -190,12 +190,13 @@ public class SSLGen {
 
 		checkNotNull(registration, "Must be registered to do this");
 		for (String site : sites) {
+			if (rateLimitHit) return;
 			if (!isDomainValid(site)) {
-				System.out.println("Getting Certificate For: "+site);
+				System.out.println("Getting Certificate For: " + site);
 				authorizeDomain(site);
 				downloadCert(site);
 			} else {
-				System.out.println("Domain cert already valid: "+site);
+				System.out.println("Domain cert already valid: " + site);
 			}
 		}
 	}
@@ -209,14 +210,20 @@ public class SSLGen {
 		csrb.sign(domainKeyPair);
 		byte[] csr = csrb.getEncoded();
 
-		Certificate certificate = registration.requestCertificate(csr);
-		X509Certificate cert = certificate.download();
+		try {
+			Certificate certificate = registration.requestCertificate(csr);
+			X509Certificate cert = certificate.download();
 
-		//Wipe and reload
-		if (mainKeyStore.containsAlias(site)) {
-			mainKeyStore.deleteEntry(site);
+			//Wipe and reload
+			if (mainKeyStore.containsAlias(site)) {
+				mainKeyStore.deleteEntry(site);
+			}
+			mainKeyStore.setKeyEntry(site, domainKeyPair.getPrivate(), getPasswordChars(), new java.security.cert.Certificate[]{cert});
+			saveMainKeystore();
+		} catch (AcmeRateLimitExceededException e) {
+			rateLimitHit = true;
+			//Rate Limit Exceeded
 		}
-		mainKeyStore.setKeyEntry(site, domainKeyPair.getPrivate(), getPasswordChars(), new java.security.cert.Certificate[]{cert});
 	}
 
 	private char[] getPasswordChars() {
@@ -284,14 +291,14 @@ public class SSLGen {
 		} else {
 			mainKeyStore.load(new FileInputStream(getKeystoreFile()), getPasswordChars());
 		}
-		saveKeystore();
+		saveMainKeystore();
 	}
 
 	private File getKeystoreFile() {
-		return new File(getCertPath()+"main.jks");
+		return new File(getCertPath() + "main.jks");
 	}
 
-	private void saveKeystore() throws IOException, NoSuchAlgorithmException, CertificateException, KeyStoreException {
+	private void saveMainKeystore() throws IOException, NoSuchAlgorithmException, CertificateException, KeyStoreException {
 		File file = getKeystoreFile();
 		mainKeyStore.store(new FileOutputStream(file), getPasswordChars());
 	}

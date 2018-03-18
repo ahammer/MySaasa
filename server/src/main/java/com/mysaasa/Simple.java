@@ -117,11 +117,12 @@ public abstract class Simple extends WebApplication {
 
 	public static String getContactEmail() {
 		return getProperties().getProperty(PREF_CONTACT_EMAIL, null);
-}
+	}
 
 	public static String getKeystorePassword() {
 		return getProperties().getProperty(PREF_KEYSTORE_PASSWORD, "password");
 	}
+
 	/**
 	 * Get's the default setting/config path for the OS
 	 * There is one for windows and another for linux/mac
