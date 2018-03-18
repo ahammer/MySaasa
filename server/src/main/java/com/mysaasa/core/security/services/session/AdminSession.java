@@ -26,7 +26,7 @@ public class AdminSession implements Serializable {
 	private Website website;
 	private Website theme;
 	private Environment env = Environment.Live;
-	private boolean editMode = true; //Inline editor in edit mode
+	private boolean editMode = false; //Inline editor in edit mode
 	private boolean newPostAllowed = true; //Inline editor allow new post?
 
 	public AdminSession(SecurityContext context) {
