@@ -27,6 +27,7 @@ import org.apache.wicket.util.file.Files;
 import org.apache.wicket.util.string.Strings;
 
 import org.eclipse.jetty.util.security.Credential;
+import org.shredzone.acme4j.challenge.Http01Challenge;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -85,7 +86,9 @@ public class TemplatedSiteRequestHandler implements IRequestHandler {
 		if (website == null)
 			return false;
 
-		if (SSLGen.hasActiveChallenge(filename, website)) {
+		//Check if there is a challenge for this domain
+		Http01Challenge challenge = SSLGen.getActiveChallenge(filename, host);
+		if (challenge != null) {
 			return true;
 		}
 
@@ -180,8 +183,9 @@ public class TemplatedSiteRequestHandler implements IRequestHandler {
 		} catch (final FileNotFoundException | ResourceNotFoundException e) {
 
 			//Maybe this is a challenge?
-			if (SSLGen.hasActiveChallenge(path, website)) {
-				stringResponse(response, SSLGen.getAuthorization(website));
+			Http01Challenge challenge = SSLGen.getActiveChallenge(path, requestCycle.getRequest().getUrl().getHost());
+			if (challenge != null) {
+				stringResponse(response, challenge.getAuthorization());
 				return;
 			}
 			_404Response(response);

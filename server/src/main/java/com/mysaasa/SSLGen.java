@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -82,7 +81,9 @@ public class SSLGen {
 				connectToLetsEncrypt();
 				getCertsForSites();
 				saveMainKeystore();
+				System.out.println("Certificate process complete");
 			} catch (Exception e) {
+				System.out.println("Certificate Process Uncaught Exception!!");
 				e.printStackTrace();
 			}
 		} ).start();
@@ -139,9 +140,6 @@ public class SSLGen {
 				.setAgreement(registration.getAgreement())
 				.commit();
 
-		URL accountLocationUrl = registration.getLocation();
-		System.out.println("Connected Successfully to LetsEncrypt: " + accountLocationUrl.toString());
-
 	}
 
 	private String getAcmeUrl() {
@@ -177,19 +175,26 @@ public class SSLGen {
 				.getWebsites()
 				.stream()
 				.filter(website -> {
-						if (website == null) return false;
-						if (website.production == null) return false;
-						if (!website.organization.enabled) return false;
-						return !website.production.contains(".test");
-				})
+					if (website == null)
+						return false;
+					if (website.production == null)
+						return false;
+					if (website.organization == null)
+						return false;
+					if (website.organization.enabled == null)
+						return false;
+					if (!website.organization.enabled)
+						return false;
+					return !website.production.contains(".test");
+				} )
 				.flatMap(website -> {
 					ArrayList<String> activeDomains = new ArrayList<>();
-					if (website.production != null) activeDomains.add(website.production);
-					if (website.staging != null) activeDomains.add(website.staging);
+					if (website.production != null)
+						activeDomains.add(website.production);
 					List<Domain> domains = website.getDomains();
-					domains.forEach(domain->activeDomains.add(domain.domain));
+					domains.forEach(domain -> activeDomains.add(domain.domain));
 					return activeDomains.stream();
-				})
+				} )
 				.collect(Collectors.toList());
 	}
 
@@ -199,9 +204,11 @@ public class SSLGen {
 		checkNotNull(registration, "Must be registered to do this");
 		for (String site : sites) {
 			if (!isDomainValid(site)) {
+				System.out.println("-------------------------------------------------------------");
 				System.out.println("Getting Certificate For: " + site);
 				authorizeDomain(site);
 				downloadCert(site);
+
 			} else {
 				System.out.println("Domain cert already valid: " + site);
 			}
@@ -252,9 +259,8 @@ public class SSLGen {
 		int count = 0;
 		boolean currentlyValid = false;
 		System.out.println("Waiting to authorize domain: " + domain + "/.well-known/acme-challenge/" + challenge.getToken());
-		while (!currentlyValid && count < 100) {
-
-			System.out.println(count + "/" + 100);
+		while (!currentlyValid && count < 20) {
+			System.out.println(count + "/" + 20);
 			challenge.update();
 			currentlyValid = challenge.getStatus() == Status.VALID;
 			if (currentlyValid)
@@ -275,12 +281,14 @@ public class SSLGen {
 
 	}
 
-	public static boolean hasActiveChallenge(String filename, Website website) {
-		if (activeChallengeMap.containsKey(website.production)) {
-			Http01Challenge challenge = activeChallengeMap.get(website.production);
-			return (filename.equalsIgnoreCase(".well-known/acme-challenge/" + challenge.getToken()));
+	public static Http01Challenge getActiveChallenge(String filename, String domain) {
+		Http01Challenge challenge = null;
+
+
+		if (activeChallengeMap.containsKey(domain)) {
+			challenge = activeChallengeMap.get(domain);
 		}
-		return false;
+		return challenge;
 	}
 
 	public static String getAuthorization(Website website) {
