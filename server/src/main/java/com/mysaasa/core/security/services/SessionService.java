@@ -101,8 +101,10 @@ public class SessionService {
 
 	public AdminSession getAdminSession(Session session) {
 
-		if (session == null)
+		if (session == null) {
 			session = Session.get();
+		}
+
 		session.bind();
 		if (adminSessionMap.containsKey(session)) {
 			return adminSessionMap.get(session);

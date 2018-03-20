@@ -273,7 +273,7 @@ public abstract class Simple extends WebApplication {
 		mountPage("/ApiGuide", ApiGuide.class);
 		mountPage("/TemplateGuide", TemplateGuide.class);
 
-		getRootRequestMapperAsCompound().add(new MysaasaRequestMapper());
+		setRootRequestMapper(new MysaasaRequestMapper());
 		HttpsConfig config = new HttpsConfig();
 		config.setHttpsPort(getSecurePort());
 
