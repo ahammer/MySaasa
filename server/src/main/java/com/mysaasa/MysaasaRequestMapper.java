@@ -6,11 +6,14 @@ import com.mysaasa.core.website.model.Website;
 import com.mysaasa.core.website.templating.MediaRequestHandler;
 import com.mysaasa.core.hosting.service.HostingService;
 import com.mysaasa.core.website.templating.TemplatedSiteRequestHandler;
+import com.mysaasa.pages.Splash;
 import org.apache.velocity.app.VelocityEngine;
+import org.apache.wicket.core.request.mapper.MountedMapper;
 import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.IRequestMapper;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Url;
+import org.eclipse.jetty.http.HttpParser;
 
 /**
  * Map's a request, basically if it's for a Website it has a high compatibility.
@@ -26,6 +29,7 @@ public class MysaasaRequestMapper implements IRequestMapper {
 	public static final int MATCHING_SCORE = Integer.MIN_VALUE + 2;
 	private final VelocityEngine mEngine;
 
+	private final MountedMapper mapper = new MountedMapper("/Admin", Splash.class);
 	public MysaasaRequestMapper() {
 		mEngine = new VelocityEngine();
 	}
@@ -57,6 +61,10 @@ public class MysaasaRequestMapper implements IRequestMapper {
 
 	@Override
 	public IRequestHandler mapRequest(Request request) {
+		String path1 = request.getClientUrl().getPath();
+		if (path1.equalsIgnoreCase("Admin")) {
+			return mapper.mapRequest(request);
+		}
 		long currentTime = System.nanoTime();
 		long tmpDeltaTime = currentTime - timeMillis;
 		deltaTime = (deltaTime * 200 + tmpDeltaTime) / 201l;

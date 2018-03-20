@@ -269,11 +269,13 @@ public abstract class Simple extends WebApplication {
 		super.init();
 		moduleManager = new ModuleManager();
 		getMarkupSettings().setStripWicketTags(true); // IMPORTANT!
+		/*
 		mountPage("/Admin", Splash.class);
 		mountPage("/ApiGuide", ApiGuide.class);
 		mountPage("/TemplateGuide", TemplateGuide.class);
+		*/
 
-		setRootRequestMapper(new MysaasaRequestMapper());
+		getRootRequestMapperAsCompound().add(new MysaasaRequestMapper());
 		HttpsConfig config = new HttpsConfig();
 		config.setHttpsPort(getSecurePort());
 
