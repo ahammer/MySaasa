@@ -5,6 +5,7 @@ import com.google.inject.Injector;
 import com.mysaasa.core.ModuleManager;
 import com.mysaasa.core.hosting.service.HostingService;
 import com.mysaasa.core.setup.Setup;
+import com.mysaasa.core.website.model.Website;
 import com.mysaasa.development.CodeGen;
 import com.mysaasa.injection.SimpleGuiceModuleImpl;
 import com.mysaasa.interfaces.IClassPanelAdapter;
@@ -268,7 +269,8 @@ public abstract class Simple extends WebApplication {
 	public void init() {
 		super.init();
 		moduleManager = new ModuleManager();
-		getMarkupSettings().setStripWicketTags(true); // IMPORTANT!
+		getMarkupSettings().setStripWicketTags(true);
+		// IMPORTANT!
 		/*
 		mountPage("/Admin", Splash.class);
 		mountPage("/ApiGuide", ApiGuide.class);
@@ -295,7 +297,7 @@ public abstract class Simple extends WebApplication {
 	@Override
 	public Class<? extends WebPage> getHomePage() {
 
-		if (hasBeenInstalled() && HostingService.get().findWebsite(RequestCycle.get().getRequest().getClientUrl().getHost()) == null) {
+		if (hasBeenInstalled()) {
 			return Splash.class;
 		} else {
 			return Setup.class;

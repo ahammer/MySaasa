@@ -259,7 +259,6 @@ public class Website implements Serializable {
 	 * @return
 	 */
 	public static Website getCurrent() {
-		System.out.println("RequestCycle getCurrent(): " + RequestCycle.get().getRequest().getClientUrl());
 		return HostingService.get().findWebsite(RequestCycle.get().getRequest().getClientUrl());
 	}
 

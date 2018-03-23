@@ -65,7 +65,6 @@ public class TemplatedSiteRequestHandler implements IRequestHandler {
 		String session_part = "";
 
 		if (HostingService.isSessionLinked(host)) {
-
 			String real_domain = HostingService.RealDomain(host);
 			session_part = HostingService.Session(host);
 			host = real_domain;
