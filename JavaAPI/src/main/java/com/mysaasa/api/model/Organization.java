@@ -2,9 +2,6 @@ package com.mysaasa.api.model;
 
 import com.google.gson.JsonObject;
 
-/**
- * Created by adam on 2014-10-31.
- */
 public class Organization {
     private final long id;
     private final String json;
