@@ -86,20 +86,6 @@ public class Organization implements Serializable {
 		this.contactInfo = contactInfo;
 	}
 
-	/**
-	@LazyCollection(LazyCollectionOption.FALSE)
-	@OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
-	@JoinColumn(name = "subscription")
-	
-	public Cart getSubscription() {
-		return subscription;
-	}
-	
-	public void setSubscription(Cart subscription) {
-		this.subscription = subscription;
-	}
-	 */
-
 	@Column(name = "name")
 	public String getName() {
 		return name;

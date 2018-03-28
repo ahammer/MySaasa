@@ -208,8 +208,8 @@ public class Media implements Serializable {
 
 	/**
 	 * Creates a Media Object from a File Upload. This should register it in the database and save it to the file system
-	 * @param fu
-	 * @throws IOException
+	 * @param fu file upload
+	 * @throws IOException an io exception when we can't upload a file
 	 */
 	public Media(FileUpload fu) throws IOException {
 		uid = new UID().toString().replace("-", "").replace(":", "");

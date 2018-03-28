@@ -15,7 +15,7 @@ import java.util.*;
  *
  * It records Mappings, so Class:Function + Parameters
  *
- * When you contact the API it expects /Class/Function?Arg1=&Arg2=
+ * When you contact the API it expects
  *
  * Things need to be exact and in order, and in the correct format
  *
@@ -74,7 +74,7 @@ public class ApiHelperService {
 	/**
 	 * If a service is a IApiService it needs extra processing to bind it to the API so we can find it later
 	 *
-	 * @param service
+	 * @param service the service to be bound
 	 */
 	public void bindApiService(IApiService service) {
 		for (Method method : service.getClass().getMethods()) {

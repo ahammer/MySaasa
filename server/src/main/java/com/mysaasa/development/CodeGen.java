@@ -15,7 +15,6 @@ public class CodeGen {
 	 * There is a lot of boilerplate I use, and auto-generated code seems best suited for this,
 	 *
 	 * it's super rare, I'm just going to build it in engine for now to save me time.
-	 * @return
 	 */
 	public static void generateRetrofitCode() {
 		ApiHelperService service = ApiHelperService.get();

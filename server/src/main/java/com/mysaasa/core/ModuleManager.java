@@ -132,8 +132,8 @@ public class ModuleManager {
 
 	/**
 	 * The Modules register panels to classes for editing, this is how it's looked up
-	 * @param aClass
-	 * @return
+	 * @param aClass class
+	 * @return adapter
 	 */
 	public IClassPanelAdapter getClassPanelAdapter(Class aClass) {
 		return classPanelAdapters.get(aClass);

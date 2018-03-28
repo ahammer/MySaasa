@@ -49,8 +49,8 @@ public class MysaasaRequestMapper implements IRequestMapper {
 	 *
 	 * TODO: It looks like we can have one RequestMapper for each type
 	 * Media/QR/Template/API
-	 * @param request
-	 * @return
+	 * @param request the request
+	 * @return the score, if it should match
 	 */
 	@Override
 	public int getCompatibilityScore(Request request) {

@@ -118,8 +118,8 @@ public class WebsiteSidebar extends Panel {
 	}
 
 	/**
-	 *
-	 * @param event
+	 * Internal Event Bus
+	 * @param event event
 	 */
 	@Override
 	public void onEvent(IEvent event) {

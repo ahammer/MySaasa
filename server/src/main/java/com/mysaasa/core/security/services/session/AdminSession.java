@@ -88,7 +88,7 @@ public class AdminSession implements Serializable {
 	/**
 	 * Shortcut
 	 *
-	 * @return
+	 * @return the current admin session
 	 */
 	public static AdminSession get() {
 		RequestCycle requestCycle = RequestCycle.get();

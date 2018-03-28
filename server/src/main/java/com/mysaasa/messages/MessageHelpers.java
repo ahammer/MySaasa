@@ -25,8 +25,8 @@ public class MessageHelpers {
 
 	/**
 	 * This is a helper to request editing, just to reduce a minor amount of boilerplate
-	 * @param target
-	 * @param defaultModel
+	 * @param target target
+	 * @param defaultModel defaultModel
 	 */
 	public static void editEventMessage(AjaxRequestTarget target, IModel<?> defaultModel) {
 		checkNotNull(defaultModel);
@@ -48,8 +48,8 @@ public class MessageHelpers {
 
 	/**
 	 * Sends the message that will load the Editor
-	 * @param target
-	 * @param website
+	 * @param target target
+	 * @param website website
 	 */
 	public static void loadWebsiteEditor(final AjaxRequestTarget target, Website website) {
 		checkNotNull(website);

@@ -24,8 +24,8 @@ public class OrganizationService {
 	/**
 	 * TODO Maybe inline some of this and make it one big transaction
 	 *
-	 * @param organization
-	 * @throws IllegalStateException
+	 * @param organization org
+	 * @throws IllegalStateException exception
 	 */
 	public void disableOrganization(Organization organization) throws IllegalStateException {
 		//EntityManager em = Simple.getEntityManager();
@@ -50,7 +50,7 @@ public class OrganizationService {
 	 *
 	 * Right now it checks for any organization in the system.
 	 *
-	 * @return
+	 * @return return
 	 */
 	public boolean hasRootOrganization() {
 		Logger logger = org.slf4j.LoggerFactory.getLogger(this.getClass());

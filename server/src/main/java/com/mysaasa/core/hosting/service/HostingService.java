@@ -49,8 +49,8 @@ public class HostingService extends BaseInjectedService {
 	 *
 	 * There is a cache to speed this up.
 	 *
-	 * @param clientUrl
-	 * @return
+	 * @param clientUrl clienturl
+	 * @return the website
 	 */
 	public Website findWebsite(Url clientUrl) {
 		checkNotNull(clientUrl);
@@ -103,7 +103,7 @@ public class HostingService extends BaseInjectedService {
 	/**
 	 * This will return all websites registered to the system
 	 *
-	 * @return
+	 * @return a list of all websites
 	 */
 	public List<Website> getWebsites() {
 		
@@ -114,7 +114,7 @@ public class HostingService extends BaseInjectedService {
 
 	/**
 	 * Delete a website,
-	 * @param website
+	 * @param website the website you want to delete
 	 */
 	public void deleteWebsite(Website website) {
 		EntityManager entityManager = Simple.getEntityManager();
@@ -160,8 +160,8 @@ public class HostingService extends BaseInjectedService {
 	 * To make sure it works cross platform, make sure to always use / instead of \ in
 	 * the SIMPLE_CONFIG and any other path's you might define.]
 	 *
-	 * @param templateFile
-	 * @return
+	 * @param templateFile templateFile
+	 * @return the website for this file
 	 */
 	public Website findWebsite(File templateFile) {
 		//Preconditions
@@ -192,8 +192,8 @@ public class HostingService extends BaseInjectedService {
 	/**
 	 * Helper to normalize paths in the filenames, since different OS's have different path structures
 	 *
-	 * @param substring
-	 * @return
+	 * @param substring substrint
+	 * @return path fixed
 	 */
 	public static String normalizePath(String substring) {
 		return substring.replace('\\', '/');

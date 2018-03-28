@@ -37,7 +37,7 @@ public class MediaService {
 	}
 
 	/**
-	 * @param uid
+	 * @param uid uid
 	 * @return Media that matches this UID
 	 */
 	public Media findByUid(String uid) {

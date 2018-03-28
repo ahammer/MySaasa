@@ -54,9 +54,13 @@ public class BlogService {
 	/**
 	 * Untested, but it should getInstance a bunch of blog posts where they belong to multiple categories.
 	 *
-	 * @param organization
-	 * @param cats
-	 * @return
+	 * @param organization org
+	 * @param cats cats
+	 * @param direction direction
+	 * @param order order
+	 * @param page  page
+	 * @param page_size page size
+	 * @return return
 	 */
 	public List<BlogPost> getBlogPostsByCategory(Organization organization, List<Category> cats, int page, int page_size, String order, String direction) {
 
@@ -95,7 +99,7 @@ public class BlogService {
 	/**
 	 * Get's a blog post
 	 *
-	 * @param id
+	 * @param id id
 	 * @return The Blogpost, null if 0, Exception otherwise (0 is used by system for editing/new records)
 	 */
 	public BlogPost getBlogPostById(long id) {
@@ -127,9 +131,9 @@ public class BlogService {
 	/**
 	 * Get's a list of blog comments for a blog post
 	 *
-	 * @param post_id
-	 * @param count
-	 * @return
+	 * @param post_id post id
+	 * @param count the count you want
+	 * @return a list of blog comments
 	 */
 	public List<BlogComment> getTopLevelBlogComments(long post_id, int count) {
 

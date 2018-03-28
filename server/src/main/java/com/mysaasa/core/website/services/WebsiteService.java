@@ -116,7 +116,6 @@ public class WebsiteService {
 
 	}
 
-	/** Installs the getting started stuff */
 	public void installGettingStarted(Website dest) {
 		checkNotNull(dest);
 		File sourceFile = new File(DefaultPreferences.getConfigPath() + "websites/gettingstarted.dev");

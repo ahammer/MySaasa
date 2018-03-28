@@ -32,8 +32,10 @@ public abstract class MultiSelectWidget<T> extends Panel {
 	/**
 	 * Creates a new MultiSelectWidget, provide it a list of selected items of type T
 	
-	 * @param id
-	 * @param model
+	 * @param id id
+	 * @param model model
+	 * @param placeholderModel pm
+	 * @param buttonModel bm
 	 */
 	public MultiSelectWidget(String id, IModel<List<T>> model, IModel<String> placeholderModel, IModel<String> buttonModel) {
 
@@ -63,7 +65,7 @@ public abstract class MultiSelectWidget<T> extends Panel {
 	 * Refreshes a list
 	 *
 	 * Should be done with model but it's a little funny
-	 * @param target
+	 * @param target target
 	 */
 	public void refresh(AjaxRequestTarget target) {
 		List<T> list = (List<T>) MultiSelectWidget.this.getDefaultModel().getObject();
@@ -166,31 +168,31 @@ public abstract class MultiSelectWidget<T> extends Panel {
 	 *
 	 * Implement before using.
 	 *
-	 * @return
+	 * @return choices
 	 */
 	public abstract Iterator<T> getChoices();
 
 	/**
 	 * Convert a String into Type T.
 	 *
-	 * @param string
-	 * @return
+	 * @param string string
+	 * @return to the type
 	 */
 	public abstract T fromString(String string);
 
 	/**
 	 * Convert a object into a String
 	 *
-	 * @param object
-	 * @return
+	 * @param object object
+	 * @return string
 	 */
 	protected abstract String convertToString(T object);
 
 	/**
 	 * Each list item needs to be created by the implementing class
 	 *
-	 * @param item
-	 * @param selected
+	 * @param item item
+	 * @param selected selected
 	 */
 	public abstract void populateListItem(final ListItem<T> item, boolean selected);
 

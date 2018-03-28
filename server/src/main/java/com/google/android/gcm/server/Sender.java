@@ -108,6 +108,7 @@ public class Sender {
 	 * @throws IllegalArgumentException if registrationId is {@literal null}.
 	 * @throws InvalidRequestException if GCM didn't returned a 200 or 5xx status.
 	 * @throws IOException if message could not be sent.
+	 * @return the result
 	 */
 	public Result send(Message message, String registrationId, int retries)
 			throws IOException {
@@ -140,6 +141,8 @@ public class Sender {
 	 * Sends a message without retrying in case of service unavailability. See
 	 * {@link #send(Message, String, int)} for more info.
 	 *
+	 * @param message message
+	 * @param registrationId registrationId
 	 * @return result of the post, or {@literal null} if the GCM service was
 	 *         unavailable or any network exception caused the request to fail.
 	 *
@@ -373,6 +376,8 @@ public class Sender {
 	 * Sends a message without retrying in case of service unavailability. See
 	 * {@link #send(Message, List, int)} for more info.
 	 *
+	 * @param message message
+	 * @param registrationIds regisrationIds
 	 * @return multicast results if the message was sent successfully,
 	 *         {@literal null} if it failed but could be retried.
 	 *
@@ -519,7 +524,9 @@ public class Sender {
 
 	/**
 	 * Make an HTTP post to a given URL.
-	 *
+	 * @param body body
+	 * @param url url
+	 * @throws IOException on network error
 	 * @return HTTP response.
 	 */
 	protected HttpURLConnection post(String url, String body)
@@ -571,6 +578,9 @@ public class Sender {
 
 	/**
 	 * Creates a map with just one key-value pair.
+	 * @param value value
+	 * @param key key
+	 * @return map
 	 */
 	protected static final Map<String, String> newKeyValues(String key,
 			String value) {
@@ -605,6 +615,9 @@ public class Sender {
 
 	/**
 	 * Gets an {@link HttpURLConnection} given an URL.
+	 * @param url url
+	 * @return url connection
+	 * @throws IOException a network error
 	 */
 	protected HttpURLConnection getConnection(String url) throws IOException {
 		HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
@@ -617,6 +630,10 @@ public class Sender {
 	 * If the stream ends in a newline character, it will be stripped.
 	 * <p>
 	 * If the stream is {@literal null}, returns an empty string.
+	 *
+	 * @param stream the stream
+	 * @return stream to string
+	 * @throws IOException when the stream fails
 	 */
 	protected static String getString(InputStream stream) throws IOException {
 		if (stream == null) {

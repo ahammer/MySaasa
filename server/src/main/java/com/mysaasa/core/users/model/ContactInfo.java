@@ -179,7 +179,9 @@ public class ContactInfo implements Serializable {
 	 *
 	 * This merges the Query Parameters (via the Template Proxy) to the address object.
 	 * If the field names match, we apply them.
-	 * @param params
+	 *
+	 * @param prefix  Prefix used on the parameters in the Query
+	 * @param params  Query Parameters
 	 */
 	public void mergeAddressData(String prefix, QueryParamProxy params) {
 		if (prefix == null)
@@ -272,7 +274,7 @@ public class ContactInfo implements Serializable {
 
 	/**
 	 * Basic information validation.
-	 * @return
+	 * @return if we have enough information to checkout
 	 */
 	public boolean readyForCheckout() {
 		boolean ready = true;

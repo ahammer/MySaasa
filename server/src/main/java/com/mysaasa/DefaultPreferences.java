@@ -31,7 +31,7 @@ public class DefaultPreferences {
      * This is the Port gotten from the "port" property of the settings.properties file.
      * The default is 80, but it can be over-ridden in the file
      *
-     * @return
+     * @return the non https port
      */
     public static int getPort() {
         return Integer.parseInt(getProperties().getProperty(PREF_PORT, "8080"));
@@ -77,7 +77,7 @@ public class DefaultPreferences {
      * Location of the configs, either the SIMPLE_PLATFORM_PATH environment variable or
      * /opt/simple as a default
      *
-     * @return
+     * @return the config path
      */
     public static String getConfigPath() {
 
@@ -98,8 +98,7 @@ public class DefaultPreferences {
      *
      * Get the global properties for you, create if it doesn't exist.
      *
-     * @return
-     * @throws java.io.IOException
+     * @return the properties
      */
     public static Properties getProperties() {
         File propertiesFile = new File(getConfigPath() + "/" + SETTINGS_FILE);
