@@ -26,7 +26,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * This service manages website and hosting data.
  */
 @SimpleService
-public class HostingService extends BaseService{
+public class HostingService extends BaseInjectedService {
 
 	public static final String EDITOR_PREFIX = "edit_";
 

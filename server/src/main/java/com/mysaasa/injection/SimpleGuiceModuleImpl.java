@@ -1,7 +1,7 @@
 package com.mysaasa.injection;
 
 import com.google.inject.CreationException;
-import com.mysaasa.core.hosting.service.BaseService;
+import com.mysaasa.core.hosting.service.BaseInjectedService;
 import com.mysaasa.interfaces.annotations.SimpleService;
 import com.mysaasa.Simple;
 import com.mysaasa.SimpleImpl;
@@ -92,8 +92,8 @@ public class SimpleGuiceModuleImpl extends AbstractSimpleGuiceModule {
 	}
 
 	public void linkServices() {
-		for (Class c : reflections.getSubTypesOf(BaseService.class)) {
-			((BaseService)Simple.getInstance().getInjector().getProvider(c).get()).inject();
+		for (Class c : reflections.getSubTypesOf(BaseInjectedService.class)) {
+			((BaseInjectedService)Simple.getInstance().getInjector().getProvider(c).get()).inject();
 		}
 	}
 }
