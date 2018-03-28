@@ -1,6 +1,7 @@
 package com.mysaasa.injection;
 
 import com.google.inject.CreationException;
+import com.mysaasa.core.hosting.service.BaseService;
 import com.mysaasa.interfaces.annotations.SimpleService;
 import com.mysaasa.Simple;
 import com.mysaasa.SimpleImpl;
@@ -20,17 +21,20 @@ import java.util.Set;
  * Created by adam on 12/24/13.
  */
 public class SimpleGuiceModuleImpl extends AbstractSimpleGuiceModule {
+	private final Reflections reflections;
 	private EntityManagerFactory emf = null;
 
-	@Override
-	protected void configure() {
-		Reflections reflections;
-
+	public SimpleGuiceModuleImpl() {
 		try {
 			reflections = new Reflections("com.mysaasa");
 		} catch (NoClassDefFoundError e) {
 			throw new RuntimeException("Could not run Service Detector, SimpleGuicemoduleImpl", e);
 		}
+	}
+
+	@Override
+	protected void configure() {
+
 
 		Set<Class> bound = new HashSet<>();
 		for (Class c : reflections.getTypesAnnotatedWith(SimpleService.class)) {
@@ -57,6 +61,7 @@ public class SimpleGuiceModuleImpl extends AbstractSimpleGuiceModule {
 			}
 		}
 	}
+
 
 	private Class findAbstractParent(Class c) {
 		if (c.getSuperclass() == Object.class)
@@ -86,4 +91,9 @@ public class SimpleGuiceModuleImpl extends AbstractSimpleGuiceModule {
 		return em;
 	}
 
+	public void linkServices() {
+		for (Class c : reflections.getSubTypesOf(BaseService.class)) {
+			((BaseService)Simple.getInstance().getInjector().getProvider(c).get()).inject();
+		}
+	}
 }

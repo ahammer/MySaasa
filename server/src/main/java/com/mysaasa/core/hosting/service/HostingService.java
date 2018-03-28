@@ -10,6 +10,7 @@ import com.mysaasa.interfaces.annotations.SimpleService;
 import com.mysaasa.Simple;
 import org.apache.wicket.request.Url;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.io.File;
@@ -25,9 +26,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * This service manages website and hosting data.
  */
 @SimpleService
-public class HostingService {
+public class HostingService extends BaseService{
 
 	public static final String EDITOR_PREFIX = "edit_";
+
+	@Inject
+	EntityManager em;
 
 	public static HostingService get() {
 		return Simple.getInstance().getInjector().getProvider(HostingService.class).get();
@@ -36,6 +40,7 @@ public class HostingService {
 	public HostingService() {
 		super();
 	}
+
 
 	private Map<String, Website> siteCache = new HashMap<String, Website>();
 
@@ -60,7 +65,7 @@ public class HostingService {
 			Website w = siteCache.get(host);
 			if (w != null)
 				return w;
-			EntityManager em = Simple.getEntityManager();
+
 			if (em == null)
 				return null;
 			Domain domain = HostingService.get().findDomain(host);
@@ -101,9 +106,9 @@ public class HostingService {
 	 * @return
 	 */
 	public List<Website> getWebsites() {
-		EntityManager em = Simple.getEntityManager();
+		
 		List<Website> results = em.createQuery("SELECT W FROM Website W").getResultList();
-		em.close();
+		//em.close();
 		return results;
 	}
 
@@ -129,23 +134,23 @@ public class HostingService {
 
 	public Website saveWebsite(Website website) {
 		checkNotNull(website);
-		EntityManager em = Simple.getEntityManager();
+		
 		em.getTransaction().begin();
 		Website tracked = em.merge(website);
 		em.flush();
 		em.getTransaction().commit();
-		em.close();
+		//em.close();
 		return tracked;
 	}
 
 	public Domain saveDomain(Domain domain) {
 		checkNotNull(domain);
-		EntityManager em = Simple.getEntityManager();
+		
 		em.getTransaction().begin();
 		Domain tracked = em.merge(domain);
 		em.flush();
 		em.getTransaction().commit();
-		em.close();
+		//em.close();
 		return tracked;
 	}
 
@@ -195,9 +200,9 @@ public class HostingService {
 	}
 
 	public Website findWebsite(String domain) {
-		EntityManager em = Simple.getEntityManager();
+		
 		List<Website> results = em.createQuery("SELECT W FROM Website W WHERE LOWER(W.production)=:domain").setParameter("domain", domain.toLowerCase()).getResultList();
-		em.close();
+		//em.close();
 		if (results.size() != 1)
 			return null;
 		return results.get(0);
@@ -219,9 +224,9 @@ public class HostingService {
 	}
 
 	public Domain findDomain(String domain) {
-		EntityManager em = Simple.getEntityManager();
+		
 		List<Domain> results = em.createQuery("SELECT D FROM Domain D WHERE D.domain=:domain").setParameter("domain", domain).getResultList();
-		em.close();
+		//em.close();
 		if (results.size() != 1)
 			return null;
 		return results.get(0);
@@ -232,9 +237,9 @@ public class HostingService {
 	}
 
 	public List<Website> getWebsites(Organization organization) {
-		EntityManager em = Simple.getEntityManager();
+		
 		List<Website> results = em.createQuery("SELECT W FROM Website W WHERE W.organization=:organization").setParameter("organization", organization).getResultList();
-		em.close();
+		//em.close();
 		return results;
 	}
 
