@@ -255,7 +255,7 @@ public class WebsiteSidebar extends Panel {
 			//If this is new, send the broadcast that it was saved/updated.
 			//Normal inline editing is WYSIWYG so no update necessary, but after created a new post we should refresh
 			//so User can create another
-			send(SimpleImpl.get(), Broadcast.BREADTH, new BlogPostModifiedMessage() {
+			send(SimpleImpl.getInstance(), Broadcast.BREADTH, new BlogPostModifiedMessage() {
 				@Override
 				public AjaxRequestTarget getAjaxRequestTarget() {
 					return target;
@@ -268,7 +268,7 @@ public class WebsiteSidebar extends Panel {
 		BlogService service = BlogService.get();
 		Long _id = Long.parseLong(id.split("_ID_")[1]);
 		service.deleteBlogPost(service.getBlogPostById(_id));
-		send(SimpleImpl.get(), Broadcast.BREADTH, new BlogPostModifiedMessage() {
+		send(SimpleImpl.getInstance(), Broadcast.BREADTH, new BlogPostModifiedMessage() {
 			@Override
 			public AjaxRequestTarget getAjaxRequestTarget() {
 				return target;
@@ -293,7 +293,7 @@ public class WebsiteSidebar extends Panel {
 		ContentBinding b = websiteDataService.findBinding(id, website, id);
 		b.getContent().setBody(msg);
 		websiteDataService.deleteContentBinding(b);
-		send(SimpleImpl.get(), Broadcast.BREADTH, new BlogPostModifiedMessage() {
+		send(SimpleImpl.getInstance(), Broadcast.BREADTH, new BlogPostModifiedMessage() {
 			@Override
 			public AjaxRequestTarget getAjaxRequestTarget() {
 				return target;

@@ -15,18 +15,18 @@ public class MediaService {
 	}
 
 	public static MediaService get() {
-		return Simple.get().getInjector().getProvider(MediaService.class).get();
+		return Simple.getInstance().getInjector().getProvider(MediaService.class).get();
 	}
 
 	public List getMedia() {
-		EntityManager em = Simple.getEm();
+		EntityManager em = Simple.getEntityManager();
 		List<Media> results = em.createQuery("SELECT M FROM Media M").getResultList();
 		em.close();
 		return results;
 	}
 
 	public Media saveMedia(Media m) {
-		EntityManager em = Simple.getEm();
+		EntityManager em = Simple.getEntityManager();
 		em.getTransaction().begin();
 		Media tracked = em.merge(m);
 		em.flush();
@@ -41,7 +41,7 @@ public class MediaService {
 	 * @return Media that matches this UID
 	 */
 	public Media findByUid(String uid) {
-		EntityManager em = Simple.getEm();
+		EntityManager em = Simple.getEntityManager();
 		List<Media> results = em.createQuery("SELECT M FROM Media M WHERE M.uid=:uid").setParameter("uid", uid).getResultList();
 		em.close();
 		if (results.size() == 0)

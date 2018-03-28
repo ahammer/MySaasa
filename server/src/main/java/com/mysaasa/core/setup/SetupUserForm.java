@@ -1,5 +1,6 @@
 package com.mysaasa.core.setup;
 
+import com.mysaasa.DefaultPreferences;
 import com.mysaasa.core.organization.model.Organization;
 import com.mysaasa.core.organization.services.OrganizationService;
 import com.mysaasa.core.users.model.User;
@@ -95,9 +96,9 @@ public class SetupUserForm extends Form {
 			User u = new User(data.getUsername(), data.getPassword(), User.AccessLevel.ROOT);
 			u.setOrganization(o);
 			UserService.get().saveUser(u);
-			Simple.getProperties().setProperty("baseDomain", baseDomain.getValue());
-			//                Simple.get().getProperties().setProperty(Simple.get().PREF_USER_INITIALIZED, "true");
-			Simple.get().saveProperties();
+			DefaultPreferences.getProperties().setProperty("baseDomain", baseDomain.getValue());
+			//                Simple.getInstance().getProperties().setProperty(Simple.getInstance().PREF_USER_INITIALIZED, "true");
+			Simple.getInstance().saveProperties();
 			info("Creating user");
 			send(getPage(), Broadcast.BREADTH, new SetupMessage() {
 				@Override
@@ -113,7 +114,7 @@ public class SetupUserForm extends Form {
 		super.onConfigure();
 		ready.setVisible(false);
 		/*
-		if (Boolean.valueOf(Simple.get().getProperties().getProperty(Simple.get().PREF_USER_INITIALIZED, "false"))) {
+		if (Boolean.valueOf(Simple.getInstance().getProperties().getProperty(Simple.getInstance().PREF_USER_INITIALIZED, "false"))) {
 		    ready.setVisible(true);
 		    email.setVisible(false);
 		    pass.setVisible(false);

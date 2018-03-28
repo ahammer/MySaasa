@@ -29,7 +29,7 @@ public class WebsiteSession implements Serializable {
 		/*
 		Cart cart = new Cart();
 		cart.setOrganization(Website.getCurrent().getOrganization());
-		cart = OrderService.get().save(cart);
+		cart = OrderService.getInstance().save(cart);
 		orderUid = cart.getUid();
 		*/
 	}
@@ -40,7 +40,7 @@ public class WebsiteSession implements Serializable {
 	 * @return
 	 *
 	 * public Cart getCart() {
-	return OrderService.get().findCartByUid(orderUid);
+	return OrderService.getInstance().findCartByUid(orderUid);
 	}
 	
 	 */

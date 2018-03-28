@@ -66,14 +66,14 @@ public class SimpleGuiceModuleImpl extends AbstractSimpleGuiceModule {
 
 	@Override
 	public Logger providesLogger() {
-		return SimpleImpl.get().getLogger();
+		return SimpleImpl.getInstance().getLogger();
 	}
 
 	@Override
 	public EntityManager providesEntityManager() {
 		if (emf == null) {
 			try {
-				Map<String, String> properties = Simple.get().getEntityManagerFactoryPropertyMap();
+				Map<String, String> properties = Simple.getInstance().getEntityManagerFactoryPropertyMap();
 				emf = Persistence.createEntityManagerFactory("Simple", properties);
 			} catch (IllegalStateException e) {
 				emf = null;

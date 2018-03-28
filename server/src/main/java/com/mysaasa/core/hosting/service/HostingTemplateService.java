@@ -81,7 +81,7 @@ public class HostingTemplateService implements ITemplateService {
 		/*
 		Cart c = null;
 		if (product_sku != null && !product_sku.trim().equalsIgnoreCase("")) {
-			Product product = InventoryService.get().getProductBySku(product_sku);
+			Product product = InventoryService.getInstance().getProductBySku(product_sku);
 			if (product != null) {
 				c = new Cart();
 				c.setUser(u);
@@ -89,7 +89,7 @@ public class HostingTemplateService implements ITemplateService {
 				c = c.addProduct(product);
 				c.setStatus(Cart.CartStatus.Active);
 				Payment p = new Payment();
-				p.setCurrency(product.getPricing().get(0).currency.getCurrency());
+				p.setCurrency(product.getPricing().getInstance(0).currency.getCurrency());
 				p.setValue(BigDecimal.valueOf(20));
 				p.setValidated(true);
 				p.setSuccessful(true);
@@ -99,8 +99,8 @@ public class HostingTemplateService implements ITemplateService {
 			}
 		}
 		
-		Session.get().bind();
-		SessionService.get().registerUser(Session.get(), u);
+		Session.getInstance().bind();
+		SessionService.getInstance().registerUser(Session.getInstance(), u);
 		
 		//Create Website
 		Website website = new Website();
@@ -112,7 +112,7 @@ public class HostingTemplateService implements ITemplateService {
 		website.calculateProductionRoot().mkdirs();
 		website.calculateStagingRoot().mkdirs();
 		
-		WebsiteService.get().installGettingStarted(website);
+		WebsiteService.getInstance().installGettingStarted(website);
 		
 		
 		//Demo Product
@@ -124,7 +124,7 @@ public class HostingTemplateService implements ITemplateService {
 		ArrayList prices = new ArrayList<Pricing>();
 		prices.add(new Pricing(null, CurrencyOptions.CAD, BigDecimal.ONE));
 		p.setPricing(prices);
-		InventoryService.get().saveProduct(p);
+		InventoryService.getInstance().saveProduct(p);
 		
 		p = new Product();
 		p.setOrganization(o);
@@ -134,7 +134,7 @@ public class HostingTemplateService implements ITemplateService {
 		prices = new ArrayList<Pricing>();
 		prices.add(new Pricing(null, CurrencyOptions.CAD, BigDecimal.TEN));
 		p.setPricing(prices);
-		InventoryService.get().saveProduct(p);
+		InventoryService.getInstance().saveProduct(p);
 		
 		p = new Product();
 		p.setOrganization(o);
@@ -144,7 +144,7 @@ public class HostingTemplateService implements ITemplateService {
 		prices = new ArrayList<Pricing>();
 		prices.add(new Pricing(null, CurrencyOptions.CAD, BigDecimal.valueOf(50)));
 		p.setPricing(prices);
-		InventoryService.get().saveProduct(p);
+		InventoryService.getInstance().saveProduct(p);
 		
 		p = new Product();
 		p.setOrganization(o);
@@ -154,7 +154,7 @@ public class HostingTemplateService implements ITemplateService {
 		prices = new ArrayList<Pricing>();
 		prices.add(new Pricing(null, CurrencyOptions.CAD, BigDecimal.valueOf(500)));
 		p.setPricing(prices);
-		InventoryService.get().saveProduct(p);
+		InventoryService.getInstance().saveProduct(p);
 		
 		//Demo Blogpost
 		BlogPost post = new BlogPost();
@@ -165,7 +165,7 @@ public class HostingTemplateService implements ITemplateService {
 		post.setSummary("This summarizes that there is no real information here. This is a test blog post");
 		post.setBody("Welcome to your blog, you can start editing and posting immediately");
 		post.addCategory("Blog");
-		BlogService.get().saveBlogPost(post);
+		BlogService.getInstance().saveBlogPost(post);
 		o.save();
 		u.setOrganization(o);
 		o.setSubscription(c);

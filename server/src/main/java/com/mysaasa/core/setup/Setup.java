@@ -1,6 +1,7 @@
 package com.mysaasa.core.setup;
 
 import com.google.common.collect.Lists;
+import com.mysaasa.DefaultPreferences;
 import com.mysaasa.Simple;;
 import com.mysaasa.core.blog.model.BlogPost;
 import com.mysaasa.core.blog.services.BlogService;
@@ -44,7 +45,7 @@ public class Setup extends WebPage {
 
 	private static class State implements Serializable {
 
-		String url = "jdbc:h2:" + Simple.getConfigPath() + "database";
+		String url = "jdbc:h2:" + DefaultPreferences.getConfigPath() + "database";
 		String driverName = "org.h2.Driver";
 		String db_username = "root";
 		String db_password = "";
@@ -73,23 +74,23 @@ public class Setup extends WebPage {
 		String keystorePassword = "password";
 
 		public void writeToProperties() {
-			Properties p = Simple.getProperties();
-			p.setProperty(Simple.PREF_DB_PASS, db_password);
-			p.setProperty(Simple.PREF_DB_USERNAME, db_username);
-			p.setProperty(Simple.PREF_DB_DRIVER, driverName);
-			p.setProperty(Simple.PREF_DB_URL, url);
+			Properties p = DefaultPreferences.getProperties();
+			p.setProperty(DefaultPreferences.PREF_DB_PASS, db_password);
+			p.setProperty(DefaultPreferences.PREF_DB_USERNAME, db_username);
+			p.setProperty(DefaultPreferences.PREF_DB_DRIVER, driverName);
+			p.setProperty(DefaultPreferences.PREF_DB_URL, url);
 
-			p.setProperty(Simple.PREF_MAIL_SMTP_HOST, mail_host);
-			p.setProperty(Simple.PREF_MAIL_SMTP_PASSWORD, mail_password);
-			p.setProperty(Simple.PREF_MAIL_SMTP_USER, mail_user);
-			p.setProperty(Simple.PREF_MAIL_SMTP_PORT, mail_port);
+			p.setProperty(DefaultPreferences.PREF_MAIL_SMTP_HOST, mail_host);
+			p.setProperty(DefaultPreferences.PREF_MAIL_SMTP_PASSWORD, mail_password);
+			p.setProperty(DefaultPreferences.PREF_MAIL_SMTP_USER, mail_user);
+			p.setProperty(DefaultPreferences.PREF_MAIL_SMTP_PORT, mail_port);
 
-			p.setProperty(Simple.PREF_PORT, port);
-			p.setProperty(Simple.PREF_SECURE_PORT, securePort);
-			p.setProperty(Simple.PREF_GCM_PROJECT_ID, gcmKey);
+			p.setProperty(DefaultPreferences.PREF_PORT, port);
+			p.setProperty(DefaultPreferences.PREF_SECURE_PORT, securePort);
+			p.setProperty(DefaultPreferences.PREF_GCM_PROJECT_ID, gcmKey);
 
-			p.setProperty(Simple.PREF_KEYSTORE_PASSWORD, keystorePassword);
-			Simple.get().saveProperties();
+			p.setProperty(DefaultPreferences.PREF_KEYSTORE_PASSWORD, keystorePassword);
+			Simple.getInstance().saveProperties();
 
 		}
 
@@ -264,7 +265,7 @@ public class Setup extends WebPage {
 		}
 
 		ZipFile zfile = new ZipFile("bundled_sites.zip");
-		zfile.extractAll(Simple.getConfigPath() + "websites/");
+		zfile.extractAll(DefaultPreferences.getConfigPath() + "websites/");
 		File f = new File("bundled_sites.zip");
 		f.delete();
 	}
@@ -273,7 +274,7 @@ public class Setup extends WebPage {
 	 * We need to install resources/bundled_sites into the websites folder, so they can be used/modified.
 	 */
 	private void installDefaultData() {
-		if (new File(Simple.getConfigPath() + "websites/gettingstarted.test").exists())
+		if (new File(DefaultPreferences.getConfigPath() + "websites/gettingstarted.test").exists())
 			return; //Short circuit for install
 		try {
 			installIncludedThemes();
@@ -291,7 +292,7 @@ public class Setup extends WebPage {
 		InputStream is = classloader.getResourceAsStream("debug.keystore.jks");
 		FileOutputStream fos = null;
 		try {
-			fos = new FileOutputStream(Simple.getConfigPath() + "/keystore.jks");
+			fos = new FileOutputStream(DefaultPreferences.getConfigPath() + "/keystore.jks");
 			byte[] buf = new byte[2048];
 			int r = is.read(buf);
 			while (r != -1) {
@@ -318,7 +319,7 @@ public class Setup extends WebPage {
 
 		info("Creating user");
 
-		File f = new File(Simple.getConfigPath() + "websites");
+		File f = new File(DefaultPreferences.getConfigPath() + "websites");
 		//Bundled Themes
 		for (File f2 : f.listFiles()) {
 			if (f2.isDirectory() && !f2.getName().contains(".")) {

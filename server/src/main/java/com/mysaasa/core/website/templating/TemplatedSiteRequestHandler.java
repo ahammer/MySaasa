@@ -6,11 +6,8 @@ import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.mysaasa.SSLGen;
-import com.mysaasa.SimpleImpl;
-import com.mysaasa.MysaasaRequestMapper;
+import com.mysaasa.*;
 import com.mysaasa.core.website.model.Website;
-import com.mysaasa.Simple;
 import com.mysaasa.core.hosting.service.HostingService;
 import com.mysaasa.core.security.services.SessionService;
 import com.mysaasa.core.security.services.session.AdminSession;
@@ -250,7 +247,7 @@ public class TemplatedSiteRequestHandler implements IRequestHandler {
 		synchronized (engine) {
 			boolean debugMode = (prefs == null) ? false : prefs.getEditMode();
 			try {
-				TemplateHelperService templateHelperService = SimpleImpl.get().getInjector().getProvider(TemplateHelperService.class).get();
+				TemplateHelperService templateHelperService = SimpleImpl.getInstance().getInjector().getProvider(TemplateHelperService.class).get();
 				engine.setProperty("resource.loader", "file");
 				engine.setProperty("file.resource.loader.class", "org.apache.velocity.runtime.resource.loader.FileResourceLoader");
 				engine.setProperty("file.resource.loader.cache", "false");
@@ -274,17 +271,17 @@ public class TemplatedSiteRequestHandler implements IRequestHandler {
 				bindTemplateServices(debugMode, templateHelperService);
 
 				//TODO document this in WIKI
-				context.put("get", new QueryParamProxy(request.getQueryParameters()));
+				context.put("getInstance", new QueryParamProxy(request.getQueryParameters()));
 				context.put("post", new QueryParamProxy(request.getPostParameters()));
 				context.put("self", request.getClientUrl().toString());
 				context.put("file", request.getClientUrl().getProtocol() + "://" + request.getClientUrl().getHost() + ":" + request.getClientUrl().getPort() + "/" + request.getClientUrl().getPath());
-				context.put("baseDomain", Simple.getCurrentDomain());
-				context.put("port", Simple.getPort());
+				context.put("baseDomain", DefaultPreferences.getCurrentDomain());
+				context.put("port", DefaultPreferences.getPort());
 
 				template.merge(context, writer);
 				//Do the merge here (Put the Developer stuff in)
 				if (debugMode) {
-					int port = SimpleImpl.getPort();
+					int port = DefaultPreferences.getPort();
 					//Used in inline editor
 					String ckEditor = "<script type=\"text/javascript\" src=\"/ckeditor/ckeditor.js\"></script>\n";
 					String jquery = "<script type=\"text/javascript\" src=\"/jquery-ui-1.10.3.custom/js/jquery-1.9.1.js\"></script>\n";
@@ -336,7 +333,7 @@ public class TemplatedSiteRequestHandler implements IRequestHandler {
 		templateHelperService.setRequestProperties(debugMode, website);
 		Map<String, Class> services = templateHelperService.getServiceMap();
 		for (String key : services.keySet()) {
-			context.put(key, SimpleImpl.get().getInjector().getProvider(services.get(key)).get());
+			context.put(key, SimpleImpl.getInstance().getInjector().getProvider(services.get(key)).get());
 		}
 	}
 

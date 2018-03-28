@@ -59,7 +59,7 @@ public class ContentBinding implements Serializable {
 	}
 
 	public void save() {
-		SimpleImpl.get().getInjector().getProvider(WebsiteService.class).get().saveContentBinding(this);
+		SimpleImpl.getInstance().getInjector().getProvider(WebsiteService.class).get().saveContentBinding(this);
 	}
 
 	public void setContent(Content content) {

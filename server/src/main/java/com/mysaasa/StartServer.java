@@ -15,12 +15,12 @@ public class StartServer {
 
 	public static void main(String[] args) throws Exception {
 
-		String keystorePath = Simple.getConfigPath() + "/certificates/main.jks";
+		String keystorePath = DefaultPreferences.getConfigPath() + "/certificates/main.jks";
 		File keystoreFile = new File(keystorePath);
 
 		HttpConfiguration http_config = new HttpConfiguration();
 		http_config.setSecureScheme("https");
-		http_config.setSecurePort(Simple.getSecurePort());
+		http_config.setSecurePort(DefaultPreferences.getSecurePort());
 		http_config.setSendXPoweredBy(true);
 		http_config.setSendServerVersion(true);
 
@@ -32,8 +32,8 @@ public class StartServer {
 
 			sslContextFactory.setKeyStorePath(keystoreFile.getAbsolutePath());
 			sslContextFactory.setTrustStorePath(keystoreFile.getAbsolutePath());
-			sslContextFactory.setKeyStorePassword(Simple.getProperties().getProperty(Simple.PREF_KEYSTORE_PASSWORD));
-			sslContextFactory.setKeyManagerPassword(Simple.getProperties().getProperty(Simple.PREF_KEYSTORE_PASSWORD));
+			sslContextFactory.setKeyStorePassword(DefaultPreferences.getProperties().getProperty(DefaultPreferences.PREF_KEYSTORE_PASSWORD));
+			sslContextFactory.setKeyManagerPassword(DefaultPreferences.getProperties().getProperty(DefaultPreferences.PREF_KEYSTORE_PASSWORD));
 			HttpConfiguration https_config = new HttpConfiguration(http_config);
 			https_config.addCustomizer(new SecureRequestCustomizer());
 
@@ -41,7 +41,7 @@ public class StartServer {
 					new SslConnectionFactory(sslContextFactory, HttpVersion.HTTP_1_1.asString()),
 					new HttpConnectionFactory(https_config));
 
-			https.setPort(Simple.getSecurePort());
+			https.setPort(DefaultPreferences.getSecurePort());
 			https.setIdleTimeout(500000);
 		}
 
@@ -52,7 +52,7 @@ public class StartServer {
 		server.setHandler(bb);
 
 		ServerConnector http = new ServerConnector(server, new HttpConnectionFactory(http_config));
-		http.setPort(Simple.getPort());
+		http.setPort(DefaultPreferences.getPort());
 		http.setIdleTimeout(30000);
 
 		// Here you see the server having multiple connectors registered with
@@ -76,7 +76,7 @@ public class StartServer {
 		try {
 			server.start();
 		} catch (Exception e) {
-			System.out.println(Simple.getPort());
+			System.out.println(DefaultPreferences.getPort());
 			e.printStackTrace();
 			System.exit(1);
 		}

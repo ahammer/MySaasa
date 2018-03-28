@@ -36,7 +36,7 @@ public class TemplateHelperService {
 	}
 
 	public static TemplateHelperService get() {
-		return Simple.get().getInjector().getProvider(TemplateHelperService.class).get();
+		return Simple.getInstance().getInjector().getProvider(TemplateHelperService.class).get();
 	}
 
 	public static class RequestProperties {

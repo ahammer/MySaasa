@@ -25,7 +25,7 @@ public class OrganizationAdmin extends Panel {
 
 		@Override
 		public void onRowClick(final AjaxRequestTarget target, Organization o) {
-			target.getPage().send(SimpleImpl.get(), Broadcast.BREADTH, new MyManageOrganization(o, target));
+			target.getPage().send(SimpleImpl.getInstance(), Broadcast.BREADTH, new MyManageOrganization(o, target));
 		}
 
 		private static class MyManageOrganization extends ManageOrganization {

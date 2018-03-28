@@ -147,7 +147,7 @@ public class BlogPoster extends Panel {
 			public void onSubmit(final AjaxRequestTarget target, Form form) {
 				BlogService blogDataService = BlogService.get();
 				blogDataService.deleteBlogPost((BlogPost) BlogPosterForm.this.getModelObject());
-				getPage().send(SimpleImpl.get(), Broadcast.BREADTH, new BlogPostModifiedMessage() {
+				getPage().send(SimpleImpl.getInstance(), Broadcast.BREADTH, new BlogPostModifiedMessage() {
 					@Override
 					public AjaxRequestTarget getAjaxRequestTarget() {
 						return target;

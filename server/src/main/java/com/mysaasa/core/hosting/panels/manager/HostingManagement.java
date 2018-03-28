@@ -1,10 +1,10 @@
 package com.mysaasa.core.hosting.panels.manager;
 
+import com.mysaasa.DefaultPreferences;
 import com.mysaasa.core.organization.model.Organization;
 import com.mysaasa.core.organization.services.OrganizationService;
 import com.mysaasa.core.users.model.User;
 import com.mysaasa.core.website.model.Website;
-import com.mysaasa.Simple;
 import com.mysaasa.core.security.services.session.SecurityContext;
 import com.mysaasa.core.website.model.Domain;
 import com.mysaasa.ui.multi_select.ArraySelectWidget;
@@ -70,8 +70,8 @@ public class HostingManagement extends Panel {
 			add(domain = new TextField<>("production"));
 
 			add(new CheckBox("isVisible"));
-			add(goProduction = new ExternalLink("goProduction", new Model("http://" + website.production + ":" + Simple.getPort())));
-			add(goStaging = new ExternalLink("goStaging", new Model("http://" + website.staging + ":" + Simple.getPort())));
+			add(goProduction = new ExternalLink("goProduction", new Model("http://" + website.production + ":" + DefaultPreferences.getPort())));
+			add(goStaging = new ExternalLink("goStaging", new Model("http://" + website.staging + ":" + DefaultPreferences.getPort())));
 			add(new DomainSelectWidget());
 			add(new TextField<String>("staging"));
 			add(feedback = new FeedbackPanel("feedback"));

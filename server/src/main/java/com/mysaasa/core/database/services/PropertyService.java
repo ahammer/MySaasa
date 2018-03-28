@@ -9,6 +9,6 @@ import com.mysaasa.Simple;
 @SimpleService
 public class PropertyService {
 	public static PropertyService get() {
-		return Simple.get().getInjector().getProvider(PropertyService.class).get();
+		return Simple.getInstance().getInjector().getProvider(PropertyService.class).get();
 	}
 }

@@ -1,5 +1,6 @@
 package com.mysaasa.core.hosting.service;
 
+import com.mysaasa.DefaultPreferences;
 import com.mysaasa.core.organization.model.Organization;
 import com.mysaasa.core.website.model.ContentBinding;
 import com.mysaasa.core.website.model.Domain;
@@ -29,7 +30,7 @@ public class HostingService {
 	public static final String EDITOR_PREFIX = "edit_";
 
 	public static HostingService get() {
-		return Simple.get().getInjector().getProvider(HostingService.class).get();
+		return Simple.getInstance().getInjector().getProvider(HostingService.class).get();
 	}
 
 	public HostingService() {
@@ -59,7 +60,7 @@ public class HostingService {
 			Website w = siteCache.get(host);
 			if (w != null)
 				return w;
-			EntityManager em = Simple.getEm();
+			EntityManager em = Simple.getEntityManager();
 			if (em == null)
 				return null;
 			Domain domain = HostingService.get().findDomain(host);
@@ -77,7 +78,7 @@ public class HostingService {
 
 	public static String Session(String clientUrl) {
 		String without_prefix = clientUrl.substring(HostingService.EDITOR_PREFIX.length());
-		if (Simple.isLocalDevMode()) {
+		if (DefaultPreferences.isLocalDevMode()) {
 			return "";
 		}
 		return without_prefix.substring(0, without_prefix.indexOf("_"));
@@ -86,7 +87,7 @@ public class HostingService {
 
 	public static String RealDomain(String clientUrl) {
 		String without_prefix = clientUrl.substring(HostingService.EDITOR_PREFIX.length());
-		if (Simple.isLocalDevMode()) {
+		if (DefaultPreferences.isLocalDevMode()) {
 			return without_prefix;
 		} else {
 			String session_part = without_prefix.substring(0, without_prefix.indexOf("_"));
@@ -100,7 +101,7 @@ public class HostingService {
 	 * @return
 	 */
 	public List<Website> getWebsites() {
-		EntityManager em = Simple.getEm();
+		EntityManager em = Simple.getEntityManager();
 		List<Website> results = em.createQuery("SELECT W FROM Website W").getResultList();
 		em.close();
 		return results;
@@ -111,7 +112,7 @@ public class HostingService {
 	 * @param website
 	 */
 	public void deleteWebsite(Website website) {
-		EntityManager entityManager = Simple.getEm();
+		EntityManager entityManager = Simple.getEntityManager();
 		final Website trackedWebsite = entityManager.find(Website.class, website.getId());
 		//Delete all blog posts
 
@@ -128,7 +129,7 @@ public class HostingService {
 
 	public Website saveWebsite(Website website) {
 		checkNotNull(website);
-		EntityManager em = Simple.getEm();
+		EntityManager em = Simple.getEntityManager();
 		em.getTransaction().begin();
 		Website tracked = em.merge(website);
 		em.flush();
@@ -139,7 +140,7 @@ public class HostingService {
 
 	public Domain saveDomain(Domain domain) {
 		checkNotNull(domain);
-		EntityManager em = Simple.getEm();
+		EntityManager em = Simple.getEntityManager();
 		em.getTransaction().begin();
 		Domain tracked = em.merge(domain);
 		em.flush();
@@ -164,7 +165,7 @@ public class HostingService {
 
 		//The base path to the websites folder
 		//The absolute file path to the file you are checking
-		String basePath = Simple.get().getConfigPath() + "websites/";
+		String basePath = DefaultPreferences.getConfigPath() + "websites/";
 		String filePath = templateFile.getAbsolutePath();
 
 		//Normalize the paths, helps with cross platform
@@ -194,7 +195,7 @@ public class HostingService {
 	}
 
 	public Website findWebsite(String domain) {
-		EntityManager em = Simple.getEm();
+		EntityManager em = Simple.getEntityManager();
 		List<Website> results = em.createQuery("SELECT W FROM Website W WHERE LOWER(W.production)=:domain").setParameter("domain", domain.toLowerCase()).getResultList();
 		em.close();
 		if (results.size() != 1)
@@ -218,7 +219,7 @@ public class HostingService {
 	}
 
 	public Domain findDomain(String domain) {
-		EntityManager em = Simple.getEm();
+		EntityManager em = Simple.getEntityManager();
 		List<Domain> results = em.createQuery("SELECT D FROM Domain D WHERE D.domain=:domain").setParameter("domain", domain).getResultList();
 		em.close();
 		if (results.size() != 1)
@@ -231,7 +232,7 @@ public class HostingService {
 	}
 
 	public List<Website> getWebsites(Organization organization) {
-		EntityManager em = Simple.getEm();
+		EntityManager em = Simple.getEntityManager();
 		List<Website> results = em.createQuery("SELECT W FROM Website W WHERE W.organization=:organization").setParameter("organization", organization).getResultList();
 		em.close();
 		return results;

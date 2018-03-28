@@ -30,7 +30,7 @@ public class CategoryApiService implements IApiService {
 		return new ApiError(new RuntimeException("Not Implemented"));
 		/*
 		try {
-			return new ApiSuccess(InventoryService.get().getProductCategories(Website.getCurrent().getOrganization()));
+			return new ApiSuccess(InventoryService.getInstance().getProductCategories(Website.getCurrent().getOrganization()));
 		} catch (Exception e) {
 			return new ApiError(e);
 		}

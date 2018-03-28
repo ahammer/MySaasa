@@ -7,7 +7,6 @@ import com.mysaasa.interfaces.annotations.SimpleService;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.util.string.StringValue;
 
-import java.io.StringWriter;
 import java.lang.reflect.Method;
 import java.util.*;
 
@@ -40,7 +39,7 @@ public class ApiHelperService {
 	public ApiHelperService() {}
 
 	public static ApiHelperService get() {
-		return Simple.get().getInjector().getProvider(ApiHelperService.class).get();
+		return Simple.getInstance().getInjector().getProvider(ApiHelperService.class).get();
 	}
 
 	public ApiMapping getMapping(String path) {

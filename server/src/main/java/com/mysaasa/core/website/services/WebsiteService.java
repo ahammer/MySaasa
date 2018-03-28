@@ -1,5 +1,6 @@
 package com.mysaasa.core.website.services;
 
+import com.mysaasa.DefaultPreferences;
 import com.mysaasa.core.website.model.Content;
 import com.mysaasa.core.website.model.Website;
 import com.mysaasa.interfaces.annotations.SimpleService;
@@ -24,7 +25,7 @@ public class WebsiteService {
 
 	public void saveContentBinding(ContentBinding contentBinding) {
 		//("Saving a content binding");
-		EntityManager em = Simple.getEm();
+		EntityManager em = Simple.getEntityManager();
 		try {
 			em.getTransaction().begin();
 			ContentBinding tracked = em.merge(contentBinding);
@@ -40,7 +41,7 @@ public class WebsiteService {
 	}
 
 	public ContentBinding findBinding(String name, Website w, String defaultText) {
-		EntityManager em = Simple.getEm();
+		EntityManager em = Simple.getEntityManager();
 		Query q = em.createQuery("SELECT B FROM ContentBinding B WHERE B.website=:website AND B.name=:name");
 		q.setParameter("name", name);
 		q.setParameter("website", w);
@@ -70,7 +71,7 @@ public class WebsiteService {
 	}
 
 	public static WebsiteService get() {
-		return Simple.get().getInjector().getProvider(WebsiteService.class).get();
+		return Simple.getInstance().getInjector().getProvider(WebsiteService.class).get();
 	}
 
 	public void installTemplateIntoWebsiteStaging(Website theme, Website website) {
@@ -118,7 +119,7 @@ public class WebsiteService {
 	/** Installs the getting started stuff */
 	public void installGettingStarted(Website dest) {
 		checkNotNull(dest);
-		File sourceFile = new File(Simple.getConfigPath() + "websites/gettingstarted.dev");
+		File sourceFile = new File(DefaultPreferences.getConfigPath() + "websites/gettingstarted.dev");
 		try {
 			FileUtils.deleteDirectory(dest.calculateProductionRoot());
 			FileUtils.deleteDirectory(dest.calculateStagingRoot());
@@ -132,7 +133,7 @@ public class WebsiteService {
 	}
 
 	public void deleteContentBinding(ContentBinding b) {
-		EntityManager em = Simple.getEm();
+		EntityManager em = Simple.getEntityManager();
 		try {
 			em.getTransaction().begin();
 			ContentBinding tracked = em.merge(b);
@@ -150,7 +151,7 @@ public class WebsiteService {
 
 	public List<ContentBinding> getBindings(Website w) {
 
-		EntityManager em = Simple.getEm();
+		EntityManager em = Simple.getEntityManager();
 		Query q = em.createQuery("SELECT B FROM ContentBinding B WHERE B.website=:website");
 		q.setParameter("website", w);
 		List<ContentBinding> bindingList = q.getResultList();

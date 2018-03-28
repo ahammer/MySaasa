@@ -1,6 +1,6 @@
 package com.mysaasa.pages;
 
-import com.mysaasa.Simple;
+import com.mysaasa.DefaultPreferences;
 import com.mysaasa.core.hosting.service.HostingService;
 import com.mysaasa.core.splash.SplashModule;
 import com.mysaasa.core.users.model.User;
@@ -30,7 +30,6 @@ import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.*;
 import org.apache.wicket.protocol.https.RequireHttps;
@@ -136,7 +135,7 @@ public class Admin extends WebPage implements IHeaderContributor, AdminInterface
 			protected void onUpdate(AjaxRequestTarget target) {
 
 				if (selectedWebsite != null)
-					throw new RedirectToUrlException("http://" + selectedWebsite.production + ":" + Simple.getPort());
+					throw new RedirectToUrlException("http://" + selectedWebsite.production + ":" + DefaultPreferences.getPort());
 
 			}
 		});

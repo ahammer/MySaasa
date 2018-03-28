@@ -1,12 +1,11 @@
 package com.mysaasa.core.website.services;
 
+import com.mysaasa.DefaultPreferences;
 import com.mysaasa.SimpleImpl;
-import com.mysaasa.core.hosting.service.HostingService;
 import com.mysaasa.core.website.model.Website;
 import com.mysaasa.core.website.templating.TemplateHelperService;
 import com.mysaasa.interfaces.annotations.SimpleService;
 import com.mysaasa.interfaces.templating.WebsiteTemplateService;
-import com.mysaasa.Simple;
 import com.mysaasa.core.security.services.SecurityService;
 import com.mysaasa.core.website.model.ContentBinding;
 import org.apache.wicket.request.cycle.RequestCycle;
@@ -24,8 +23,8 @@ public class WebsiteTemplateServiceImpl extends WebsiteTemplateService {
 	//  @Returns the String Content RunContext, hiding behind the Content Binding.
 	@Override
 	public String bind(String name, String defaultValue) {
-		WebsiteService service = SimpleImpl.get().getInjector().getProvider(WebsiteService.class).get();
-		TemplateHelperService templateHelperService = SimpleImpl.get().getInjector().getProvider(TemplateHelperService.class).get();
+		WebsiteService service = SimpleImpl.getInstance().getInjector().getProvider(WebsiteService.class).get();
+		TemplateHelperService templateHelperService = SimpleImpl.getInstance().getInjector().getProvider(TemplateHelperService.class).get();
 		TemplateHelperService.RequestProperties rp = templateHelperService.getRequestProperties();
 		Website website = rp.website;
 		boolean debugMode = rp.debugMode;
@@ -47,8 +46,8 @@ public class WebsiteTemplateServiceImpl extends WebsiteTemplateService {
 	public String getAdminLink() {
 		String nonce = SecurityService.get().generateNonce();
 		if (!nonce.equals("")) {
-			return RequestCycle.get().getRequest().getClientUrl().getHost() + ":" + Simple.getPort() + "/admin?nonce=" + nonce;
+			return RequestCycle.get().getRequest().getClientUrl().getHost() + ":" + DefaultPreferences.getPort() + "/admin?nonce=" + nonce;
 		}
-		return RequestCycle.get().getRequest().getClientUrl().getHost() + ":" + Simple.getPort();
+		return RequestCycle.get().getRequest().getClientUrl().getHost() + ":" + DefaultPreferences.getPort();
 	}
 }

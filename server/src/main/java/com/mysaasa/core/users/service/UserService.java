@@ -2,6 +2,7 @@ package com.mysaasa.core.users.service;
 
 import com.google.android.gcm.server.Sender;
 import com.google.gson.Gson;
+import com.mysaasa.DefaultPreferences;
 import com.mysaasa.core.users.model.GcmKey;
 import com.mysaasa.core.users.model.User;
 import com.mysaasa.interfaces.annotations.SimpleService;
@@ -21,7 +22,6 @@ import javax.mail.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.*;
@@ -34,15 +34,15 @@ public class UserService {
 	private final Gson gson = new Gson();
 
 	public static UserService get() {
-		return Simple.get().getInjector().getProvider((UserService.class)).get();
+		return Simple.getInstance().getInjector().getProvider((UserService.class)).get();
 	}
 
 	public final Map<User, List<UserWebsocketEntry>> WebsocketUserRegistry = new HashMap();
 
-	public final Sender gcmSender = new Sender(Simple.getProperties().getProperty("GCM.KEY", ""));
+	public final Sender gcmSender = new Sender(DefaultPreferences.getProperties().getProperty("GCM.KEY", ""));
 
 	private boolean gcmEnabled() {
-		return Simple.getProperties().containsKey("GCM.KEY");
+		return DefaultPreferences.getProperties().containsKey("GCM.KEY");
 	}
 
 	public void RegisterUserGcm(User u, String gc_reg_id) {
@@ -52,7 +52,7 @@ public class UserService {
 	}
 
 	public Message findMessageById(long id) {
-		return Simple.getEm().find(Message.class, id);
+		return Simple.getEntityManager().find(Message.class, id);
 	}
 
 	private static class UserWebsocketEntry {
@@ -113,7 +113,7 @@ public class UserService {
 		if (u == null)
 			return;
 		List<UserWebsocketEntry> entries = WebsocketUserRegistry.get(u);
-		Application application = Simple.get();
+		Application application = Simple.getInstance();
 		WebSocketSettings webSocketSettings = WebSocketSettings.Holder.get(application);
 		IWebSocketConnectionRegistry webSocketConnectionRegistry = webSocketSettings.getConnectionRegistry();
 		if (entries != null)
@@ -160,7 +160,7 @@ public class UserService {
 	 */
 	public User saveUser(final User user) {
 		SecurityContext sc = SecurityContext.get();
-		EntityManager em = Simple.getEm();
+		EntityManager em = Simple.getEntityManager();
 		em.getTransaction().begin();
 		boolean newUser = false;
 		if (user.id == 0 && user.getContactInfo() != null && user.getContactInfo().getEmail() != null) {
@@ -217,7 +217,7 @@ public class UserService {
 	}
 
 	public User findUser(String identifier, String password) throws UserDisabledException {
-		EntityManager em = Simple.getEm();
+		EntityManager em = Simple.getEntityManager();
 		final Query q = em.createQuery("SELECT U FROM User U WHERE UPPER(U.identifier)=:identifier");
 		q.setParameter("identifier", identifier.toUpperCase());
 		@SuppressWarnings("unchecked")
@@ -241,7 +241,7 @@ public class UserService {
 	}
 
 	public boolean userExists(String identifier) {
-		EntityManager em = Simple.getEm();
+		EntityManager em = Simple.getEntityManager();
 		final Query q = em.createQuery("SELECT U FROM User U WHERE UPPER(U.identifier)=:identifier");
 		q.setParameter("identifier", identifier.toUpperCase());
 		final List<User> list = q.getResultList();
@@ -255,7 +255,7 @@ public class UserService {
 	}
 
 	public User findUserByEmail(String email) {
-		EntityManager em = Simple.getEm();
+		EntityManager em = Simple.getEntityManager();
 		final Query q = em.createQuery("SELECT U FROM User U WHERE U.contactInfo.email=:identifier");
 		q.setParameter("identifier", email);
 		@SuppressWarnings("unchecked")
@@ -284,7 +284,7 @@ public class UserService {
 	}
 
 	public User findUserById(long id) {
-		EntityManager em = Simple.getEm();
+		EntityManager em = Simple.getEntityManager();
 		final Query q = em.createQuery("SELECT U FROM User U WHERE U.id=:id");
 		q.setParameter("id", id);
 		@SuppressWarnings("unchecked")
@@ -296,7 +296,7 @@ public class UserService {
 	}
 
 	public int getUserCount() {
-		EntityManager em = Simple.getEm();
+		EntityManager em = Simple.getEntityManager();
 		Query q = em.createQuery("SELECT count(x) FROM User U WHERE " + "(U.enabled!=FALSE or U.enabled IS NULL) AND (U.organization.enabled!=FALSE or U.organization.enabled IS NULL)");
 		Number result = (Number) q.getSingleResult();
 		return result.intValue();
@@ -304,7 +304,7 @@ public class UserService {
 
 	public List<User> getUsers(Organization organization) {
 		checkNotNull(organization);
-		EntityManager em = Simple.getEm();
+		EntityManager em = Simple.getEntityManager();
 		List<User> results = em.createQuery("SELECT U FROM User U WHERE U.organization=:organization AND" + "((U.enabled!=FALSE or U.enabled IS NULL) AND (U.organization.enabled!=FALSE or U.organization.enabled IS NULL))").setParameter("organization", organization)
 				.getResultList();
 		em.close();
@@ -312,7 +312,7 @@ public class UserService {
 	}
 
 	public List<User> getAllUsers() {
-		EntityManager em = Simple.getEm();
+		EntityManager em = Simple.getEntityManager();
 		List<User> results = em.createQuery("SELECT U FROM User U WHERE " + "(U.enabled!=FALSE or U.enabled IS NULL) AND (U.organization.enabled!=FALSE or U.organization.enabled IS NULL)")
 				.getResultList();
 		em.close();
@@ -320,7 +320,7 @@ public class UserService {
 	}
 
 	public User getUser(String identifier) {
-		EntityManager em = Simple.getEm();
+		EntityManager em = Simple.getEntityManager();
 		final Query q = em.createQuery("SELECT U FROM User U WHERE UPPER(U.identifier)=:identifier");
 		q.setParameter("identifier", identifier.toUpperCase());
 		final List<User> list = q.getResultList();

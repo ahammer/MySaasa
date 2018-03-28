@@ -54,7 +54,7 @@ public abstract class Uploader extends Panel {
 							error(e.getMessage());
 						}
 					}
-					send(SimpleImpl.get(), Broadcast.BREADTH, new MediaUpdatedMessage() {
+					send(SimpleImpl.getInstance(), Broadcast.BREADTH, new MediaUpdatedMessage() {
 
 						@Override
 						public AjaxRequestTarget getAjaxRequestTarget() {

@@ -55,7 +55,7 @@ public class MysaasaRequestMapper implements IRequestMapper {
 	@Override
 	public int getCompatibilityScore(Request request) {
 		/*
-		HostingService service = HostingService.get();
+		HostingService service = HostingService.getInstance();
 		Website website = service.findWebsite(request.getUrl());
 		int score = (website == null) ? NO_MATCH : MATCHING_SCORE;
 		logger.log(Level.INFO, request.getClientUrl() + " " + website + " " + score);

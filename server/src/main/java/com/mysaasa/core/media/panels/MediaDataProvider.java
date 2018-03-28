@@ -14,7 +14,7 @@ public class MediaDataProvider extends SortableDataProvider<Media, String> {
 
 	@Override
 	public Iterator<? extends Media> iterator(long first, long count) {
-		MediaService service = SimpleImpl.get().getInjector().getProvider(MediaService.class).get();
+		MediaService service = SimpleImpl.getInstance().getInjector().getProvider(MediaService.class).get();
 		List l = service.getMedia();
 		return l.subList((int) first, (int) (first + count)).iterator();
 	}
@@ -26,7 +26,7 @@ public class MediaDataProvider extends SortableDataProvider<Media, String> {
 
 	@Override
 	public long size() {
-		MediaService service = SimpleImpl.get().getInjector().getProvider(MediaService.class).get();
+		MediaService service = SimpleImpl.getInstance().getInjector().getProvider(MediaService.class).get();
 		List l = service.getMedia();
 		return l.size();
 	}

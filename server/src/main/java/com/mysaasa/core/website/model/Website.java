@@ -8,13 +8,12 @@ import java.util.List;
 import javax.persistence.*;
 
 import com.google.gson.annotations.Expose;
-import com.mysaasa.Simple;;
-import com.mysaasa.SimpleImpl;
+import com.mysaasa.DefaultPreferences;
+;
 import com.mysaasa.core.hosting.service.HostingService;
 import com.mysaasa.core.organization.model.Organization;
 import com.mysaasa.core.security.services.session.AdminSession;
 import com.mysaasa.core.website.services.WebsiteService;
-import org.apache.wicket.Session;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.hibernate.annotations.LazyCollection;
@@ -25,7 +24,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @Entity
 @Table(name = "Website")
 public class Website implements Serializable {
-	public final static String DIRECT_INTEGRATION_PATH = Simple.get().getConfigPath() + "websites/";
+	public final static String DIRECT_INTEGRATION_PATH = DefaultPreferences.getConfigPath() + "websites/";
 	private static final long serialVersionUID = 2L;
 
 	@Expose
@@ -154,8 +153,8 @@ public class Website implements Serializable {
 		checkNotNull(file);
 		boolean secure = RequestCycle.get().getRequest().getUrl().getProtocol().equalsIgnoreCase("https");
 		final String path = file.getAbsolutePath();
-		int port = SimpleImpl.getPort();
-		int secure_port = SimpleImpl.getSecurePort();
+		int port = DefaultPreferences.getPort();
+		int secure_port = DefaultPreferences.getSecurePort();
 
 		/**
 		 * Illustration
@@ -255,7 +254,7 @@ public class Website implements Serializable {
 	}
 
 	/**
-	 * Static helper to get the website for the current request
+	 * Static helper to getInstance the website for the current request
 	 * @return
 	 */
 	public static Website getCurrent() {

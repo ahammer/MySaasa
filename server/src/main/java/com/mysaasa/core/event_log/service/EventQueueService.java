@@ -41,7 +41,7 @@ public class EventQueueService {
 	}
 
 	public static EventQueueService get() {
-		return Simple.get().getInjector().getProvider(EventQueueService.class).get();
+		return Simple.getInstance().getInjector().getProvider(EventQueueService.class).get();
 	}
 
 	public void submitCommand(Event command) {
@@ -51,7 +51,7 @@ public class EventQueueService {
 
 	public Event saveEvent(Event event) {
 		checkNotNull(event);
-		EntityManager em = Simple.getEm();
+		EntityManager em = Simple.getEntityManager();
 		em.getTransaction().begin();
 		Event tracked = em.merge(event);
 		em.flush();
@@ -104,7 +104,7 @@ public class EventQueueService {
 	}
 
 	private List<Event> getPastVoteEvents(Event event) {
-		EntityManager em = Simple.getEm();
+		EntityManager em = Simple.getEntityManager();
 		List<Event> results = ListUtils.unmodifiableList(em.createQuery("SELECT E FROM Event E WHERE E.user=:user AND E.payload=:payload AND E.method=:method")
 				.setParameter("user", event.getUser())
 				.setParameter("payload", event.getPayload())

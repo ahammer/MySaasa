@@ -19,7 +19,8 @@ import javax.persistence.Table;
 
 import com.google.gson.annotations.Expose;
 
-import com.mysaasa.Simple;;
+import com.mysaasa.DefaultPreferences;
+;
 import com.mysaasa.core.website.templating.TemplatedSiteRequestHandler;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.request.resource.DynamicImageResource;
@@ -59,12 +60,12 @@ public class Media implements Serializable {
 	 * @return File location of the uploaded file in it's original form
 	 */
 	public File calculateOriginalFile() {
-		File f = new File(Simple.get().getConfigPath() + "media/" + uid + "/" + getFilename());
+		File f = new File(DefaultPreferences.getConfigPath() + "media/" + uid + "/" + getFilename());
 		if (f.exists())
 			return f;
 
 		//Create directories and return blank file handlse
-		new File(Simple.get().getConfigPath() + "media/" + uid).mkdirs();
+		new File(DefaultPreferences.getConfigPath() + "media/" + uid).mkdirs();
 		return f;
 	}
 
@@ -115,7 +116,7 @@ public class Media implements Serializable {
 
 	public File calculateScaledFile(int width, int height) {
 		try {
-			String path = Simple.get().getConfigPath() + "media/" + uid + "/" + getFilename() + "_" + width + "_" + height;
+			String path = DefaultPreferences.getConfigPath() + "media/" + uid + "/" + getFilename() + "_" + width + "_" + height;
 			File f = new File(path);
 			//if (f.exists()) return f;
 			BufferedImage originalImage = null;//change path to where file is located

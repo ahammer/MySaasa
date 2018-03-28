@@ -1,6 +1,6 @@
 package com.mysaasa.pages;
 
-import com.mysaasa.Simple;
+import com.mysaasa.DefaultPreferences;
 import com.mysaasa.core.help.panels.HelpPanel;
 import com.mysaasa.core.hosting.service.HostingService;
 import com.mysaasa.core.security.services.SecurityService;
@@ -77,7 +77,7 @@ public class Splash extends WebPage {
 			if (currentWebsite != null) {
 				data.selected = currentWebsite;
 			} else {
-				throw new RedirectToUrlException("http://" + websites.get(0).production + ":" + Simple.getPort());
+				throw new RedirectToUrlException("http://" + websites.get(0).production + ":" + DefaultPreferences.getPort());
 			}
 
 			sites = new DropDownChoice("sites", new PropertyModel(data, "selected"), websites, new WebsiteChoiceRenderer());
@@ -85,7 +85,7 @@ public class Splash extends WebPage {
 			sites.add(new AjaxFormComponentUpdatingBehavior("onchange") {
 				@Override
 				protected void onUpdate(AjaxRequestTarget target) {
-					throw new RedirectToUrlException("http://" + data.selected.production + ":" + Simple.getPort());
+					throw new RedirectToUrlException("http://" + data.selected.production + ":" + DefaultPreferences.getPort());
 				}
 			});
 

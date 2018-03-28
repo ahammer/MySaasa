@@ -24,14 +24,14 @@ public class MessagingService {
 	public static final String SUPPORT_THREAD = "Support Thread";
 
 	public static MessagingService get() {
-		return Simple.get().getInjector().getProvider(MessagingService.class).get();
+		return Simple.getInstance().getInjector().getProvider(MessagingService.class).get();
 	}
 
 	public Message saveMessage(Message msg, boolean notify) {
 		System.out.println("Saving Message: " + msg.toString());
 
 		long initialId = msg.getId();
-		EntityManager em = Simple.getEm();
+		EntityManager em = Simple.getEntityManager();
 		em.getTransaction().begin();
 		msg = em.merge(msg);
 		em.flush();
@@ -47,7 +47,7 @@ public class MessagingService {
 	}
 
 	public MessageReadReceipt saveMetadata(MessageReadReceipt data) {
-		EntityManager em = Simple.getEm();
+		EntityManager em = Simple.getEntityManager();
 		em.getTransaction().begin();
 		data = em.merge(data);
 		em.flush();
@@ -58,7 +58,7 @@ public class MessagingService {
 
 	public long getMessageCount() {
 		User u = SecurityContext.get().getUser();
-		EntityManager em = Simple.getEm();
+		EntityManager em = Simple.getEntityManager();
 		Query q = em.createQuery("SELECT count(x) FROM Message x WHERE (x.recipient=:user OR x.sender=:user) AND x.messageThreadRoot is null").setParameter("user", u);
 		Number result = (Number) q.getSingleResult();
 		return result.intValue();
@@ -66,14 +66,14 @@ public class MessagingService {
 
 	public long getUnreadMessageCount() {
 		User u = SecurityContext.get().getUser();
-		EntityManager em = Simple.getEm();
+		EntityManager em = Simple.getEntityManager();
 		Query q = em.createQuery("SELECT count(x) FROM MessageReadReceipt x WHERE (x.user=:user) AND x.message.messageThreadRoot is null").setParameter("user", u);
 		Number result = (Number) q.getSingleResult();
 		return getMessageCount() - result.intValue();
 	}
 
 	public List<Message> getMessages(User u, long page, long page_size, String order, String direction) {
-		EntityManager em = Simple.getEm();
+		EntityManager em = Simple.getEntityManager();
 		u = em.find(User.class, u.id);
 		Query q = em.createQuery("SELECT x FROM Message x WHERE (x.recipient=:user OR x.sender=:user)  AND x.messageThreadRoot is null ORDER BY _order _direction"
 				.replace("_order", order)
@@ -86,7 +86,7 @@ public class MessagingService {
 	}
 
 	public List getNewMessages(User u, Date lastKnownMessage) {
-		EntityManager em = Simple.getEm();
+		EntityManager em = Simple.getEntityManager();
 		u = em.find(User.class, u.id);
 		Query q = em.createQuery("SELECT x FROM Message x WHERE x.timeSent > :lastKnown")
 				.setParameter("lastKnown", lastKnownMessage);
@@ -96,7 +96,7 @@ public class MessagingService {
 	}
 
 	public void deleteMessage(Message message) {
-		EntityManager em = Simple.getEm();
+		EntityManager em = Simple.getEntityManager();
 
 		if (message == null) {
 			throw new NullPointerException("Message can not be null");
@@ -116,7 +116,7 @@ public class MessagingService {
 	}
 
 	public List<Message> getThread(Message m) {
-		EntityManager em = Simple.getEm();
+		EntityManager em = Simple.getEntityManager();
 		Message root;
 		if (m.getMessageThreadRoot() != null) {
 			root = m.getMessageThreadRoot();
@@ -145,7 +145,7 @@ public class MessagingService {
 	}
 
 	public Message findMessage(long message_id) {
-		return Simple.getEm().find(Message.class, message_id);
+		return Simple.getEntityManager().find(Message.class, message_id);
 	}
 
 	public Message replyMessage(Message m, String response) {
@@ -180,7 +180,7 @@ public class MessagingService {
 
 	public boolean hasBeenRead(Message message, User user) {
 		User u = SecurityContext.get().getUser();
-		EntityManager em = Simple.getEm();
+		EntityManager em = Simple.getEntityManager();
 		message = findMessage(message.id);
 		Query q = em.createQuery("SELECT count(x) FROM MessageReadReceipt x WHERE (x.user=:user AND x.message=:msg)").setParameter("user", u).setParameter("msg", message);
 		Number result = (Number) q.getSingleResult();
@@ -217,7 +217,7 @@ public class MessagingService {
 	}
 
 	private Message findMessage(User from, User to, String s) {
-		EntityManager em = Simple.getEm();
+		EntityManager em = Simple.getEntityManager();
 		final Query q = em.createQuery("select distinct M FROM Message M WHERE M.sender=:sender AND M.recipient=:recipient AND M.title=:title")
 				.setParameter("sender", from)
 				.setParameter("recipient", to)
@@ -232,7 +232,7 @@ public class MessagingService {
 	}
 
 	public List<Message> getMessages(User u) {
-		EntityManager em = Simple.getEm();
+		EntityManager em = Simple.getEntityManager();
 		u = em.find(User.class, u.id);
 		Query q = em.createQuery("SELECT x FROM Message x WHERE (x.recipient=:user OR x.sender=:user)");
 		q.setParameter("user", u);
@@ -242,7 +242,7 @@ public class MessagingService {
 	}
 
 	public Message getMessageById(long id) {
-		EntityManager em = Simple.getEm();
+		EntityManager em = Simple.getEntityManager();
 		Message m = em.find(Message.class, id);
 		em.close();
 		return m;

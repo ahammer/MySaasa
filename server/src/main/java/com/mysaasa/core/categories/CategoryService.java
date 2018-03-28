@@ -17,10 +17,12 @@ public class CategoryService {
 	private List list;
 
 	public static CategoryService get() {
-		return Simple.get().getInjector().getProvider(CategoryService.class).get();
+		return Simple.getInstance().getInjector().getProvider(CategoryService.class).get();
 	}
 
-	public CategoryService() {}
+
+	public CategoryService() {
+	}
 
 	/**
 	 * Finds a Category object by name.
@@ -32,7 +34,7 @@ public class CategoryService {
 			throw new NullPointerException();
 		if (name.trim().equals(""))
 			throw new IllegalArgumentException("Blank Category");
-		EntityManager em = Simple.getEm();
+		EntityManager em = Simple.getEntityManager();
 		List<Category> list;
 		if (o != null) {
 			list = ListUtils.unmodifiableList(em.createQuery("SELECT C FROM Category C WHERE C.name=:name AND C.organization=:org AND C.type=:cattype ORDER BY C.id DESC")
@@ -59,7 +61,7 @@ public class CategoryService {
 	}
 
 	public Category saveCategory(Category blogCategory) {
-		EntityManager em = Simple.getEm();
+		EntityManager em = Simple.getEntityManager();
 		em.getTransaction().begin();
 		Category tracked = em.merge(blogCategory);
 		em.flush();
@@ -69,7 +71,7 @@ public class CategoryService {
 	}
 
 	public List<Category> getCategories(Organization organization, Class type) {
-		EntityManager em = Simple.getEm();
+		EntityManager em = Simple.getEntityManager();
 		if (type != null) {
 			return ListUtils.unmodifiableList(em.createQuery("SELECT C FROM Category C WHERE C.organization=:org AND C.type=:cattype ORDER BY C.type")
 					.setParameter("org", organization)
@@ -84,7 +86,7 @@ public class CategoryService {
 	}
 
 	public void deleteCategory(Category cat) {
-		EntityManager em = Simple.getEm();
+		EntityManager em = Simple.getEntityManager();
 		em.getTransaction().begin();
 		em.remove(em.merge(cat));
 		em.flush();

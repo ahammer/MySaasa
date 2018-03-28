@@ -110,7 +110,7 @@ public class MessagePanel extends Panel {
 
 		//Mark as read
 		//model.getObject().setRead(true);
-		//MessagingService.get().saveMessage(model.getObject());
+		//MessagingService.getInstance().saveMessage(model.getObject());
 	}
 
 	@Override

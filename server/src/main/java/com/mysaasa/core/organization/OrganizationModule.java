@@ -68,7 +68,7 @@ public class OrganizationModule extends AbstractModule {
 	public void onEvent(IEvent event) {
 		if (event.getPayload() instanceof ManageOrganization) {
 			final ManageOrganization mu = (ManageOrganization) event.getPayload();
-			mu.getAjaxRequestTarget().getPage().send(SimpleImpl.get(), Broadcast.BREADTH, new EditContentMessage(new Model(mu.getOrganization()), mu.getAjaxRequestTarget()));
+			mu.getAjaxRequestTarget().getPage().send(SimpleImpl.getInstance(), Broadcast.BREADTH, new EditContentMessage(new Model(mu.getOrganization()), mu.getAjaxRequestTarget()));
 		}
 	}
 

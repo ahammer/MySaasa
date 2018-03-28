@@ -1,5 +1,6 @@
 package com.mysaasa.core.setup;
 
+import com.mysaasa.DefaultPreferences;
 import com.mysaasa.messages.SetupMessage;
 import com.mysaasa.Simple;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -32,11 +33,11 @@ public class SetupJpaForm extends Form {
 	@Override
 	protected void onConfigure() {
 		super.onConfigure();
-		//ready.setVisible(Boolean.valueOf(Simple.get().getProperties().getProperty(Simple.get().PREF_JPA_INITIALIZED, "false")));
+		//ready.setVisible(Boolean.valueOf(Simple.getInstance().getProperties().getProperty(Simple.getInstance().PREF_JPA_INITIALIZED, "false")));
 	}
 
 	public static class SetupJpaFormData implements Serializable {
-		private String url = "jdbc:h2:" + Simple.get().getConfigPath() + "database";
+		private String url = "jdbc:h2:" + DefaultPreferences.getConfigPath() + "database";
 		private String name = "root";
 		private String password = "";
 		private String driverName = "org.h2.Driver";
@@ -104,20 +105,20 @@ public class SetupJpaForm extends Form {
 				try {
 					testDatabaseConnection();
 
-					Properties p = Simple.get().getProperties();
-					p.put(Simple.get().PREF_DB_DRIVER, data.getDriverName());
-					p.put(Simple.get().PREF_DB_USERNAME, data.getName());
-					p.put(Simple.get().PREF_DB_PASS, data.getPassword());
-					p.put(Simple.get().PREF_DB_URL, data.getUrl());
-					//p.put(Simple.get().PREF_JPA_INITIALIZED, "true");
-					Simple.get().saveProperties();
+					Properties p = DefaultPreferences.getProperties();
+					p.put(DefaultPreferences.PREF_DB_DRIVER, data.getDriverName());
+					p.put(DefaultPreferences.PREF_DB_USERNAME, data.getName());
+					p.put(DefaultPreferences.PREF_DB_PASS, data.getPassword());
+					p.put(DefaultPreferences.PREF_DB_URL, data.getUrl());
+					//p.put(Simple.getInstance().PREF_JPA_INITIALIZED, "true");
+					Simple.getInstance().saveProperties();
 					//Should be able to initialize database now
-					EntityManager em = Simple.getEm();
+					EntityManager em = Simple.getEntityManager();
 					int size = em.createQuery("SELECT U FROM User U").getResultList().size();
 					em.close();
 					if (size > 0) {
-						//  p.put(Simple.get().PREF_USER_INITIALIZED, String.valueOf(true));
-						Simple.get().saveProperties();
+						//  p.put(Simple.getInstance().PREF_USER_INITIALIZED, String.valueOf(true));
+						Simple.getInstance().saveProperties();
 					}
 
 					info("Success");

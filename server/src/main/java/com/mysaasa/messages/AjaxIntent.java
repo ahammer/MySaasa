@@ -65,7 +65,7 @@ public class AjaxIntent extends AjaxMessage {
 
 	public void send(IEventSource p) {
 		logger.info("Sending a intent: " + action + " Extras: " + extras);
-		p.send(Simple.get(), Broadcast.BREADTH, this);
+		p.send(Simple.getInstance(), Broadcast.BREADTH, this);
 	}
 
 	public void send() {

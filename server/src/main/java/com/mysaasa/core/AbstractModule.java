@@ -57,7 +57,7 @@ public abstract class AbstractModule implements Serializable {
 	public abstract boolean hasAccess(User.AccessLevel UserAccessLevel);
 
 	/**
-	 * This helper is used as a fallback to get a default blank model for a new object under the type of the module.
+	 * This helper is used as a fallback to getInstance a default blank model for a new object under the type of the module.
 	 *
 	 * E.g.
 	 *

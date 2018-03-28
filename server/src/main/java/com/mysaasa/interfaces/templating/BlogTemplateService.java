@@ -145,11 +145,11 @@ public class BlogTemplateService implements ITemplateService {
 	//  @Params The name of this ContentBinding
 	//  @Returns the String Content RunContext, hiding behind the Content Binding.
 	public String bind(String name) {
-		TemplateHelperService templateHelperService = SimpleImpl.get().getInjector().getProvider(TemplateHelperService.class).get();
+		TemplateHelperService templateHelperService = SimpleImpl.getInstance().getInjector().getProvider(TemplateHelperService.class).get();
 		TemplateHelperService.RequestProperties rp = templateHelperService.getRequestProperties();
 		Website website = rp.website;
 		boolean debugMode = rp.debugMode;
-		WebsiteService service = SimpleImpl.get().getInjector().getProvider(WebsiteService.class).get();
+		WebsiteService service = SimpleImpl.getInstance().getInjector().getProvider(WebsiteService.class).get();
 		ContentBinding b = service.findBinding(name, website, name);
 		if (debugMode) {
 			return "<div " + "class=\"EditableContent\" " + "id=\"" + name + "\" " + "onClick=\"EditContent('" + name + "');\"\"" + ">" + b.getContent().getBody() + "</div>";
@@ -168,7 +168,7 @@ public class BlogTemplateService implements ITemplateService {
 
 	public List<BlogPost> getBlogPostsByCategory(String category, String order, String direction, int page, int take) {
 		try {
-			TemplateHelperService templateHelperService = SimpleImpl.get().getInjector().getProvider(TemplateHelperService.class).get();
+			TemplateHelperService templateHelperService = SimpleImpl.getInstance().getInjector().getProvider(TemplateHelperService.class).get();
 			TemplateHelperService.RequestProperties rp = templateHelperService.getRequestProperties();
 			Website website = rp.website;
 
@@ -198,7 +198,7 @@ public class BlogTemplateService implements ITemplateService {
 		if (id == null)
 			return new BlogPost(null, null);
 
-		//TemplateHelperService templateHelperService = SimpleImpl.get().getInjector().getProvider(TemplateHelperService.class).get();
+		//TemplateHelperService templateHelperService = SimpleImpl.getInstance().getInjector().getProvider(TemplateHelperService.class).getInstance();
 		//TemplateHelperService.RequestProperties rp = templateHelperService.getRequestProperties();
 		//Website website = rp.website;
 		//("Getting posts for category: "+category);
@@ -241,7 +241,7 @@ public class BlogTemplateService implements ITemplateService {
 	public boolean postToBlog(String category, String title, String body) {
 		User u = SessionService.get().getSecurityContext(Session.get()).getUser();
 
-		TemplateHelperService templateHelperService = SimpleImpl.get().getInjector().getProvider(TemplateHelperService.class).get();
+		TemplateHelperService templateHelperService = SimpleImpl.getInstance().getInjector().getProvider(TemplateHelperService.class).get();
 		TemplateHelperService.RequestProperties rp = templateHelperService.getRequestProperties();
 		Website website = rp.website;
 		boolean debugMode = rp.debugMode;

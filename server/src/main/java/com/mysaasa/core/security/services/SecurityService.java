@@ -19,7 +19,7 @@ public class SecurityService {
 	Map<String, SigninNonce> securityMap = new HashMap();
 
 	public static SecurityService get() {
-		return Simple.get().getInjector().getProvider(SecurityService.class).get();
+		return Simple.getInstance().getInjector().getProvider(SecurityService.class).get();
 	}
 
 	public String generateNonce(User u) {

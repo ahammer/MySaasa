@@ -24,7 +24,7 @@ final class DeleteLink extends AjaxLink {
 		final Object modObj = hostingManagement.getForm().getModelObject();
 		if (modObj instanceof Website) {
 			final Website website = (Website) modObj;
-			HostingService websiteDataService = SimpleImpl.get().getInjector().getProvider(HostingService.class).get();
+			HostingService websiteDataService = SimpleImpl.getInstance().getInjector().getProvider(HostingService.class).get();
 			websiteDataService.deleteWebsite(website);
 			new WebsiteDeleted(website, target).send();
 			MessageHelpers.editEventMessage(target, new CompoundPropertyModel<Website>(new Website()));

@@ -15,7 +15,7 @@ public class MediaApiServiceImpl extends MediaApiService {
 	@Override
 	@ApiCall
 	public ApiResult getAllMedia() {
-		return new ApiSuccess(SimpleImpl.get().getInjector().getProvider(MediaService.class).get().getMedia());
+		return new ApiSuccess(SimpleImpl.getInstance().getInjector().getProvider(MediaService.class).get().getMedia());
 	}
 
 }

@@ -19,7 +19,7 @@ import java.util.*;
 public class ApiGuide extends WebPage {
 
 	public ApiGuide() {
-		final ApiHelperService service = Simple.get().getInjector().getInstance(ApiHelperService.class);
+		final ApiHelperService service = Simple.getInstance().getInjector().getInstance(ApiHelperService.class);
 		ListView repeater;
 		String[] keys = service.getPaths();
 

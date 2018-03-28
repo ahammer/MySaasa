@@ -33,8 +33,8 @@ public class QrGenerator implements IRequestHandler {
 				String s = "";
 				/*
 				if (parts[1].equals("order")) {
-					Cart cart = OrderService.get().findCartByUid(parts[2]);
-					OrderBitcoinInfo bitcoinInfo = BitcoinService.get().getOrderBitcoinInfo(cart);
+					Cart cart = OrderService.getInstance().findCartByUid(parts[2]);
+					OrderBitcoinInfo bitcoinInfo = BitcoinService.getInstance().getOrderBitcoinInfo(cart);
 					BigDecimal amountOwed = cart.calculateBitcoinOwed();
 					s = "bitcoin:" + bitcoinInfo.getReceivingAddress() + "?amount=" + amountOwed;
 				}

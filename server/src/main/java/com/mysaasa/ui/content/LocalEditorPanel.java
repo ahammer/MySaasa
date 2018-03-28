@@ -73,11 +73,11 @@ public class LocalEditorPanel extends PanelContainer {
 			Object obj = msg.getModel().getObject();
 
 			/**
-			 * TODO we should register Providers with the Module Manager, and then get a panel from the provider
+			 * TODO we should register Providers with the Module Manager, and then getInstance a panel from the provider
 			 *
 			 * It'll allow more flexible logic provided by the Module and not by this panel
 			 */
-			IClassPanelAdapter adapter = Simple.get().getClassPanelAdapter(obj.getClass());
+			IClassPanelAdapter adapter = Simple.getInstance().getClassPanelAdapter(obj.getClass());
 			if (adapter.isFullscreen()) {
 				leftStyle = "left:0px;"; //Shove the left over to absolute 0
 			} else {
@@ -90,7 +90,7 @@ public class LocalEditorPanel extends PanelContainer {
 				msg.getAjaxRequestTarget().add(this);
 		}
 
-		//When a module loads by clicking, it get's to choose the menu and main section, so it over-rides this
+		//When a module loads by clicking, it getInstance's to choose the menu and main section, so it over-rides this
 		//Through ModuleClickedMessage
 		if (payload instanceof ModuleClickedMessage) {
 			ModuleClickedMessage mcm = (ModuleClickedMessage) payload;

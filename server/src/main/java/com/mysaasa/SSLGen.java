@@ -36,14 +36,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Think of this class as a script.
  *
- * It attempts to get certificates and prepare a .jks file that
+ * It attempts to getInstance certificates and prepare a .jks file that
  * jetty can use to host SSL for MySaasa domains
  *
  *
  * Edit: Revise to be like this
  * 1) Create Keystore if none exists
  * 2) Iterate over the certificates and if they are valid
- * 3) If missing or old, get auth and add to keystore
+ * 3) If missing or old, getInstance auth and add to keystore
  * 5) Notify SSL to regenerate
  */
 public class SSLGen {
@@ -125,7 +125,7 @@ public class SSLGen {
 	private void connectToLetsEncrypt() throws AcmeException {
 		checkNotNull(applicationKeyPair, "We couldn't load an application key pair");
 		session = new Session(getAcmeUrl(), applicationKeyPair);
-		String contactEmail = Simple.getContactEmail();
+		String contactEmail = DefaultPreferences.getContactEmail();
 		checkNotNull(contactEmail, "contactEmail required in settings.properties to connect to lets encrypt");
 		RegistrationBuilder builder = new RegistrationBuilder();
 		builder.addContact("mailto:" + contactEmail);
@@ -241,11 +241,11 @@ public class SSLGen {
 	}
 
 	private char[] getPasswordChars() {
-		return Simple.getKeystorePassword().toCharArray();
+		return DefaultPreferences.getKeystorePassword().toCharArray();
 	}
 
 	private String getCertPath() {
-		return Simple.getConfigPath() + "certificates/";
+		return DefaultPreferences.getConfigPath() + "certificates/";
 	}
 
 	private void authorizeDomain(String domain) throws AcmeException, InterruptedException {

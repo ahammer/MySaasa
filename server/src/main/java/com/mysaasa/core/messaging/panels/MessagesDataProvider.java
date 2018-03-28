@@ -24,7 +24,7 @@ public class MessagesDataProvider extends SortableDataProvider<Message, String> 
 	public Iterator<? extends Message> iterator(long first, long count) {
 
 		new ArrayList<User>();
-		EntityManager em = Simple.getEm();
+		EntityManager em = Simple.getEntityManager();
 		final Iterator<? extends Message> result = MessagingService.get().getMessages(user, first / count, count, "timeSent", "DESC").iterator();
 		em.close();
 		return result;

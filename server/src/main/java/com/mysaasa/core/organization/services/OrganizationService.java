@@ -28,14 +28,14 @@ public class OrganizationService {
 	 * @throws IllegalStateException
 	 */
 	public void disableOrganization(Organization organization) throws IllegalStateException {
-		//EntityManager em = Simple.getEm();
+		//EntityManager em = Simple.getEntityManager();
 		checkNotNull(organization);
 		organization.setEnabled(false);
 		saveOrganization(organization);
 	}
 
 	public Organization saveOrganization(Organization organization) {
-		EntityManager em = Simple.getEm();
+		EntityManager em = Simple.getEntityManager();
 		em.getTransaction().begin();
 		Organization tracked = em.merge(organization);
 		em.persist(tracked);
@@ -54,7 +54,7 @@ public class OrganizationService {
 	 */
 	public boolean hasRootOrganization() {
 		Logger logger = org.slf4j.LoggerFactory.getLogger(this.getClass());
-		EntityManager em = Simple.getEm();
+		EntityManager em = Simple.getEntityManager();
 		try {
 			em.createQuery("SELECT O FROM Organization O").getResultList().get(0);
 			em.close();
@@ -71,26 +71,26 @@ public class OrganizationService {
 	}
 
 	public static OrganizationService get() {
-		return Simple.get().getInjector().getProvider(OrganizationService.class).get();
+		return Simple.getInstance().getInjector().getProvider(OrganizationService.class).get();
 
 	}
 
 	public Organization getOrganization(String name) {
-		EntityManager em = Simple.getEm();
+		EntityManager em = Simple.getEntityManager();
 		Map map = new HashMap<String, String>();
 		map.put("name", name);
 		return (Organization) em.createQuery("SELECT O FROM Organization O WHERE O.name=:name").setParameter("name", name).getResultList().get(0);
 	}
 
 	public List<Organization> getAllOrganizations() {
-		EntityManager em = Simple.getEm();
+		EntityManager em = Simple.getEntityManager();
 		List<Organization> list = em.createQuery("SELECT O FROM Organization O WHERE O.enabled IS NULL OR O.enabled=TRUE").getResultList();
 		em.close();
 		return list;
 	}
 
 	public Organization getOrganizationById(long organization_id) {
-		EntityManager em = Simple.getEm();
+		EntityManager em = Simple.getEntityManager();
 		Organization o = em.find(Organization.class, organization_id);
 		em.close();
 		return o;

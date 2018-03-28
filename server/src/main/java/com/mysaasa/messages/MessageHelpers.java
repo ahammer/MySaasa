@@ -5,7 +5,6 @@ import com.mysaasa.core.website.model.Website;
 import com.mysaasa.Simple;
 import com.mysaasa.core.AbstractModule;
 import com.mysaasa.core.website.model.TemplateFile;
-import com.mysaasa.core.website.panels.details.EXTRAS;
 import org.apache.wicket.Page;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.event.Broadcast;
@@ -13,8 +12,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.protocol.ws.api.WebSocketRequestHandler;
 import org.apache.wicket.protocol.ws.api.message.IWebSocketPushMessage;
-
-import java.util.logging.Logger;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -35,18 +32,18 @@ public class MessageHelpers {
 		checkNotNull(defaultModel);
 		checkNotNull(defaultModel.getObject());
 		System.out.println("Editing Event Message for " + defaultModel.getObject().toString());
-		target.getPage().send(Simple.get(), Broadcast.BREADTH, new EditContentMessage(defaultModel, target));
+		target.getPage().send(Simple.getInstance(), Broadcast.BREADTH, new EditContentMessage(defaultModel, target));
 	}
 
 	public static void editEventMessage(Page page, IModel<?> defaultModel) {
 		checkNotNull(defaultModel);
 		checkNotNull(defaultModel.getObject());
 		System.out.println("Editing Event Message for " + defaultModel.getObject().toString());
-		page.send(Simple.get(), Broadcast.BREADTH, new EditContentMessage(defaultModel, page));
+		page.send(Simple.getInstance(), Broadcast.BREADTH, new EditContentMessage(defaultModel, page));
 	}
 
 	public static void notifyUpdate(AjaxRequestTarget target, Object obj) {
-		target.getPage().send(Simple.get(), Broadcast.BREADTH, new DataUpdateEvent(target, obj));
+		target.getPage().send(Simple.getInstance(), Broadcast.BREADTH, new DataUpdateEvent(target, obj));
 	}
 
 	/**
@@ -82,7 +79,7 @@ public class MessageHelpers {
 	public static void broadcastPushEvent(Page p, WebSocketRequestHandler handler, IWebSocketPushMessage message) {
 		checkNotNull(handler);
 		checkNotNull(message);
-		p.send(Simple.get(), Broadcast.BREADTH, new WebsocketEvent(handler, message));
+		p.send(Simple.getInstance(), Broadcast.BREADTH, new WebsocketEvent(handler, message));
 
 	}
 

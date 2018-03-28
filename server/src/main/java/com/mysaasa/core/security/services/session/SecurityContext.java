@@ -35,7 +35,7 @@ public class SecurityContext implements Serializable {
 	public List<AbstractModule> getAvailableModules() {
 		List<AbstractModule> mModules = new ArrayList<>();
 
-		ModuleManager moduleManager = SimpleImpl.get().getInjector().getProvider(ModuleManager.class).get();
+		ModuleManager moduleManager = SimpleImpl.getInstance().getInjector().getProvider(ModuleManager.class).get();
 		for (AbstractModule module : moduleManager.getModules()) {
 			if (module.hasAccess(getUser().getAccessLevel())) {
 				mModules.add(module);
@@ -47,7 +47,7 @@ public class SecurityContext implements Serializable {
 	public List<Website> getWebsites() {
 		switch (getUser().getAccessLevel()) {
 			//case ROOT:
-			//			return HostingService.get().getWebsites();
+			//			return HostingService.getInstance().getWebsites();
 		case GUEST:
 			return ListUtils.EMPTY_LIST;
 

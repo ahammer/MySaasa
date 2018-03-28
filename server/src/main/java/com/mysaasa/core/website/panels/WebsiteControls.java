@@ -90,7 +90,7 @@ public class WebsiteControls extends Panel {
 				new LoadableDetachableModel<List<String>>() {
 					@Override
 					protected List<String> load() {
-						List<Website> website_list = Collections.EMPTY_LIST;//InventoryService.get().getThemesAsWebsites();
+						List<Website> website_list = Collections.EMPTY_LIST;//InventoryService.getInstance().getThemesAsWebsites();
 						String[] websites = new String[website_list.size() + 1];
 						websites[0] = "No Selection";
 						int i = 1;
@@ -144,7 +144,7 @@ public class WebsiteControls extends Panel {
 
 		@Override
 		protected void onUpdate(AjaxRequestTarget target) {
-			//   SessionService.get().notifyAdminSessionUpdate(target);
+			//   SessionService.getInstance().notifyAdminSessionUpdate(target);
 			//   target.add(WebsiteControls.this);
 
 			MessageHelpers.loadWebsiteEditor(target, (Website) WebsiteControls.this.getDefaultModelObject());

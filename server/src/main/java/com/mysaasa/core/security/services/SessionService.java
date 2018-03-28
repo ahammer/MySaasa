@@ -1,6 +1,7 @@
 package com.mysaasa.core.security.services;
 
 import com.google.inject.Injector;
+import com.mysaasa.DefaultPreferences;
 import com.mysaasa.core.security.services.session.SecurityContext;
 import com.mysaasa.core.users.model.User;
 import com.mysaasa.interfaces.annotations.SimpleService;
@@ -35,7 +36,7 @@ public class SessionService {
 	private final Map<Session, AdminSession> adminSessionMap = new HashMap<>(); //A Map of Admin Sessions
 
 	public static SessionService get() {
-		Simple s = Simple.get();
+		Simple s = Simple.getInstance();
 		Injector i = s.getInjector();
 		return i.getProvider((SessionService.class)).get();
 	}
@@ -67,7 +68,7 @@ public class SessionService {
 
 	public SecurityContext getSecurityContext(Session mSession) {
 		//When we are in Local Dev mode we will always use the last registered sess
-		if (Simple.isLocalDevMode()) {
+		if (DefaultPreferences.isLocalDevMode()) {
 			return authenticationMap.get(currentLocalSession);
 		}
 		return authenticationMap.get(mSession);
@@ -88,7 +89,7 @@ public class SessionService {
 		SecurityContext context = createSecurityContext(user);
 		sessionMap.put(mSession.getId(), mSession);
 		authenticationMap.put(mSession, context);
-		if (Simple.isLocalDevMode()) {
+		if (DefaultPreferences.isLocalDevMode()) {
 			setCurrentLocalSession(mSession);
 			setCurrentLocalUser(user);
 		}

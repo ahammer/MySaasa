@@ -32,7 +32,7 @@ import static com.google.common.base.Preconditions.checkArgument;
  *
  * You might want to bindTemplateService DI hooks in the AbstractSimpleGuiceModule if you are going to use injection to access
  *
- * Templating uses injection to get at these classes, so TemplateServices need injection hooks.
+ * Templating uses injection to getInstance at these classes, so TemplateServices need injection hooks.
  */
 public class ModuleManager {
 
@@ -119,7 +119,7 @@ public class ModuleManager {
 	//TODO use the DI system to calculate what to load
 	private static void loadServices() {
 		checkArgument(service_loaded == false);
-		Collection<Binding<?>> bindings = Simple.get().getInjector().getBindings().values();
+		Collection<Binding<?>> bindings = Simple.getInstance().getInjector().getBindings().values();
 		for (Binding b : bindings) {
 			Object injectedObj = b.getProvider().get();
 			if (injectedObj instanceof IApiService)

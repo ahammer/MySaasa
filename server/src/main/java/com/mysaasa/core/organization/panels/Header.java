@@ -20,7 +20,7 @@ public class Header extends Panel {
 		add(new AjaxLink("newUser") {
 			@Override
 			public void onClick(final AjaxRequestTarget target) {
-				target.getPage().send(SimpleImpl.get(), Broadcast.BREADTH, new ManageOrganization(new Organization()) {
+				target.getPage().send(SimpleImpl.getInstance(), Broadcast.BREADTH, new ManageOrganization(new Organization()) {
 
 					@Override
 					public AjaxRequestTarget getAjaxRequestTarget() {

@@ -25,7 +25,7 @@ import org.apache.wicket.request.Url;
 @SimpleService
 public class UserApiService implements IApiService {
 	public static UserApiService get() {
-		return Simple.get().getInjector().getProvider(UserApiService.class).get();
+		return Simple.getInstance().getInjector().getProvider(UserApiService.class).get();
 	}
 
 	public UserApiService() {}
@@ -37,7 +37,7 @@ public class UserApiService implements IApiService {
 
 	@ApiCall
 	public ApiResult<Website> WebsiteTest() {
-		return new ApiSuccess<Website>(SimpleImpl.get().getInjector().getProvider(
+		return new ApiSuccess<Website>(SimpleImpl.getInstance().getInjector().getProvider(
 
 		HostingService.class).get().findWebsite(Url.parse("http://www.metalrain.ca")));
 	}
@@ -60,7 +60,7 @@ public class UserApiService implements IApiService {
 	@ApiCall
 	public ApiResult createUser(String identifier, String password) {
 		try {
-			UserService userService = SimpleImpl.get().getInjector().getProvider(UserService.class).get();
+			UserService userService = SimpleImpl.getInstance().getInjector().getProvider(UserService.class).get();
 			if (userService.userExists(identifier)) {
 				return new ApiError(new IllegalStateException("User already exists"));
 			}

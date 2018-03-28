@@ -33,7 +33,7 @@ final class DeleteLink extends AjaxLink {
 					final Object modObj = userEditor.getDefaultModelObject();
 					if (modObj instanceof UserFormData) {
 						final User u = ((UserFormData) modObj).getUser();
-						UserService service = SimpleImpl.get().getInjector().getProvider(UserService.class).get();
+						UserService service = SimpleImpl.getInstance().getInjector().getProvider(UserService.class).get();
 						service.disableUser(u);
 
 						send(getPage(), Broadcast.BREADTH, new UserDeleted(u) {

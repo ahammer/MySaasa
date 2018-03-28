@@ -18,7 +18,7 @@ import java.util.*;
  */
 public class TemplateGuide extends WebPage {
 	public TemplateGuide() {
-		final TemplateHelperService service = Simple.get().getInjector().getInstance(TemplateHelperService.class);
+		final TemplateHelperService service = Simple.getInstance().getInjector().getInstance(TemplateHelperService.class);
 		ListView repeater;
 		Set<String> keys = service.getServiceMap().keySet();
 		final List<String> list = new ArrayList();
@@ -28,7 +28,7 @@ public class TemplateGuide extends WebPage {
 			@Override
 			protected void populateItem(ListItem item) {
 				Class c = service.getServiceMap().get(item.getModelObject());
-				ITemplateService template = (ITemplateService) Simple.get().getInjector().getInstance(c);
+				ITemplateService template = (ITemplateService) Simple.getInstance().getInjector().getInstance(c);
 				item.add(new Label("divider", new Model(template.getTemplateInterfaceName())));
 				Method[] methods = c.getDeclaredMethods();
 				List<Method> methodList = Arrays.asList(methods);
