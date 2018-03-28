@@ -18,7 +18,7 @@ public class LoginUserResponse extends SimpleResponse{
     /**
      * Set the current SessionSummary, sometimes we update this when we automatically
      * log in
-     * @param data
+     * @param data  Information about the Session (start time, length, user)
      */
     public void setData(SessionSummary data) {
         this.data = data;
@@ -30,7 +30,6 @@ public class LoginUserResponse extends SimpleResponse{
         public SecurityContext(com.mysaasa.api.model.User user) {
             this.user = user;
         }
-
         public com.mysaasa.api.model.User getUser() {
             return user;
         }
@@ -57,8 +56,6 @@ public class LoginUserResponse extends SimpleResponse{
         public SecurityContext getContext() {
             return context;
         }
-
-
     }
 
     @Override

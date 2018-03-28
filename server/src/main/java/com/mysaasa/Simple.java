@@ -271,11 +271,9 @@ public abstract class Simple extends WebApplication {
 		moduleManager = new ModuleManager();
 		getMarkupSettings().setStripWicketTags(true);
 		// IMPORTANT!
-		/*
 		mountPage("/Admin", Splash.class);
 		mountPage("/ApiGuide", ApiGuide.class);
 		mountPage("/TemplateGuide", TemplateGuide.class);
-		*/
 
 		getRootRequestMapperAsCompound().add(new MysaasaRequestMapper());
 		HttpsConfig config = new HttpsConfig();
@@ -298,7 +296,7 @@ public abstract class Simple extends WebApplication {
 	public Class<? extends WebPage> getHomePage() {
 
 		if (hasBeenInstalled()) {
-			return Splash.class;
+			return null;
 		} else {
 			return Setup.class;
 		}

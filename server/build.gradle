@@ -73,56 +73,22 @@ repositories {
 dependencies {
     compile project(':base')
     compile 'org.eclipse.jetty.aggregate:jetty-all:9.4.8.v20171121'
+    compile 'org.eclipse.jetty.websocket:websocket-server:9.4.8.v20171121'
     compile 'javax.websocket:javax.websocket-api:1.1'
     compile 'org.reflections:reflections:0.9.11'
-    compile 'org.apache.httpcomponents:httpclient:4.5.5'
-    compile 'org.apache.commons:commons-exec:1.3'
-    compile 'org.apache.commons:commons-io:1.3.2'
     compile 'org.apache.velocity:velocity:1.7'
     compile 'com.google.inject:guice:3.0'
-    compile 'com.google.guava:guava:+'
-    compile 'com.google.code.gson:gson:+'
+    compile 'com.google.guava:guava:24.1-jre'
+    compile 'com.google.code.gson:gson:2.8.2'
     compile 'com.h2database:h2:1.4.196'
     compile 'com.googlecode.juniversalchardet:juniversalchardet:1.0.3'
-    compile 'org.mockito:mockito-core:2.15.0'
-    compile 'net.lingala.zip4j:zip4j:1.+'
-    compile 'net.glxn:qrgen:+'
-    compile 'org.bitcoinj:bitcoinj-core:+'
+    compile 'net.lingala.zip4j:zip4j:1.3.2'
+    compile 'net.glxn:qrgen:1.4'
     compile 'com.googlecode.json-simple:json-simple:1.1'
-    compile 'com.stripe:stripe-java:1.26.0'
-    compile 'org.eclipse.jetty.websocket:websocket-server:9.2.+'
-    compile 'javax.websocket:javax.websocket-api:1.0'
     compile 'commons-io:commons-io:2.4'
     compile 'commons-daemon:commons-daemon:1.0.15'
-    compile 'javax.mail:mail:1.4.1'
     compile 'org.shredzone.acme4j:acme4j-client:0.14'
     compile 'org.shredzone.acme4j:acme4j-utils:0.14'
-
     testCompile 'junit:junit:4.10'
-}
-
-
-/**
- * We need to find the files from the subprojects, and include them in the builds
- *
- * So we get all the project dependencies
- * Then we collect some folders, and flatten the array.
- * What we get is a list of paths that we want to copy files from
- */
-
-task copySrc(type:Copy) {
-    into "$buildDir/src/main/webapp"
-    from "src/deployment/webapp"
-    from "src/main/webapp"
-    from "src/main/java"
-}
-
-build.dependsOn copySrc
-run.dependsOn build
-
-tasks.run.workingDir = "$buildDir"
-
-applicationDistribution.from(copySrc) {
-    into "bin/src/main/webapp"
 }
 

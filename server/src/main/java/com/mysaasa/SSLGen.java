@@ -51,7 +51,7 @@ public class SSLGen {
 	static final String ROOT_KEY_URL = "https://letsencrypt.org/certs/isrgrootx1.pem.txt";
 	static final String INTERMEDIATE_KEY_URL = "https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem.txt";
 	public static final int CERTIFICATE_LOOK_AHEAD_TIME_MS = 1000 * 60 * 60 * 24 * 14;
-	public static final String LETS_ENCRYPT_URL = "acme://letsencrypt.org/";
+	public static final String LETS_ENCRYPT_URL = "acme://letsencrypt.org/staging";
 	private KeyPair applicationKeyPair;
 	private Session session;
 	private Registration registration;
@@ -232,9 +232,9 @@ public class SSLGen {
 				mainKeyStore.deleteEntry(site);
 			}
 			mainKeyStore.setKeyEntry(site, domainKeyPair.getPrivate(), getPasswordChars(), new java.security.cert.Certificate[]{cert});
-			System.out.println("Added cert to keystore: "+site);
+			System.out.println("Added cert to keystore: " + site);
 		} catch (AcmeRateLimitExceededException e) {
-			System.out.println("Rate Limit Exceeded: "+site);
+			System.out.println("Rate Limit Exceeded: " + site);
 			//Skip this one
 			//Rate Limit Exceeded
 		}
@@ -282,7 +282,6 @@ public class SSLGen {
 
 	public static Http01Challenge getActiveChallenge(String filename, String domain) {
 		Http01Challenge challenge = null;
-
 
 		if (activeChallengeMap.containsKey(domain)) {
 			challenge = activeChallengeMap.get(domain);

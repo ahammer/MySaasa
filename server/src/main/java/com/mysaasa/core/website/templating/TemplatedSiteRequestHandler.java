@@ -187,7 +187,7 @@ public class TemplatedSiteRequestHandler implements IRequestHandler {
 				stringResponse(response, challenge.getAuthorization());
 				return;
 			}
-			_404Response(response);
+			_404Response( response, filename);
 		} catch (final Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -211,7 +211,7 @@ public class TemplatedSiteRequestHandler implements IRequestHandler {
 
 	}
 
-	private void _404Response(WebResponse response) {
+	public static void _404Response(WebResponse response, String filename) {
 
 		final byte[] data = ("404 Could not load " + filename).getBytes();
 		response.setStatus(404);
