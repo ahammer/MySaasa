@@ -20,9 +20,7 @@ public class CategoryService {
 		return Simple.getInstance().getInjector().getProvider(CategoryService.class).get();
 	}
 
-
-	public CategoryService() {
-	}
+	public CategoryService() {}
 
 	/**
 	 * Finds a Category object by name.

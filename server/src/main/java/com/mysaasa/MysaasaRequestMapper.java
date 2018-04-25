@@ -37,7 +37,6 @@ public class MysaasaRequestMapper implements IRequestMapper {
 	private final VelocityEngine mEngine;
 	Logger logger = Logger.getLogger(MysaasaRequestMapper.class.getSimpleName());
 
-
 	public MysaasaRequestMapper() {
 		logger.log(Level.INFO, "MySaasa Request Mapper Created");
 		mEngine = new VelocityEngine();

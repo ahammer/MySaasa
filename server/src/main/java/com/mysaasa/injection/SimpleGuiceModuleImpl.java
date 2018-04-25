@@ -35,7 +35,6 @@ public class SimpleGuiceModuleImpl extends AbstractSimpleGuiceModule {
 	@Override
 	protected void configure() {
 
-
 		Set<Class> bound = new HashSet<>();
 		for (Class c : reflections.getTypesAnnotatedWith(SimpleService.class)) {
 			Class abstractParent = findAbstractParent(c);
@@ -61,7 +60,6 @@ public class SimpleGuiceModuleImpl extends AbstractSimpleGuiceModule {
 			}
 		}
 	}
-
 
 	private Class findAbstractParent(Class c) {
 		if (c.getSuperclass() == Object.class)
@@ -93,7 +91,7 @@ public class SimpleGuiceModuleImpl extends AbstractSimpleGuiceModule {
 
 	public void linkServices() {
 		for (Class c : reflections.getSubTypesOf(BaseInjectedService.class)) {
-			((BaseInjectedService)Simple.getInstance().getInjector().getProvider(c).get()).inject();
+			((BaseInjectedService) Simple.getInstance().getInjector().getProvider(c).get()).inject();
 		}
 	}
 }

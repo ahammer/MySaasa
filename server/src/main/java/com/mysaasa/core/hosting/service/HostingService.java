@@ -41,7 +41,6 @@ public class HostingService extends BaseInjectedService {
 		super();
 	}
 
-
 	private Map<String, Website> siteCache = new HashMap<String, Website>();
 
 	/**
@@ -106,7 +105,7 @@ public class HostingService extends BaseInjectedService {
 	 * @return
 	 */
 	public List<Website> getWebsites() {
-		
+
 		List<Website> results = em.createQuery("SELECT W FROM Website W").getResultList();
 		//em.close();
 		return results;
@@ -134,7 +133,7 @@ public class HostingService extends BaseInjectedService {
 
 	public Website saveWebsite(Website website) {
 		checkNotNull(website);
-		
+
 		em.getTransaction().begin();
 		Website tracked = em.merge(website);
 		em.flush();
@@ -145,7 +144,7 @@ public class HostingService extends BaseInjectedService {
 
 	public Domain saveDomain(Domain domain) {
 		checkNotNull(domain);
-		
+
 		em.getTransaction().begin();
 		Domain tracked = em.merge(domain);
 		em.flush();
@@ -200,7 +199,7 @@ public class HostingService extends BaseInjectedService {
 	}
 
 	public Website findWebsite(String domain) {
-		
+
 		List<Website> results = em.createQuery("SELECT W FROM Website W WHERE LOWER(W.production)=:domain").setParameter("domain", domain.toLowerCase()).getResultList();
 		//em.close();
 		if (results.size() != 1)
@@ -224,7 +223,7 @@ public class HostingService extends BaseInjectedService {
 	}
 
 	public Domain findDomain(String domain) {
-		
+
 		List<Domain> results = em.createQuery("SELECT D FROM Domain D WHERE D.domain=:domain").setParameter("domain", domain).getResultList();
 		//em.close();
 		if (results.size() != 1)
@@ -237,7 +236,7 @@ public class HostingService extends BaseInjectedService {
 	}
 
 	public List<Website> getWebsites(Organization organization) {
-		
+
 		List<Website> results = em.createQuery("SELECT W FROM Website W WHERE W.organization=:organization").setParameter("organization", organization).getResultList();
 		//em.close();
 		return results;

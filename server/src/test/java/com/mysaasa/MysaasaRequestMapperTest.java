@@ -10,6 +10,7 @@ import org.apache.wicket.mock.MockWebRequest;
 import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.cycle.RequestCycle;
+import org.apache.wicket.request.http.handler.ErrorCodeRequestHandler;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -55,7 +56,7 @@ public class MysaasaRequestMapperTest {
 		Url parse = Url.parse("http://bad" + TEST_DOMAIN);
 		MockWebRequest webRequest = new MockWebRequest(parse);
 		int compatibility = mapper.getCompatibilityScore(webRequest);
-		assertEquals(compatibility, MysaasaRequestMapper.NO_MATCH);
+		assertEquals(compatibility, MysaasaRequestMapper.MATCHING_SCORE);
 	}
 
 	@Test
@@ -78,11 +79,7 @@ public class MysaasaRequestMapperTest {
 		int compatibility = mapper.getCompatibilityScore(webRequest);
 		assertEquals(compatibility, MysaasaRequestMapper.MATCHING_SCORE);
 		IRequestHandler result = mapper.mapRequest(webRequest);
-		assertNull(result);
+		assertTrue(result instanceof ErrorCodeRequestHandler);
 	}
 
-	@Test
-	public void testMapRequest() throws Exception {
-
-	}
 }

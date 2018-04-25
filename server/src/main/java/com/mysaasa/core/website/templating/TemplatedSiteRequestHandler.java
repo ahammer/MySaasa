@@ -184,7 +184,7 @@ public class TemplatedSiteRequestHandler implements IRequestHandler {
 				stringResponse(response, challenge.getAuthorization());
 				return;
 			}
-			_404Response( response, filename);
+			_404Response(response, filename);
 		} catch (final Exception e) {
 			throw new RuntimeException(e);
 		}

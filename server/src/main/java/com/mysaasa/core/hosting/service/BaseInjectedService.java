@@ -8,8 +8,8 @@ import com.mysaasa.Simple;
  * 
  */
 public class BaseInjectedService {
-    public final void inject() {
-        Simple.getInstance().getInjector().injectMembers(this);
-    }
+	public final void inject() {
+		Simple.getInstance().getInjector().injectMembers(this);
+	}
 
 }
