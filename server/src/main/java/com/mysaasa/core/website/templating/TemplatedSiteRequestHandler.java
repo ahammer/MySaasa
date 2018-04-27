@@ -53,8 +53,8 @@ public class TemplatedSiteRequestHandler implements IRequestHandler {
 
 	/**
 	 * Checks to see if this is a ValidRequest for this handler
-	 * @param request
-	 * @return
+	 * @param request request
+	 * @return if the request if valid
 	 */
 	public static boolean IsValidRequest(final Request request) {
 		HostingService service = HostingService.get();

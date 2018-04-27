@@ -48,7 +48,7 @@ public class SessionService {
 	/**
 	 * Unregister/Signout of a session, this will clear the mappings for the session
 	 *
-	 * @param session
+	 * @param session session
 	 */
 	public void unregisterSession(Session session) {
 		authenticationMap.remove(session);
@@ -77,8 +77,8 @@ public class SessionService {
 	/**
 	 * Register a User to a Session
 	 *
-	 * @param mSession
-	 * @param user
+	 * @param mSession session
+	 * @param user user
 	 */
 	public void registerUser(Session mSession, User user) {
 		adminSessionMap.remove(mSession);
@@ -136,8 +136,8 @@ public class SessionService {
 
 	/**
 	 * An AdminSession. Sometimes shared between the JPA and Website
-	 * @param session
-	 * @param adminSession
+	 * @param session session
+	 * @param adminSession adminSession
 	 */
 	public void registerAdminSession(Session session, AdminSession adminSession) {
 		checkNotNull(session);

@@ -18,7 +18,7 @@ public class StartDaemon implements Daemon {
 	 * The Java entry point.
 	 * @param args Command line arguments, all ignored.
 	 */
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) {
 		// the main routine is only here so I can also run the app from the command line
 		serverLauncher.initialize();
 		Scanner sc = new Scanner(System.in);

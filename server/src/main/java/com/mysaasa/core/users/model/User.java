@@ -179,11 +179,9 @@ public class User implements Serializable {
 	}
 
 	/**
-	 * @param identifier
-	 * @Throws illegalArgumentException if validate fails
+	 * @param identifier the expected identifier
 	 */
 	public void setIdentifier(String identifier) {
-		//validate(identifier);
 		this.identifier = identifier;
 
 	}

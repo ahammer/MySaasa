@@ -30,7 +30,7 @@ import java.util.Map;
  * <strong>Simplest message:</strong>
  * <pre><code>
  * Message message = new Message.Builder().build();
- * </pre></code>
+ * </code></pre>
  *
  * <strong>Message with optional attributes:</strong>
  * <pre><code>
@@ -41,7 +41,7 @@ import java.util.Map;
  *    .dryRun(true)
  *    .restrictedPackageName(restrictedPackageName)
  *    .build();
- * </pre></code>
+ * </code></pre>
  *
  * <strong>Message with optional attributes and payload data:</strong>
  * <pre><code>
@@ -54,7 +54,7 @@ import java.util.Map;
  *    .addData("key1", "value1")
  *    .addData("key2", "value2")
  *    .build();
- * </pre></code>
+ * </code></pre>
  */
 public final class Message implements Serializable {
 
@@ -82,6 +82,8 @@ public final class Message implements Serializable {
 
 		/**
 		 * Sets the collapseKey property.
+		 * @param value  value
+		 * @return this
 		 */
 		public Builder collapseKey(String value) {
 			collapseKey = value;
@@ -90,6 +92,8 @@ public final class Message implements Serializable {
 
 		/**
 		 * Sets the delayWhileIdle property (default value is {@literal false}).
+		 * @param value  value
+		 * @return this
 		 */
 		public Builder delayWhileIdle(boolean value) {
 			delayWhileIdle = value;
@@ -98,6 +102,8 @@ public final class Message implements Serializable {
 
 		/**
 		 * Sets the time to live, in seconds.
+		 * @param value  value
+		 * @return this
 		 */
 		public Builder timeToLive(int value) {
 			timeToLive = value;
@@ -106,6 +112,9 @@ public final class Message implements Serializable {
 
 		/**
 		 * Adds a key/value pair to the payload data.
+		 * @param key key
+		 * @param value  value
+		 * @return this
 		 */
 		public Builder addData(String key, String value) {
 			data.put(key, value);
@@ -114,6 +123,8 @@ public final class Message implements Serializable {
 
 		/**
 		 * Sets the dryRun property (default value is {@literal false}).
+		 * @param value  value
+		 * @return this
 		 */
 		public Builder dryRun(boolean value) {
 			dryRun = value;
@@ -122,6 +133,8 @@ public final class Message implements Serializable {
 
 		/**
 		 * Sets the restrictedPackageName property.
+		 * @param value  value
+		 * @return this
 		 */
 		public Builder restrictedPackageName(String value) {
 			restrictedPackageName = value;
@@ -145,6 +158,7 @@ public final class Message implements Serializable {
 
 	/**
 	 * Gets the collapse key.
+	 * @return string
 	 */
 	public String getCollapseKey() {
 		return collapseKey;
@@ -152,6 +166,7 @@ public final class Message implements Serializable {
 
 	/**
 	 * Gets the delayWhileIdle flag.
+	 * @return string
 	 */
 	public Boolean isDelayWhileIdle() {
 		return delayWhileIdle;
@@ -159,6 +174,7 @@ public final class Message implements Serializable {
 
 	/**
 	 * Gets the time to live (in seconds).
+	 * @return string
 	 */
 	public Integer getTimeToLive() {
 		return timeToLive;
@@ -166,6 +182,7 @@ public final class Message implements Serializable {
 
 	/**
 	 * Gets the dryRun flag.
+	 * @return string
 	 */
 	public Boolean isDryRun() {
 		return dryRun;
@@ -173,6 +190,7 @@ public final class Message implements Serializable {
 
 	/**
 	 * Gets the restricted package name.
+	 * @return string
 	 */
 	public String getRestrictedPackageName() {
 		return restrictedPackageName;
@@ -180,6 +198,7 @@ public final class Message implements Serializable {
 
 	/**
 	 * Gets the payload data, which is immutable.
+	 * @return string
 	 */
 	public Map<String, String> getData() {
 		return data;

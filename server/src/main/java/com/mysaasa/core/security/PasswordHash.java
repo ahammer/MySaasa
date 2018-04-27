@@ -174,6 +174,8 @@ public class PasswordHash {
 	 * @param password    the password to check
 	 * @param correctHash the hash of the valid password
 	 * @return true if the password is correct, false if not
+	 * @throws  NoSuchAlgorithmException no algorithm
+	 * @throws InvalidKeySpecException invalid key
 	 */
 	private static boolean validatePassword(char[] password, String correctHash) throws NoSuchAlgorithmException, InvalidKeySpecException {
 		// Decode the hash into its parameters
@@ -195,6 +197,8 @@ public class PasswordHash {
 	 * @param password    the password to check
 	 * @param correctHash the hash of the valid password
 	 * @return true if the password is correct, false if not
+	 * @throws  NoSuchAlgorithmException no algorithm
+	 * @throws InvalidKeySpecException invalid key
 	 */
 	public static boolean validatePassword(String password, String correctHash) throws NoSuchAlgorithmException, InvalidKeySpecException {
 		if (password == null)

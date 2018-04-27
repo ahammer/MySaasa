@@ -11,8 +11,10 @@ public abstract class ArraySelectWidget<T> extends MultiSelectWidget<T> {
 	/**
 	 * Creates a new MultiSelectWidget, provide it a list of selected items of type T
 	 *
-	 * @param id
-	 * @param model
+	 * @param id id
+	 * @param model model
+	 * @param buttonModel bm
+	 * @param placeholderModel pm
 	 */
 	protected ArraySelectWidget(String id, IModel<List<T>> model, IModel<String> placeholderModel, IModel<String> buttonModel) {
 		super(id, model, placeholderModel, buttonModel);

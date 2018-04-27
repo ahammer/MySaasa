@@ -65,8 +65,8 @@ public class BlogTemplateService implements ITemplateService {
 
 	/**
 	 * We want to update these blog posts to have proper Edit references
-	 * @param posts
-	 * @param category
+	 * @param posts posts
+	 * @param category category
 	 */
 	protected void processBlogPostsForInlineEditing(List<BlogPost> posts, String category) {
 
@@ -211,8 +211,8 @@ public class BlogTemplateService implements ITemplateService {
 
 	/**
 	 * Deletes a blog comment, uses a string because the templates are usually working with that
-	 * @param comment_id
-	 * @return
+	 * @param comment_id comment_id
+	 * @return delete
 	 */
 	public boolean deleteBlogComment(String comment_id) {
 		try {
@@ -276,10 +276,10 @@ public class BlogTemplateService implements ITemplateService {
 
 	/**
 	 * Post a Comment
-	 * @param id
-	 * @param parentCommentId
-	 * @param comment
-	 * @return
+	 * @param id id
+	 * @param parentCommentId parent comment
+	 * @param comment the text
+	 * @return true/false for success/fail
 	 */
 	public boolean postComment(String id, String parentCommentId, String comment) {
 		try {

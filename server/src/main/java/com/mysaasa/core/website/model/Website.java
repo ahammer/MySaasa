@@ -100,7 +100,7 @@ public class Website implements Serializable {
 	/**
 	 * This is the staging production, once persisted
 	 *
-	 * @return
+	 * @return return
 	 */
 	@Column(name = "staging")
 	public String getStaging() {
@@ -146,8 +146,8 @@ public class Website implements Serializable {
 	/**
 	 * Converts a File into a URL for this website
 	 *
-	 * @param file
-	 * @return
+	 * @param file file
+	 * @return url for this file
 	 */
 	public String getUrl(File file) {
 		checkNotNull(file);
@@ -206,7 +206,7 @@ public class Website implements Serializable {
 	/**
 	 * Look at this websites data and choose a default value;
 	 *
-	 * @return
+	 * @return return
 	 */
 	public TemplateFile calculateDefaultFile() {
 		Website w = this;
@@ -255,7 +255,7 @@ public class Website implements Serializable {
 
 	/**
 	 * Static helper to getInstance the website for the current request
-	 * @return
+	 * @return return current website
 	 */
 	public static Website getCurrent() {
 		return HostingService.get().findWebsite(RequestCycle.get().getRequest().getClientUrl());

@@ -26,7 +26,7 @@ public class HostingTemplateService implements ITemplateService {
 	 * Checks to see if a domain is available for use, this does not take into account any DNS information or branding
 	 * Simply whether it's valid or not. The brands will need to enforce their brand on their own.
 	 *
-	 * @param domain
+	 * @param domain domain
 	 * @return true if you can use it as a website
 	 *
 	 */
@@ -50,7 +50,7 @@ public class HostingTemplateService implements ITemplateService {
 	 *
 	 * Later we can optimize this
 	 *
-	 * @return
+	 * @return count of websites
 	 */
 	public int getWebsiteCount() {
 		return HostingService.get().getWebsites().size();
@@ -58,11 +58,11 @@ public class HostingTemplateService implements ITemplateService {
 
 	/**
 	 * This will set up a Organization and website + user
-	 * @param domain        //Used as the Organization name, User name and Domain name
-	 * @param password
-	 * @param contact_email //How to contact this user
-	 * @param product_sku   //Optional sku
-	 * @return
+	 * @param domain        Used as the Organization name, User name and Domain name
+	 * @param password	the password
+	 * @param contact_email How to contact this user
+	 * @param product_sku   Optional sku
+	 * @return the website
 	 */
 	public Website createWebsite(String domain, String password, String contact_email, String product_sku) {
 

@@ -123,7 +123,7 @@ public class UserApiService implements IApiService {
 
 	/**
 	 * Keep-alive
-	 * @return
+	 * @return "pong"
 	 */
 	@ApiCall
 	public ApiResult ping() {

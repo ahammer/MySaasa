@@ -61,8 +61,8 @@ public class TemplateHelperService {
 
 	/**
 	 * this is backed by a ThreadLocal, so that each request should have it's own data
-	 * @param debugMode
-	 * @param website
+	 * @param debugMode dm
+	 * @param website website
 	 */
 	public void setRequestProperties(boolean debugMode, Website website) {
 		mRequestProperties.set(new RequestProperties(debugMode, website));

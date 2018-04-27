@@ -59,7 +59,7 @@ public abstract class Simple extends WebApplication {
 	 * to the cast version of it. Ultimately it's a convenience so we don't need to do unsafe
 	 * casts everywhere.
 	 *
-	 * @return
+	 * @return this singleton
 	 */
 	public static Simple getInstance() {
 		return INSTANCE;
@@ -68,8 +68,9 @@ public abstract class Simple extends WebApplication {
 	/**
 	 * This is a shortcut to the EntityManager
 	 *
-	 * @return
+	 * @return the entity manager
 	 */
+	@Deprecated
 	public static EntityManager getEntityManager() {
 		return Simple.getInstance().getInjector().getProvider(EntityManager.class).get();
 	}
@@ -77,13 +78,13 @@ public abstract class Simple extends WebApplication {
 	/**
 	 * Dependency injection yay.
 	 *
-	 * @return
+	 * @return the Guice injector
 	 */
 	public abstract Injector getInjector();
 
 	/**
 	 * Global logging instance
-	 *
+	 * @return the logger
 	 */
 	public Logger getLogger() {
 		return logger;

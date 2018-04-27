@@ -39,8 +39,7 @@ package com.mysaasa.interfaces;
  *     cache, this is where it would be used. However if you implement a cache, use a CacheService (if I getInstance around to
  *     it) or implement your own, and use DI to getInstance at it. Don't make it a field, don't give user's access.
  * </p>
- * <br/>
- *   <b>Rules of Template Services</b><
+ *   <b>Rules of Template Services</b>
  *  <ol>
  *     <li> We don't put any implementation in the Template Service</li>
  *     <li> 2) We don't put any implementation in the Template Service</li>

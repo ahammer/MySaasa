@@ -22,12 +22,14 @@ public class MessagingTemplateService implements ITemplateService {
 
 	/**
 	 * Send ths message
-	 * @param to_user
+	 * @param to_user to
 	
-	 * @param title
-	 * @param body
-	 * @param email
-	 * @return
+	 * @param title title
+	 * @param body body
+	 * @param email email
+	 * @param name  name
+	 * @param phone  phone
+	 * @return sends the message
 	 */
 	public ApiResult sendMessage(String to_user, String title, String body, String name, String email, String phone) {
 		try {

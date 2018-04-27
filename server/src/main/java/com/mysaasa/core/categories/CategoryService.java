@@ -24,8 +24,10 @@ public class CategoryService {
 
 	/**
 	 * Finds a Category object by name.
-	 * @param name
-	 * @return
+	 * @param name name
+	 * @param o  organization
+	 * @param type type
+	 * @return the category or null
 	 */
 	public Category findCategory(String name, Class type, Organization o) {
 		if (name == null)

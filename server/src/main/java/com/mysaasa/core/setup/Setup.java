@@ -220,10 +220,10 @@ public class Setup extends WebPage {
 	/**
 	 * Test's the database connection, throws every exception ever
 	 *
-	 * @throws ClassNotFoundException
-	 * @throws IllegalAccessException
-	 * @throws InstantiationException
-	 * @throws java.sql.SQLException
+	 * @throws ClassNotFoundException a
+	 * @throws IllegalAccessException a
+	 * @throws InstantiationException a
+	 * @throws java.sql.SQLException a
 	 */
 	private boolean testDatabaseConnection() throws ClassNotFoundException, IllegalAccessException, InstantiationException, SQLException {
 		Class c = Class.forName(state.driverName);
@@ -236,14 +236,7 @@ public class Setup extends WebPage {
 		return true;
 	}
 
-	/**
-	 * Static methods and definitions.
-	 * The access to the system preferences are here
-	 */
 
-	/**
-	 *
-	  */
 	public void installIncludedThemes() throws IOException, ZipException {
 		ClassLoader classloader = Thread.currentThread().getContextClassLoader();
 		InputStream is = classloader.getResourceAsStream("bundled_sites.zip");
