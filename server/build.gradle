@@ -17,7 +17,7 @@ jacocoTestReport {
         html.destination = "${buildDir}/jacocoHtml"
     }
 }
-mainClassName = "com.mysaasa.StartDaemon"
+mainClassName = "com.mysaasa.MySaasaDaemon"
 
 
 def Properties versionProps = new Properties()
