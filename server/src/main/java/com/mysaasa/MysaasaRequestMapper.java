@@ -59,6 +59,7 @@ public class MysaasaRequestMapper implements IRequestMapper {
 		int score = (website == null) ? NO_MATCH : MATCHING_SCORE;
 		logger.log(Level.INFO, request.getClientUrl() + " " + website + " " + score);
 		*/
+
 		return MATCHING_SCORE;
 	}
 
@@ -105,6 +106,11 @@ public class MysaasaRequestMapper implements IRequestMapper {
 			}
 		}
 
+
+		if (BakedInFileRequestHandler.isValidRequest(request)) {
+			return new BakedInFileRequestHandler(request);
+		}
+		//http://gettingstarted.test:8080/simple_logo.png
 		return ERROR_CODE_REQUEST_HANDLER;
 	}
 }

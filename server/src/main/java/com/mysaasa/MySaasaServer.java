@@ -15,7 +15,7 @@ import java.io.File;
 public class MySaasaServer {
 	private Server server;
 
-	public void start()  throws Exception{
+	public void start() throws Exception {
 		if (server != null) {
 			return;
 		}
@@ -49,7 +49,7 @@ public class MySaasaServer {
 		WebAppContext bb = new WebAppContext();
 		bb.setServer(server);
 		bb.setContextPath("/");
-		bb.setWar("src/main/webapp");
+		bb.setWar("./webapp");
 		return bb;
 	}
 

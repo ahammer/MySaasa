@@ -236,7 +236,6 @@ public class Setup extends WebPage {
 		return true;
 	}
 
-
 	public void installIncludedThemes() throws IOException, ZipException {
 		ClassLoader classloader = Thread.currentThread().getContextClassLoader();
 		InputStream is = classloader.getResourceAsStream("bundled_sites.zip");

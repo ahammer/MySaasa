@@ -38,7 +38,7 @@ public class MySaasaDaemon implements Daemon {
 						running = false;
 						return;
 					} else {
-						System.out.println("Command not recognized: "+nextLine);
+						System.out.println("Command not recognized: " + nextLine);
 					}
 				} else {
 					//Do Nothing
@@ -70,6 +70,5 @@ public class MySaasaDaemon implements Daemon {
 
 	@Override
 	public void destroy() {}
-
 
 }

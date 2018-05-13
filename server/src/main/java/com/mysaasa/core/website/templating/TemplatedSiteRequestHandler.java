@@ -129,7 +129,7 @@ public class TemplatedSiteRequestHandler implements IRequestHandler {
 			file = new File(((theme != null) ? theme : website).calculateWebsiteRootAsString() + filename);
 		}
 
-		contentType = lookupContentType();
+		contentType = lookupContentType(file);
 	}
 
 	/**
@@ -347,7 +347,7 @@ public class TemplatedSiteRequestHandler implements IRequestHandler {
 		return SessionService.get().getAdminSession(Session.get());
 	}
 
-	private String lookupContentType() {
+	public static String lookupContentType(File file) {
 		String contentType = URLConnection.guessContentTypeFromName(file.getName());
 		if (file.getName().endsWith("css")) {
 			contentType = "text/css";
