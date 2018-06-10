@@ -30,6 +30,7 @@
             <class>com.mysaasa.core.blog.model.BlogComment</class>
             <class>com.mysaasa.core.media.model.Media</class>
             <class>com.mysaasa.core.organization.model.Organization</class>
+            <class>com.mysaasa.core.marketing.model.UserReferrals</class>
         <class>com.mysaasa.core.database.model.Property</class>
 
         <properties>

@@ -3,7 +3,8 @@ package com.mysaasa.api.model;
 import com.google.gson.JsonObject;
 
 import java.io.Serializable;
-
+//This is Client API user, not Server API user
+//It is a subset of Server user
 public class User implements Serializable {
     public static final long serialVersionUID = 1L;
     public final AccessLevel accessLevel;
