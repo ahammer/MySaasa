@@ -31,8 +31,8 @@ public class UserReferrals {
     Integer available = INITIAL_REFERRAL;
 
     public UserReferrals(){}
-    public UserReferrals(User user) {
-        this.userId = user.id;
+    public UserReferrals(long userId) {
+        this.userId = userId;
     }
 
     @Id

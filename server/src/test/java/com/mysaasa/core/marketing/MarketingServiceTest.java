@@ -57,11 +57,8 @@ public class MarketingServiceTest {
     @Test
     public void TestNewUserHasTwoReferrals() {
         MarketingService marketingService = Simple.getInstance().getInjector().getProvider(MarketingService.class).get();
-        UserReferrals referrals = marketingService.findReferral(userA);
+        UserReferrals referrals = marketingService.findReferral(userA.id);
         assertEquals(referrals.getAvailableReferrals(),2);
-
-
-
     }
 
 }

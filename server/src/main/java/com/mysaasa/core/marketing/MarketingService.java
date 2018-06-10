@@ -16,8 +16,6 @@ import java.util.List;
 @SimpleService
 public class MarketingService extends BaseInjectedService {
 
-    @Inject
-    BlogService blogService;
 
     @Inject
     EntityManager em;
@@ -26,24 +24,13 @@ public class MarketingService extends BaseInjectedService {
         super();
     }
 
-    public void setBlogService(BlogService blogService) {
-        this.blogService = blogService;
-    }
-
-
-    public void setupReferral(User parent, User child) {
-
-
-    }
-
-    public UserReferrals findReferral(User userA) {
-
+    public UserReferrals findReferral(long userId) {
         final Query q = em.createQuery("SELECT U FROM UserReferrals U WHERE U.userId=:userId")
-                .setParameter("userId", userA.id);
+                .setParameter("userId", userId);
         final List<UserReferrals> referralsList = q.getResultList();
         if (referralsList.size() == 0) {
 
-            UserReferrals referrals = new UserReferrals(userA);
+            UserReferrals referrals = new UserReferrals(userId);
             em.getTransaction().begin();
             em.persist(referrals);
             em.getTransaction().commit();
