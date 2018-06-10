@@ -46,9 +46,12 @@ public class MarketingService extends BaseInjectedService {
     }
 
     public void addReferral(long parentId, long childId) {
+
         UserReferrals userReferrals = findReferral(parentId);
         List<Long> idList = userReferrals.getReferrals();
         if (idList == null) idList = new ArrayList<>();
+        //Already in the list
+        if (idList.contains(childId)) return;
         idList.add(childId);
         userReferrals.setReferrals(idList);
         userReferrals.decrementAvailableReferrals();

@@ -22,6 +22,7 @@ import static org.junit.Assert.assertEquals;
 public class MarketingServiceTest {
     private User userA;
     private User userB;
+    private User userC;
     //Rules of marketting
     //Users get X referrals
     //As a product owner, I should be able to generate referrals
@@ -52,8 +53,14 @@ public class MarketingServiceTest {
         userB.setIdentifier("testUserB");
         userB.setOrganization(organization);
 
+        userC = new User();
+        userC.setIdentifier("testUserB");
+        userC.setOrganization(organization);
+
+
         userA = UserService.get().saveUser(userA);
         userB = UserService.get().saveUser(userB);
+        userC = UserService.get().saveUser(userC);
 
     }
 
@@ -69,10 +76,18 @@ public class MarketingServiceTest {
     public void TestReferralProcess() {
         MarketingService marketingService = Simple.getInstance().getInjector().getProvider(MarketingService.class).get();
         marketingService.addReferral(userA.id, userB.id);
-
         UserReferrals referrals = marketingService.findReferral(userA.id);
         assertEquals(referrals.getAvailableReferrals(),1);
 
+        //Add same one twice
+        marketingService.addReferral(userA.id, userB.id);
+        referrals = marketingService.findReferral(userA.id);
+        assertEquals(referrals.getAvailableReferrals(),1);
+
+        //Add a second one
+        marketingService.addReferral(userA.id, userC.id);
+        referrals = marketingService.findReferral(userA.id);
+        assertEquals(referrals.getAvailableReferrals(),0);
     }
 
 }
