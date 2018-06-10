@@ -11,6 +11,7 @@ import com.mysaasa.interfaces.annotations.SimpleService;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import java.util.ArrayList;
 import java.util.List;
 
 @SimpleService
@@ -31,12 +32,26 @@ public class MarketingService extends BaseInjectedService {
         if (referralsList.size() == 0) {
 
             UserReferrals referrals = new UserReferrals(userId);
-            em.getTransaction().begin();
-            em.persist(referrals);
-            em.getTransaction().commit();
+            save(referrals);
             return referrals;
         }
 
         return referralsList.get(0);
+    }
+
+    private void save(UserReferrals referrals) {
+        em.getTransaction().begin();
+        em.persist(referrals);
+        em.getTransaction().commit();
+    }
+
+    public void addReferral(long parentId, long childId) {
+        UserReferrals userReferrals = findReferral(parentId);
+        List<Long> idList = userReferrals.getReferrals();
+        if (idList == null) idList = new ArrayList<>();
+        idList.add(childId);
+        userReferrals.setReferrals(idList);
+        userReferrals.decrementAvailableReferrals();
+        save(userReferrals);
     }
 }

@@ -120,8 +120,8 @@ public class Organization implements Serializable {
 		return HostingService.get().getWebsites(this);
 	}
 
-	public void save() {
-		OrganizationService.get().saveOrganization(this);
+	public Organization save() {
+		return OrganizationService.get().saveOrganization(this);
 	}
 
 	@Override

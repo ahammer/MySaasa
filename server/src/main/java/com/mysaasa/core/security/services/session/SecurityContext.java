@@ -69,6 +69,7 @@ public class SecurityContext implements Serializable {
 	}
 
 	public static SecurityContext get() {
-		return SessionService.get().getSecurityContext(Session.get());
+		Session mSession = Session.get();
+		return SessionService.get().getSecurityContext(mSession);
 	}
 }

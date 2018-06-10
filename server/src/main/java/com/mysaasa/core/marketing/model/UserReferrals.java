@@ -71,4 +71,11 @@ public class UserReferrals {
     public void setAvailableReferrals(Integer available) {
         this.available = available;
     }
+
+    public void decrementAvailableReferrals() {
+        this.available--;
+        //Clip to 0
+        if (this.available < 0)
+            this.available = 0;
+    }
 }

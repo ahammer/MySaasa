@@ -6,8 +6,10 @@ import com.mysaasa.core.hosting.service.HostingService;
 import com.mysaasa.core.marketing.model.UserReferrals;
 import com.mysaasa.core.organization.model.Organization;
 import com.mysaasa.core.users.model.User;
+import com.mysaasa.core.users.service.UserService;
 import com.mysaasa.core.website.model.Domain;
 import com.mysaasa.core.website.model.Website;
+import org.apache.wicket.util.tester.WicketTester;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,7 +30,7 @@ public class MarketingServiceTest {
 
     @Before
     public void initialize() throws Exception {
-        new SimpleImpl(true);
+        new WicketTester(new SimpleImpl(true));
 
         HostingService service = HostingService.get();
         Website testWebsite = new Website();
@@ -41,7 +43,7 @@ public class MarketingServiceTest {
 
         Organization organization = new Organization();
         organization.setName("testOrg");
-        organization.save();
+        organization = organization.save();
         userA = new User();
         userA.setIdentifier("testUserA");
         userA.setOrganization(organization);
@@ -50,6 +52,8 @@ public class MarketingServiceTest {
         userB.setIdentifier("testUserB");
         userB.setOrganization(organization);
 
+        userA = UserService.get().saveUser(userA);
+        userB = UserService.get().saveUser(userB);
 
     }
 
@@ -59,6 +63,16 @@ public class MarketingServiceTest {
         MarketingService marketingService = Simple.getInstance().getInjector().getProvider(MarketingService.class).get();
         UserReferrals referrals = marketingService.findReferral(userA.id);
         assertEquals(referrals.getAvailableReferrals(),2);
+    }
+
+    @Test
+    public void TestReferralProcess() {
+        MarketingService marketingService = Simple.getInstance().getInjector().getProvider(MarketingService.class).get();
+        marketingService.addReferral(userA.id, userB.id);
+
+        UserReferrals referrals = marketingService.findReferral(userA.id);
+        assertEquals(referrals.getAvailableReferrals(),1);
+
     }
 
 }
