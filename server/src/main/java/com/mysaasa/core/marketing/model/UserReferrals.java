@@ -22,7 +22,10 @@ public class UserReferrals {
     public long id;
 
     @Expose
-    long userId;
+    Long userId;
+
+    @Expose
+    Long parentId;
 
     @Expose
     List<Long> referrals;
@@ -77,5 +80,15 @@ public class UserReferrals {
         //Clip to 0
         if (this.available < 0)
             this.available = 0;
+    }
+
+    @Column(name = "parentId")
+    public Long getParentId() {
+        return parentId;
+    }
+
+
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
     }
 }

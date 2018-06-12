@@ -76,18 +76,13 @@ public class MarketingServiceTest {
     public void TestReferralProcess() {
         MarketingService marketingService = Simple.getInstance().getInjector().getProvider(MarketingService.class).get();
         marketingService.addReferral(userA.id, userB.id);
-        UserReferrals referrals = marketingService.findReferral(userA.id);
-        assertEquals(referrals.getAvailableReferrals(),1);
+        UserReferrals referrals = marketingService.findReferral(userB.id);
+        assertEquals(referrals.getParentId(),Long.valueOf(userA.id));
+    }
 
-        //Add same one twice
-        marketingService.addReferral(userA.id, userB.id);
-        referrals = marketingService.findReferral(userA.id);
-        assertEquals(referrals.getAvailableReferrals(),1);
+    @Test
+    public void TestParentId() {
 
-        //Add a second one
-        marketingService.addReferral(userA.id, userC.id);
-        referrals = marketingService.findReferral(userA.id);
-        assertEquals(referrals.getAvailableReferrals(),0);
     }
 
 }

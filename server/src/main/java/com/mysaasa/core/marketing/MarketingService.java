@@ -1,11 +1,7 @@
 package com.mysaasa.core.marketing;
 
-import com.mysaasa.Simple;
-import com.mysaasa.core.blog.services.BlogService;
 import com.mysaasa.core.hosting.service.BaseInjectedService;
 import com.mysaasa.core.marketing.model.UserReferrals;
-import com.mysaasa.core.users.model.User;
-import com.mysaasa.core.website.model.Website;
 import com.mysaasa.interfaces.annotations.SimpleService;
 
 import javax.inject.Inject;
@@ -50,11 +46,15 @@ public class MarketingService extends BaseInjectedService {
         UserReferrals userReferrals = findReferral(parentId);
         List<Long> idList = userReferrals.getReferrals();
         if (idList == null) idList = new ArrayList<>();
-        //Already in the list
         if (idList.contains(childId)) return;
         idList.add(childId);
         userReferrals.setReferrals(idList);
         userReferrals.decrementAvailableReferrals();
         save(userReferrals);
+
+        UserReferrals childReferral = findReferral(childId);
+        childReferral.setParentId(parentId);
+        save(childReferral);
+
     }
 }
