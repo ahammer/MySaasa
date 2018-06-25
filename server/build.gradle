@@ -1,14 +1,27 @@
 plugins {
     id "com.jfrog.bintray" version "1.7"
 }
-
-
 apply plugin: 'java'
 apply plugin: 'com.diffplug.gradle.spotless'
 apply plugin: 'application'
 apply plugin: "jacoco"
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
+
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+        }
+
+        resources {
+            srcDir 'src/main/resources'
+            srcDir 'src/main/java'
+            srcDir 'src/main/webapp'
+        }
+    }
+}
 
 jacocoTestReport {
     reports {
@@ -18,8 +31,6 @@ jacocoTestReport {
     }
 }
 mainClassName = "com.mysaasa.MySaasaDaemon"
-
-
 def Properties versionProps = new Properties()
 
 def versionPropsFile = file('version.properties')
@@ -28,8 +39,6 @@ if(versionPropsFile.exists())
 def code = (versionProps['VERSION_CODE'] ?: "0").toInteger() + 1
 versionProps['VERSION_CODE'] = code.toString()
 versionProps.store(versionPropsFile.newWriter(), null)
-
-
 group = 'com.mysaasa'
 version = '0.5.'+versionProps['VERSION_CODE']
 description = """mysaasa Server"""
@@ -58,19 +67,7 @@ compileTestJava {
     options.forkOptions.executable = 'javac'
 }
 
-sourceSets {
-    main {
-        java {
-            srcDir 'src/main/java'
-        }
 
-        resources {
-            srcDir 'src/main/resources'
-            srcDir 'src/main/java'
-            srcDig 'src/main/webapp'
-        }
-    }
-}
 
 repositories {
     mavenCentral()

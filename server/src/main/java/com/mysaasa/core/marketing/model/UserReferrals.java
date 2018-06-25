@@ -1,94 +1,117 @@
 package com.mysaasa.core.marketing.model;
 
 import com.google.gson.annotations.Expose;
-import com.mysaasa.core.users.model.User;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This tracks the User->Users relationship that is referrals
+ * This tracks the User to Users relationship that is referrals
  *
  * This simply tracks User ID's in a Tree
  */
 @Entity
 @Table(name = "UserReferrals")
 public class UserReferrals {
-    final static Integer INITIAL_REFERRAL = 2;
+	final static Integer INITIAL_REFERRAL = 2;
 
-    @Expose
-    public long id;
+	@Expose
+	public long id;
 
-    @Expose
-    Long userId;
+	@Expose
+	Long userId;
 
-    @Expose
-    Long parentId;
+	@Expose
+	Long parentId;
 
-    @Expose
-    List<Long> referrals;
+	@Expose
+	List<Long> referrals;
 
-    @Expose
-    Integer available = INITIAL_REFERRAL;
+	//Index 0 = Second/Direct referrals
+	//
+	@Expose
+	List<Integer> pyramid;
 
-    public UserReferrals(){}
-    public UserReferrals(long userId) {
-        this.userId = userId;
-    }
+	@Expose
+	Integer available = INITIAL_REFERRAL;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    public long getId() {
-        return id;
-    }
+	@ElementCollection
+	@Column(name = "Pyramid")
+	public List<Integer> getPyramid() {
+		return pyramid;
+	}
 
-    @Column(name = "userId")
-    public Long getUserId() {
-        return userId;
-    }
+	public void incrementLevel(int level) {
+		if (level < 1)
+			throw new IllegalArgumentException("Can only increment Levels under the root (Root = 0)");
 
-    @ElementCollection
-    @Column(name = "referralIds")
-    public List<Long> getReferrals() {
-        return referrals;
-    }
+		List<Integer> pyramid = getPyramid();
+		if (pyramid == null) {
+			pyramid = new ArrayList<>();
+		}
 
-    public int getAvailableReferrals() {
-        return available;
-    }
+	}
 
-    public void setId(long id) {
-        this.id = id;
-    }
+	public void setPyramid(List<Integer> pyramid) {
+		this.pyramid = pyramid;
+	}
 
-    public void setUserId(long userId) {
-        this.userId = userId;
-    }
+	public UserReferrals() {}
 
-    public void setReferrals(List<Long> referrals) {
-        this.referrals = referrals;
-    }
+	public UserReferrals(long userId) {
+		this.userId = userId;
+	}
 
-    public void setAvailableReferrals(Integer available) {
-        this.available = available;
-    }
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	public long getId() {
+		return id;
+	}
 
-    public void decrementAvailableReferrals() {
-        this.available--;
-        //Clip to 0
-        if (this.available < 0)
-            this.available = 0;
-    }
+	@Column(name = "userId")
+	public Long getUserId() {
+		return userId;
+	}
 
-    @Column(name = "parentId")
-    public Long getParentId() {
-        return parentId;
-    }
+	@ElementCollection
+	@Column(name = "referralIds")
+	public List<Long> getReferrals() {
+		return referrals;
+	}
 
+	public int getAvailableReferrals() {
+		return available;
+	}
 
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
-    }
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public void setUserId(long userId) {
+		this.userId = userId;
+	}
+
+	public void setReferrals(List<Long> referrals) {
+		this.referrals = referrals;
+	}
+
+	public void setAvailableReferrals(Integer available) {
+		this.available = available;
+	}
+
+	public void decrementAvailableReferrals() {
+		this.available--;
+		//Clip to 0
+		if (this.available < 0)
+			this.available = 0;
+	}
+
+	@Column(name = "parentId")
+	public Long getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(Long parentId) {
+		this.parentId = parentId;
+	}
 }

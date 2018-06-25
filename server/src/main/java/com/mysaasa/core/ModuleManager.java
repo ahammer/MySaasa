@@ -106,7 +106,7 @@ public class ModuleManager {
 			if (m != null)
 				for (Class c : m.keySet()) {
 					if (classPanelAdapters.containsKey(c)) {
-						throw new IllegalStateException("Two adapters for class " + c);
+						throw new IllegalStateException("Two adapters for class " + c + m.getClass().getName());
 					}
 				}
 			if (m != null)

@@ -20,69 +20,67 @@ import static com.mysaasa.MysaasaRequestMapperTest.TEST_DOMAIN;
 import static org.junit.Assert.assertEquals;
 
 public class MarketingServiceTest {
-    private User userA;
-    private User userB;
-    private User userC;
-    //Rules of marketting
-    //Users get X referrals
-    //As a product owner, I should be able to generate referrals
-    //As a product userA, I should be able to assign referrals
+	private User userA;
+	private User userB;
+	private User userC;
+	//Rules of marketting
+	//Users get X referrals
+	//As a product owner, I should be able to generate referrals
+	//As a product userA, I should be able to assign referrals
 
+	@Before
+	public void initialize() throws Exception {
+		new WicketTester(new SimpleImpl(true));
 
-    @Before
-    public void initialize() throws Exception {
-        new WicketTester(new SimpleImpl(true));
+		HostingService service = HostingService.get();
+		Website testWebsite = new Website();
+		testWebsite.setProduction("www.test.com");
+		testWebsite.setStaging("www.staging.com");
+		List<String> urls = Arrays.asList(TEST_DOMAIN);
+		List<Domain> domains = service.createDomains(urls);
+		testWebsite.setDomains(domains);
+		service.saveWebsite(testWebsite);
 
-        HostingService service = HostingService.get();
-        Website testWebsite = new Website();
-        testWebsite.setProduction("www.test.com");
-        testWebsite.setStaging("www.staging.com");
-        List<String> urls = Arrays.asList(TEST_DOMAIN);
-        List<Domain> domains = service.createDomains(urls);
-        testWebsite.setDomains(domains);
-        service.saveWebsite(testWebsite);
+		Organization organization = new Organization();
+		organization.setName("testOrg");
+		organization = organization.save();
+		userA = new User();
+		userA.setIdentifier("testUserA");
+		userA.setOrganization(organization);
 
-        Organization organization = new Organization();
-        organization.setName("testOrg");
-        organization = organization.save();
-        userA = new User();
-        userA.setIdentifier("testUserA");
-        userA.setOrganization(organization);
+		userB = new User();
+		userB.setIdentifier("testUserB");
+		userB.setOrganization(organization);
 
-        userB = new User();
-        userB.setIdentifier("testUserB");
-        userB.setOrganization(organization);
+		userC = new User();
+		userC.setIdentifier("testUserB");
+		userC.setOrganization(organization);
 
-        userC = new User();
-        userC.setIdentifier("testUserB");
-        userC.setOrganization(organization);
+		userA = UserService.get().saveUser(userA);
+		userB = UserService.get().saveUser(userB);
+		userC = UserService.get().saveUser(userC);
 
+	}
 
-        userA = UserService.get().saveUser(userA);
-        userB = UserService.get().saveUser(userB);
-        userC = UserService.get().saveUser(userC);
+	@Test
+	public void TestNewUserHasTwoReferrals() {
+		MarketingService marketingService = Simple.getInstance().getInjector().getProvider(MarketingService.class).get();
+		UserReferrals referrals = marketingService.findReferral(userA.id);
+		assertEquals(referrals.getAvailableReferrals(), 2);
+	}
 
-    }
+	@Test
+	public void TestReferralProcess() {
+		MarketingService marketingService = Simple.getInstance().getInjector().getProvider(MarketingService.class).get();
+		marketingService.addReferral(userA.id, userB.id);
+		marketingService.addReferral(userA.id, userC.id);
+		marketingService.addReferral(userA.id, userC.id);
 
+		UserReferrals referralsB = marketingService.findReferral(userB.id);
+		assertEquals(referralsB.getParentId(), Long.valueOf(userA.id));
+		UserReferrals referralsA = marketingService.findReferral(userA.id);
+		assertEquals(referralsA.getPyramid().get(0), (Integer) 2);
+		//assertEquals(referralsA.);
 
-    @Test
-    public void TestNewUserHasTwoReferrals() {
-        MarketingService marketingService = Simple.getInstance().getInjector().getProvider(MarketingService.class).get();
-        UserReferrals referrals = marketingService.findReferral(userA.id);
-        assertEquals(referrals.getAvailableReferrals(),2);
-    }
-
-    @Test
-    public void TestReferralProcess() {
-        MarketingService marketingService = Simple.getInstance().getInjector().getProvider(MarketingService.class).get();
-        marketingService.addReferral(userA.id, userB.id);
-        UserReferrals referrals = marketingService.findReferral(userB.id);
-        assertEquals(referrals.getParentId(),Long.valueOf(userA.id));
-    }
-
-    @Test
-    public void TestParentId() {
-
-    }
-
+	}
 }

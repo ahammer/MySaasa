@@ -7,10 +7,10 @@ import com.mysaasa.interfaces.annotations.ApiCall;
 import com.mysaasa.interfaces.annotations.SimpleService;
 
 @SimpleService
-public class MarketingApiService  implements IApiService {
-    @ApiCall
-    public ApiResult test() {
-        return new ApiSuccess("Success");
-    }
+public class MarketingApiService implements IApiService {
+	@ApiCall
+	public ApiResult test() {
+		return new ApiSuccess("Success");
+	}
 
 }

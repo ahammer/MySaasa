@@ -106,7 +106,6 @@ public class MysaasaRequestMapper implements IRequestMapper {
 			}
 		}
 
-
 		if (BakedInFileRequestHandler.isValidRequest(request)) {
 			return new BakedInFileRequestHandler(request);
 		}
