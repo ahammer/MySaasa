@@ -23,6 +23,8 @@ public class MarketingServiceTest {
 	private User userA;
 	private User userB;
 	private User userC;
+	private User userD;
+
 	//Rules of marketting
 	//Users get X referrals
 	//As a product owner, I should be able to generate referrals
@@ -53,12 +55,18 @@ public class MarketingServiceTest {
 		userB.setOrganization(organization);
 
 		userC = new User();
-		userC.setIdentifier("testUserB");
+		userC.setIdentifier("testUserC");
 		userC.setOrganization(organization);
+
+		userD = new User();
+		userD.setIdentifier("testUserD");
+		userD.setOrganization(organization);
 
 		userA = UserService.get().saveUser(userA);
 		userB = UserService.get().saveUser(userB);
 		userC = UserService.get().saveUser(userC);
+		userD = UserService.get().saveUser(userD);
+
 
 	}
 
@@ -75,11 +83,15 @@ public class MarketingServiceTest {
 		marketingService.addReferral(userA.id, userB.id);
 		marketingService.addReferral(userA.id, userC.id);
 		marketingService.addReferral(userA.id, userC.id);
+		marketingService.addReferral(userB.id, userC.id);
 
 		UserReferrals referralsB = marketingService.findReferral(userB.id);
 		assertEquals(referralsB.getParentId(), Long.valueOf(userA.id));
 		UserReferrals referralsA = marketingService.findReferral(userA.id);
-		assertEquals(referralsA.getPyramid().get(0), (Integer) 2);
+		List<Integer> pyramid = referralsA.getPyramid();
+
+		assertEquals(pyramid.get(0), (Integer) 2);
+		assertEquals(pyramid.get(1), (Integer) 1);
 		//assertEquals(referralsA.);
 
 	}

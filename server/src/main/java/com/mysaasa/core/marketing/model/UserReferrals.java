@@ -3,6 +3,7 @@ package com.mysaasa.core.marketing.model;
 import com.google.gson.annotations.Expose;
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -38,18 +39,21 @@ public class UserReferrals {
 	@ElementCollection
 	@Column(name = "Pyramid")
 	public List<Integer> getPyramid() {
+		if (pyramid == null) return new ArrayList<>();
 		return pyramid;
 	}
 
 	public void incrementLevel(int level) {
-		if (level < 1)
-			throw new IllegalArgumentException("Can only increment Levels under the root (Root = 0)");
 
 		List<Integer> pyramid = getPyramid();
 		if (pyramid == null) {
 			pyramid = new ArrayList<>();
 		}
+		while (pyramid.size() <= level) {
+			pyramid.add(0);
+		}
 
+		pyramid.set(level, pyramid.get(level)+1);
 	}
 
 	public void setPyramid(List<Integer> pyramid) {
