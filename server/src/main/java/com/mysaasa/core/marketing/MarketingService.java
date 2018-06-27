@@ -42,14 +42,22 @@ public class MarketingService extends BaseInjectedService {
 	}
 
 	public void addReferral(long parentId, long childId) {
+		UserReferrals childReferral = findReferral(childId);
+		if (childReferral.getParentId() != null)
+			throw new IllegalStateException("This account already has a referral");
+
+		childReferral.setParentId(parentId);
+
+		save(childReferral);
 
 		UserReferrals userReferrals = findReferral(parentId);
 		//Add direct referal tree
+
 		List<Long> idList = userReferrals.getReferrals();
+
 		if (idList == null)
 			idList = new ArrayList<>();
-		if (idList.contains(childId))
-			return;
+
 		idList.add(childId);
 
 		//Manage referal tree
@@ -57,16 +65,12 @@ public class MarketingService extends BaseInjectedService {
 		userReferrals.decrementAvailableReferrals();
 		int level = 0;
 		while (userReferrals != null) {
-
 			userReferrals.incrementLevel(level);
 			save(userReferrals);
 			userReferrals = findReferral(userReferrals.getParentId());
 			level++;
 		}
 
-		UserReferrals childReferral = findReferral(childId);
-		childReferral.setParentId(parentId);
-		save(childReferral);
 
 	}
 }

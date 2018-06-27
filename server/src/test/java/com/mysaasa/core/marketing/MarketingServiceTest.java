@@ -82,17 +82,33 @@ public class MarketingServiceTest {
 		MarketingService marketingService = Simple.getInstance().getInjector().getProvider(MarketingService.class).get();
 		marketingService.addReferral(userA.id, userB.id);
 		marketingService.addReferral(userA.id, userC.id);
+
+		UserReferrals referralsB = marketingService.findReferral(userB.id);
+		assertEquals(referralsB.getParentId(), Long.valueOf(userA.id));
+	}
+
+	@Test(expected = IllegalStateException.class)
+	public void testNoDupReferrals() {
+		MarketingService marketingService = Simple.getInstance().getInjector().getProvider(MarketingService.class).get();
+		marketingService.addReferral(userA.id, userB.id);
 		marketingService.addReferral(userA.id, userC.id);
 		marketingService.addReferral(userB.id, userC.id);
 
 		UserReferrals referralsB = marketingService.findReferral(userB.id);
 		assertEquals(referralsB.getParentId(), Long.valueOf(userA.id));
+
+	}
+
+	@Test
+	public void testReferralPyramid() {
+		MarketingService marketingService = Simple.getInstance().getInjector().getProvider(MarketingService.class).get();
+		marketingService.addReferral(userA.id, userB.id);
+		marketingService.addReferral(userA.id, userC.id);
+		marketingService.addReferral(userB.id, userD.id);
+
 		UserReferrals referralsA = marketingService.findReferral(userA.id);
 		List<Integer> pyramid = referralsA.getPyramid();
-
 		assertEquals(pyramid.get(0), (Integer) 2);
 		assertEquals(pyramid.get(1), (Integer) 1);
-		//assertEquals(referralsA.);
-
 	}
 }
