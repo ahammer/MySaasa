@@ -36,9 +36,12 @@ public class LoginUserResponse extends SimpleResponse{
     }
 
     public static class SessionSummary {
+        public static final SessionSummary NO_SESSION = new SessionSummary();
+
         @Expose
         final Date timestamp = new Date();
-        int lengthSeconds;
+        int lengthSeconds = 0;
+
         @Expose
         SecurityContext context;
 
@@ -55,6 +58,10 @@ public class LoginUserResponse extends SimpleResponse{
 
         public SecurityContext getContext() {
             return context;
+        }
+
+        public boolean isNullSession() {
+            return this == NO_SESSION;
         }
     }
 

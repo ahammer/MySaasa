@@ -28,6 +28,4 @@ public class MarketingApiService implements IApiService {
 			return new ApiError(e);
 		}
 	}
-
-
 }

@@ -38,55 +38,15 @@ public class CommentManager {
 
     public Observable<BlogComment> getBlogCommentsObservable(BlogPost post) {
         checkNotNull(post);
-        final BlogPost post1 = post;
-        final com.mysaasa.api.MySaasaGateway gateway1 = mySaasaClient.gateway;
-        Observable<BlogComment> observable = Observable.create(new BlogCommentsObservable(this, post1));
-        return observable.subscribeOn(Schedulers.io()).onBackpressureBuffer();
+        return mySaasaClient.gateway.getBlogComments(post.id, 100).flatMapIterable(response->response.getData());
     }
 
     public Observable<PostCommentResponse> postBlogComment(final BlogPost post, final String text) {
-        Observable<PostCommentResponse> observable = Observable.create(new Observable.OnSubscribe<PostCommentResponse>() {
-            @Override
-            public void call(Subscriber<? super PostCommentResponse> subscriber) {
-                if (!subscriber.isUnsubscribed()) {
-                    Call<PostCommentResponse> call = mySaasaClient.gateway.postComment(post.id, text);
-                    try {
-                        Response<PostCommentResponse> response = call.execute();
-                        subscriber.onNext(response.body());
-                        subscriber.onCompleted();
-                        System.out.println(response.toString());
-                    } catch (IOException e) {
-                        subscriber.onError(e);
-                    } catch (Exception e) {
-                        subscriber.onError(e);
-                    }
-                }
-            }
-        });
-        return observable.subscribeOn(Schedulers.io());
-
+        return mySaasaClient.gateway.postComment(post.id, text);
     }
 
     public Observable<PostReplyResponse> postCommentResponse(final BlogComment comment, final String text) {
-        Observable<PostReplyResponse> observable = Observable.create(new Observable.OnSubscribe<PostReplyResponse>() {
-            @Override
-            public void call(Subscriber<? super PostReplyResponse> subscriber) {
-                if (!subscriber.isUnsubscribed()) {
-                    Call<PostReplyResponse> call = mySaasaClient.gateway.postReply(comment.getId(), text);
-                    try {
-                        Response<PostReplyResponse> response = call.execute();
-                        subscriber.onNext(response.body());
-                        subscriber.onCompleted();
-                    } catch (IOException e) {
-                        subscriber.onError(e);
-                    } catch (Exception e) {
-                        subscriber.onError(e);
-                    }
-                }
-            }
-        });
-        return observable.subscribeOn(Schedulers.io());
-
+        return mySaasaClient.gateway.postReply(comment.getId(), text);
     }
 
     public BlogComment lookupCommentById(long parent_id) {
@@ -96,70 +56,5 @@ public class CommentManager {
     public List<BlogComment> getChildren(BlogComment blogComment) {
         List<BlogComment> comments = childLookup.get(blogComment);
         return comments==null?Collections.EMPTY_LIST:comments;
-    }
-
-    public com.mysaasa.api.MySaasaGateway getGateway() {
-        return mySaasaClient.getGateway();
-    }
-
-    private static class BlogCommentsObservable implements Observable.OnSubscribe<BlogComment> {
-        private final com.mysaasa.api.MySaasaGateway gateway;
-        private final BlogPost post;
-        private final CommentManager commentManager;
-
-        public BlogCommentsObservable(CommentManager commentManager, BlogPost post) {
-            this.commentManager = commentManager;
-            this.gateway = commentManager.getGateway();
-
-            this.post = post;
-        }
-
-        @Override
-        public void call(Subscriber<? super BlogComment> subscriber) {
-            if (!subscriber.isUnsubscribed()) {
-                Call<GetBlogCommentsResponse> call = gateway.getBlogComments(post.id, 100);
-                try {
-                    Response<GetBlogCommentsResponse> response = call.execute();
-
-                    //Register ID's
-
-                    commentManager.registerComments(response.body().getData());
-                    commentManager.scanForParents();
-
-
-                    for (BlogComment bc : response.body().getData()) {
-                        if (bc.calculateDepth(commentManager) == 0) {
-                            subscriber.onNext(bc);
-                        }
-                    }
-
-                    subscriber.onCompleted();
-                } catch (Exception e) {
-                    subscriber.onError(e);
-                }
-            }
-        }
-    }
-
-    private void registerComments(List<BlogComment> blogCommentList) {
-        for (BlogComment blogComment:blogCommentList) registerComment(blogComment);
-    }
-
-    private void scanForParents() {
-        for (BlogComment bc: blogCommentIdMap.values()) {
-            BlogComment parent = bc.getParent(this);
-            registerAsChild(parent, bc);
-        }
-    }
-
-    private void registerAsChild(BlogComment parent, BlogComment bc) {
-        List<BlogComment> children = childLookup.get(parent);
-        if (children == null) children = new ArrayList<BlogComment>();
-        if (!children.contains(bc)) children.add(bc);
-        childLookup.put(parent,children);
-    }
-
-    private void registerComment(BlogComment blogComment) {
-        blogCommentIdMap.put(blogComment.getId(), blogComment);
     }
 }

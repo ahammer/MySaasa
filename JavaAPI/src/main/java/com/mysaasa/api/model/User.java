@@ -7,6 +7,8 @@ import java.io.Serializable;
 //It is a subset of Server user
 public class User implements Serializable {
     public static final long serialVersionUID = 1L;
+    public static final User NULL_USER = new User(AccessLevel.GUEST, "", "", 0, "", null);
+
     public final AccessLevel accessLevel;
     public final String nonce;
     public final String password_md5;
