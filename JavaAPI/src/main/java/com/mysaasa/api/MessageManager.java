@@ -24,21 +24,9 @@ import rx.schedulers.Schedulers;
  */
 public class MessageManager {
     private final MySaasaClient mySaasa;
-    private final MySaasaMessageStorage messageStore;
-    private final MessageEventEmitter emitter;
-    private final Observable<NewMessageEvent> messageEventObservable = Observable.create(emitter = new MessageEventEmitter());
 
     public MessageManager(MySaasaClient mySaasaClient) {
         this.mySaasa = mySaasaClient;
-        messageStore = new InMemoryMessageStorage(mySaasaClient);
-    }
-
-    public void start() {
-        mySaasa.bus.register(emitter);
-    }
-
-    public void stop() {
-        mySaasa.bus.unregister(emitter);
     }
 
 
@@ -52,48 +40,37 @@ public class MessageManager {
                                                        final String name,
                                                        final String email,
                                                        final String phone) {
-                return mySaasa.gateway.sendMessage(to_user, title, body, name, email, phone);
+                return mySaasa
+                        .gateway
+                        .sendMessage(
+                                to_user,
+                                title,
+                                body,
+                                name,
+                                email,
+                                phone);
     }
 
     public Observable<Message> getMessageThread(final Message m) {
-                return mySaasa.gateway.getThread(m.id).flatMapIterable(response->response.data);
+                return mySaasa
+                        .gateway
+                        .getThread(m.id)
+                        .flatMapIterable(response->response.data);
     }
 
 
     public Observable<Message> getMessages() {
-                return mySaasa.gateway.getMessages(0,100,"timeSent","DESC").flatMapIterable(response->response.data);
+                return mySaasa
+                        .gateway
+                        .getMessages(0,100,"timeSent","DESC")
+                        .flatMapIterable(response->response.data);
     }
 
     public Observable<ReplyMessageResponse> replyToMessage(final Message parent, final String s) {
-                return mySaasa.gateway.replyMessage(parent.id,s);
+                return mySaasa
+                        .gateway
+                        .replyMessage(parent.id,s);
     }
 
 
-    public Observable<NewMessageEvent> getMessagesObservable() {
-        return messageEventObservable;
-    }
-
-
-
-    private static class MessageEventEmitter implements Observable.OnSubscribe<NewMessageEvent> {
-        List<Subscriber> subscriberList = new ArrayList<>();
-
-        @Override
-        public void call(Subscriber<? super NewMessageEvent> subscriber) {
-            subscriberList.add(subscriber);
-        }
-
-        @Subscribe
-        public void onNewMessage(NewMessageEvent event) {
-            for (int i=subscriberList.size()-1;i>=0;i--) {
-                if (subscriberList.get(i).isUnsubscribed()) {
-                    subscriberList.remove(i);
-                } else {
-                    subscriberList.get(i).onNext(event);
-                }
-            }
-        }
-
-
-    }
 }
