@@ -1,6 +1,7 @@
 package com.mysaasa.api;
 
 import com.mysaasa.MySaasaDaemon;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,12 +11,17 @@ public class AuthenticationManagerTest {
 
     @Before
     public void Setup() throws Exception {
-        MySaasaDaemon.main(new String[]{});
+        MySaasaDaemon.main(new String[]{"localmode"});
+    }
+
+    @After
+    public void TearDown() throws Exception {
+        MySaasaDaemon.stopNow();
     }
 
     @Test
     public void login() throws InterruptedException {
-        Thread.sleep(1000);
+        Thread.sleep(5000);
     }
 
     @Test

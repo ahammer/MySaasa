@@ -14,6 +14,12 @@ import java.util.Scanner;
 public class MySaasaDaemon implements Daemon {
 
 	private static final MySaasaDaemon serverLauncher = new MySaasaDaemon();
+
+	public static boolean isLocalMode() {
+		return LOCAL_MODE;
+	}
+
+	private static boolean LOCAL_MODE = false;
 	private MySaasaServer server;
 
 	/**
@@ -22,32 +28,58 @@ public class MySaasaDaemon implements Daemon {
 	 * @param args Command line arguments, all ignored.
 	 */
 	public static void main(String[] args) throws Exception {
-		serverLauncher.start();
-		Scanner sc = new Scanner(System.in);
-
-		System.out.printf("Enter 'stop' to halt: ");
-		boolean running = true;
-		while (running) {
-			try {
-				if (sc.hasNext()) {
-					String nextLine = sc.nextLine();
-					if (nextLine.trim().equalsIgnoreCase("")) {
-						//Do Nothing
-					} else if (nextLine.toLowerCase().trim().equals("stop")) {
-						serverLauncher.stop();
-						running = false;
-						return;
+		if (hasArgument("localmode", args)) {
+			enableLocalMode();
+			serverLauncher.start();
+		} else {
+			serverLauncher.start();
+			Scanner sc = new Scanner(System.in);
+			System.out.printf("Enter 'stop' to halt: ");
+			boolean running = true;
+			while (running) {
+				try {
+					if (sc.hasNext()) {
+						String nextLine = sc.nextLine();
+						if (nextLine.trim().equalsIgnoreCase("")) {
+							//Do Nothing
+						} else if (nextLine.toLowerCase().trim().equals("stop")) {
+							serverLauncher.stop();
+							running = false;
+							return;
+						} else {
+							System.out.println("Command not recognized: " + nextLine);
+						}
 					} else {
-						System.out.println("Command not recognized: " + nextLine);
+						//Do Nothing
 					}
-				} else {
-					//Do Nothing
+				} catch (NoSuchElementException e) {
+					e.printStackTrace();
 				}
-			} catch (NoSuchElementException e) {
-				e.printStackTrace();
 			}
 		}
 
+	}
+
+	private static void enableLocalMode() {
+		System.out.println("Enabling Test/Localhost Mode");
+		//Use in memory database
+		MySaasaDaemon.LOCAL_MODE = true;
+
+		//Add localhost
+		//Add default users
+	}
+
+	private static boolean hasArgument(String desired, String[] args) {
+		for (String arg:args) {
+			if (arg.equals(desired)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static void stopNow() throws Exception {
+		serverLauncher.stop();
 	}
 
 	// Implementing the Daemon interface is not required for Windows but is for Linux
@@ -65,7 +97,7 @@ public class MySaasaDaemon implements Daemon {
 	@Override
 	public void stop() throws Exception {
 		server.stop();
-		System.exit(0);
+		//System.exit(0);
 	}
 
 	@Override

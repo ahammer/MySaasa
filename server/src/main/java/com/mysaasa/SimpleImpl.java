@@ -15,6 +15,9 @@ public class SimpleImpl extends Simple {
 	public SimpleImpl() throws SQLException {
 		injector = Guice.createInjector(simpleGuiceModule = new SimpleGuiceModuleImpl());
 		simpleGuiceModule.linkServices();
+		if (MySaasaDaemon.isLocalMode()) {
+			super.setOfflineMode(true);
+		}
 	}
 
 	public SimpleImpl(boolean b) {

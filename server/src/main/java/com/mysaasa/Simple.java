@@ -35,7 +35,7 @@ import java.util.Properties;
  */
 public abstract class Simple extends WebApplication {
 	private static Simple INSTANCE;
-	private final boolean inMemoryDatabase;
+	private boolean inMemoryDatabase;
 
 	protected SimpleGuiceModuleImpl simpleGuiceModule;
 	protected final Logger logger = org.slf4j.LoggerFactory.getLogger(SimpleImpl.class);
@@ -183,4 +183,8 @@ public abstract class Simple extends WebApplication {
 		return moduleManager.getClassPanelAdapter(aClass);
 	}
 
+	//Can set before this starts
+	protected void setOfflineMode(boolean b) {
+		this.inMemoryDatabase = b;
+	}
 }
