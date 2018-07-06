@@ -1,8 +1,17 @@
 package com.mysaasa;
 
+import com.mysaasa.core.hosting.service.HostingService;
+import com.mysaasa.core.organization.model.Organization;
+import com.mysaasa.core.organization.services.OrganizationService;
+import com.mysaasa.core.users.model.ContactInfo;
+import com.mysaasa.core.users.model.User;
+import com.mysaasa.core.users.service.UserService;
+import com.mysaasa.core.website.model.Domain;
+import com.mysaasa.core.website.model.Website;
 import org.apache.commons.daemon.Daemon;
 import org.apache.commons.daemon.DaemonContext;
 
+import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -31,6 +40,41 @@ public class MySaasaDaemon implements Daemon {
 		if (hasArgument("localmode", args)) {
 			enableLocalMode();
 			serverLauncher.start();
+
+			while (!Simple.getInstance().isInitialized()) {
+				//Wait for simple to initialize
+				System.out.println("Waiting for init");
+				Thread.sleep(50);
+			}
+
+			Organization o = new Organization();
+			o.setName("Test Organization");
+			o = OrganizationService.get().saveOrganization(o);
+			User u = new User("admin", "admin", User.AccessLevel.ROOT);
+			u.setOrganization(o);
+			u = UserService.get().saveUser(u);
+
+			Website website = new Website();
+			website.setOrganization(u.getOrganization());
+			website.setProduction("localhost");
+			HostingService.get().saveWebsite(website);
+
+			/*
+			HostingService hostingService = HostingService.get();
+			OrganizationService orgService = OrganizationService.get();
+			Organization organization = new Organization();
+			organization.setName("test");
+			organization.setContactInfo(new ContactInfo());
+			organization = organization.save();
+
+
+			User test = new User("test", "test", User.AccessLevel.ROOT);
+			test.setOrganization(organization);
+			UserService.get().saveUser(test);
+			*/
+
+
+
 		} else {
 			serverLauncher.start();
 			Scanner sc = new Scanner(System.in);
@@ -70,7 +114,7 @@ public class MySaasaDaemon implements Daemon {
 	}
 
 	private static boolean hasArgument(String desired, String[] args) {
-		for (String arg:args) {
+		for (String arg : args) {
 			if (arg.equals(desired)) {
 				return true;
 			}

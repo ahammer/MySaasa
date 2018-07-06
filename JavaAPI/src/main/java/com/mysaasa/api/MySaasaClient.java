@@ -12,6 +12,7 @@ import okhttp3.JavaNetCookieJar;
 import retrofit2.Retrofit;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
@@ -71,6 +72,7 @@ public class MySaasaClient {
         gateway = new Retrofit.Builder()
                 .baseUrl(scheme+"://"+domain+":"+port)
                 .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(client )
                 .build()
                 .create(MySaasaGateway.class);

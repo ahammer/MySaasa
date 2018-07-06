@@ -67,7 +67,6 @@ public class MarketingServiceTest {
 		userC = UserService.get().saveUser(userC);
 		userD = UserService.get().saveUser(userD);
 
-
 	}
 
 	@Test

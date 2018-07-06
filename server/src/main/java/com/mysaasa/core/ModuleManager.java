@@ -73,7 +73,11 @@ public class ModuleManager {
 			throw new RuntimeException("Could not run Service Detector, SimpleGuicemoduleImpl", e);
 		}
 
-		Set<Class> bound = new HashSet<>();
+		registerAbstractModules(reflections);
+		registerClassPanelAdapters();
+	}
+
+	private static void registerAbstractModules(Reflections reflections) {
 		for (Class c : reflections.getSubTypesOf(AbstractModule.class)) {
 			try {
 				modules.add((AbstractModule) c.newInstance());
@@ -83,24 +87,9 @@ public class ModuleManager {
 				e.printStackTrace();
 			}
 		}
-		/*
-		modules.add(new HostingModule());
-		modules.add(new WebsiteModule());
-		modules.add(new UsersModule());
-		modules.add(new SecurityModule());
-		modules.add(new BlogModule());
-		modules.add(new MediaModule());
-		modules.add(new OrganizationModule());
-		modules.add(new EditorModule());
-		//modules.add(new InventoryModule());
-		//modules.add(new BitcoinModule());
-		//modules.add(new OrdersModule());
-		//modules.add(new DatabaseModule());
-		modules.add(new HelpModule());
-		modules.add(new SplashModule());
-		modules.add(new MessagingModule());
-		modules.add(new CategoriesModule());
-		*/
+	}
+
+	private static void registerClassPanelAdapters() {
 		for (AbstractModule module : modules) {
 			Map<Class, IClassPanelAdapter> m = module.getClassPanelAdapters();
 			if (m != null)
@@ -126,7 +115,10 @@ public class ModuleManager {
 				ApiHelperService.get().bindApiService((IApiService) injectedObj);
 			if (injectedObj instanceof ITemplateService)
 				TemplateHelperService.get().bindTemplateService((ITemplateService) injectedObj);
+
+			Simple.getInstance().getInjector().injectMembers(injectedObj);
 		}
+
 		service_loaded = true;
 	}
 

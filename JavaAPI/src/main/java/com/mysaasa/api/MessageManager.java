@@ -8,16 +8,8 @@ import com.mysaasa.api.responses.GetMessagesResponse;
 import com.mysaasa.api.responses.GetThreadResponse;
 import com.mysaasa.api.responses.ReplyMessageResponse;
 import com.mysaasa.api.responses.SendMessageResponse;
+import io.reactivex.Observable;
 
-import org.greenrobot.eventbus.Subscribe;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import retrofit2.Call;
-import rx.Observable;
-import rx.Subscriber;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by Adam on 4/6/2015.

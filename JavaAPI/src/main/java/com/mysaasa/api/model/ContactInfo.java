@@ -14,7 +14,6 @@ public class ContactInfo implements Serializable {
 
     public final String name;
     public final String email;
-
     public final String country;
     public final String city;
     public final String province;

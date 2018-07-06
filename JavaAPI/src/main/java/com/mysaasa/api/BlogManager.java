@@ -4,13 +4,11 @@ import com.mysaasa.api.model.BlogComment;
 import com.mysaasa.api.model.BlogPost;
 import com.mysaasa.api.model.Category;
 import com.mysaasa.api.responses.PostToBlogResponse;
+import io.reactivex.Observable;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import retrofit2.Call;
-import rx.Observable;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by Adam on 3/3/2016.

@@ -41,6 +41,13 @@ public abstract class Simple extends WebApplication {
 	protected final Logger logger = org.slf4j.LoggerFactory.getLogger(SimpleImpl.class);
 	private ModuleManager moduleManager;
 
+	public boolean isInitialized() {
+		return initialized;
+	}
+
+	private boolean initialized = false;
+
+
 	/**
 	 * Such a simple, no args-constructor.
 	 */
@@ -158,6 +165,9 @@ public abstract class Simple extends WebApplication {
 		CodeGen.generateRetrofitCode();
 
 		new SSLGen().doSSLMagic();
+
+
+		initialized = true;
 
 	}
 

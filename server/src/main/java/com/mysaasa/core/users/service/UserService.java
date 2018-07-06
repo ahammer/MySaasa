@@ -160,19 +160,11 @@ public class UserService {
 	 * @return the saved/tracked user
 	 */
 	public User saveUser(final User user) {
-		SecurityContext sc = SecurityContext.get();
 		EntityManager em = Simple.getEntityManager();
 		em.getTransaction().begin();
 		boolean newUser = false;
 		if (user.id == 0 && user.getContactInfo() != null && user.getContactInfo().getEmail() != null) {
 			newUser = true;
-			if (sc != null) {
-				//Limit Access level to that of the user
-				if (sc.getUser().getAccessLevel().priority < user.getAccessLevel().priority) {
-					//User Access Level
-					user.setAccessLevel(sc.getUser().getAccessLevel());
-				}
-			}
 		}
 		final User user2 = em.merge(user);
 		em.flush();

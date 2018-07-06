@@ -9,11 +9,8 @@ import java.io.IOException;
 import java.util.Date;
 
 import com.mysaasa.api.responses.LogoutResponse;
-import retrofit2.Response;
-import rx.Observable;
-import rx.Scheduler;
-import rx.schedulers.Schedulers;
-import rx.subjects.BehaviorSubject;
+import io.reactivex.Observable;
+import io.reactivex.subjects.BehaviorSubject;
 
 /**
  * This file handles authentication for the server.
@@ -51,7 +48,7 @@ public class AuthenticationManager {
                 .createUser(username, password)
                 .subscribe(createUserResponse::onNext);
 
-        return createUserResponse.asObservable();
+        return createUserResponse;
     }
 
     public Observable<LogoutResponse> signOut() {
@@ -59,7 +56,7 @@ public class AuthenticationManager {
                 .logout()
                 .subscribe(logoutResponseSubject::onNext);
 
-        return logoutResponseSubject.asObservable();
+        return logoutResponseSubject;
     }
 
     public LoginUserResponse.SessionSummary getSessionSummary() {

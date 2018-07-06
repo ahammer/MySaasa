@@ -1,11 +1,13 @@
 package com.mysaasa.core.organization.services;
 
 import com.mysaasa.core.users.model.User;
+import com.mysaasa.core.users.service.UserService;
 import com.mysaasa.interfaces.annotations.SimpleService;
 import com.mysaasa.Simple;
 import com.mysaasa.core.organization.model.Organization;
 import org.slf4j.Logger;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import java.util.HashMap;
@@ -16,6 +18,12 @@ import static com.google.common.base.Preconditions.checkNotNull;/* See the file 
 
 @SimpleService
 public class OrganizationService {
+
+	@Inject
+	EntityManager em;
+
+	@Inject
+	UserService userService;
 
 	public OrganizationService() {
 		super();
@@ -35,7 +43,6 @@ public class OrganizationService {
 	}
 
 	public Organization saveOrganization(Organization organization) {
-		EntityManager em = Simple.getEntityManager();
 		em.getTransaction().begin();
 		Organization tracked = em.merge(organization);
 		em.persist(tracked);

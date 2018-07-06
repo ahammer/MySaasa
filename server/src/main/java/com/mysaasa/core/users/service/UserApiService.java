@@ -65,7 +65,8 @@ public class UserApiService implements IApiService {
 				return new ApiError(new IllegalStateException("User already exists"));
 			}
 
-			User u = userService.createUser(identifier, password, Website.getCurrent().getOrganization());
+			Website current = Website.getCurrent();
+			User u = userService.createUser(identifier, password, current.getOrganization());
 			SessionService.get().registerUser(Session.get(), u);
 			Session.get().bind();
 			return new ApiSuccess(new SessionSummary());

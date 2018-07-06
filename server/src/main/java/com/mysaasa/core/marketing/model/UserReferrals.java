@@ -39,7 +39,8 @@ public class UserReferrals {
 	@ElementCollection
 	@Column(name = "Pyramid")
 	public List<Integer> getPyramid() {
-		if (pyramid == null) return new ArrayList<>();
+		if (pyramid == null)
+			return new ArrayList<>();
 		return pyramid;
 	}
 
@@ -53,7 +54,7 @@ public class UserReferrals {
 			pyramid.add(0);
 		}
 
-		pyramid.set(level, pyramid.get(level)+1);
+		pyramid.set(level, pyramid.get(level) + 1);
 	}
 
 	public void setPyramid(List<Integer> pyramid) {

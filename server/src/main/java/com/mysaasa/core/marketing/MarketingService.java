@@ -21,7 +21,8 @@ public class MarketingService extends BaseInjectedService {
 	}
 
 	public UserReferrals findReferral(Long userId) {
-		if (userId == null) return null;
+		if (userId == null)
+			return null;
 		final Query q = em.createQuery("SELECT U FROM UserReferrals U WHERE U.userId=:userId")
 				.setParameter("userId", userId);
 		final List<UserReferrals> referralsList = q.getResultList();
@@ -70,7 +71,6 @@ public class MarketingService extends BaseInjectedService {
 			userReferrals = findReferral(userReferrals.getParentId());
 			level++;
 		}
-
 
 	}
 }

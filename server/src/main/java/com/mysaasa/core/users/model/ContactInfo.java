@@ -44,7 +44,6 @@ public class ContactInfo implements Serializable {
 	private String homePhone = "";
 	@Expose
 	private String mobilePhone = "";
-	private String bitcoinAddress = "";
 
 	public ContactInfo() {}
 
@@ -58,7 +57,6 @@ public class ContactInfo implements Serializable {
 		postal = ci.postal;
 		homePhone = ci.homePhone;
 		mobilePhone = ci.mobilePhone;
-		bitcoinAddress = ci.bitcoinAddress;
 	}
 
 	@Column(name = "name")
@@ -215,15 +213,6 @@ public class ContactInfo implements Serializable {
 
 		}
 		System.out.println("Updated: " + this);
-	}
-
-	@Column(name = "BitcoinAddress")
-	public String getBitcoinAddress() {
-		return bitcoinAddress;
-	}
-
-	public void setBitcoinAddress(String bitcoinAddress) {
-		this.bitcoinAddress = bitcoinAddress;
 	}
 
 	@Override

@@ -5,6 +5,7 @@ import com.mysaasa.api.model.BlogPost;
 import com.mysaasa.api.responses.GetBlogCommentsResponse;
 import com.mysaasa.api.responses.PostCommentResponse;
 import com.mysaasa.api.responses.PostReplyResponse;
+import io.reactivex.Observable;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,11 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import retrofit2.Call;
-import retrofit2.Response;
-import rx.Observable;
-import rx.Subscriber;
-import rx.schedulers.Schedulers;
 
 import static com.mysaasa.api.Preconditions.checkNotNull;
 

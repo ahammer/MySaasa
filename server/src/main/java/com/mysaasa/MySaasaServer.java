@@ -70,6 +70,9 @@ public class MySaasaServer {
 	}
 
 	private ServerConnector initializeHttpsConnector(HttpConfiguration http_config) {
+		if (MySaasaDaemon.isLocalMode())
+			return null;
+
 		File keystoreFile = new File(DefaultPreferences.getConfigPath() + "/certificates/main.jks");
 		ServerConnector https = null;
 		if (keystoreFile.exists()) {
