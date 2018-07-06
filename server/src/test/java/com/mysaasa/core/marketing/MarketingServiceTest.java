@@ -32,7 +32,8 @@ public class MarketingServiceTest {
 
 	@Before
 	public void initialize() throws Exception {
-		new WicketTester(new SimpleImpl(true));
+		Simple.IN_MEMORY_DATABASE = true;
+		new WicketTester(new SimpleImpl());
 
 		HostingService service = HostingService.get();
 		Website testWebsite = new Website();

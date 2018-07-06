@@ -87,7 +87,7 @@ public class InMemoryMessageStorage implements MySaasaMessageStorage{
 
     private void putInIdLookupMap(com.mysaasa.api.model.Message m) {
         if (!idLookupMap.containsKey(m)) {
-            client.bus.post(new NewMessageEvent(m));
+            //client.bus.post(new NewMessageEvent(m));
         }
         idLookupMap.put(m.id, m);
     }

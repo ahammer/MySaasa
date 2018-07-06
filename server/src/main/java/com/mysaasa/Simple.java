@@ -35,7 +35,7 @@ import java.util.Properties;
  */
 public abstract class Simple extends WebApplication {
 	private static Simple INSTANCE;
-	private boolean inMemoryDatabase;
+	public static boolean IN_MEMORY_DATABASE;
 
 	protected SimpleGuiceModuleImpl simpleGuiceModule;
 	protected final Logger logger = org.slf4j.LoggerFactory.getLogger(SimpleImpl.class);
@@ -53,13 +53,8 @@ public abstract class Simple extends WebApplication {
 	 */
 	public Simple() {
 		INSTANCE = this;
-		inMemoryDatabase = false;
 	}
 
-	public Simple(boolean inMemoryDatabase) {
-		INSTANCE = this;
-		this.inMemoryDatabase = inMemoryDatabase;
-	}
 
 	/**
 	 * Get's this, there is only one Application class, and it's a singleton, so this is access
@@ -122,7 +117,7 @@ public abstract class Simple extends WebApplication {
 		String username = DefaultPreferences.getProperties().getProperty(DefaultPreferences.PREF_DB_USERNAME);
 		String password = DefaultPreferences.getProperties().getProperty(DefaultPreferences.PREF_DB_PASS);
 
-		if (inMemoryDatabase) {
+		if (IN_MEMORY_DATABASE) {
 			url = "jdbc:h2:mem:";
 		}
 		map.put("javax.persistence.jdbc.url", url);
@@ -195,6 +190,6 @@ public abstract class Simple extends WebApplication {
 
 	//Can set before this starts
 	protected void setOfflineMode(boolean b) {
-		this.inMemoryDatabase = b;
+		this.IN_MEMORY_DATABASE = b;
 	}
 }

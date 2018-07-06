@@ -20,10 +20,6 @@ public class SimpleImpl extends Simple {
 		}
 	}
 
-	public SimpleImpl(boolean b) {
-		super(b);
-		injector = Guice.createInjector(simpleGuiceModule = new SimpleGuiceModuleImpl());
-	}
 
 	@Override
 	public Injector getInjector() {

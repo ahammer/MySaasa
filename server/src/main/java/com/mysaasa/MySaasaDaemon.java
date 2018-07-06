@@ -3,15 +3,12 @@ package com.mysaasa;
 import com.mysaasa.core.hosting.service.HostingService;
 import com.mysaasa.core.organization.model.Organization;
 import com.mysaasa.core.organization.services.OrganizationService;
-import com.mysaasa.core.users.model.ContactInfo;
 import com.mysaasa.core.users.model.User;
 import com.mysaasa.core.users.service.UserService;
-import com.mysaasa.core.website.model.Domain;
 import com.mysaasa.core.website.model.Website;
 import org.apache.commons.daemon.Daemon;
 import org.apache.commons.daemon.DaemonContext;
 
-import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -39,6 +36,7 @@ public class MySaasaDaemon implements Daemon {
 	public static void main(String[] args) throws Exception {
 		if (hasArgument("localmode", args)) {
 			enableLocalMode();
+
 			serverLauncher.start();
 
 			while (!Simple.getInstance().isInitialized()) {
@@ -105,9 +103,11 @@ public class MySaasaDaemon implements Daemon {
 	}
 
 	private static void enableLocalMode() {
+
 		System.out.println("Enabling Test/Localhost Mode");
 		//Use in memory database
 		MySaasaDaemon.LOCAL_MODE = true;
+		Simple.IN_MEMORY_DATABASE = true;
 
 		//Add localhost
 		//Add default users

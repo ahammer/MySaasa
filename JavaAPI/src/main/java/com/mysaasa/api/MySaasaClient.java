@@ -30,8 +30,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MySaasaClient {
     final MySaasaGateway gateway;
 
-    //We use Guava event bus sometimes
-    public final EventBus bus = new EventBus();
+
 
     private final BlogManager blogManager;
     private final AuthenticationManager authenticationManager;
@@ -103,16 +102,6 @@ public class MySaasaClient {
 
     public boolean isNetworkBusy() {
         return callDepth > 0;
-    }
-
-    public void stopNetwork() {
-        callDepth--;
-        bus.post(new NetworkStateChange(callDepth));
-    }
-
-    public void startNetwork() {
-        callDepth++;
-        bus.post(new NetworkStateChange(callDepth));
     }
 
     public MySaasaGateway getGateway() {

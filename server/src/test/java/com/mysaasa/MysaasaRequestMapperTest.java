@@ -9,12 +9,10 @@ import com.mysaasa.test.mocks.TestService;
 import org.apache.wicket.mock.MockWebRequest;
 import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.Url;
-import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.http.handler.ErrorCodeRequestHandler;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,7 +27,8 @@ public class MysaasaRequestMapperTest {
 
 	@Before
 	public void initialize() throws Exception {
-		new SimpleImpl(true);
+		Simple.IN_MEMORY_DATABASE = true;
+		new SimpleImpl();
 		TestService mockApiService = new TestService();
 		ApiHelperService.get().bindApiService(mockApiService);
 

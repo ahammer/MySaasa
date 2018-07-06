@@ -14,6 +14,7 @@ public class AuthenticationManagerTest {
 
     @Before
     public void Setup() throws Exception {
+
         MySaasaDaemon.main(new String[]{"localmode"});
         client = new MySaasaClient("localhost", 8080, "http");
     }
@@ -31,7 +32,7 @@ public class AuthenticationManagerTest {
     @Test
     public void createAccount() {
         CreateUserResponse response = client.getAuthenticationManager()
-                .createAccount("test2", "testpassword")
+                .createAccount("test3", "testpassword")
                 .blockingFirst();
 
         assertNotNull(response);
