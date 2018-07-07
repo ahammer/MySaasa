@@ -1,14 +1,11 @@
 package com.mysaasa.api;
 
-import com.mysaasa.api.messages.LoginStateChanged;
 import com.mysaasa.api.model.User;
 import com.mysaasa.api.responses.CreateUserResponse;
 import com.mysaasa.api.responses.LoginUserResponse;
 
-import java.io.IOException;
-import java.util.Date;
-
 import com.mysaasa.api.responses.LogoutResponse;
+import com.mysaasa.api.responses.SessionSummary;
 import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
 
@@ -39,12 +36,12 @@ public class AuthenticationManager {
      * @param password
      */
     public Observable<LoginUserResponse> login(final String username, final String password) {
-        return mySaasa.gateway.loginUser(username, password);
+        return mySaasa.retrofitGateway.loginUser(username, password);
     }
 
 
     public Observable<CreateUserResponse> createAccount(final String username, final String password) {
-        mySaasa.gateway
+        mySaasa.retrofitGateway
                 .createUser(username, password)
                 .subscribe(createUserResponse::onNext);
 
@@ -52,27 +49,27 @@ public class AuthenticationManager {
     }
 
     public Observable<LogoutResponse> signOut() {
-        mySaasa.gateway
+        mySaasa.retrofitGateway
                 .logout()
                 .subscribe(logoutResponseSubject::onNext);
 
         return logoutResponseSubject;
     }
 
-    public LoginUserResponse.SessionSummary getSessionSummary() {
+    public SessionSummary getSessionSummary() {
         if (createUserResponse.hasValue()) {
             return createUserResponse.getValue().getData();
         } else if (loginResponseSubject.hasValue()) {
             return loginResponseSubject.getValue().getData();
         }
 
-        return LoginUserResponse.SessionSummary.NO_SESSION;
+        return SessionSummary.NO_SESSION;
     }
 
 
     public User getAuthenticatedUser() {
         try {
-            LoginUserResponse.SessionSummary summary = getSessionSummary();
+            SessionSummary summary = getSessionSummary();
             LoginUserResponse.SecurityContext context = summary.getContext();
             return context.getUser();
         } catch (Exception e) {

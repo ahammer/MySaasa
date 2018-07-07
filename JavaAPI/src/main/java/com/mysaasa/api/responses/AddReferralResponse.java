@@ -1,4 +1,4 @@
 package com.mysaasa.api.responses;
 
-public class AddReferralResponse {
+public class AddReferralResponse extends SimpleResponse {
 }

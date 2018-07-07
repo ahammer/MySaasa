@@ -162,7 +162,6 @@ public interface MySaasaGateway {
     Observable<SendMessageResponse> sendMessage(@Field("to_user")String to_user, @Field("title")String title, @Field("body")String body, @Field("name")String name, @Field("email")String email, @Field("phone")String phone);
 
 
-    @FormUrlEncoded
     @POST("UserApiService/logout")
     Observable<LogoutResponse> logout();
 

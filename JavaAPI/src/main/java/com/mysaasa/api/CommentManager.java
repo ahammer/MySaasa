@@ -2,13 +2,10 @@ package com.mysaasa.api;
 
 import com.mysaasa.api.model.BlogComment;
 import com.mysaasa.api.model.BlogPost;
-import com.mysaasa.api.responses.GetBlogCommentsResponse;
 import com.mysaasa.api.responses.PostCommentResponse;
 import com.mysaasa.api.responses.PostReplyResponse;
 import io.reactivex.Observable;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -34,15 +31,15 @@ public class CommentManager {
 
     public Observable<BlogComment> getBlogCommentsObservable(BlogPost post) {
         checkNotNull(post);
-        return mySaasaClient.gateway.getBlogComments(post.id, 100).flatMapIterable(response->response.getData());
+        return mySaasaClient.retrofitGateway.getBlogComments(post.id, 100).flatMapIterable(response->response.getData());
     }
 
     public Observable<PostCommentResponse> postBlogComment(final BlogPost post, final String text) {
-        return mySaasaClient.gateway.postComment(post.id, text);
+        return mySaasaClient.retrofitGateway.postComment(post.id, text);
     }
 
     public Observable<PostReplyResponse> postCommentResponse(final BlogComment comment, final String text) {
-        return mySaasaClient.gateway.postReply(comment.getId(), text);
+        return mySaasaClient.retrofitGateway.postReply(comment.getId(), text);
     }
 
     public BlogComment lookupCommentById(long parent_id) {

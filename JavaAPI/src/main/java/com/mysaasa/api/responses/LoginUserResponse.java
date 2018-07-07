@@ -1,9 +1,5 @@
 package com.mysaasa.api.responses;
 
-import com.google.gson.annotations.Expose;
-
-import java.util.Date;
-
 /**
  * Created by Adam on 2/29/2016.
  */
@@ -32,36 +28,6 @@ public class LoginUserResponse extends SimpleResponse{
         }
         public com.mysaasa.api.model.User getUser() {
             return user;
-        }
-    }
-
-    public static class SessionSummary {
-        public static final SessionSummary NO_SESSION = new SessionSummary();
-
-        @Expose
-        final Date timestamp = new Date();
-        int lengthSeconds = 0;
-
-        @Expose
-        SecurityContext context;
-
-        public SessionSummary() {
-        }
-
-        public int getLengthSeconds() {
-            return lengthSeconds;
-        }
-
-        public Date getTimestamp() {
-            return timestamp;
-        }
-
-        public SecurityContext getContext() {
-            return context;
-        }
-
-        public boolean isNullSession() {
-            return this == NO_SESSION;
         }
     }
 

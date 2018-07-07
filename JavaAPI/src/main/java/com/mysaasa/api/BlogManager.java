@@ -30,7 +30,7 @@ public class BlogManager {
      * @return
      */
     public Observable<BlogPost> getBlogPosts(final Category c) {
-        return mySaasa.gateway
+        return mySaasa.retrofitGateway
                 .getBlogPosts(c.name, 0, 20, "date", "desc")
                 .flatMapIterable(response->response.getData());
     }
@@ -41,6 +41,6 @@ public class BlogManager {
                                                      final String summary,
                                                      final String body,
                                                      final String category) {
-        return mySaasa.gateway.postToBlog(title, subtitle, summary, body, category);
+        return mySaasa.retrofitGateway.postToBlog(title, subtitle, summary, body, category);
     }
 }
