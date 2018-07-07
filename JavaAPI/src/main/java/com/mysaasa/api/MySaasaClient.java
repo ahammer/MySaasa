@@ -278,4 +278,9 @@ public class MySaasaClient implements MySaasaGateway{
     public Observable<UpdateCommentResponse> updateComment(long comment_id, String comment) {
         return null;
     }
+
+    @Override
+    public Observable<SimpleResponse> getUserReferralData() {
+        return retrofitGateway.getUserReferralData();
+    }
 }

@@ -2,10 +2,7 @@ package com.mysaasa.api;
 
 import com.mysaasa.MySaasaDaemon;
 import com.mysaasa.api.model.User;
-import com.mysaasa.api.responses.AddReferralResponse;
-import com.mysaasa.api.responses.CreateUserResponse;
-import com.mysaasa.api.responses.LoginUserResponse;
-import com.mysaasa.api.responses.SessionSummary;
+import com.mysaasa.api.responses.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -61,13 +58,12 @@ public class MySaasaClientTests {
 
         client.createUser("userB", "testpassword");
         SessionSummary userBSummary = client.observeSessionSummary().blockingFirst();
-        client.logout();
 
         User userA = userASummary.getContext().getUser();
         User userB = userBSummary.getContext().getUser();
 
         AddReferralResponse addReferralResponse = client
-                .addReferral(userA.id, userB.id)
+                .addReferral(userB.id, userA.id)
                 .blockingFirst();
 
         assertTrue(addReferralResponse.isSuccess());
@@ -75,11 +71,13 @@ public class MySaasaClientTests {
 
         //Duplicate should fail
         addReferralResponse = client
-                .addReferral(userA.id, userB.id)
+                .addReferral(userB.id, userA.id)
                 .blockingFirst();
+
 
         assertFalse(addReferralResponse.isSuccess());
 
+        SimpleResponse response = client.getUserReferralData().blockingFirst();
 
 
     }

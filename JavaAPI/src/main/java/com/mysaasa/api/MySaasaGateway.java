@@ -198,4 +198,8 @@ public interface MySaasaGateway {
 
     @FormUrlEncoded
     @POST("BlogApiService/updateComment")
-    Observable<UpdateCommentResponse> updateComment(@Field("comment_id")long comment_id, @Field("comment")String comment);}
+    Observable<UpdateCommentResponse> updateComment(@Field("comment_id")long comment_id, @Field("comment")String comment);
+
+    @POST("MarketingApiService/getUserReferralData")
+    Observable<SimpleResponse> getUserReferralData();
+}
