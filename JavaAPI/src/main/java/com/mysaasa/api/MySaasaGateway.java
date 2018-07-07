@@ -201,5 +201,5 @@ public interface MySaasaGateway {
     Observable<UpdateCommentResponse> updateComment(@Field("comment_id")long comment_id, @Field("comment")String comment);
 
     @POST("MarketingApiService/getUserReferralData")
-    Observable<SimpleResponse> getUserReferralData();
+    Observable<UserReferralDataResponse> getUserReferralData();
 }

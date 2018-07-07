@@ -49,7 +49,7 @@ public class MarketingService extends BaseInjectedService {
 
 		childReferral.setParentId(parentId);
 
-		save(childReferral);
+
 
 		UserReferrals userReferrals = findReferral(parentId);
 		//Add direct referal tree
@@ -66,11 +66,16 @@ public class MarketingService extends BaseInjectedService {
 		userReferrals.decrementAvailableReferrals();
 		int level = 0;
 		while (userReferrals != null) {
+			if (userReferrals.getReferrals().contains(parentId))
+				throw new IllegalStateException("Circular Referral Detected");
+
 			userReferrals.incrementLevel(level);
 			save(userReferrals);
 			userReferrals = findReferral(userReferrals.getParentId());
 			level++;
 		}
 
+		//Save if all else is OK
+		save(childReferral);
 	}
 }

@@ -2,6 +2,7 @@ package com.mysaasa.api;
 
 import com.mysaasa.MySaasaDaemon;
 import com.mysaasa.api.model.User;
+import com.mysaasa.api.model.UserReferralData;
 import com.mysaasa.api.responses.*;
 import org.junit.After;
 import org.junit.Before;
@@ -69,16 +70,21 @@ public class MySaasaClientTests {
         assertTrue(addReferralResponse.isSuccess());
 
 
-        //Duplicate should fail
+        //Reverse should fail
+        addReferralResponse = client
+                .addReferral(userA.id, userB.id)
+                .blockingFirst();
+        assertFalse(addReferralResponse.isSuccess());
+
+
+        //Dup should fail
         addReferralResponse = client
                 .addReferral(userB.id, userA.id)
                 .blockingFirst();
-
-
         assertFalse(addReferralResponse.isSuccess());
 
-        SimpleResponse response = client.getUserReferralData().blockingFirst();
-
+        UserReferralDataResponse response = client.getUserReferralData().blockingFirst();
+        assertTrue(response.isSuccess());
 
     }
 

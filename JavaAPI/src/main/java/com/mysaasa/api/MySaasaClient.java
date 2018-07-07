@@ -35,7 +35,6 @@ public class MySaasaClient implements MySaasaGateway{
     final BehaviorSubject<SessionSummary> currentSessionSubject = BehaviorSubject.createDefault(SessionSummary.NO_SESSION);
 
 
-
     /**
      * Construct the service on a domain/port.
      *
@@ -280,7 +279,7 @@ public class MySaasaClient implements MySaasaGateway{
     }
 
     @Override
-    public Observable<SimpleResponse> getUserReferralData() {
+    public Observable<UserReferralDataResponse> getUserReferralData() {
         return retrofitGateway.getUserReferralData();
     }
 }
