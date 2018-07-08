@@ -29,7 +29,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * When authentication fails, it should automatically re-authenticate now
  *
  */
-public class MySaasaClient implements MySaasaGateway{
+public class MySaasaClient implements MySaasaGateway {
     final MySaasaGateway retrofitGateway;
 
     final BehaviorSubject<SessionSummary> currentSessionSubject = BehaviorSubject.createDefault(SessionSummary.NO_SESSION);

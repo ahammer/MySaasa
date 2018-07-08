@@ -96,7 +96,6 @@ public class MarketingServiceTest {
 
 		UserReferrals referralsB = marketingService.findReferral(userB.id);
 		assertEquals(referralsB.getParentId(), Long.valueOf(userA.id));
-
 	}
 
 	@Test
