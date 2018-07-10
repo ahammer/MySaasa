@@ -1,8 +1,15 @@
 package com.mysaasa;
 
+import org.apache.wicket.Application;
+import org.apache.wicket.protocol.http.ContextParamWebApplicationFactory;
+import org.apache.wicket.protocol.http.WicketFilter;
+import org.apache.wicket.protocol.http.WicketServlet;
 import org.apache.wicket.protocol.ws.javax.MyEndpointConfig;
+import org.apache.wicket.request.Url;
 import org.eclipse.jetty.http.HttpVersion;
 import org.eclipse.jetty.server.*;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.eclipse.jetty.websocket.jsr356.server.ServerContainer;
@@ -11,6 +18,9 @@ import org.eclipse.jetty.websocket.jsr356.server.deploy.WebSocketServerContainer
 import javax.servlet.ServletException;
 import javax.websocket.DeploymentException;
 import java.io.File;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class MySaasaServer {
 	private Server server;
@@ -19,15 +29,28 @@ public class MySaasaServer {
 		if (server != null) {
 			return;
 		}
+
+
 		server = new Server();
+		ServletHolder servletHolder = new ServletHolder(WicketServlet.class);
+		servletHolder.setInitParameter(ContextParamWebApplicationFactory.APP_CLASS_PARAM, SimpleImpl.class.getName());
+		servletHolder.setInitParameter(WicketFilter.FILTER_MAPPING_PARAM, "/*");
+		ServletContextHandler servletContextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
+		servletContextHandler.addServlet(servletHolder, "/*");
+		server.setHandler(servletContextHandler);
 		HttpConfiguration http_config = getHttpConfig();
 		ServerConnector httpsConnector = initializeHttpsConnector(http_config);
 		ServerConnector httpConnector = initializeHttpConnector(http_config);
-		WebAppContext webAppContext = initializeWebAppContent();
 		applyConnectors(httpsConnector, httpConnector);
-		server.setHandler(webAppContext);
-		setupWebSocketContext(webAppContext);
+
 		server.start();
+
+		try {
+			InputStream stream = new URL("http://localhost:" + DefaultPreferences.getPort()).openConnection().getInputStream();
+			stream.read();
+		} catch (Exception e) {
+			//We hit localhost just to launch the servlet
+		}
 	}
 
 	private void setupWebSocketContext(WebAppContext bb) throws ServletException, DeploymentException {
@@ -48,8 +71,9 @@ public class MySaasaServer {
 	private WebAppContext initializeWebAppContent() {
 		WebAppContext bb = new WebAppContext();
 		bb.setServer(server);
-		bb.setContextPath("/");
-		bb.setWar("./webapp");
+		//bb.setContextPath("./");
+		//bb.setResourceBase("./");
+		//bb.setWar("./webapp");
 		return bb;
 	}
 
@@ -84,9 +108,9 @@ public class MySaasaServer {
 			HttpConfiguration https_config = new HttpConfiguration(http_config);
 			https_config.addCustomizer(new SecureRequestCustomizer());
 
-			https = new ServerConnector(server,
-					new SslConnectionFactory(sslContextFactory, HttpVersion.HTTP_1_1.asString()),
-					new HttpConnectionFactory(https_config));
+			SslConnectionFactory sslConnectionFactory = new SslConnectionFactory(sslContextFactory, HttpVersion.HTTP_1_1.asString());
+			HttpConnectionFactory httpConnectionFactory = new HttpConnectionFactory(https_config);
+			https = new ServerConnector(server, sslConnectionFactory, httpConnectionFactory);
 
 			https.setPort(DefaultPreferences.getSecurePort());
 			https.setIdleTimeout(500000);

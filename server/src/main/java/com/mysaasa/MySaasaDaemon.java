@@ -39,11 +39,14 @@ public class MySaasaDaemon implements Daemon {
 
 			serverLauncher.start();
 
+			/*
 			while (!Simple.getInstance().isInitialized()) {
 				//Wait for simple to initialize
 				System.out.println("Waiting for init");
 				Thread.sleep(50);
 			}
+			*/
+
 
 			Organization o = new Organization();
 			o.setName("Test Organization");

@@ -146,6 +146,7 @@ public abstract class Simple extends WebApplication {
 	@Override
 	public void init() {
 		super.init();
+
 		moduleManager = new ModuleManager();
 		getMarkupSettings().setStripWicketTags(true);
 		// IMPORTANT!
@@ -158,10 +159,7 @@ public abstract class Simple extends WebApplication {
 		config.setHttpsPort(DefaultPreferences.getSecurePort());
 
 		CodeGen.generateRetrofitCode();
-
 		new SSLGen().doSSLMagic();
-
-
 		initialized = true;
 
 	}
