@@ -3,9 +3,11 @@ package com.mysaasa.core.website.templating;
 import com.mysaasa.core.website.model.Website;
 import com.mysaasa.interfaces.ITemplateService;
 import com.mysaasa.Simple;
+import com.mysaasa.interfaces.annotations.SimpleService;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Logger;
 
 /**
  * Registers the TemplateHelpers it finds
@@ -20,6 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * It also manages the RequestProperties thread local, which is where a TemplateEngines configuration data will live
  *
  */
+@SimpleService
 public class TemplateHelperService {
 	private ThreadLocal<RequestProperties> mRequestProperties = new ThreadLocal();
 	public Map<String, Class> serviceMap = new ConcurrentHashMap();
@@ -35,6 +38,7 @@ public class TemplateHelperService {
 		serviceMap.put(service.getTemplateInterfaceName(), service.getClass());
 	}
 
+
 	public static TemplateHelperService get() {
 		return Simple.getInstance().getInjector().getProvider(TemplateHelperService.class).get();
 	}
@@ -49,7 +53,9 @@ public class TemplateHelperService {
 		}
 	}
 
-	public TemplateHelperService() {}
+	public TemplateHelperService() {
+		System.out.println("Initializing Template Helper Service");
+	}
 
 	/**
 	 * Should clear this at the end of a request, as it should not be needed
