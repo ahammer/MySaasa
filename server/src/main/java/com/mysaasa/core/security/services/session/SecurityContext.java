@@ -35,7 +35,7 @@ public class SecurityContext implements Serializable {
 	public List<AbstractModule> getAvailableModules() {
 		List<AbstractModule> mModules = new ArrayList<>();
 
-		ModuleManager moduleManager = SimpleImpl.getInstance().getInjector().getProvider(ModuleManager.class).get();
+		ModuleManager moduleManager = ModuleManager.get();
 		for (AbstractModule module : moduleManager.getModules()) {
 			if (module.hasAccess(getUser().getAccessLevel())) {
 				mModules.add(module);

@@ -34,8 +34,19 @@ import static com.google.common.base.Preconditions.checkArgument;
  *
  * Templating uses injection to getInstance at these classes, so TemplateServices need injection hooks.
  */
+
 public class ModuleManager {
 
+
+	static ModuleManager INSTANCE;
+
+	public static ModuleManager get() {
+		if (INSTANCE == null) {
+			INSTANCE = new ModuleManager();
+		}
+
+		return INSTANCE;
+	}
 
 
 	private final ArrayList<AbstractModule> modules = new ArrayList<AbstractModule>();
@@ -43,7 +54,7 @@ public class ModuleManager {
 	private volatile boolean initialized = false;
 	private final HashMap<Class, IClassPanelAdapter> classPanelAdapters = new HashMap<>();
 
-	public ModuleManager() {
+	private ModuleManager() {
 		if (!initialized) {
 			loadModules();
 			loadServices();

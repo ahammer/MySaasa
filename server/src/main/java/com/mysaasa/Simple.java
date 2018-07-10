@@ -147,7 +147,7 @@ public abstract class Simple extends WebApplication {
 	public void init() {
 		super.init();
 
-		moduleManager = new ModuleManager();
+		moduleManager = ModuleManager.get();
 		getMarkupSettings().setStripWicketTags(true);
 		// IMPORTANT!
 		mountPage("/Admin", Splash.class);
