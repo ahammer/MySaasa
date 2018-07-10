@@ -13,7 +13,6 @@ public class ApiRequestHandler implements IRequestHandler {
 
 	public ApiRequestHandler(ApiRequest ApiRequest) {
 		this.apiRequest = ApiRequest;
-
 	}
 
 	@Override

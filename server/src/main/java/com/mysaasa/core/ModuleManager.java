@@ -36,12 +36,12 @@ import static com.google.common.base.Preconditions.checkArgument;
  */
 public class ModuleManager {
 
-	private static ModuleManager INSTANCE;
 
-	private static final ArrayList<AbstractModule> modules = new ArrayList<AbstractModule>();
-	private static final HashMap<String, Object> services = new HashMap();
-	private static volatile boolean initialized = false;
-	private static final HashMap<Class, IClassPanelAdapter> classPanelAdapters = new HashMap<>();
+
+	private final ArrayList<AbstractModule> modules = new ArrayList<AbstractModule>();
+	private final HashMap<String, Object> services = new HashMap();
+	private volatile boolean initialized = false;
+	private final HashMap<Class, IClassPanelAdapter> classPanelAdapters = new HashMap<>();
 
 	public ModuleManager() {
 		if (!initialized) {
@@ -49,12 +49,10 @@ public class ModuleManager {
 			loadServices();
 			initialized = true;
 		}
-		INSTANCE = this;
+
 	}
 
-	public static ModuleManager getInstance() {
-		return INSTANCE;
-	}
+
 
 	public ArrayList<AbstractModule> getModules() {
 		return modules;
@@ -63,7 +61,7 @@ public class ModuleManager {
 	/*
 	Move to annotation based loading
 	 */
-	private static void loadModules() {
+	private void loadModules() {
 
 		Reflections reflections;
 
@@ -77,7 +75,7 @@ public class ModuleManager {
 		registerClassPanelAdapters();
 	}
 
-	private static void registerAbstractModules(Reflections reflections) {
+	private void registerAbstractModules(Reflections reflections) {
 		for (Class c : reflections.getSubTypesOf(AbstractModule.class)) {
 			try {
 				modules.add((AbstractModule) c.newInstance());
@@ -89,7 +87,7 @@ public class ModuleManager {
 		}
 	}
 
-	private static void registerClassPanelAdapters() {
+	private void registerClassPanelAdapters() {
 		for (AbstractModule module : modules) {
 			Map<Class, IClassPanelAdapter> m = module.getClassPanelAdapters();
 			if (m != null)
@@ -103,11 +101,9 @@ public class ModuleManager {
 		}
 	}
 
-	static boolean service_loaded = false;
 
 	//TODO use the DI system to calculate what to load
 	private static void loadServices() {
-		checkArgument(service_loaded == false);
 		Collection<Binding<?>> bindings = Simple.getInstance().getInjector().getBindings().values();
 		for (Binding b : bindings) {
 			Object injectedObj = b.getProvider().get();
@@ -118,8 +114,6 @@ public class ModuleManager {
 
 			Simple.getInstance().getInjector().injectMembers(injectedObj);
 		}
-
-		service_loaded = true;
 	}
 
 	/**

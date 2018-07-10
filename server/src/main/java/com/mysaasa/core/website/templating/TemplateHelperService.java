@@ -21,14 +21,14 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  */
 public class TemplateHelperService {
-	private static ThreadLocal<RequestProperties> mRequestProperties = new ThreadLocal();
-	public static Map<String, Class> serviceMap = new ConcurrentHashMap();
+	private ThreadLocal<RequestProperties> mRequestProperties = new ThreadLocal();
+	public Map<String, Class> serviceMap = new ConcurrentHashMap();
 
-	public static Map<String, Class> getServiceMap() {
+	public Map<String, Class> getServiceMap() {
 		return serviceMap;
 	}
 
-	public static void bindTemplateService(ITemplateService service) {
+	public void bindTemplateService(ITemplateService service) {
 
 		if (serviceMap.containsKey(service.getTemplateInterfaceName()))
 			throw new IllegalArgumentException("Can not bind twice: " + service.getTemplateInterfaceName() + " " + service.getClass() + " " + serviceMap.get(service.getTemplateInterfaceName()).getClass());

@@ -235,6 +235,7 @@ public class UserService {
 	}
 
 	public boolean userExists(String identifier) {
+		checkNotNull(identifier);
 		EntityManager em = Simple.getEntityManager();
 		final Query q = em.createQuery("SELECT U FROM User U WHERE UPPER(U.identifier)=:identifier");
 		q.setParameter("identifier", identifier.toUpperCase());
