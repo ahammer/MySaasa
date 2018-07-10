@@ -10,15 +10,22 @@ import org.eclipse.jetty.util.security.Credential;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 public class BakedInFileRequestHandler implements IRequestHandler {
 	private final Request mRequest;
 	private final File file;
 
 	public BakedInFileRequestHandler(Request request) {
+		File tempFile;
 		this.mRequest = request;
 		String path = request.getUrl().getPath();
-		file = new File(".\\webapp\\" + path);
+		try {
+			tempFile = new File(getClass().getResource("/" + path).toURI());
+		} catch (Exception e) {
+			tempFile = null;
+		}
+		file = tempFile;
 	}
 
 	public static boolean isValidRequest(Request request) {
@@ -27,7 +34,12 @@ public class BakedInFileRequestHandler implements IRequestHandler {
 		if (path.length() == 0)
 			return false;
 
-		File file = new File(".\\webapp\\" + path);
+		File file = null;
+		try {
+			file = new File(BakedInFileRequestHandler.class.getResource("/" + path).toURI());
+		} catch (Exception e) {
+			return false;
+		}
 
 		return file.exists();
 	}

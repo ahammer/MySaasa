@@ -38,7 +38,6 @@ public class TemplateHelperService {
 		serviceMap.put(service.getTemplateInterfaceName(), service.getClass());
 	}
 
-
 	public static TemplateHelperService get() {
 		return Simple.getInstance().getInjector().getProvider(TemplateHelperService.class).get();
 	}

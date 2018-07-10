@@ -49,8 +49,6 @@ public class MarketingService extends BaseInjectedService {
 
 		childReferral.setParentId(parentId);
 
-
-
 		UserReferrals userReferrals = findReferral(parentId);
 		//Add direct referal tree
 

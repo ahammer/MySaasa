@@ -47,14 +47,12 @@ public abstract class Simple extends WebApplication {
 
 	private boolean initialized = false;
 
-
 	/**
 	 * Such a simple, no args-constructor.
 	 */
 	public Simple() {
 		INSTANCE = this;
 	}
-
 
 	/**
 	 * Get's this, there is only one Application class, and it's a singleton, so this is access

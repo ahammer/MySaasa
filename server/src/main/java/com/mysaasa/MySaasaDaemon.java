@@ -39,14 +39,11 @@ public class MySaasaDaemon implements Daemon {
 
 			serverLauncher.start();
 
-
 			while (!Simple.getInstance().isInitialized()) {
 				//Wait for simple to initialize
 				System.out.println("Waiting for init");
 				Thread.sleep(50);
 			}
-
-
 
 			Organization o = new Organization();
 			o.setName("Test Organization");
@@ -67,14 +64,12 @@ public class MySaasaDaemon implements Daemon {
 			organization.setName("test");
 			organization.setContactInfo(new ContactInfo());
 			organization = organization.save();
-
-
+			
+			
 			User test = new User("test", "test", User.AccessLevel.ROOT);
 			test.setOrganization(organization);
 			UserService.get().saveUser(test);
 			*/
-
-
 
 		} else {
 			serverLauncher.start();

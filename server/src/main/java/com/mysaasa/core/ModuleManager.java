@@ -37,7 +37,6 @@ import static com.google.common.base.Preconditions.checkArgument;
 
 public class ModuleManager {
 
-
 	static ModuleManager INSTANCE;
 
 	public static ModuleManager get() {
@@ -47,7 +46,6 @@ public class ModuleManager {
 
 		return INSTANCE;
 	}
-
 
 	private final ArrayList<AbstractModule> modules = new ArrayList<AbstractModule>();
 	private final HashMap<String, Object> services = new HashMap();
@@ -62,8 +60,6 @@ public class ModuleManager {
 		}
 
 	}
-
-
 
 	public ArrayList<AbstractModule> getModules() {
 		return modules;
@@ -111,7 +107,6 @@ public class ModuleManager {
 				classPanelAdapters.putAll(m);
 		}
 	}
-
 
 	//TODO use the DI system to calculate what to load
 	private static void loadServices() {

@@ -30,7 +30,6 @@ public class MySaasaServer {
 			return;
 		}
 
-
 		server = new Server();
 		ServletHolder servletHolder = new ServletHolder(WicketServlet.class);
 		servletHolder.setInitParameter(ContextParamWebApplicationFactory.APP_CLASS_PARAM, SimpleImpl.class.getName());

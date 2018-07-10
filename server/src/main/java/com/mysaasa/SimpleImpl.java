@@ -20,7 +20,6 @@ public class SimpleImpl extends Simple {
 		}
 	}
 
-
 	@Override
 	public Injector getInjector() {
 		return injector;
