@@ -1,31 +1,30 @@
 package com.mysaasa;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.wicket.request.IRequestCycle;
 import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.Request;
-import org.apache.wicket.request.Response;
 import org.apache.wicket.request.http.WebResponse;
 import org.apache.wicket.util.file.Files;
 import org.eclipse.jetty.util.security.Credential;
+import sun.nio.ch.IOUtil;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.logging.Logger;
 
 public class BakedInFileRequestHandler implements IRequestHandler {
-	private final Request mRequest;
-	private final File file;
+	private static final Logger logger = Logger.getLogger("BakedInFileRequestHandler");
+	private final InputStream stream;
 
 	public BakedInFileRequestHandler(Request request) {
 		File tempFile;
-		this.mRequest = request;
 		String path = request.getUrl().getPath();
-		try {
-			tempFile = new File(getClass().getResource("/" + path).toURI());
-		} catch (Exception e) {
-			tempFile = null;
-		}
-		file = tempFile;
+		String resourcePath = path;
+		stream = Simple.class.getClassLoader().getResourceAsStream(resourcePath);
 	}
 
 	public static boolean isValidRequest(Request request) {
@@ -36,22 +35,28 @@ public class BakedInFileRequestHandler implements IRequestHandler {
 
 		File file = null;
 		try {
-			file = new File(BakedInFileRequestHandler.class.getResource("/" + path).toURI());
+			String resourcePath = path;
+			InputStream stream = Simple.class.getClassLoader().getResourceAsStream(resourcePath);
+
+			if (stream != null) {
+				stream.close();
+				return true;
+			}
+
 		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
 
-		return file.exists();
+		return false;
 	}
 
 	@Override
 	public void respond(IRequestCycle requestCycle) {
 		final WebResponse response = (WebResponse) requestCycle.getResponse();
 		try {
-			final byte[] data = Files.readBytes(file);
-
+			final byte[] data = IOUtils.toByteArray(stream);
 			response.setHeader("cache-control", "private, max-age=0, no-cache");
-			response.setHeader("ETag", Credential.MD5.digest(file.lastModified() + file.getAbsolutePath()));
 			response.setContentLength(data.length);
 			response.write(data);
 		} catch (Exception e) {
@@ -67,7 +72,6 @@ public class BakedInFileRequestHandler implements IRequestHandler {
 	private void errorResponseBackup(Exception e, WebResponse response) {
 		final byte[] data = e.toString().getBytes();
 		response.setHeader("cache-control", "private, max-age=0, no-cache");
-		response.setHeader("ETag", Credential.MD5.digest(file.lastModified() + file.getAbsolutePath()));
 		response.setContentLength(data.length);
 		response.write(data);
 		System.out.println("Error:::: " + e);
