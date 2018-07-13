@@ -2,6 +2,7 @@ package com.mysaasa.api;
 
 import com.mysaasa.api.responses.*;
 import io.reactivex.Observable;
+import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.AsyncSubject;
 import io.reactivex.subjects.BehaviorSubject;
 
@@ -74,57 +75,92 @@ public class MySaasaClient implements MySaasaGateway {
 
     @Override
     public Observable<PostToBlogResponse> postToBlog(String title, String subtitle, String summary, String body, String category) {
-        return retrofitGateway.postToBlog(title, subtitle, summary, body, category);
+        return retrofitGateway.postToBlog(title, subtitle, summary, body, category)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.computation());
     }
 
     @Override
     public Observable<GetThreadResponse> getThread(long message_id) {
-        return retrofitGateway.getThread(message_id);
+        return retrofitGateway.getThread(message_id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.computation());
+
     }
 
     @Override
     public Observable<AddTwoResponse> addTwo(int a, int b) {
-        return retrofitGateway.addTwo(a, b);
+        return retrofitGateway.addTwo(a, b)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.computation());
     }
 
     @Override
     public Observable<GetBlogPostByIdResponse> getBlogPostById(long id) {
-        return retrofitGateway.getBlogPostById(id);
+        return retrofitGateway.getBlogPostById(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.computation());
     }
 
     @Override
     public Observable<CreateUserResponse> createUser(String identifier, String password) {
         AsyncSubject<CreateUserResponse> subject = AsyncSubject.create();
-        retrofitGateway.createUser(identifier, password).subscribe(subject);
-        subject.subscribe(result->{
+        retrofitGateway.createUser(identifier, password)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.computation())
+                .subscribe(subject);
+
+        subject
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.computation())
+                .subscribe(result->{
+
            currentSessionSubject.onNext(result.getData());
         });
-        return subject;
+
+        return subject
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.computation());
     }
 
     @Override
     public Observable<WebsiteResponse> Website() {
-        return retrofitGateway.Website();
+        return retrofitGateway.Website()
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.computation());
+
     }
 
     @Override
     public Observable<DeleteCommentResponse> deleteComment(long comment_id) {
-        return retrofitGateway.deleteComment(comment_id);
+        return retrofitGateway.deleteComment(comment_id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.computation());
+
     }
 
     @Override
     public Observable<AddReferralResponse> addReferral(long parentId, long childId) {
-        return retrofitGateway.addReferral(parentId, childId);
+        return retrofitGateway.addReferral(parentId, childId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.computation());
+
     }
 
     @Override
     public Observable<PostReplyResponse> postReply(long parent_comment_id, String comment) {
-        return retrofitGateway.postReply(parent_comment_id, comment);
+        return retrofitGateway.postReply(parent_comment_id, comment)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.computation());
+
     }
 
     @Override
     public Observable<WebsiteTestResponse> WebsiteTest() {
-        return retrofitGateway.WebsiteTest();
+        return retrofitGateway.WebsiteTest()
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.computation());
+
     }
 
     @Override
@@ -185,34 +221,56 @@ public class MySaasaClient implements MySaasaGateway {
     @Override
     public Observable<LoginUserResponse> loginUser(String identifier, String password) {
         AsyncSubject<LoginUserResponse> subject = AsyncSubject.create();
-        retrofitGateway.loginUser(identifier, password).subscribe(subject);
-        subject.subscribe(result->{
+        retrofitGateway.loginUser(identifier, password)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.computation())
+                .subscribe(subject);
+
+        subject
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.computation())
+                .subscribe(result->{
            if (result.isSuccess()) {
                currentSessionSubject.onNext(result.getData());
            }
         });
-        return subject;
+
+        return subject
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.computation());
 
     }
 
     @Override
     public Observable<MediaResponse> Media() {
-        return retrofitGateway.Media();
+        return retrofitGateway.Media()
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.computation());
+
     }
 
     @Override
     public Observable<GetBlogCommentsResponse> getBlogComments(long post_id, int count) {
-        return retrofitGateway.getBlogComments(post_id, count);
+        return retrofitGateway.getBlogComments(post_id, count)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.computation());
+
     }
 
     @Override
     public Observable<PingResponse> ping() {
-        return retrofitGateway.ping();
+        return retrofitGateway.ping()
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.computation());
+
     }
 
     @Override
     public Observable<RegisterGcmKeyResponse> registerGcmKey(String gc_reg_id) {
-        return retrofitGateway.registerGcmKey(gc_reg_id);
+        return retrofitGateway.registerGcmKey(gc_reg_id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.computation());
+
     }
 
     @Override
@@ -233,14 +291,23 @@ public class MySaasaClient implements MySaasaGateway {
     @Override
     public Observable<LogoutResponse> logout() {
         AsyncSubject<LogoutResponse> subject = AsyncSubject.create();
-        retrofitGateway.logout().subscribe(subject);
-        subject.subscribe(result->{
+        retrofitGateway.logout()
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.computation())
+                .subscribe(subject);
+
+        subject
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.computation())
+                .subscribe(result->{
             if (result.isSuccess()) {
                 currentSessionSubject.onNext(SessionSummary.NO_SESSION);
             }
         });
 
-        return subject;
+        return subject
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.computation());
     }
 
     @Override
@@ -280,6 +347,8 @@ public class MySaasaClient implements MySaasaGateway {
 
     @Override
     public Observable<UserReferralDataResponse> getUserReferralData() {
-        return retrofitGateway.getUserReferralData();
+        return retrofitGateway.getUserReferralData()
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.computation());
     }
 }
