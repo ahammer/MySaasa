@@ -4,9 +4,7 @@ import com.mysaasa.MySaasaDaemon;
 import com.mysaasa.api.model.User;
 import com.mysaasa.api.model.UserReferralData;
 import com.mysaasa.api.responses.*;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 import static org.junit.Assert.*;
 
@@ -16,16 +14,16 @@ import static org.junit.Assert.*;
  */
 public class MySaasaClientTests {
 
-    private MySaasaClient client;
+    private static MySaasaClient client;
 
-    @Before
-    public void Setup() throws Exception {
+    @BeforeClass
+    public static void Setup() throws Exception {
         MySaasaDaemon.main(new String[]{"localmode"});
         client = new MySaasaClient("localhost", 8080, "http");
     }
 
-    @After
-    public void TearDown() throws Exception {
+    @AfterClass
+    public static  void TearDown() throws Exception {
         MySaasaDaemon.stopNow();
     }
 
@@ -35,15 +33,15 @@ public class MySaasaClientTests {
         SessionSummary summary = client.observeSessionSummary().blockingFirst();
         assertEquals(summary, SessionSummary.NO_SESSION);
 
-        client.createUser("test1", "testpassword");
+        client.createUser("test1", "testpassword").blockingFirst();
         summary = client.observeSessionSummary().blockingFirst();
         assertNotEquals(summary, SessionSummary.NO_SESSION);
 
-        client.logout();
+        client.logout().blockingFirst();
         summary = client.observeSessionSummary().blockingFirst();
         assertEquals(summary, SessionSummary.NO_SESSION);
 
-        client.loginUser("test1", "testpassword");
+        client.loginUser("test1", "testpassword").blockingFirst();
 
         summary = client.observeSessionSummary().blockingFirst();
         assertNotEquals(summary, SessionSummary.NO_SESSION);
@@ -53,11 +51,11 @@ public class MySaasaClientTests {
 
     @Test
     public void testReferralSystem() {
-        client.createUser("userA", "testpassword");
+        client.createUser("userA", "testpassword").blockingFirst();
         SessionSummary userASummary = client.observeSessionSummary().blockingFirst();
-        client.logout();
+        client.logout().blockingFirst();
 
-        client.createUser("userB", "testpassword");
+        client.createUser("userB", "testpassword").blockingFirst();
         SessionSummary userBSummary = client.observeSessionSummary().blockingFirst();
 
         User userA = userASummary.getContext().getUser();

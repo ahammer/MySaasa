@@ -115,7 +115,9 @@ public class MySaasaClient implements MySaasaGateway {
                 .observeOn(Schedulers.computation())
                 .subscribe(result->{
 
-           currentSessionSubject.onNext(result.getData());
+                    if (result.isSuccess()) {
+                        currentSessionSubject.onNext(result.getData());
+                    }
         });
 
         return subject
