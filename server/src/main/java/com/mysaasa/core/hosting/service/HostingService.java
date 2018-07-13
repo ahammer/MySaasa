@@ -71,7 +71,6 @@ public class HostingService extends BaseInjectedService {
 			Query q = em.createQuery("SELECT W FROM Website W WHERE W.production=:domain OR W.staging=:domain OR :domainObj MEMBER OF W.domains")
 					.setParameter("domain", host)
 					.setParameter("domainObj", domain);
-			q = em.createQuery("SELECT W FROM Website W");
 
 			final List<Website> websites = q.getResultList();
 			if (websites.size() >= 1)

@@ -103,6 +103,7 @@ publishing {
 			groupId 'com.mysaasa'
 			artifactId 'MySaasa-Java'
 			version rootProject.mavenVersion
+
 			artifact sourcesJar {
 				classifier 'sources'
 			}
