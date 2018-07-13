@@ -9,7 +9,7 @@ import org.junit.*;
 import static org.junit.Assert.*;
 
 /**
- * These tests spawn up a server with in-memory/blank DB for each test
+ * These tests spawn up a server with in-memory/blank DB for the suite
  * You can then use the client against to verify on the "localhost" domain
  */
 public class MySaasaClientTests {
