@@ -223,12 +223,13 @@ public class SSLGen {
 		try {
 			Certificate certificate = registration.requestCertificate(csr);
 			X509Certificate cert = certificate.download();
+			X509Certificate[] chain = certificate.downloadChain();
 
 			//Wipe and reload
 			if (mainKeyStore.containsAlias(site)) {
 				mainKeyStore.deleteEntry(site);
 			}
-			mainKeyStore.setKeyEntry(site, domainKeyPair.getPrivate(), getPasswordChars(), new java.security.cert.Certificate[]{cert, intermediate});
+			mainKeyStore.setKeyEntry(site, domainKeyPair.getPrivate(), getPasswordChars(), chain);
 
 			System.out.println("Added cert to keystore: " + site);
 		} catch (AcmeRateLimitExceededException e) {
