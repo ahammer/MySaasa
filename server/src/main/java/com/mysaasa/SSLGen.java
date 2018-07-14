@@ -228,7 +228,7 @@ public class SSLGen {
 			if (mainKeyStore.containsAlias(site)) {
 				mainKeyStore.deleteEntry(site);
 			}
-			mainKeyStore.setKeyEntry(site, domainKeyPair.getPrivate(), getPasswordChars(), new java.security.cert.Certificate[]{cert, intermediate, root});
+			mainKeyStore.setKeyEntry(site, domainKeyPair.getPrivate(), getPasswordChars(), new java.security.cert.Certificate[]{cert, intermediate});
 
 			System.out.println("Added cert to keystore: " + site);
 		} catch (AcmeRateLimitExceededException e) {
