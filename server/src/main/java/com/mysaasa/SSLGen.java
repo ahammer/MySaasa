@@ -5,6 +5,7 @@ import com.mysaasa.core.hosting.service.HostingService;
 import com.mysaasa.core.website.model.Domain;
 import com.mysaasa.core.website.model.Website;
 import org.shredzone.acme4j.*;
+import org.shredzone.acme4j.Certificate;
 import org.shredzone.acme4j.challenge.Http01Challenge;
 import org.shredzone.acme4j.exception.AcmeConflictException;
 import org.shredzone.acme4j.exception.AcmeException;
@@ -20,10 +21,7 @@ import java.security.KeyPair;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
-import java.security.cert.CertificateExpiredException;
-import java.security.cert.CertificateNotYetValidException;
-import java.security.cert.X509Certificate;
+import java.security.cert.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -78,7 +76,7 @@ public class SSLGen {
 
 			try {
 				loadKeyStore();
-				//downloadBasicCerts();
+				downloadBasicCerts();
 				loadApplicationCertificate();
 				connectToLetsEncrypt();
 				getCertsForSites();
@@ -108,14 +106,11 @@ public class SSLGen {
 	 * We will need the root/intermediate certs for the keychain
 	 *
 	 * @throws IOException
-	
+	 */
 	private void downloadBasicCerts() throws IOException {
 		downloadFile(ROOT_KEY_URL, "root.pem");
 		downloadFile(INTERMEDIATE_KEY_URL, "intermediate.pem");
-	
-		return;
 	}
-	 */
 
 	private void downloadFile(String url, String file) throws IOException {
 		URL website = new URL(url);
@@ -162,7 +157,6 @@ public class SSLGen {
 			applicationKeyPair = KeyPairUtils.createKeyPair(2048);
 			FileWriter fw = new FileWriter(accountCertPath);
 			KeyPairUtils.writeKeyPair(applicationKeyPair, fw);
-
 		} else {
 			applicationKeyPair = KeyPairUtils.readKeyPair(new FileReader(accountCertFile));
 		}
@@ -209,7 +203,6 @@ public class SSLGen {
 				System.out.println("Getting Certificate For: " + site);
 				authorizeDomain(site);
 				downloadCert(site);
-
 			} else {
 				System.out.println("Domain cert already valid: " + site);
 			}
@@ -224,6 +217,8 @@ public class SSLGen {
 		csrb.setOrganization("MySaasa");
 		csrb.sign(domainKeyPair);
 		byte[] csr = csrb.getEncoded();
+		java.security.cert.Certificate root = loadCert("root.pem");
+		java.security.cert.Certificate intermediate = loadCert("intermediate.pem");
 
 		try {
 			Certificate certificate = registration.requestCertificate(csr);
@@ -233,13 +228,20 @@ public class SSLGen {
 			if (mainKeyStore.containsAlias(site)) {
 				mainKeyStore.deleteEntry(site);
 			}
-			mainKeyStore.setKeyEntry(site, domainKeyPair.getPrivate(), getPasswordChars(), new java.security.cert.Certificate[]{cert});
+			mainKeyStore.setKeyEntry(site, domainKeyPair.getPrivate(), getPasswordChars(), new java.security.cert.Certificate[]{cert, intermediate, root});
+
 			System.out.println("Added cert to keystore: " + site);
 		} catch (AcmeRateLimitExceededException e) {
 			System.out.println("Rate Limit Exceeded: " + site);
 			//Skip this one
 			//Rate Limit Exceeded
 		}
+	}
+
+	private java.security.cert.Certificate loadCert(String file) throws FileNotFoundException, CertificateException {
+		FileInputStream fis = new FileInputStream(getCertPath() + file);
+		CertificateFactory cf = CertificateFactory.getInstance("X.509");
+		return cf.generateCertificate(fis);
 	}
 
 	private char[] getPasswordChars() {
