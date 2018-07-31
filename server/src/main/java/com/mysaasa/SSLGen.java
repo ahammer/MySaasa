@@ -114,16 +114,11 @@ public class SSLGen {
 	}
 
 	private void downloadFile(String url, String file) throws IOException {
-		ReadableByteChannel rbc = null;
-		FileOutputStream fos = null;
-		try {
-			URL website = new URL(url);
-			rbc = Channels.newChannel(website.openStream());
-			fos = new FileOutputStream(getCertPath() + file);
-			fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-		} finally {
-			if (rbc != null) rbc.close();
-			if (fos != null) fos.close();
+		URL website = new URL(url);
+		try (ReadableByteChannel rbc = Channels.newChannel(website.openStream())) {
+			try (FileOutputStream fos = new FileOutputStream(getCertPath() + file)) {
+				fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+			}
 		}
 	}
 
@@ -245,12 +240,6 @@ public class SSLGen {
 			//Skip this one
 			//Rate Limit Exceeded
 		}
-	}
-
-	private java.security.cert.Certificate loadCert(String file) throws FileNotFoundException, CertificateException {
-		FileInputStream fis = new FileInputStream(getCertPath() + file);
-		CertificateFactory cf = CertificateFactory.getInstance("X.509");
-		return cf.generateCertificate(fis);
 	}
 
 	private char[] getPasswordChars() {
