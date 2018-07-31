@@ -27,6 +27,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -45,19 +47,18 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * 5) Notify SSL to regenerate
  */
 public class SSLGen {
-
-	static final String ROOT_KEY_URL = "https://letsencrypt.org/certs/isrgrootx1.pem.txt";
-	static final String INTERMEDIATE_KEY_URL = "https://letsencrypt.org/certs/letsencryptauthorityx3.pem.txt";
-	public static final int CERTIFICATE_LOOK_AHEAD_TIME_MS = 1000 * 60 * 60 * 24 * 14;
-	public static final String LETS_ENCRYPT_URL = "acme://letsencrypt.org/staging";
+	private final Logger logger = Logger.getLogger("SSLGen");
+	private static final String ROOT_KEY_URL = "https://letsencrypt.org/certs/isrgrootx1.pem.txt";
+	private static final String INTERMEDIATE_KEY_URL = "https://letsencrypt.org/certs/letsencryptauthorityx3.pem.txt";
+	private static final int CERTIFICATE_LOOK_AHEAD_TIME_MS = 1000 * 60 * 60 * 24 * 14;
+	private static final String LETS_ENCRYPT_URL = "acme://letsencrypt.org/staging";
 	private KeyPair applicationKeyPair;
-	private Session session;
 	private Registration registration;
 
-	public static Map<String, Http01Challenge> activeChallengeMap = new ConcurrentHashMap();
+	private static Map<String, Http01Challenge> activeChallengeMap = new ConcurrentHashMap();
 	private KeyStore mainKeyStore;
 
-	public SSLGen() {}
+	SSLGen() {}
 
 	/**
 	 * Do the SSL stuff
@@ -67,7 +68,7 @@ public class SSLGen {
 	 * Request Appropriate Challenges
 	 * -
 	 */
-	public void doSSLMagic() {
+	void doSSLMagic() {
 		if (MySaasaDaemon.isLocalMode())
 			return;
 		//if (1==1) return;
@@ -113,15 +114,22 @@ public class SSLGen {
 	}
 
 	private void downloadFile(String url, String file) throws IOException {
-		URL website = new URL(url);
-		ReadableByteChannel rbc = Channels.newChannel(website.openStream());
-		FileOutputStream fos = new FileOutputStream(getCertPath() + file);
-		fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+		ReadableByteChannel rbc = null;
+		FileOutputStream fos = null;
+		try {
+			URL website = new URL(url);
+			rbc = Channels.newChannel(website.openStream());
+			fos = new FileOutputStream(getCertPath() + file);
+			fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+		} finally {
+			if (rbc != null) rbc.close();
+			if (fos != null) fos.close();
+		}
 	}
 
 	private void connectToLetsEncrypt() throws AcmeException {
 		checkNotNull(applicationKeyPair, "We couldn't load an application key pair");
-		session = new Session(getAcmeUrl(), applicationKeyPair);
+		Session session = new Session(getAcmeUrl(), applicationKeyPair);
 		String contactEmail = DefaultPreferences.getContactEmail();
 		checkNotNull(contactEmail, "contactEmail required in settings.properties to connect to lets encrypt");
 		RegistrationBuilder builder = new RegistrationBuilder();
@@ -197,43 +205,43 @@ public class SSLGen {
 		List<String> sites = getApplicableDomains();
 
 		checkNotNull(registration, "Must be registered to do this");
+
 		for (String site : sites) {
 			if (!isDomainValid(site)) {
-				System.out.println("-------------------------------------------------------------");
-				System.out.println("Getting Certificate For: " + site);
+				logger.info("-------------------------------------------------------------");
+				logger.log(Level.INFO, "Getting Certificate for {0}", site);
 				authorizeDomain(site);
 				downloadCert(site);
 			} else {
-				System.out.println("Domain cert already valid: " + site);
+				logger.log(Level.INFO, "Domain cert already valid: {0}", site);
+
 			}
 		}
 	}
 
-	private void downloadCert(String site) throws Exception {
+	private void downloadCert(String site) throws IOException, AcmeException, CertificateException, KeyStoreException {
 		checkNotNull(registration, "Need a registration to do this");
 		KeyPair domainKeyPair = KeyPairUtils.createKeyPair(2048);
-		CSRBuilder csrb = new CSRBuilder();
-		csrb.addDomain(site);
-		csrb.setOrganization("MySaasa");
-		csrb.sign(domainKeyPair);
-		byte[] csr = csrb.getEncoded();
-		java.security.cert.Certificate root = loadCert("root.pem");
-		java.security.cert.Certificate intermediate = loadCert("intermediate.pem");
+		CSRBuilder csrBuilder = new CSRBuilder();
+		csrBuilder.addDomain(site);
+		csrBuilder.setOrganization("MySaasa");
+		csrBuilder.sign(domainKeyPair);
+		byte[] csr = csrBuilder.getEncoded();
 
 		try {
 			Certificate certificate = registration.requestCertificate(csr);
-			X509Certificate cert = certificate.download();
 			X509Certificate[] chain = certificate.downloadChain();
 
 			//Wipe and reload
 			if (mainKeyStore.containsAlias(site)) {
 				mainKeyStore.deleteEntry(site);
 			}
-			mainKeyStore.setKeyEntry(site, domainKeyPair.getPrivate(), getPasswordChars(), chain);
 
-			System.out.println("Added cert to keystore: " + site);
+			mainKeyStore.setKeyEntry(site, domainKeyPair.getPrivate(), getPasswordChars(), chain);
+			logger.log(Level.INFO, "Added cert to keystore: {0}", site);
 		} catch (AcmeRateLimitExceededException e) {
-			System.out.println("Rate Limit Exceeded: " + site);
+			logger.log(Level.INFO, "Rate Limit Exceeded {0}", site);
+
 			//Skip this one
 			//Rate Limit Exceeded
 		}
