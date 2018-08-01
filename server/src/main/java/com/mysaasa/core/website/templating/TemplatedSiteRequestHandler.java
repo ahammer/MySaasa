@@ -83,7 +83,7 @@ public class TemplatedSiteRequestHandler implements IRequestHandler {
 			return false;
 
 		//Check if there is a challenge for this domain
-		Http01Challenge challenge = SSLGen.getActiveChallenge(filename, host);
+		Http01Challenge challenge = SSLGen.getActiveChallenge(host);
 		if (challenge != null) {
 			return true;
 		}
@@ -179,7 +179,7 @@ public class TemplatedSiteRequestHandler implements IRequestHandler {
 		} catch (final FileNotFoundException | ResourceNotFoundException e) {
 
 			//Maybe this is a challenge?
-			Http01Challenge challenge = SSLGen.getActiveChallenge(path, requestCycle.getRequest().getUrl().getHost());
+			Http01Challenge challenge = SSLGen.getActiveChallenge(requestCycle.getRequest().getUrl().getHost());
 			if (challenge != null) {
 				stringResponse(response, challenge.getAuthorization());
 				return;
