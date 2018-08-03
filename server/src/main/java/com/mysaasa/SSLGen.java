@@ -285,7 +285,7 @@ public class SSLGen {
 
 	}
 
-	public static Http01Challenge getActiveChallenge(String filename, String domain) {
+	public static Http01Challenge getActiveChallenge(String domain) {
 		Http01Challenge challenge = null;
 
 		if (activeChallengeMap.containsKey(domain)) {
