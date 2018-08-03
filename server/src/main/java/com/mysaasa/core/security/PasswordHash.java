@@ -202,7 +202,7 @@ public class PasswordHash {
 	 */
 	public static boolean validatePassword(String password, String correctHash) throws NoSuchAlgorithmException, InvalidKeySpecException {
 		if (password == null)
-			throw new NullPointerException();
+			return false;
 		return validatePassword(password.toCharArray(), correctHash);
 	}
 

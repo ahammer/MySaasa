@@ -10,5 +10,5 @@ buildscript {
 }
 
 ext {
-	mavenVersion = "0.2.1"
+	mavenVersion = "0.2.2"
 }
