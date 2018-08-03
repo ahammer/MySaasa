@@ -29,12 +29,6 @@ public class Splash extends WebPage {
 	private final SelectSiteForm siteSelectForm;
 
 	public Splash() {
-		if (SessionService.get() != null) {
-			setResponsePage(Admin.class);
-			signInForm = null;
-			siteSelectForm = null;
-			return;
-		}
 
 		add(signInForm = new SigninForm());
 		add(siteSelectForm = new SelectSiteForm());

@@ -3,7 +3,7 @@ package com.mysaasa;
 import com.mysaasa.core.hosting.service.HostingService;
 
 import com.mysaasa.core.website.model.Domain;
-
+import com.mysaasa.core.website.model.Website;
 import org.shredzone.acme4j.*;
 import org.shredzone.acme4j.Certificate;
 import org.shredzone.acme4j.challenge.Http01Challenge;
@@ -27,8 +27,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -47,17 +45,19 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * 5) Notify SSL to regenerate
  */
 public class SSLGen {
-	private final Logger logger = Logger.getLogger("SSLGen");
-	private static final String ROOT_KEY_URL = "https://letsencrypt.org/certs/isrgrootx1.pem.txt";
-	private static final String INTERMEDIATE_KEY_URL = "https://letsencrypt.org/certs/letsencryptauthorityx3.pem.txt";
-	private static final int CERTIFICATE_LOOK_AHEAD_TIME_MS = 1000 * 60 * 60 * 24 * 14;
-	private static final String LETS_ENCRYPT_URL = "acme://letsencrypt.org/staging";
+
+	static final String ROOT_KEY_URL = "https://letsencrypt.org/certs/isrgrootx1.pem.txt";
+	static final String INTERMEDIATE_KEY_URL = "https://letsencrypt.org/certs/letsencryptauthorityx3.pem.txt";
+	public static final int CERTIFICATE_LOOK_AHEAD_TIME_MS = 1000 * 60 * 60 * 24 * 14;
+	public static final String LETS_ENCRYPT_URL = "acme://letsencrypt.org/";
 	private KeyPair applicationKeyPair;
+	private Session session;
 	private Registration registration;
-	private static Map<String, Http01Challenge> activeChallengeMap = new ConcurrentHashMap<>();
+
+	public static Map<String, Http01Challenge> activeChallengeMap = new ConcurrentHashMap();
 	private KeyStore mainKeyStore;
 
-	SSLGen() {}
+	public SSLGen() {}
 
 	/**
 	 * Do the SSL stuff
@@ -67,12 +67,12 @@ public class SSLGen {
 	 * Request Appropriate Challenges
 	 * -
 	 */
-	void doSSLMagic() {
+	public void doSSLMagic() {
 		if (MySaasaDaemon.isLocalMode())
 			return;
-
+		//if (1==1) return;
 		new Thread(() -> {
-			logger.info("Updating Certificate Process");
+			System.out.println("Updating Certificate Process");
 
 			try {
 				loadKeyStore();
@@ -81,15 +81,16 @@ public class SSLGen {
 				connectToLetsEncrypt();
 				getCertsForSites();
 				saveMainKeystore();
-				logger.info("Certificate process complete");
+				System.out.println("Certificate process complete");
 			} catch (Exception e) {
-				logger.log(Level.WARNING, "Certificate Process Uncaught Exception!!", e);
+				System.out.println("Certificate Process Uncaught Exception!!");
+				e.printStackTrace();
 			}
 		} ).start();
 
 	}
 
-	private boolean isDomainValid(String domain) {
+	private boolean isDomainValid(String domain) throws KeyStoreException, CertificateExpiredException, CertificateNotYetValidException {
 		try {
 			if (!mainKeyStore.containsAlias(domain))
 				throw new IllegalStateException("Cert not in keystore for " + domain);
@@ -103,6 +104,8 @@ public class SSLGen {
 
 	/**
 	 * We will need the root/intermediate certs for the keychain
+	 *
+	 * @throws IOException
 	 */
 	private void downloadBasicCerts() throws IOException {
 		downloadFile(ROOT_KEY_URL, "root.pem");
@@ -111,16 +114,14 @@ public class SSLGen {
 
 	private void downloadFile(String url, String file) throws IOException {
 		URL website = new URL(url);
-		try (ReadableByteChannel rbc = Channels.newChannel(website.openStream())) {
-			try (FileOutputStream fos = new FileOutputStream(getCertPath() + file)) {
-				fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-			}
-		}
+		ReadableByteChannel rbc = Channels.newChannel(website.openStream());
+		FileOutputStream fos = new FileOutputStream(getCertPath() + file);
+		fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
 	}
 
 	private void connectToLetsEncrypt() throws AcmeException {
 		checkNotNull(applicationKeyPair, "We couldn't load an application key pair");
-		Session session = new Session(getAcmeUrl(), applicationKeyPair);
+		session = new Session(getAcmeUrl(), applicationKeyPair);
 		String contactEmail = DefaultPreferences.getContactEmail();
 		checkNotNull(contactEmail, "contactEmail required in settings.properties to connect to lets encrypt");
 		RegistrationBuilder builder = new RegistrationBuilder();
@@ -148,12 +149,7 @@ public class SSLGen {
 	 */
 	private void loadApplicationCertificate() throws IOException {
 		String certificatePath = getCertPath();
-		File certPathFile = new File(certificatePath);
-		if (!certPathFile.exists()) {
-			boolean result = certPathFile.mkdir();
-			if (!result)
-				throw new IOException("Could not make certificate path");
-		}
+		new File(certificatePath).mkdir();
 
 		String accountCertPath = getCertPath() + "instance-private-key.pem";
 		File accountCertFile = new File(accountCertPath);
@@ -165,7 +161,7 @@ public class SSLGen {
 			applicationKeyPair = KeyPairUtils.readKeyPair(new FileReader(accountCertFile));
 		}
 
-		logger.log(Level.INFO, "Loaded a key pair {0}", applicationKeyPair.getPublic());
+		System.out.println("Loaded a keypair: " + applicationKeyPair.getPublic());
 	}
 
 	private List<String> getApplicableDomains() {
@@ -197,48 +193,56 @@ public class SSLGen {
 				.collect(Collectors.toList());
 	}
 
-	private void getCertsForSites() throws AcmeException, InterruptedException, KeyStoreException, IOException {
+	private void getCertsForSites() throws Exception {
 		List<String> sites = getApplicableDomains();
-		checkNotNull(registration, "Must be registered to do this");
 
+		checkNotNull(registration, "Must be registered to do this");
 		for (String site : sites) {
 			if (!isDomainValid(site)) {
-				logger.log(Level.INFO, "Getting Certificate for {0}", site);
+				System.out.println("-------------------------------------------------------------");
+				System.out.println("Getting Certificate For: " + site);
 				authorizeDomain(site);
 				downloadCert(site);
 			} else {
-				logger.log(Level.INFO, "Domain cert already valid: {0}", site);
-
+				System.out.println("Domain cert already valid: " + site);
 			}
 		}
 	}
 
-	private void downloadCert(String site) throws IOException, AcmeException, KeyStoreException {
+	private void downloadCert(String site) throws Exception {
 		checkNotNull(registration, "Need a registration to do this");
 		KeyPair domainKeyPair = KeyPairUtils.createKeyPair(2048);
-		CSRBuilder csrBuilder = new CSRBuilder();
-		csrBuilder.addDomain(site);
-		csrBuilder.setOrganization("MySaasa");
-		csrBuilder.sign(domainKeyPair);
-		byte[] csr = csrBuilder.getEncoded();
+		CSRBuilder csrb = new CSRBuilder();
+		csrb.addDomain(site);
+		csrb.setOrganization("MySaasa");
+		csrb.sign(domainKeyPair);
+		byte[] csr = csrb.getEncoded();
+		java.security.cert.Certificate root = loadCert("root.pem");
+		java.security.cert.Certificate intermediate = loadCert("intermediate.pem");
 
 		try {
 			Certificate certificate = registration.requestCertificate(csr);
+			X509Certificate cert = certificate.download();
 			X509Certificate[] chain = certificate.downloadChain();
 
 			//Wipe and reload
 			if (mainKeyStore.containsAlias(site)) {
 				mainKeyStore.deleteEntry(site);
 			}
-
 			mainKeyStore.setKeyEntry(site, domainKeyPair.getPrivate(), getPasswordChars(), chain);
-			logger.log(Level.INFO, "Added cert to keystore: {0}", site);
-		} catch (AcmeRateLimitExceededException e) {
-			logger.log(Level.INFO, "Rate Limit Exceeded {0}", site);
 
+			System.out.println("Added cert to keystore: " + site);
+		} catch (AcmeRateLimitExceededException e) {
+			System.out.println("Rate Limit Exceeded: " + site);
 			//Skip this one
 			//Rate Limit Exceeded
 		}
+	}
+
+	private java.security.cert.Certificate loadCert(String file) throws FileNotFoundException, CertificateException {
+		FileInputStream fis = new FileInputStream(getCertPath() + file);
+		CertificateFactory cf = CertificateFactory.getInstance("X.509");
+		return cf.generateCertificate(fis);
 	}
 
 	private char[] getPasswordChars() {
@@ -257,19 +261,14 @@ public class SSLGen {
 
 		long timeout = 500;
 		int count = 0;
-
-
-		logger.log(Level.INFO, "Waiting to authorize domain: {0}/.well-known/acme-challenge/{1}",  new Object[]{domain, challenge.getToken()});
-		while (count < 20) {
-			logger.log(Level.INFO, "{0}/20", count);
+		boolean currentlyValid = false;
+		System.out.println("Waiting to authorize domain: " + domain + "/.well-known/acme-challenge/" + challenge.getToken());
+		while (!currentlyValid && count < 20) {
+			System.out.println(count + "/" + 20);
 			challenge.update();
-
-			if (challenge.getStatus() == Status.VALID) {
-				logger.log(Level.INFO, "Verified domain: {0}", domain);
-				return;
-			}
-
-
+			currentlyValid = challenge.getStatus() == Status.VALID;
+			if (currentlyValid)
+				break;
 			Thread.sleep(timeout);
 			count++;
 			timeout *= 2;
@@ -278,11 +277,15 @@ public class SSLGen {
 
 		}
 
-		logger.log(Level.INFO, "Could not verify domain: {0}", domain);
+		if (currentlyValid) {
+			System.out.println("Verified Domain: " + domain);
+		} else {
+			System.out.println("Could not verify domain: " + domain);
+		}
 
 	}
 
-	public static Http01Challenge getActiveChallenge(String domain) {
+	public static Http01Challenge getActiveChallenge(String filename, String domain) {
 		Http01Challenge challenge = null;
 
 		if (activeChallengeMap.containsKey(domain)) {
@@ -291,16 +294,21 @@ public class SSLGen {
 		return challenge;
 	}
 
-	private void loadKeyStore() throws KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException {
+	public static String getAuthorization(Website website) {
+		if (!activeChallengeMap.containsKey(website.production)) {
+			return "";
+		}
+		return activeChallengeMap.get(website.production).getAuthorization();
+	}
+
+	public void loadKeyStore() throws Exception {
 		File file = getKeystoreFile();
 		mainKeyStore = KeyStore.getInstance("JKS");
 
 		if (!file.exists()) {
 			mainKeyStore.load(null, null);
 		} else {
-			try (FileInputStream stream = new FileInputStream(getKeystoreFile())) {
-				mainKeyStore.load(stream, getPasswordChars());
-			}
+			mainKeyStore.load(new FileInputStream(getKeystoreFile()), getPasswordChars());
 		}
 		saveMainKeystore();
 	}
@@ -310,10 +318,8 @@ public class SSLGen {
 	}
 
 	private void saveMainKeystore() throws IOException, NoSuchAlgorithmException, CertificateException, KeyStoreException {
-		logger.info("Saving Keystore");
+		System.out.println("Saving Keystore");
 		File file = getKeystoreFile();
-		try (FileOutputStream stream = new FileOutputStream(file)) {
-			mainKeyStore.store(stream, getPasswordChars());
-		}
+		mainKeyStore.store(new FileOutputStream(file), getPasswordChars());
 	}
 }
