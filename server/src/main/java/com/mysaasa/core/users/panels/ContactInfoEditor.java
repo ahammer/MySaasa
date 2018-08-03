@@ -14,7 +14,6 @@ public abstract class ContactInfoEditor extends Panel {
 	 * 
 	 */
 	private static final long serialVersionUID = -6389208660285577169L;
-	private FeedbackPanel bitcoinAddressFeedback;
 	private FeedbackPanel mobilePhoneFeedback;
 	private FeedbackPanel homePhoneFeedback;
 	private FeedbackPanel postalFeedback;
@@ -25,7 +24,7 @@ public abstract class ContactInfoEditor extends Panel {
 	private FeedbackPanel countryFeedback;
 	private FeedbackPanel emailFeedback;
 	private FeedbackPanel nameFeedback;
-	private ContactInfoHandler bitcoinAddress;
+
 	private ContactInfoHandler name;
 	private ContactInfoHandler email;
 	private ContactInfoHandler mobilePhone;
@@ -58,7 +57,6 @@ public abstract class ContactInfoEditor extends Panel {
 		add(postal = new ContactInfoHandler("postal"));
 		add(homePhone = new ContactInfoHandler("homePhone"));
 		add(mobilePhone = new ContactInfoHandler("mobilePhone"));
-		add(bitcoinAddress = new ContactInfoHandler("bitcoinAddress"));
 
 		add(nameFeedback = (FeedbackPanel) (new FeedbackPanel("nameFeedback", new ComponentFeedbackMessageFilter(name)).setOutputMarkupId(true)));
 		add(emailFeedback = (FeedbackPanel) (new FeedbackPanel("emailFeedback", new ComponentFeedbackMessageFilter(email)).setOutputMarkupId(true)));
@@ -70,7 +68,6 @@ public abstract class ContactInfoEditor extends Panel {
 		add(postalFeedback = (FeedbackPanel) (new FeedbackPanel("postalFeedback", new ComponentFeedbackMessageFilter(postal)).setOutputMarkupId(true)));
 		add(homePhoneFeedback = (FeedbackPanel) (new FeedbackPanel("homePhoneFeedback", new ComponentFeedbackMessageFilter(homePhone)).setOutputMarkupId(true)));
 		add(mobilePhoneFeedback = (FeedbackPanel) (new FeedbackPanel("mobilePhoneFeedback", new ComponentFeedbackMessageFilter(mobilePhone)).setOutputMarkupId(true)));
-		add(bitcoinAddressFeedback = (FeedbackPanel) (new FeedbackPanel("bitcoinAddressFeedback", new ComponentFeedbackMessageFilter(bitcoinAddress)).setOutputMarkupId(true)));
 
 	}
 
