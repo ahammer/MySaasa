@@ -1,6 +1,7 @@
 package com.mysaasa.injection;
 
 import com.google.inject.CreationException;
+import com.google.inject.Provides;
 import com.mysaasa.core.hosting.service.BaseInjectedService;
 import com.mysaasa.interfaces.annotations.SimpleService;
 import com.mysaasa.Simple;
@@ -67,12 +68,12 @@ public class SimpleGuiceModuleImpl extends AbstractSimpleGuiceModule {
 		return c.getSuperclass();
 	}
 
-	@Override
+	@Provides
 	public Logger providesLogger() {
 		return SimpleImpl.getInstance().getLogger();
 	}
 
-	@Override
+	@Provides
 	public EntityManager providesEntityManager() {
 		if (emf == null) {
 			try {

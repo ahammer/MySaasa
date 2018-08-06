@@ -16,10 +16,4 @@ import javax.persistence.EntityManager;
  */
 public abstract class AbstractSimpleGuiceModule extends com.google.inject.AbstractModule {
 
-	@Provides
-	public abstract Logger providesLogger();
-
-	@Provides
-	public abstract EntityManager providesEntityManager();
-
 }
