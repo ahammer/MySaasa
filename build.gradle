@@ -4,9 +4,13 @@ buildscript {
  	    jcenter()
     }
     dependencies {
-     	classpath 'com.diffplug.gradle.spotless:spotless:1.0'
-        classpath  'me.tatarka:gradle-retrolambda:3.3.0-beta4'
+     	classpath 'com.diffplug.gradle.spotless:spotless:2.4.1'
+        classpath 'org.owasp:dependency-check-gradle:3.3.0'
     }
+}
+
+plugins {
+    id "com.github.ben-manes.versions" version "0.20.0"
 }
 
 ext {

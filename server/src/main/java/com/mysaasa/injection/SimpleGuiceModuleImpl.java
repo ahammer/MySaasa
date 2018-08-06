@@ -5,7 +5,7 @@ import com.mysaasa.core.hosting.service.BaseInjectedService;
 import com.mysaasa.interfaces.annotations.SimpleService;
 import com.mysaasa.Simple;
 import com.mysaasa.SimpleImpl;
-import org.reflections.Reflections;
+import org.reflections.*;
 import org.slf4j.Logger;
 
 import javax.persistence.EntityManager;

@@ -5,6 +5,7 @@ plugins {
 apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
+apply plugin: 'org.owasp.dependencycheck'
 
 sourceCompatibility = 1.8
 

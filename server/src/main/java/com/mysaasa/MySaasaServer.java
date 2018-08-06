@@ -21,9 +21,12 @@ import java.io.File;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class MySaasaServer {
 	private Server server;
+	private final Logger logger = Logger.getLogger(MySaasaServer.class.getSimpleName());
 
 	public void start() throws Exception {
 		if (server != null) {
@@ -93,22 +96,29 @@ public class MySaasaServer {
 	}
 
 	private ServerConnector initializeHttpsConnector(HttpConfiguration http_config) {
-		if (MySaasaDaemon.isLocalMode())
+		if (MySaasaDaemon.isLocalMode()) {
+			logger.log(Level.INFO, "In local mode, no https");
 			return null;
+		}
 
 		File keystoreFile = new File(DefaultPreferences.getConfigPath() + "/certificates/main.jks");
 		ServerConnector https = null;
 		if (keystoreFile.exists()) {
+			logger.log(Level.INFO, "Keystore file exists, loading {0}", keystoreFile.getAbsolutePath());
 			SslContextFactory sslContextFactory = new SslContextFactory();
 			sslContextFactory.setKeyStorePath(keystoreFile.getAbsolutePath());
 			sslContextFactory.setTrustStorePath(keystoreFile.getAbsolutePath());
 			sslContextFactory.setKeyStorePassword(DefaultPreferences.getProperties().getProperty(DefaultPreferences.PREF_KEYSTORE_PASSWORD));
 			sslContextFactory.setKeyManagerPassword(DefaultPreferences.getProperties().getProperty(DefaultPreferences.PREF_KEYSTORE_PASSWORD));
-			HttpConfiguration https_config = new HttpConfiguration(http_config);
-			https_config.addCustomizer(new SecureRequestCustomizer());
+
+			for (String string: sslContextFactory.getAliases()) {
+				logger.log(Level.INFO, "SSL ALIAS: {0}", string);
+			}
+
+			http_config.addCustomizer(new SecureRequestCustomizer());
 
 			SslConnectionFactory sslConnectionFactory = new SslConnectionFactory(sslContextFactory, HttpVersion.HTTP_1_1.asString());
-			HttpConnectionFactory httpConnectionFactory = new HttpConnectionFactory(https_config);
+			HttpConnectionFactory httpConnectionFactory = new HttpConnectionFactory(http_config);
 			https = new ServerConnector(server, sslConnectionFactory, httpConnectionFactory);
 
 			https.setPort(DefaultPreferences.getSecurePort());
