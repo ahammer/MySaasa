@@ -235,7 +235,7 @@ public class MySaasaClient implements MySaasaGateway {
            if (result.isSuccess()) {
                currentSessionSubject.onNext(result.getData());
            }
-        });
+        }, Throwable::printStackTrace);
 
         return subject
                 .subscribeOn(Schedulers.io())

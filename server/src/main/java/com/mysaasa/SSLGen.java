@@ -225,11 +225,21 @@ public class SSLGen {
 			X509Certificate cert = certificate.download();
 			X509Certificate[] chain = certificate.downloadChain();
 
+			X509Certificate[] certs = new X509Certificate[]{};
+			if (chain.length == 2) {
+				certs = new X509Certificate[]{cert, chain[0], chain[1]};
+			} else if (chain.length == 1) {
+				certs = new X509Certificate[]{cert, chain[0]};
+			}
+
 			//Wipe and reload
 			if (mainKeyStore.containsAlias(site)) {
 				mainKeyStore.deleteEntry(site);
 			}
-			mainKeyStore.setKeyEntry(site, domainKeyPair.getPrivate(), getPasswordChars(), chain);
+
+			mainKeyStore.setKeyEntry(site,
+					domainKeyPair.getPrivate(),
+					getPasswordChars(), certs);
 
 			System.out.println("Added cert to keystore: " + site);
 		} catch (AcmeRateLimitExceededException e) {
