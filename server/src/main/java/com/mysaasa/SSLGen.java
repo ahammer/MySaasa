@@ -76,7 +76,7 @@ public class SSLGen {
 	public void doSSLMagic() {
 		if (MySaasaDaemon.isLocalMode())
 			return;
-		//if (1==1) return;
+		if (1==1) return;
 		new Thread(() -> {
 			System.out.println("Updating Certificate Process");
 

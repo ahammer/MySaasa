@@ -171,7 +171,7 @@ public class UserService {
 		final User user2 = em.merge(user);
 		em.flush();
 		em.getTransaction().commit();
-		em.close();
+
 		if (newUser && user2.getContactInfo().getEmail() != null && !user2.getContactInfo().getEmail().trim().equals("")) {
 			try {
 				MailService.get().sendWelcomeEmail(user2.getContactInfo().getEmail(), user2);
@@ -240,7 +240,7 @@ public class UserService {
 		final Query q = em.createQuery("SELECT U FROM User U WHERE UPPER(U.identifier)=:identifier");
 		q.setParameter("identifier", identifier.toUpperCase());
 		final List<User> list = q.getResultList();
-		em.close();
+
 		if (list.size() == 1) {
 			return true;
 		} else if (list.size() > 1) {
@@ -298,14 +298,14 @@ public class UserService {
 		checkNotNull(organization);
 		List<User> results = em.createQuery("SELECT U FROM User U WHERE U.organization=:organization AND" + "((U.enabled!=FALSE or U.enabled IS NULL) AND (U.organization.enabled!=FALSE or U.organization.enabled IS NULL))").setParameter("organization", organization)
 				.getResultList();
-		em.close();
+
 		return results;
 	}
 
 	public List<User> getAllUsers() {
 		List<User> results = em.createQuery("SELECT U FROM User U WHERE " + "(U.enabled!=FALSE or U.enabled IS NULL) AND (U.organization.enabled!=FALSE or U.organization.enabled IS NULL)")
 				.getResultList();
-		em.close();
+
 		return results;
 	}
 
@@ -313,7 +313,7 @@ public class UserService {
 		final Query q = em.createQuery("SELECT U FROM User U WHERE UPPER(U.identifier)=:identifier");
 		q.setParameter("identifier", identifier.toUpperCase());
 		final List<User> list = q.getResultList();
-		em.close();
+
 		if (list.size() == 1) {
 			return list.get(0);
 		} else if (list.size() > 1) {

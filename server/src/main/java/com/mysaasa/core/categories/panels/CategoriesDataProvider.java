@@ -29,7 +29,7 @@ public class CategoriesDataProvider extends SortableDataProvider<Category, Strin
 	public Iterator<? extends Category> iterator(long first, long count) {
 		new ArrayList<User>();
 		final Iterator<? extends Category> result = CategoryService.get().getCategories(SecurityContext.get().getUser().getOrganization(), type).subList((int) first, (int) (first + count)).iterator();
-		em.close();
+
 		return result;
 	}
 

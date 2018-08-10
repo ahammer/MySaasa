@@ -38,7 +38,7 @@ public class WebsiteService {
 			e.printStackTrace();
 			em.getTransaction().rollback();
 		} finally {
-			em.close();
+
 		}
 
 	}
@@ -57,7 +57,7 @@ public class WebsiteService {
 			b.setName(name);
 			b.setContent(new Content());
 			b.getContent().setBody(defaultText);
-			em.close();
+
 			return b;
 
 		}
@@ -65,11 +65,11 @@ public class WebsiteService {
 			result = (ContentBinding) q.getResultList().get(0);
 		} catch (Exception e) {
 			e.printStackTrace();
-			em.close();
+
 			throw e;
 		}
 		result.getContent();
-		em.close();
+
 		return result; //To change body of created methods use File | Settings | File Templates.
 	}
 
@@ -146,7 +146,7 @@ public class WebsiteService {
 			e.printStackTrace();
 			em.getTransaction().rollback();
 		} finally {
-			em.close();
+
 		}
 
 	}
@@ -157,7 +157,7 @@ public class WebsiteService {
 		Query q = em.createQuery("SELECT B FROM ContentBinding B WHERE B.website=:website");
 		q.setParameter("website", w);
 		List<ContentBinding> bindingList = q.getResultList();
-		em.close();
+
 		return bindingList;
 
 	}

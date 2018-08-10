@@ -51,11 +51,11 @@ public class CategoryService {
 		if (list.size() == 0) {
 			Category category = new Category(type.getSimpleName(), o);
 			category.setName(name);
-			em.close();
+
 			return saveCategory(category);
 		}
 		em.detach(list.get(0));//Need to do? Don't do this elsewhere?
-		em.close();
+
 		return list.get(0);
 	}
 
@@ -65,7 +65,7 @@ public class CategoryService {
 		Category tracked = em.merge(blogCategory);
 		em.flush();
 		em.getTransaction().commit();
-		em.close();
+
 		return tracked;
 	}
 

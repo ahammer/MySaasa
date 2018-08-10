@@ -96,7 +96,7 @@ public class BlogService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		em.close();
+
 		return results;
 	}
 
@@ -111,7 +111,7 @@ public class BlogService {
 			return null;
 		
 		List<BlogPost> results = ListUtils.unmodifiableList(em.createQuery("SELECT B FROM BlogPost B WHERE B.id=:id").setParameter("id", id).getResultList());
-		em.close();
+
 		if (results.size() == 0) {
 			throw new IllegalStateException("Could not find this blog post '" + id + "'");
 		}
@@ -128,7 +128,7 @@ public class BlogService {
 
 		for (BlogPost bp : results)
 			bp.getCategories();
-		em.close();
+
 		return results;
 	}
 
@@ -145,7 +145,7 @@ public class BlogService {
 		BlogPost post = BlogService.get().getBlogPostById(post_id);
 		List<BlogComment> results = em.createQuery("SELECT B FROM BlogComment B WHERE B.post=:post AND B.parent is null").setParameter("post", post).getResultList();
 		Collections.reverse(results);
-		em.close();
+
 
 		if (count != 0 && results.size() >= count)
 			return results.subList(0, count);
@@ -157,7 +157,7 @@ public class BlogService {
 		BlogPost post = BlogService.get().getBlogPostById(post_id);
 		List<BlogComment> results = em.createQuery("SELECT B FROM BlogComment B WHERE B.post=:post").setParameter("post", post).getResultList();
 		Collections.reverse(results);
-		em.close();
+
 
 		if (count != 0 && results.size() >= count)
 			return results.subList(0, count);
@@ -176,7 +176,7 @@ public class BlogService {
 		em.remove(tracked);
 		em.flush();
 		em.getTransaction().commit();
-		em.close();
+
 	}
 
 	private void deleteBlogComment(BlogComment comment) {
@@ -190,7 +190,7 @@ public class BlogService {
 		em.remove(tracked);
 		em.flush();
 		em.getTransaction().commit();
-		em.close();
+
 	}
 
 	public BlogPost saveBlogPost(BlogPost blogPost) {
@@ -205,7 +205,7 @@ public class BlogService {
 		BlogPost tracked = em.merge(blogPost);
 		em.flush();
 		em.getTransaction().commit();
-		em.close();
+
 		return tracked;
 	}
 
@@ -216,7 +216,7 @@ public class BlogService {
 		BlogComment tracked = em.merge(blogComment);
 		em.flush();
 		em.getTransaction().commit();
-		em.close();
+
 
 		//This a reply, let's create a Reply message
 		if (blogComment.parent != null) {
@@ -235,7 +235,7 @@ public class BlogService {
 	public BlogComment getBlogCommentById(long id) {
 		
 		List<BlogComment> results = ListUtils.unmodifiableList(em.createQuery("SELECT B FROM BlogComment B WHERE B.id=:id").setParameter("id", id).getResultList());
-		em.close();
+
 		if (results.size() == 0) {
 			throw new IllegalStateException("Could not find this blog comment '" + id + "'");
 		}
@@ -245,7 +245,7 @@ public class BlogService {
 	public List<BlogComment> getBlogComments(BlogComment blogComment) {
 		
 		List<BlogComment> results = ListUtils.unmodifiableList(em.createQuery("SELECT B FROM BlogComment B WHERE B.parent=:parent").setParameter("parent", blogComment).getResultList());
-		em.close();
+
 		return results;
 	}
 
@@ -257,14 +257,14 @@ public class BlogService {
 				.setParameter("org", o)
 				.setParameter("type", BlogPost.class.getSimpleName())
 				.getResultList());
-		em.close();
+
 		return list;
 	}
 
 	public List<BlogPost> getBlogPosts(Organization organization) {
 		
 		List<BlogPost> results = ListUtils.unmodifiableList(em.createQuery("SELECT B FROM BlogPost B WHERE B.organization=:id").setParameter("id", organization).getResultList());
-		em.close();
+
 		return results;
 	}
 
@@ -276,7 +276,7 @@ public class BlogService {
 			em.remove(tracked);
 			em.flush();
 			em.getTransaction().commit();
-			em.close();
+
 		} catch (Exception e) {
 			comment.setContent(null);
 
@@ -289,7 +289,7 @@ public class BlogService {
 
 		
 		List<BlogPost> results = ListUtils.unmodifiableList(em.createQuery("SELECT B FROM BlogPost B WHERE B.author=:id").setParameter("id", u).getResultList());
-		em.close();
+
 		return results;
 	}
 }

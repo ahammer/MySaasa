@@ -34,7 +34,7 @@ public class MySaasaModule extends com.google.inject.AbstractModule {
 		try {
 			reflections = new Reflections("com.mysaasa");
 		} catch (NoClassDefFoundError e) {
-			throw new RuntimeException("Could not run Service Detector, SimpleGuicemoduleImpl", e);
+			throw new RuntimeException("Could not run Service Detector", e);
 		}
 	}
 
@@ -42,29 +42,38 @@ public class MySaasaModule extends com.google.inject.AbstractModule {
 	protected void configure() {
 
 		Set<Class> bound = new HashSet<>();
-		for (Class c : reflections.getTypesAnnotatedWith(SimpleService.class)) {
-			Class abstractParent = findAbstractParent(c);
-			if (bound.contains(c) || bound.contains(abstractParent))
+		//Phase 1 Create Appropriate Services
+		for (Class _class : reflections.getTypesAnnotatedWith(SimpleService.class)) {
+			Class abstractParent = findAbstractParent(_class);
+
+			//If a class is already bound, we can skip this one
+			if (bound.contains(_class) || bound.contains(abstractParent))
 				continue;
+
+			//Deprecated? Not sure why we have this
 			if (abstractParent == Object.class)
-				throw new RuntimeException(abstractParent + "->" + c);
+				throw new RuntimeException(abstractParent + "->" + _class);
+
+			//Look up the service, and bind it in the module
 			try {
-				SimpleService ss = (SimpleService) c.getAnnotations()[0];
-				if (abstractParent != c) {
+				SimpleService service = (SimpleService) _class.getAnnotations()[0];
+				if (abstractParent != _class) {
+					//Always bind by the Abstract parents class name, not the implementation
 					bound.add(abstractParent);
-					bind(abstractParent).toProvider(new ServiceProvider(c.newInstance())).asEagerSingleton();
+					bind(abstractParent).toProvider(new ServiceProvider(_class.newInstance())).asEagerSingleton();
 				} else {
-					bound.add(c);
-					this.bind(c).toProvider(new ServiceProvider(c.newInstance())).asEagerSingleton();
+					bound.add(_class);
+					this.bind(_class).toProvider(new ServiceProvider(_class.newInstance())).asEagerSingleton();
 				}
 			} catch (CreationException e) {
-				throw new RuntimeException("Binding:" + abstractParent + " " + c, e);
+				throw new RuntimeException("Binding:" + abstractParent + " " + _class, e);
 			} catch (InstantiationException e) {
 				throw new RuntimeException("Could not Instantiate a class", e);
 			} catch (IllegalAccessException e) {
 				throw new RuntimeException("Could not Access Class", e);
 			}
 		}
+
 	}
 
 	private Class findAbstractParent(Class c) {
@@ -120,11 +129,7 @@ public class MySaasaModule extends com.google.inject.AbstractModule {
 		return map;
 	}
 
-	public void linkServices() {
-		MySaasa instance = MySaasa.getInstance();
-		Injector injector = instance.getInjector();
-
-
+	public void linkServices(Injector injector) {
 		Set<Class<?>> subTypesOf = reflections.getTypesAnnotatedWith(SimpleService.class);
 
 		for (Class aClass : subTypesOf) {

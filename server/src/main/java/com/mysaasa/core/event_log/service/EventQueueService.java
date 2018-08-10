@@ -42,7 +42,7 @@ public class EventQueueService {
 		Event tracked = em.merge(event);
 		em.flush();
 		em.getTransaction().commit();
-		em.close();
+
 		return tracked;
 	}
 
@@ -94,7 +94,7 @@ public class EventQueueService {
 				.setParameter("user", event.getUser())
 				.setParameter("payload", event.getPayload())
 				.setParameter("method", event.getMethod()).getResultList());
-		em.close();
+
 		return results;
 	}
 

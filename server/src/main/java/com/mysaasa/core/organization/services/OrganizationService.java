@@ -47,7 +47,7 @@ public class OrganizationService {
 		em.persist(tracked);
 		em.flush();
 		em.getTransaction().commit();
-		em.close();
+
 		return tracked;
 	}
 
@@ -63,10 +63,10 @@ public class OrganizationService {
 
 		try {
 			em.createQuery("SELECT O FROM Organization O").getResultList().get(0);
-			em.close();
+
 			return true;
 		} catch (NoResultException e) {
-			em.close();
+
 			return false;
 		}
 
@@ -89,13 +89,13 @@ public class OrganizationService {
 
 	public List<Organization> getAllOrganizations() {
 		List<Organization> list = em.createQuery("SELECT O FROM Organization O WHERE O.enabled IS NULL OR O.enabled=TRUE").getResultList();
-		em.close();
+
 		return list;
 	}
 
 	public Organization getOrganizationById(long organization_id) {
 		Organization o = em.find(Organization.class, organization_id);
-		em.close();
+
 		return o;
 	}
 }

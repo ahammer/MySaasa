@@ -115,7 +115,7 @@ public class SetupJpaForm extends Form {
 					//Should be able to initialize database now
 					EntityManager em = MySaasa.getInstance().getInjector().getProvider(EntityManager.class).get();
 					int size = em.createQuery("SELECT U FROM User U").getResultList().size();
-					em.close();
+
 					if (size > 0) {
 						//  p.put(MySaasa.getInstance().PREF_USER_INITIALIZED, String.valueOf(true));
 						MySaasa.getInstance().saveProperties();

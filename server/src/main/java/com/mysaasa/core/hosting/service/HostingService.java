@@ -70,7 +70,7 @@ public class HostingService {
 			final List<Website> websites = q.getResultList();
 			if (websites.size() >= 1)
 				w = websites.get(0);
-			em.close();
+
 			siteCache.put(host, w);
 			return w;
 		}
@@ -103,7 +103,7 @@ public class HostingService {
 	public List<Website> getWebsites() {
 
 		List<Website> results = em.createQuery("SELECT W FROM Website W").getResultList();
-		//em.close();
+		//
 		return results;
 	}
 
@@ -124,7 +124,7 @@ public class HostingService {
 		em.remove(trackedWebsite);
 		em.flush();
 		em.getTransaction().commit();
-		em.close();
+
 	}
 
 	public Website saveWebsite(Website website) {
@@ -134,7 +134,7 @@ public class HostingService {
 		Website tracked = em.merge(website);
 		em.flush();
 		em.getTransaction().commit();
-		//em.close();
+		//
 		return tracked;
 	}
 
@@ -145,7 +145,7 @@ public class HostingService {
 		Domain tracked = em.merge(domain);
 		em.flush();
 		em.getTransaction().commit();
-		//em.close();
+		//
 		return tracked;
 	}
 
@@ -197,7 +197,7 @@ public class HostingService {
 	public Website findWebsite(String domain) {
 
 		List<Website> results = em.createQuery("SELECT W FROM Website W WHERE LOWER(W.production)=:domain").setParameter("domain", domain.toLowerCase()).getResultList();
-		//em.close();
+		//
 		if (results.size() != 1)
 			return null;
 		return results.get(0);
@@ -221,7 +221,7 @@ public class HostingService {
 	public Domain findDomain(String domain) {
 
 		List<Domain> results = em.createQuery("SELECT D FROM Domain D WHERE D.domain=:domain").setParameter("domain", domain).getResultList();
-		//em.close();
+		//
 		if (results.size() != 1)
 			return null;
 		return results.get(0);
@@ -234,7 +234,7 @@ public class HostingService {
 	public List<Website> getWebsites(Organization organization) {
 
 		List<Website> results = em.createQuery("SELECT W FROM Website W WHERE W.organization=:organization").setParameter("organization", organization).getResultList();
-		//em.close();
+		//
 		return results;
 	}
 

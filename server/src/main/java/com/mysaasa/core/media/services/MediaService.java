@@ -24,7 +24,7 @@ public class MediaService {
 
 	public List getMedia() {
 		List<Media> results = em.createQuery("SELECT M FROM Media M").getResultList();
-		em.close();
+
 		return results;
 	}
 
@@ -33,7 +33,7 @@ public class MediaService {
 		Media tracked = em.merge(m);
 		em.flush();
 		em.getTransaction().commit();
-		em.close();
+
 		return tracked;
 
 	}
@@ -44,7 +44,7 @@ public class MediaService {
 	 */
 	public Media findByUid(String uid) {
 		List<Media> results = em.createQuery("SELECT M FROM Media M WHERE M.uid=:uid").setParameter("uid", uid).getResultList();
-		em.close();
+
 		if (results.size() == 0)
 			return null; //TODO return a dummy media, 404 PNG or something like that
 		return results.get(0);

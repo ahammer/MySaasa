@@ -34,7 +34,7 @@ public class MessagingService {
 		msg = em.merge(msg);
 		em.flush();
 		em.getTransaction().commit();
-		em.close();
+
 		//TODO send a message, which can be used to intercept this in panels that use websocket
 
 		if (initialId == 0 && notify) {
@@ -49,7 +49,7 @@ public class MessagingService {
 		data = em.merge(data);
 		em.flush();
 		em.getTransaction().commit();
-		em.close();
+
 		return data;
 	}
 
@@ -76,7 +76,7 @@ public class MessagingService {
 		q.setMaxResults((int) page_size);
 		q.setFirstResult((int) (page * page_size));
 		List list = q.getResultList();
-		em.close();
+
 		return list;
 	}
 
@@ -86,7 +86,7 @@ public class MessagingService {
 		Query q = em.createQuery("SELECT x FROM Message x WHERE x.timeSent > :lastKnown")
 				.setParameter("lastKnown", lastKnownMessage);
 		List list = q.getResultList();
-		em.close();
+
 		return list;
 	}
 
@@ -106,7 +106,7 @@ public class MessagingService {
 		}
 		em.flush();
 		em.getTransaction().commit();
-		em.close();
+
 
 	}
 
@@ -218,7 +218,7 @@ public class MessagingService {
 				.setParameter("recipient", to)
 				.setParameter("title", s);
 		List<Message> list = q.getResultList();
-		em.close();
+
 		if (list.size() > 0) {
 			return list.get(0);
 		}
@@ -232,14 +232,14 @@ public class MessagingService {
 		Query q = em.createQuery("SELECT x FROM Message x WHERE (x.recipient=:user OR x.sender=:user)");
 		q.setParameter("user", u);
 		List list = q.getResultList();
-		em.close();
+
 		return list;
 	}
 
 	public Message getMessageById(long id) {
 		
 		Message m = em.find(Message.class, id);
-		em.close();
+
 		return m;
 	}
 }

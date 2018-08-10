@@ -5,11 +5,16 @@ import com.google.inject.Injector;
 import com.mysaasa.core.AbstractModule;
 import com.mysaasa.core.ModuleManager;
 import com.mysaasa.core.setup.Setup;
+import com.mysaasa.development.CodeGen;
 import com.mysaasa.injection.MySaasaModule;
 import com.mysaasa.interfaces.IClassPanelAdapter;
+import com.mysaasa.pages.Splash;
+import com.mysaasa.pages.docs.api.ApiGuide;
+import com.mysaasa.pages.docs.template.TemplateGuide;
 import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.protocol.https.HttpsConfig;
 import org.slf4j.Logger;
 
 import java.io.FileOutputStream;
@@ -22,8 +27,9 @@ import java.util.Properties;
 public class MySaasa extends WebApplication {
 	public static boolean IN_MEMORY_DATABASE;
 	protected final Logger logger = org.slf4j.LoggerFactory.getLogger(MySaasa.class);
-	private final Injector injector = Guice.createInjector(simpleGuiceModule = new MySaasaModule());
-	private MySaasaModule simpleGuiceModule;
+	private MySaasaModule guiceModule;
+	private final Injector injector = Guice.createInjector(guiceModule = new MySaasaModule());
+
 	private ModuleManager moduleManager;
 	private boolean initialized = false;
 
@@ -54,7 +60,22 @@ public class MySaasa extends WebApplication {
 	@Override
 	public void init() {
 		super.init();
-		simpleGuiceModule.linkServices();
+		moduleManager = ModuleManager.get();
+		guiceModule.linkServices(injector);
+
+		getMarkupSettings().setStripWicketTags(true);
+		// IMPORTANT!
+		mountPage("/Admin", Splash.class);
+		mountPage("/ApiGuide", ApiGuide.class);
+		mountPage("/TemplateGuide", TemplateGuide.class);
+
+		getRootRequestMapperAsCompound().add(new MysaasaRequestMapper());
+		HttpsConfig config = new HttpsConfig();
+		config.setHttpsPort(DefaultPreferences.getSecurePort());
+
+		CodeGen.generateRetrofitCode();
+		new SSLGen().doSSLMagic();
+		initialized = true;
 	}
 
 	public Injector getInjector() {
