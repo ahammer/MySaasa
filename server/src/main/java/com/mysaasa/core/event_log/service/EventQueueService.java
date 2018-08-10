@@ -3,7 +3,6 @@ package com.mysaasa.core.event_log.service;
 import com.mysaasa.MySaasa;
 import com.mysaasa.core.blog.model.BlogPost;
 import com.mysaasa.core.blog.services.BlogService;
-import com.mysaasa.core.hosting.service.BaseInjectedService;
 import com.mysaasa.interfaces.annotations.SimpleService;
 import com.mysaasa.core.event_log.model.Event;
 import com.mysaasa.core.blog.model.BlogComment;
@@ -20,7 +19,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Created by adam on 2014-10-07.
  */
 @SimpleService
-public class EventQueueService extends BaseInjectedService {
+public class EventQueueService {
 	ArrayBlockingQueue<Event> eventQueue = new ArrayBlockingQueue(10000);
 
 	@Inject

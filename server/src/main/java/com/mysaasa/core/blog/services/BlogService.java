@@ -3,7 +3,6 @@ package com.mysaasa.core.blog.services;
 import com.mysaasa.MySaasa;
 import com.mysaasa.core.blog.model.BlogPost;
 import com.mysaasa.core.categories.model.Category;
-import com.mysaasa.core.hosting.service.BaseInjectedService;
 import com.mysaasa.core.users.model.User;
 import com.mysaasa.interfaces.annotations.SimpleService;
 import com.mysaasa.core.blog.model.BlogComment;
@@ -28,7 +27,7 @@ import static com.mysaasa.MySaasa.getService;
  * service to manage BlogTemplateService SignInData, to keep it all DA consistent in the module.
  */
 @SimpleService
-public class BlogService extends BaseInjectedService {
+public class BlogService {
 	@Inject
 	EntityManager em;
 

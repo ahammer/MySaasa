@@ -2,7 +2,6 @@ package com.mysaasa.core.media.services;
 
 ;
 import com.mysaasa.MySaasa;
-import com.mysaasa.core.hosting.service.BaseInjectedService;
 import com.mysaasa.core.media.model.Media;
 import com.mysaasa.interfaces.annotations.SimpleService;
 
@@ -11,7 +10,7 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 @SimpleService
-public class MediaService extends BaseInjectedService {
+public class MediaService {
 
 	@Inject
 	EntityManager em;

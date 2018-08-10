@@ -2,7 +2,6 @@ package com.mysaasa.core.categories;
 
 import com.mysaasa.MySaasa;
 import com.mysaasa.core.categories.model.Category;
-import com.mysaasa.core.hosting.service.BaseInjectedService;
 import com.mysaasa.interfaces.annotations.SimpleService;
 import com.mysaasa.core.organization.model.Organization;
 import org.apache.commons.collections.ListUtils;
@@ -15,7 +14,7 @@ import java.util.List;
  * Created by adam on 14-11-08.
  */
 @SimpleService
-public class CategoryService extends BaseInjectedService {
+public class CategoryService {
 	@Inject
 	EntityManager em;
 	public static CategoryService get() {

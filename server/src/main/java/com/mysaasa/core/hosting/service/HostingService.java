@@ -1,7 +1,6 @@
 package com.mysaasa.core.hosting.service;
 
 import com.mysaasa.DefaultPreferences;
-import com.mysaasa.MySaasa;
 import com.mysaasa.core.organization.model.Organization;
 import com.mysaasa.core.website.model.ContentBinding;
 import com.mysaasa.core.website.model.Domain;
@@ -26,7 +25,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * This service manages website and hosting data.
  */
 @SimpleService
-public class HostingService extends BaseInjectedService {
+public class HostingService {
 
 	public static final String EDITOR_PREFIX = "edit_";
 

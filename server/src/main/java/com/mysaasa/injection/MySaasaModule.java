@@ -6,7 +6,6 @@ import com.google.inject.Provider;
 import com.google.inject.Provides;
 import com.mysaasa.DefaultPreferences;
 import com.mysaasa.MySaasa;
-import com.mysaasa.core.hosting.service.BaseInjectedService;
 import com.mysaasa.interfaces.annotations.SimpleService;
 import org.reflections.*;
 import org.slf4j.Logger;
@@ -120,15 +119,22 @@ public class MySaasaModule extends com.google.inject.AbstractModule {
 		map.put("javax.persistence.jdbc.password", password);
 		return map;
 	}
+
 	public void linkServices() {
-		Set<Class<? extends BaseInjectedService>> subTypesOf = reflections.getSubTypesOf(BaseInjectedService.class);
+		MySaasa instance = MySaasa.getInstance();
+		Injector injector = instance.getInjector();
+
+
+		Set<Class<?>> subTypesOf = reflections.getTypesAnnotatedWith(SimpleService.class);
 
 		for (Class aClass : subTypesOf) {
-			MySaasa instance = MySaasa.getInstance();
-			Injector injector = instance.getInjector();
 			Provider provider = injector.getProvider(aClass);
-			BaseInjectedService baseInjectedService = (BaseInjectedService) provider.get();
-			baseInjectedService.inject();
+
+			//If Da
+			if (provider != null) {
+				Object target = provider.get();
+				injector.injectMembers(target);
+			}
 		}
 	}
 }

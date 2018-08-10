@@ -2,7 +2,6 @@ package com.mysaasa.core.website.services;
 
 import com.mysaasa.DefaultPreferences;
 import com.mysaasa.MySaasa;
-import com.mysaasa.core.hosting.service.BaseInjectedService;
 import com.mysaasa.core.website.model.Content;
 import com.mysaasa.core.website.model.Website;
 import com.mysaasa.interfaces.annotations.SimpleService;
@@ -23,7 +22,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Created by Adam on 2/26/14.
  */
 @SimpleService
-public class WebsiteService extends BaseInjectedService {
+public class WebsiteService {
 
 	@Inject
 	EntityManager em;

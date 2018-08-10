@@ -4,7 +4,6 @@ import com.mysaasa.api.model.ApiError;
 import com.mysaasa.api.ApiNotAuthorized;
 import com.mysaasa.api.model.ApiResult;
 import com.mysaasa.api.model.ApiSuccess;
-import com.mysaasa.core.hosting.service.BaseInjectedService;
 import com.mysaasa.core.security.services.SessionService;
 import com.mysaasa.core.security.services.session.SecurityContext;
 import com.mysaasa.core.users.model.ContactInfo;
@@ -18,15 +17,13 @@ import org.apache.wicket.Session;
 
 import javax.inject.Inject;
 
-import static com.mysaasa.MySaasa.getService;
-
 /**
  * This service is responsible for basic message stuff
  *
  * Created by Adam on 3/27/2015.
  */
 @SimpleService
-public class MessagingApiService extends BaseInjectedService implements IApiService {
+public class MessagingApiService implements IApiService {
 	@Inject
 	MessagingService messagingService;
 	

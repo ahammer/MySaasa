@@ -4,7 +4,6 @@ import com.google.android.gcm.server.Sender;
 import com.google.gson.Gson;
 import com.mysaasa.DefaultPreferences;
 import com.mysaasa.MySaasa;
-import com.mysaasa.core.hosting.service.BaseInjectedService;
 import com.mysaasa.core.users.model.GcmKey;
 import com.mysaasa.core.users.model.User;
 import com.mysaasa.interfaces.annotations.SimpleService;
@@ -30,7 +29,7 @@ import java.util.*;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 @SimpleService
-public class UserService extends BaseInjectedService {
+public class UserService {
 
 	@Inject
 	EntityManager em;

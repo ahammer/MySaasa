@@ -1,6 +1,5 @@
 package com.mysaasa.core.marketing;
 
-import com.mysaasa.core.hosting.service.BaseInjectedService;
 import com.mysaasa.core.marketing.model.UserReferrals;
 import com.mysaasa.interfaces.annotations.SimpleService;
 
@@ -11,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SimpleService
-public class MarketingService extends BaseInjectedService {
+public class MarketingService {
 
 	@Inject
 	EntityManager em;

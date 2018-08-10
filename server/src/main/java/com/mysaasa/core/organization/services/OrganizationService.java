@@ -1,7 +1,6 @@
 package com.mysaasa.core.organization.services;
 
 import com.mysaasa.MySaasa;
-import com.mysaasa.core.hosting.service.BaseInjectedService;
 import com.mysaasa.core.users.model.User;
 import com.mysaasa.core.users.service.UserService;
 import com.mysaasa.interfaces.annotations.SimpleService;
@@ -18,7 +17,7 @@ import java.util.Map;
 import static com.google.common.base.Preconditions.checkNotNull;/* See the file "LICENSE" for the full license governing this code. */
 
 @SimpleService
-public class OrganizationService extends BaseInjectedService {
+public class OrganizationService {
 
 	@Inject
 	EntityManager em;

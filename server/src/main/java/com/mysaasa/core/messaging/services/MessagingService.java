@@ -1,7 +1,5 @@
 package com.mysaasa.core.messaging.services;
 
-import com.mysaasa.MySaasa;
-import com.mysaasa.core.hosting.service.BaseInjectedService;
 import com.mysaasa.core.messaging.model.MessageReadReceipt;
 import com.mysaasa.core.security.services.session.SecurityContext;
 import com.mysaasa.core.users.messages.MessageCreatedPushMessage;
@@ -22,7 +20,7 @@ import static com.mysaasa.MySaasa.getService;
  * Created by Adam on 3/27/2015.
  */
 @SimpleService
-public class MessagingService extends BaseInjectedService {
+public class MessagingService {
 
 	@Inject
 	EntityManager em;
