@@ -4,6 +4,7 @@ import com.mysaasa.api.model.ApiError;
 import com.mysaasa.api.ApiNotAuthorized;
 import com.mysaasa.api.model.ApiResult;
 import com.mysaasa.api.model.ApiSuccess;
+import com.mysaasa.core.hosting.service.BaseInjectedService;
 import com.mysaasa.core.security.services.SessionService;
 import com.mysaasa.core.security.services.session.SecurityContext;
 import com.mysaasa.core.users.model.ContactInfo;
@@ -15,19 +16,26 @@ import com.mysaasa.interfaces.annotations.SimpleService;
 import com.mysaasa.core.messaging.model.Message;
 import org.apache.wicket.Session;
 
+import javax.inject.Inject;
+
+import static com.mysaasa.MySaasa.getService;
+
 /**
  * This service is responsible for basic message stuff
  *
  * Created by Adam on 3/27/2015.
  */
 @SimpleService
-public class MessagingApiService implements IApiService {
+public class MessagingApiService extends BaseInjectedService implements IApiService {
+	@Inject
+	MessagingService messagingService;
+	
 	@ApiCall
 	public ApiResult getMessageCount() {
 		SecurityContext sc = SessionService.get().getSecurityContext(Session.get());
 		if (sc == null)
 			return new ApiNotAuthorized();
-		return new ApiSuccess(MessagingService.get().getMessageCount());
+		return new ApiSuccess(messagingService.getMessageCount());
 	}
 
 	@ApiCall
@@ -35,13 +43,13 @@ public class MessagingApiService implements IApiService {
 		SecurityContext sc = SessionService.get().getSecurityContext(Session.get());
 		if (sc == null)
 			return new ApiNotAuthorized();
-		return new ApiSuccess(MessagingService.get().getMessages(sc.getUser(), page, page_size, order, direction));
+		return new ApiSuccess(messagingService.getMessages(sc.getUser(), page, page_size, order, direction));
 	}
 
 	@ApiCall
 	public ApiResult getThread(long message_id) {
 		try {
-			return new ApiSuccess(MessagingService.get().getThread(MessagingService.get().findMessage(message_id)));
+			return new ApiSuccess(messagingService.getThread(messagingService.findMessage(message_id)));
 		} catch (Exception e) {
 			return new ApiError(e);
 		}
@@ -60,7 +68,7 @@ public class MessagingApiService implements IApiService {
 			msg.setSenderContactInfo(contactInfo);
 			msg.setTitle(title);
 			msg.setBody(body);
-			return new ApiSuccess(MessagingService.get().saveMessage(msg, true));
+			return new ApiSuccess(messagingService.saveMessage(msg, true));
 		} catch (Exception e) {
 			return new ApiError(e);
 		}
@@ -69,7 +77,7 @@ public class MessagingApiService implements IApiService {
 	@ApiCall
 	public ApiResult replyMessage(long message_id, String message) {
 		try {
-			MessagingService service = MessagingService.get();
+			MessagingService service = messagingService;
 			return new ApiSuccess(service.replyMessage(service.findMessage(message_id), message));
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -80,7 +88,7 @@ public class MessagingApiService implements IApiService {
 	@ApiCall
 	public ApiResult getMessageById(long message_id) {
 		try {
-			return new ApiSuccess<>(MessagingService.get().getMessageById(message_id));
+			return new ApiSuccess<>(messagingService.getMessageById(message_id));
 		} catch (Exception e) {
 			return new ApiError<>(e);
 		}

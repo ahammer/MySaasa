@@ -1,7 +1,6 @@
 package com.mysaasa.core.marketing;
 
-import com.mysaasa.Simple;
-import com.mysaasa.SimpleImpl;
+import com.mysaasa.MySaasa;
 import com.mysaasa.core.hosting.service.HostingService;
 import com.mysaasa.core.marketing.model.UserReferrals;
 import com.mysaasa.core.organization.model.Organization;
@@ -16,6 +15,7 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.mysaasa.MySaasa.getService;
 import static com.mysaasa.MysaasaRequestMapperTest.TEST_DOMAIN;
 import static org.junit.Assert.assertEquals;
 
@@ -32,10 +32,12 @@ public class MarketingServiceTest {
 
 	@Before
 	public void initialize() throws Exception {
-		Simple.IN_MEMORY_DATABASE = true;
-		new WicketTester(new SimpleImpl());
+		MySaasa.IN_MEMORY_DATABASE = true;
+		MySaasa simple;
+		new WicketTester(simple = new MySaasa());
+//		ThreadContext.setApplication(simple);
 
-		HostingService service = HostingService.get();
+		HostingService service = getService(HostingService.class);
 		Website testWebsite = new Website();
 		testWebsite.setProduction("www.test.com");
 		testWebsite.setStaging("www.staging.com");
@@ -72,14 +74,14 @@ public class MarketingServiceTest {
 
 	@Test
 	public void TestNewUserHasTwoReferrals() {
-		MarketingService marketingService = Simple.getInstance().getInjector().getProvider(MarketingService.class).get();
+		MarketingService marketingService = MySaasa.getInstance().getInjector().getProvider(MarketingService.class).get();
 		UserReferrals referrals = marketingService.findReferral(userA.id);
 		assertEquals(referrals.getAvailableReferrals(), 2);
 	}
 
 	@Test
 	public void TestReferralProcess() {
-		MarketingService marketingService = Simple.getInstance().getInjector().getProvider(MarketingService.class).get();
+		MarketingService marketingService = MySaasa.getInstance().getInjector().getProvider(MarketingService.class).get();
 		marketingService.addReferral(userA.id, userB.id);
 		marketingService.addReferral(userA.id, userC.id);
 
@@ -89,7 +91,7 @@ public class MarketingServiceTest {
 
 	@Test(expected = IllegalStateException.class)
 	public void testNoDupReferrals() {
-		MarketingService marketingService = Simple.getInstance().getInjector().getProvider(MarketingService.class).get();
+		MarketingService marketingService = MySaasa.getInstance().getInjector().getProvider(MarketingService.class).get();
 		marketingService.addReferral(userA.id, userB.id);
 		marketingService.addReferral(userA.id, userC.id);
 		marketingService.addReferral(userB.id, userC.id);
@@ -100,7 +102,7 @@ public class MarketingServiceTest {
 
 	@Test
 	public void testReferralPyramid() {
-		MarketingService marketingService = Simple.getInstance().getInjector().getProvider(MarketingService.class).get();
+		MarketingService marketingService = MySaasa.getInstance().getInjector().getProvider(MarketingService.class).get();
 		marketingService.addReferral(userA.id, userB.id);
 		marketingService.addReferral(userA.id, userC.id);
 		marketingService.addReferral(userB.id, userD.id);

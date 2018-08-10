@@ -1,6 +1,6 @@
 package com.mysaasa.core.media.panels;
 
-import com.mysaasa.SimpleImpl;
+import com.mysaasa.MySaasa;
 import com.mysaasa.core.media.model.Media;
 import com.mysaasa.core.media.services.MediaService;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
@@ -14,7 +14,7 @@ public class MediaDataProvider extends SortableDataProvider<Media, String> {
 
 	@Override
 	public Iterator<? extends Media> iterator(long first, long count) {
-		MediaService service = SimpleImpl.getInstance().getInjector().getProvider(MediaService.class).get();
+		MediaService service = MySaasa.getInstance().getInjector().getProvider(MediaService.class).get();
 		List l = service.getMedia();
 		return l.subList((int) first, (int) (first + count)).iterator();
 	}
@@ -26,7 +26,7 @@ public class MediaDataProvider extends SortableDataProvider<Media, String> {
 
 	@Override
 	public long size() {
-		MediaService service = SimpleImpl.getInstance().getInjector().getProvider(MediaService.class).get();
+		MediaService service = MySaasa.getInstance().getInjector().getProvider(MediaService.class).get();
 		List l = service.getMedia();
 		return l.size();
 	}

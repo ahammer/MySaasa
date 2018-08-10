@@ -1,7 +1,7 @@
 package com.mysaasa.pages.docs.api;
 
+import com.mysaasa.MySaasa;
 import com.mysaasa.api.ApiHelperService;
-import com.mysaasa.Simple;
 import com.mysaasa.api.ApiMapping;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
@@ -19,7 +19,7 @@ import java.util.*;
 public class ApiGuide extends WebPage {
 
 	public ApiGuide() {
-		final ApiHelperService service = Simple.getInstance().getInjector().getInstance(ApiHelperService.class);
+		final ApiHelperService service = MySaasa.getInstance().getInjector().getInstance(ApiHelperService.class);
 		ListView repeater;
 		String[] keys = service.getPaths();
 

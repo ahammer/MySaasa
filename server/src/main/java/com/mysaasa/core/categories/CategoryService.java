@@ -1,11 +1,13 @@
 package com.mysaasa.core.categories;
 
+import com.mysaasa.MySaasa;
 import com.mysaasa.core.categories.model.Category;
+import com.mysaasa.core.hosting.service.BaseInjectedService;
 import com.mysaasa.interfaces.annotations.SimpleService;
-import com.mysaasa.Simple;
 import com.mysaasa.core.organization.model.Organization;
 import org.apache.commons.collections.ListUtils;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.util.List;
 
@@ -13,14 +15,12 @@ import java.util.List;
  * Created by adam on 14-11-08.
  */
 @SimpleService
-public class CategoryService {
-	private List list;
-
+public class CategoryService extends BaseInjectedService {
+	@Inject
+	EntityManager em;
 	public static CategoryService get() {
-		return Simple.getInstance().getInjector().getProvider(CategoryService.class).get();
+		return MySaasa.getInstance().getInjector().getProvider(CategoryService.class).get();
 	}
-
-	public CategoryService() {}
 
 	/**
 	 * Finds a Category object by name.
@@ -34,7 +34,7 @@ public class CategoryService {
 			throw new NullPointerException();
 		if (name.trim().equals(""))
 			throw new IllegalArgumentException("Blank Category");
-		EntityManager em = Simple.getEntityManager();
+		
 		List<Category> list;
 		if (o != null) {
 			list = ListUtils.unmodifiableList(em.createQuery("SELECT C FROM Category C WHERE C.name=:name AND C.organization=:org AND C.type=:cattype ORDER BY C.id DESC")
@@ -61,7 +61,7 @@ public class CategoryService {
 	}
 
 	public Category saveCategory(Category blogCategory) {
-		EntityManager em = Simple.getEntityManager();
+		
 		em.getTransaction().begin();
 		Category tracked = em.merge(blogCategory);
 		em.flush();
@@ -71,7 +71,7 @@ public class CategoryService {
 	}
 
 	public List<Category> getCategories(Organization organization, Class type) {
-		EntityManager em = Simple.getEntityManager();
+		
 		if (type != null) {
 			return ListUtils.unmodifiableList(em.createQuery("SELECT C FROM Category C WHERE C.organization=:org AND C.type=:cattype ORDER BY C.type")
 					.setParameter("org", organization)
@@ -86,7 +86,6 @@ public class CategoryService {
 	}
 
 	public void deleteCategory(Category cat) {
-		EntityManager em = Simple.getEntityManager();
 		em.getTransaction().begin();
 		em.remove(em.merge(cat));
 		em.flush();

@@ -11,6 +11,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
+import static com.mysaasa.MySaasa.getService;
+
 /**
  * Created by adam on 14-12-08.
  */
@@ -141,7 +143,7 @@ public class Message implements Serializable {
 	}
 
 	public boolean hasBeenRead(User user) {
-		return MessagingService.get().hasBeenRead(this, user);
+		return getService(MessagingService.class).hasBeenRead(this, user);
 	}
 
 	@Override

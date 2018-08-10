@@ -1,6 +1,6 @@
 package com.mysaasa.core.organization;
 
-import com.mysaasa.SimpleImpl;
+import com.mysaasa.MySaasa;
 import com.mysaasa.core.users.model.User;
 import com.mysaasa.interfaces.AbstractClassPanelAdapter;
 import com.mysaasa.interfaces.IClassPanelAdapter;
@@ -68,7 +68,7 @@ public class OrganizationModule extends AbstractModule {
 	public void onEvent(IEvent event) {
 		if (event.getPayload() instanceof ManageOrganization) {
 			final ManageOrganization mu = (ManageOrganization) event.getPayload();
-			mu.getAjaxRequestTarget().getPage().send(SimpleImpl.getInstance(), Broadcast.BREADTH, new EditContentMessage(new Model(mu.getOrganization()), mu.getAjaxRequestTarget()));
+			mu.getAjaxRequestTarget().getPage().send(MySaasa.getInstance(), Broadcast.BREADTH, new EditContentMessage(new Model(mu.getOrganization()), mu.getAjaxRequestTarget()));
 		}
 	}
 

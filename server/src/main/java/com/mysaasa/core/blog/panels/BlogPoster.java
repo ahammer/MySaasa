@@ -1,6 +1,6 @@
 package com.mysaasa.core.blog.panels;
 
-import com.mysaasa.SimpleImpl;
+import com.mysaasa.MySaasa;
 import com.mysaasa.core.blog.model.BlogPost;
 import com.mysaasa.core.blog.services.BlogService;
 import com.mysaasa.core.categories.CategoryService;
@@ -147,7 +147,7 @@ public class BlogPoster extends Panel {
 			public void onSubmit(final AjaxRequestTarget target, Form form) {
 				BlogService blogDataService = BlogService.get();
 				blogDataService.deleteBlogPost((BlogPost) BlogPosterForm.this.getModelObject());
-				getPage().send(SimpleImpl.getInstance(), Broadcast.BREADTH, new BlogPostModifiedMessage() {
+				getPage().send(MySaasa.getInstance(), Broadcast.BREADTH, new BlogPostModifiedMessage() {
 					@Override
 					public AjaxRequestTarget getAjaxRequestTarget() {
 						return target;

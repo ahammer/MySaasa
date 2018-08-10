@@ -10,6 +10,8 @@ import com.mysaasa.api.model.ApiResult;
 import com.mysaasa.core.messaging.model.Message;
 import com.mysaasa.core.users.model.ContactInfo;
 
+import static com.mysaasa.MySaasa.getService;
+
 /**
  * Created by Adam on 3/27/2015.
  */
@@ -43,7 +45,7 @@ public class MessagingTemplateService implements ITemplateService {
 			msg.setSenderContactInfo(contactInfo);
 			msg.setTitle(title);
 			msg.setBody(body);
-			return new ApiSuccess(MessagingService.get().saveMessage(msg, true));
+			return new ApiSuccess(getService(MessagingService.class).saveMessage(msg, true));
 		} catch (Exception e) {
 			return new ApiError(e);
 		}

@@ -13,6 +13,7 @@ import org.shredzone.acme4j.exception.AcmeRateLimitExceededException;
 import org.shredzone.acme4j.util.CSRBuilder;
 import org.shredzone.acme4j.util.KeyPairUtils;
 
+import javax.inject.Inject;
 import java.io.*;
 import java.net.URL;
 import java.nio.channels.Channels;
@@ -50,6 +51,9 @@ public class SSLGen {
 	static final String INTERMEDIATE_KEY_URL = "https://letsencrypt.org/certs/letsencryptauthorityx3.pem.txt";
 	public static final int CERTIFICATE_LOOK_AHEAD_TIME_MS = 1000 * 60 * 60 * 24 * 14;
 	public static final String LETS_ENCRYPT_URL = "acme://letsencrypt.org/";
+	@Inject
+	HostingService hostingService;
+
 	private KeyPair applicationKeyPair;
 	private Session session;
 	private Registration registration;
@@ -57,7 +61,9 @@ public class SSLGen {
 	public static Map<String, Http01Challenge> activeChallengeMap = new ConcurrentHashMap();
 	private KeyStore mainKeyStore;
 
-	public SSLGen() {}
+	public SSLGen() {
+		MySaasa.getInstance().getInjector().injectMembers(this);
+	}
 
 	/**
 	 * Do the SSL stuff
@@ -165,8 +171,7 @@ public class SSLGen {
 	}
 
 	private List<String> getApplicableDomains() {
-		return HostingService
-				.get()
+		return hostingService
 				.getWebsites()
 				.stream()
 				.filter(website -> {

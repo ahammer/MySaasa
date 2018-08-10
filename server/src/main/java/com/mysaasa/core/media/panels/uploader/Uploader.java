@@ -1,6 +1,6 @@
 package com.mysaasa.core.media.panels.uploader;
 
-import com.mysaasa.SimpleImpl;
+import com.mysaasa.MySaasa;
 import com.mysaasa.core.media.model.Media;
 import com.mysaasa.core.media.services.MediaService;
 import com.mysaasa.core.media.messages.MediaUpdatedMessage;
@@ -54,7 +54,7 @@ public abstract class Uploader extends Panel {
 							error(e.getMessage());
 						}
 					}
-					send(SimpleImpl.getInstance(), Broadcast.BREADTH, new MediaUpdatedMessage() {
+					send(MySaasa.getInstance(), Broadcast.BREADTH, new MediaUpdatedMessage() {
 
 						@Override
 						public AjaxRequestTarget getAjaxRequestTarget() {

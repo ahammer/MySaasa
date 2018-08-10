@@ -16,6 +16,7 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.mysaasa.MySaasa.getService;
 import static org.junit.Assert.*;
 
 /**
@@ -27,12 +28,12 @@ public class MysaasaRequestMapperTest {
 
 	@Before
 	public void initialize() throws Exception {
-		Simple.IN_MEMORY_DATABASE = true;
-		new SimpleImpl();
+		MySaasa.IN_MEMORY_DATABASE = true;
+		new MySaasa();
 		TestService mockApiService = new TestService();
 		ApiHelperService.get().bindApiService(mockApiService);
 
-		HostingService service = HostingService.get();
+		HostingService service = getService(HostingService.class);
 		Website testWebsite = new Website();
 		testWebsite.setProduction("www.test.com");
 		testWebsite.setStaging("www.staging.com");

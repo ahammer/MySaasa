@@ -12,6 +12,8 @@ import org.apache.commons.daemon.DaemonContext;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+import static com.mysaasa.MySaasa.getService;
+
 /**
  * Manages the daemon
  *
@@ -39,7 +41,7 @@ public class MySaasaDaemon implements Daemon {
 
 			serverLauncher.start();
 
-			while (!Simple.getInstance().isInitialized()) {
+			while (!MySaasa.getInstance().isInitialized()) {
 				//Wait for simple to initialize
 				System.out.println("Waiting for init");
 				Thread.sleep(50);
@@ -55,10 +57,10 @@ public class MySaasaDaemon implements Daemon {
 			Website website = new Website();
 			website.setOrganization(u.getOrganization());
 			website.setProduction("localhost");
-			HostingService.get().saveWebsite(website);
+			getService(HostingService.class).saveWebsite(website);
 
 			/*
-			HostingService hostingService = HostingService.get();
+			HostingService hostingService = getService(HostingService.class);
 			OrganizationService orgService = OrganizationService.get();
 			Organization organization = new Organization();
 			organization.setName("test");
@@ -105,7 +107,7 @@ public class MySaasaDaemon implements Daemon {
 		System.out.println("Enabling Test/Localhost Mode");
 		//Use in memory database
 		MySaasaDaemon.LOCAL_MODE = true;
-		Simple.IN_MEMORY_DATABASE = true;
+		MySaasa.IN_MEMORY_DATABASE = true;
 
 		//Add localhost
 		//Add default users

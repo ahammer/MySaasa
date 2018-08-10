@@ -1,6 +1,6 @@
 package com.mysaasa.ui.content;
 
-import com.mysaasa.Simple;
+import com.mysaasa.MySaasa;
 import com.mysaasa.interfaces.IClassPanelAdapter;
 import com.mysaasa.messages.ACTIONS;
 import com.mysaasa.messages.AjaxIntent;
@@ -77,7 +77,7 @@ public class LocalEditorPanel extends PanelContainer {
 			 *
 			 * It'll allow more flexible logic provided by the Module and not by this panel
 			 */
-			IClassPanelAdapter adapter = Simple.getInstance().getClassPanelAdapter(obj.getClass());
+			IClassPanelAdapter adapter = MySaasa.getClassPanelAdapter(obj.getClass());
 			if (adapter.isFullscreen()) {
 				leftStyle = "left:0px;"; //Shove the left over to absolute 0
 			} else {

@@ -1,9 +1,9 @@
 package com.mysaasa.core.website.panels;
 
+import com.mysaasa.MySaasa;
 import com.mysaasa.core.blog.model.BlogPost;
 import com.mysaasa.core.website.model.Website;
 import com.mysaasa.core.website.panels.details.FileDetails;
-import com.mysaasa.SimpleImpl;
 import com.mysaasa.core.blog.messages.BlogPostModifiedMessage;
 import com.mysaasa.core.blog.services.BlogService;
 import com.mysaasa.core.help.panels.HelpPanel;
@@ -40,6 +40,7 @@ import org.apache.wicket.request.Url;
 import java.io.File;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.mysaasa.MySaasa.getService;
 
 public class WebsiteSidebar extends Panel {
 	private static final long serialVersionUID = -9131534556975104206L;
@@ -163,7 +164,7 @@ public class WebsiteSidebar extends Panel {
 					//This is when you click something in the iframe, it updates the FileDetails on the left
 					System.out.println("Path: " + id);
 					Url url = Url.parse(id);
-					Website w = HostingService.get().findWebsite(url);
+					Website w = getService(HostingService.class).findWebsite(url);
 					TemplateFile f = AdminSession.get().getEnv() == AdminSession.Environment.Live ? w.calculateProductionFile(url) : w.calculateStagingFile(url);
 
 					AjaxIntent i = new AjaxIntent(target);
@@ -255,7 +256,7 @@ public class WebsiteSidebar extends Panel {
 			//If this is new, send the broadcast that it was saved/updated.
 			//Normal inline editing is WYSIWYG so no update necessary, but after created a new post we should refresh
 			//so User can create another
-			send(SimpleImpl.getInstance(), Broadcast.BREADTH, new BlogPostModifiedMessage() {
+			send(MySaasa.getInstance(), Broadcast.BREADTH, new BlogPostModifiedMessage() {
 				@Override
 				public AjaxRequestTarget getAjaxRequestTarget() {
 					return target;
@@ -268,7 +269,7 @@ public class WebsiteSidebar extends Panel {
 		BlogService service = BlogService.get();
 		Long _id = Long.parseLong(id.split("_ID_")[1]);
 		service.deleteBlogPost(service.getBlogPostById(_id));
-		send(SimpleImpl.getInstance(), Broadcast.BREADTH, new BlogPostModifiedMessage() {
+		send(MySaasa.getInstance(), Broadcast.BREADTH, new BlogPostModifiedMessage() {
 			@Override
 			public AjaxRequestTarget getAjaxRequestTarget() {
 				return target;
@@ -278,7 +279,7 @@ public class WebsiteSidebar extends Panel {
 
 	private void updateWebsiteContent(String msg, String origin, String id) {
 		WebsiteService websiteDataService = (WebsiteService) WebsiteService.get();
-		HostingService HostingServiceImpl = HostingService.get();
+		HostingService HostingServiceImpl = getService(HostingService.class);
 		Website website = HostingServiceImpl.findWebsite(Url.parse(origin));
 		ContentBinding b = websiteDataService.findBinding(id, website, id);
 		b.getContent().setBody(msg);
@@ -288,12 +289,12 @@ public class WebsiteSidebar extends Panel {
 	private void deleteWebsiteContent(final AjaxRequestTarget target, String msg, String origin, String id) {
 
 		WebsiteService websiteDataService = (WebsiteService) WebsiteService.get();
-		HostingService HostingServiceImpl = HostingService.get();
+		HostingService HostingServiceImpl = getService(HostingService.class);
 		Website website = HostingServiceImpl.findWebsite(Url.parse(origin));
 		ContentBinding b = websiteDataService.findBinding(id, website, id);
 		b.getContent().setBody(msg);
 		websiteDataService.deleteContentBinding(b);
-		send(SimpleImpl.getInstance(), Broadcast.BREADTH, new BlogPostModifiedMessage() {
+		send(MySaasa.getInstance(), Broadcast.BREADTH, new BlogPostModifiedMessage() {
 			@Override
 			public AjaxRequestTarget getAjaxRequestTarget() {
 				return target;

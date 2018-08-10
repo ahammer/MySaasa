@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.mysaasa.MySaasa.getService;
 
 public class WebsiteControls extends Panel {
 	private static final long serialVersionUID = 3834362763645810612L;
@@ -124,7 +125,7 @@ public class WebsiteControls extends Panel {
 		@Override
 		protected void onUpdate(final AjaxRequestTarget target) {
 
-			Website t = HostingService.get().findWebsite(theme);
+			Website t = getService(HostingService.class).findWebsite(theme);
 			AdminSession.get().setTheme(t);
 			if (t == null) {
 				AdminSession.get().setEnv(AdminSession.Environment.Live);

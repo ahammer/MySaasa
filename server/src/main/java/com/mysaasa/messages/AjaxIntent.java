@@ -1,7 +1,7 @@
 package com.mysaasa.messages;
 
+import com.mysaasa.MySaasa;
 import com.mysaasa.messages.data.Bundle;
-import com.mysaasa.Simple;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.event.IEventSource;
@@ -65,7 +65,7 @@ public class AjaxIntent extends AjaxMessage {
 
 	public void send(IEventSource p) {
 		logger.info("Sending a intent: " + action + " Extras: " + extras);
-		p.send(Simple.getInstance(), Broadcast.BREADTH, this);
+		p.send(MySaasa.getInstance(), Broadcast.BREADTH, this);
 	}
 
 	public void send() {

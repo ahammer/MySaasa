@@ -1,8 +1,8 @@
 package com.mysaasa.pages.docs.template;
 
+import com.mysaasa.MySaasa;
 import com.mysaasa.core.website.templating.TemplateHelperService;
 import com.mysaasa.interfaces.ITemplateService;
-import com.mysaasa.Simple;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -18,7 +18,7 @@ import java.util.*;
  */
 public class TemplateGuide extends WebPage {
 	public TemplateGuide() {
-		final TemplateHelperService service = Simple.getInstance().getInjector().getInstance(TemplateHelperService.class);
+		final TemplateHelperService service = MySaasa.getInstance().getInjector().getInstance(TemplateHelperService.class);
 		ListView repeater;
 		Set<String> keys = service.getServiceMap().keySet();
 		final List<String> list = new ArrayList();
@@ -28,7 +28,7 @@ public class TemplateGuide extends WebPage {
 			@Override
 			protected void populateItem(ListItem item) {
 				Class c = service.getServiceMap().get(item.getModelObject());
-				ITemplateService template = (ITemplateService) Simple.getInstance().getInjector().getInstance(c);
+				ITemplateService template = (ITemplateService) MySaasa.getInstance().getInjector().getInstance(c);
 				item.add(new Label("divider", new Model(template.getTemplateInterfaceName())));
 				Method[] methods = c.getDeclaredMethods();
 				List<Method> methodList = Arrays.asList(methods);

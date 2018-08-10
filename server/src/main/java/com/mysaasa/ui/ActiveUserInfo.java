@@ -22,12 +22,14 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
+import static com.mysaasa.MySaasa.getService;
+
 public class ActiveUserInfo extends Panel {
 	private static final long serialVersionUID = -7465076847094036441L;
 	private final AjaxLink signOutLink;
 
 	public String getMessageCount() {
-		long unread = MessagingService.get().getUnreadMessageCount();
+		long unread = getService(MessagingService.class).getUnreadMessageCount();
 		if (unread == 0)
 			return "No new messages";
 		return unread + " Unread";

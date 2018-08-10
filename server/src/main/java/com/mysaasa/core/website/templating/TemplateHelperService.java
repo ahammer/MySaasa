@@ -1,13 +1,12 @@
 package com.mysaasa.core.website.templating;
 
+import com.mysaasa.MySaasa;
 import com.mysaasa.core.website.model.Website;
 import com.mysaasa.interfaces.ITemplateService;
-import com.mysaasa.Simple;
 import com.mysaasa.interfaces.annotations.SimpleService;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Logger;
 
 /**
  * Registers the TemplateHelpers it finds
@@ -39,7 +38,7 @@ public class TemplateHelperService {
 	}
 
 	public static TemplateHelperService get() {
-		return Simple.getInstance().getInjector().getProvider(TemplateHelperService.class).get();
+		return MySaasa.getInstance().getInjector().getProvider(TemplateHelperService.class).get();
 	}
 
 	public static class RequestProperties {

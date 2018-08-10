@@ -1,6 +1,6 @@
 package com.mysaasa.core.users.panels;
 
-import com.mysaasa.SimpleImpl;
+import com.mysaasa.MySaasa;
 import com.mysaasa.core.users.model.User;
 import com.mysaasa.messages.EditContentMessage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -21,7 +21,7 @@ public class Header extends Panel {
 		add(new AjaxLink("newUser") {
 			@Override
 			public void onClick(final AjaxRequestTarget target) {
-				target.getPage().send(SimpleImpl.getInstance(), Broadcast.BREADTH, new EditContentMessage(new Model(new User()), target));
+				target.getPage().send(MySaasa.getInstance(), Broadcast.BREADTH, new EditContentMessage(new Model(new User()), target));
 			}
 		});
 	}

@@ -3,11 +3,11 @@ package com.mysaasa.core;
 import java.util.*;
 
 import com.google.inject.Binding;
+import com.mysaasa.MySaasa;
 import com.mysaasa.api.ApiHelperService;
 import com.mysaasa.core.website.templating.TemplateHelperService;
 import com.mysaasa.interfaces.IClassPanelAdapter;
 import com.mysaasa.interfaces.ITemplateService;
-import com.mysaasa.Simple;
 
 import com.mysaasa.interfaces.IApiService;
 import org.reflections.Reflections;
@@ -110,7 +110,7 @@ public class ModuleManager {
 
 	//TODO use the DI system to calculate what to load
 	private static void loadServices() {
-		Collection<Binding<?>> bindings = Simple.getInstance().getInjector().getBindings().values();
+		Collection<Binding<?>> bindings = MySaasa.getInstance().getInjector().getBindings().values();
 		for (Binding b : bindings) {
 			Object injectedObj = b.getProvider().get();
 			if (injectedObj instanceof IApiService)
@@ -118,7 +118,7 @@ public class ModuleManager {
 			if (injectedObj instanceof ITemplateService)
 				TemplateHelperService.get().bindTemplateService((ITemplateService) injectedObj);
 
-			Simple.getInstance().getInjector().injectMembers(injectedObj);
+			MySaasa.getInstance().getInjector().injectMembers(injectedObj);
 		}
 	}
 

@@ -1,31 +1,37 @@
 package com.mysaasa.injection;
 
 import com.google.inject.CreationException;
+import com.google.inject.Injector;
+import com.google.inject.Provider;
 import com.google.inject.Provides;
+import com.mysaasa.DefaultPreferences;
+import com.mysaasa.MySaasa;
 import com.mysaasa.core.hosting.service.BaseInjectedService;
 import com.mysaasa.interfaces.annotations.SimpleService;
-import com.mysaasa.Simple;
-import com.mysaasa.SimpleImpl;
 import org.reflections.*;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import static com.mysaasa.MySaasa.IN_MEMORY_DATABASE;
 
 /**
  * The Default Injector used to Create Services and Modules and such.
  *
  * Created by adam on 12/24/13.
  */
-public class SimpleGuiceModuleImpl extends AbstractSimpleGuiceModule {
+public class MySaasaModule extends com.google.inject.AbstractModule {
 	private final Reflections reflections;
 	private EntityManagerFactory emf = null;
 
-	public SimpleGuiceModuleImpl() {
+	public MySaasaModule() {
 		try {
 			reflections = new Reflections("com.mysaasa");
 		} catch (NoClassDefFoundError e) {
@@ -68,17 +74,18 @@ public class SimpleGuiceModuleImpl extends AbstractSimpleGuiceModule {
 		return c.getSuperclass();
 	}
 
+	Logger logger = LoggerFactory.getLogger(MySaasa.class);
 	@Provides
 	public Logger providesLogger() {
-		return SimpleImpl.getInstance().getLogger();
+		return logger;
 	}
 
 	@Provides
 	public EntityManager providesEntityManager() {
 		if (emf == null) {
 			try {
-				Map<String, String> properties = Simple.getInstance().getEntityManagerFactoryPropertyMap();
-				emf = Persistence.createEntityManagerFactory("Simple", properties);
+				Map<String, String> properties = getEntityManagerFactoryPropertyMap();
+				emf = Persistence.createEntityManagerFactory("MySaasa", properties);
 			} catch (IllegalStateException e) {
 				emf = null;
 				return null;
@@ -90,9 +97,38 @@ public class SimpleGuiceModuleImpl extends AbstractSimpleGuiceModule {
 		return em;
 	}
 
+	private Map<String, String> getEntityManagerFactoryPropertyMap() {
+		if (DefaultPreferences.getProperties().getProperty(DefaultPreferences.PREF_DB_URL) == null || DefaultPreferences.getProperties().getProperty(DefaultPreferences.PREF_DB_PASS) == null || DefaultPreferences.getProperties().getProperty(DefaultPreferences.PREF_DB_USERNAME) == null || DefaultPreferences.getProperties().getProperty(DefaultPreferences.PREF_DB_DRIVER) == null) {
+			throw new IllegalStateException("Database has not been set up yet");
+		}
+
+		Map<String, String> map = new HashMap<>();
+
+		//Could be reduced with cohesion of arguments
+		String url = DefaultPreferences.getProperties().getProperty(DefaultPreferences.PREF_DB_URL);
+		String driver = DefaultPreferences.getProperties().getProperty(DefaultPreferences.PREF_DB_DRIVER);
+		String username = DefaultPreferences.getProperties().getProperty(DefaultPreferences.PREF_DB_USERNAME);
+		String password = DefaultPreferences.getProperties().getProperty(DefaultPreferences.PREF_DB_PASS);
+
+		if (IN_MEMORY_DATABASE) {
+			url = "jdbc:h2:mem:";
+		}
+
+		map.put("javax.persistence.jdbc.url", url);
+		map.put("javax.persistence.jdbc.driver", driver);
+		map.put("javax.persistence.jdbc.user", username);
+		map.put("javax.persistence.jdbc.password", password);
+		return map;
+	}
 	public void linkServices() {
-		for (Class c : reflections.getSubTypesOf(BaseInjectedService.class)) {
-			((BaseInjectedService) Simple.getInstance().getInjector().getProvider(c).get()).inject();
+		Set<Class<? extends BaseInjectedService>> subTypesOf = reflections.getSubTypesOf(BaseInjectedService.class);
+
+		for (Class aClass : subTypesOf) {
+			MySaasa instance = MySaasa.getInstance();
+			Injector injector = instance.getInjector();
+			Provider provider = injector.getProvider(aClass);
+			BaseInjectedService baseInjectedService = (BaseInjectedService) provider.get();
+			baseInjectedService.inject();
 		}
 	}
 }

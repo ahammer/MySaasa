@@ -2,11 +2,11 @@ package com.mysaasa.core.security.services;
 
 import com.google.inject.Injector;
 import com.mysaasa.DefaultPreferences;
+import com.mysaasa.MySaasa;
 import com.mysaasa.core.security.services.session.SecurityContext;
 import com.mysaasa.core.users.model.User;
 import com.mysaasa.interfaces.annotations.SimpleService;
 import com.mysaasa.messages.AjaxIntent;
-import com.mysaasa.Simple;
 import com.mysaasa.core.hosting.service.HostingService;
 import com.mysaasa.core.security.services.session.AdminSession;
 import com.mysaasa.messages.ACTIONS;
@@ -36,7 +36,7 @@ public class SessionService {
 	private final Map<Session, AdminSession> adminSessionMap = new HashMap<>(); //A Map of Admin Sessions
 
 	public static SessionService get() {
-		Simple s = Simple.getInstance();
+		MySaasa s = MySaasa.getInstance();
 		Injector i = s.getInjector();
 		return i.getProvider((SessionService.class)).get();
 	}

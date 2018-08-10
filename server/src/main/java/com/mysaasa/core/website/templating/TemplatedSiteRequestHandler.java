@@ -27,6 +27,7 @@ import org.eclipse.jetty.util.security.Credential;
 import org.shredzone.acme4j.challenge.Http01Challenge;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.mysaasa.MySaasa.getService;
 
 /**
  * Loads a Template give a Request.
@@ -57,7 +58,7 @@ public class TemplatedSiteRequestHandler implements IRequestHandler {
 	 * @return if the request if valid
 	 */
 	public static boolean IsValidRequest(final Request request) {
-		HostingService service = HostingService.get();
+		HostingService service = getService(HostingService.class);
 		String host = request.getUrl().getHost();
 		String session_part = "";
 
@@ -91,7 +92,7 @@ public class TemplatedSiteRequestHandler implements IRequestHandler {
 		Website selected = (theme != null) ? theme : website;
 
 		if (website.getProduction().equals(host)
-				|| HostingService.get().findDomain(host) != null) {
+				|| getService(HostingService.class).findDomain(host) != null) {
 			File file = new File(selected.calculateWebsiteRootAsString() + filename);
 			boolean exists = file.exists();
 			return exists;
@@ -116,7 +117,7 @@ public class TemplatedSiteRequestHandler implements IRequestHandler {
 			session_part = host.substring(2, second_part);
 		}
 
-		HostingService service = HostingService.get();
+		HostingService service = getService(HostingService.class);
 		encoding = "UTF-8";
 		filename = getRequestedFile(request);
 		website = service.findWebsite(request.getClientUrl());
@@ -247,7 +248,7 @@ public class TemplatedSiteRequestHandler implements IRequestHandler {
 		synchronized (engine) {
 			boolean debugMode = (prefs == null) ? false : prefs.getEditMode();
 			try {
-				TemplateHelperService templateHelperService = SimpleImpl.getInstance().getInjector().getProvider(TemplateHelperService.class).get();
+				TemplateHelperService templateHelperService = MySaasa.getInstance().getInjector().getProvider(TemplateHelperService.class).get();
 				engine.setProperty("resource.loader", "file");
 				engine.setProperty("file.resource.loader.class", "org.apache.velocity.runtime.resource.loader.FileResourceLoader");
 				engine.setProperty("file.resource.loader.cache", "false");
@@ -333,7 +334,7 @@ public class TemplatedSiteRequestHandler implements IRequestHandler {
 		templateHelperService.setRequestProperties(debugMode, website);
 		Map<String, Class> services = templateHelperService.getServiceMap();
 		for (String key : services.keySet()) {
-			context.put(key, SimpleImpl.getInstance().getInjector().getProvider(services.get(key)).get());
+			context.put(key, MySaasa.getInstance().getInjector().getProvider(services.get(key)).get());
 		}
 	}
 

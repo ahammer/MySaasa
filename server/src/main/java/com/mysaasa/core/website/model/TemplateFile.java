@@ -5,6 +5,8 @@ import com.mysaasa.core.hosting.service.HostingService;
 import java.io.File;
 import java.io.IOException;
 
+import static com.mysaasa.MySaasa.getService;
+
 /**
  *
  * Represents a File used by the system.
@@ -19,7 +21,7 @@ public class TemplateFile extends File {
 		if (w == null)
 			throw new NullPointerException("Can't have a null website");
 		if (w == null) {
-			website = HostingService.get().findWebsite(this);
+			website = getService(HostingService.class).findWebsite(this);
 		} else {
 			website = w;
 		}
@@ -28,12 +30,12 @@ public class TemplateFile extends File {
 
 	public TemplateFile(String path) {
 		super(path);
-		website = HostingService.get().findWebsite(this);
+		website = getService(HostingService.class).findWebsite(this);
 	}
 
 	public TemplateFile(File object) {
 		super(object.getAbsolutePath());
-		website = HostingService.get().findWebsite(this);
+		website = getService(HostingService.class).findWebsite(this);
 	}
 
 	public Website getWebsite() {

@@ -1,6 +1,6 @@
 package com.mysaasa.core.organization.panels;
 
-import com.mysaasa.SimpleImpl;
+import com.mysaasa.MySaasa;
 import com.mysaasa.core.organization.messages.ManageOrganization;
 import com.mysaasa.core.organization.model.Organization;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -25,7 +25,7 @@ public class OrganizationAdmin extends Panel {
 
 		@Override
 		public void onRowClick(final AjaxRequestTarget target, Organization o) {
-			target.getPage().send(SimpleImpl.getInstance(), Broadcast.BREADTH, new MyManageOrganization(o, target));
+			target.getPage().send(MySaasa.getInstance(), Broadcast.BREADTH, new MyManageOrganization(o, target));
 		}
 
 		private static class MyManageOrganization extends ManageOrganization {

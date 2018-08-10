@@ -1,9 +1,9 @@
 package com.mysaasa.core.security.services;
 
+import com.mysaasa.MySaasa;
 import com.mysaasa.core.security.services.session.SecurityContext;
 import com.mysaasa.core.users.model.User;
 import com.mysaasa.interfaces.annotations.SimpleService;
-import com.mysaasa.Simple;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +19,7 @@ public class SecurityService {
 	Map<String, SigninNonce> securityMap = new HashMap();
 
 	public static SecurityService get() {
-		return Simple.getInstance().getInjector().getProvider(SecurityService.class).get();
+		return MySaasa.getInstance().getInjector().getProvider(SecurityService.class).get();
 	}
 
 	public String generateNonce(User u) {

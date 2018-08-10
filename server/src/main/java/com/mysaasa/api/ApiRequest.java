@@ -1,6 +1,6 @@
 package com.mysaasa.api;
 
-import com.mysaasa.SimpleImpl;
+import com.mysaasa.MySaasa;
 import com.mysaasa.api.model.ApiError;
 import com.mysaasa.api.model.ApiResult;
 
@@ -41,7 +41,7 @@ public class ApiRequest {
 			//Basically, we have a method, but no object to invoke that method on.
 			//So we say, Hey method, where are you declared? Hey Guice, give me one of those
 			//Now that I have the Object, let's run Method on Object with Parameters.
-			Object obj = SimpleImpl.getInstance().getInjector().getProvider(
+			Object obj = MySaasa.getInstance().getInjector().getProvider(
 					apiMapping.getMethod().getDeclaringClass())
 					.get();
 			return (ApiResult<?>) apiMapping.getMethod().invoke(obj, parameters);

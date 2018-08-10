@@ -1,16 +1,17 @@
 package com.mysaasa.core.event_log.service;
 
+import com.mysaasa.MySaasa;
 import com.mysaasa.core.blog.model.BlogPost;
 import com.mysaasa.core.blog.services.BlogService;
+import com.mysaasa.core.hosting.service.BaseInjectedService;
 import com.mysaasa.interfaces.annotations.SimpleService;
-import com.mysaasa.Simple;
 import com.mysaasa.core.event_log.model.Event;
 import com.mysaasa.core.blog.model.BlogComment;
 import org.apache.commons.collections.ListUtils;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.util.List;
-import java.util.Queue;
 import java.util.concurrent.*;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -19,29 +20,16 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Created by adam on 2014-10-07.
  */
 @SimpleService
-public class EventQueueService {
-	Queue<Event> eventQueue = new ArrayBlockingQueue<Event>(10000);
+public class EventQueueService extends BaseInjectedService {
+	ArrayBlockingQueue<Event> eventQueue = new ArrayBlockingQueue(10000);
+
+	@Inject
+	private EntityManager em;
 
 	static final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
 
-	public EventQueueService() {
-		/*
-		executorService.scheduleAtFixedRate(new TimerTask() {
-		    @Override
-		    public void run() {
-		        while (eventQueue.size() > 0) {
-		            Event event = eventQueue.remove();
-		            if (event != null) {
-		                //consume(event);
-		            }
-		        }
-		    }
-		},0,1, TimeUnit.SECONDS);*/
-
-	}
-
 	public static EventQueueService get() {
-		return Simple.getInstance().getInjector().getProvider(EventQueueService.class).get();
+		return MySaasa.getInstance().getInjector().getProvider(EventQueueService.class).get();
 	}
 
 	public void submitCommand(Event command) {
@@ -51,7 +39,6 @@ public class EventQueueService {
 
 	public Event saveEvent(Event event) {
 		checkNotNull(event);
-		EntityManager em = Simple.getEntityManager();
 		em.getTransaction().begin();
 		Event tracked = em.merge(event);
 		em.flush();
@@ -104,7 +91,6 @@ public class EventQueueService {
 	}
 
 	private List<Event> getPastVoteEvents(Event event) {
-		EntityManager em = Simple.getEntityManager();
 		List<Event> results = ListUtils.unmodifiableList(em.createQuery("SELECT E FROM Event E WHERE E.user=:user AND E.payload=:payload AND E.method=:method")
 				.setParameter("user", event.getUser())
 				.setParameter("payload", event.getPayload())

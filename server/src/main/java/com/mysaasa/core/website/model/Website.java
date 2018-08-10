@@ -5,11 +5,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.persistence.*;
 
 import com.google.gson.annotations.Expose;
 import com.mysaasa.DefaultPreferences;
 ;
+import com.mysaasa.MySaasa;
 import com.mysaasa.core.hosting.service.HostingService;
 import com.mysaasa.core.organization.model.Organization;
 import com.mysaasa.core.security.services.session.AdminSession;
@@ -20,12 +22,17 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.mysaasa.MySaasa.getService;
+import static com.mysaasa.MySaasa.inject;
 
 @Entity
 @Table(name = "Website")
 public class Website implements Serializable {
 	public final static String DIRECT_INTEGRATION_PATH = DefaultPreferences.getConfigPath() + "websites/";
 	private static final long serialVersionUID = 2L;
+
+	@Inject
+	transient private HostingService hostingService;
 
 	@Expose
 	public int id;
@@ -41,7 +48,9 @@ public class Website implements Serializable {
 	@Expose
 	public List<Domain> domains = new ArrayList();
 
-	public Website() {}
+	public Website() {
+		inject(this);
+	}
 
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@ManyToMany(cascade = {CascadeType.DETACH})
@@ -72,6 +81,7 @@ public class Website implements Serializable {
 	public boolean isVisible() {
 		return isVisible;
 	}
+
 
 	@Override
 	public boolean equals(Object o) {
@@ -212,7 +222,7 @@ public class Website implements Serializable {
 		Website w = this;
 		checkNotNull(w);
 		if (w.getId() == 0) {
-			w = HostingService.get().findWebsite(w.getProduction());
+			w = hostingService.findWebsite(w.getProduction());
 		}
 		if (w == null)
 			throw new RuntimeException("Null Website in Website Admin, how does that make sense?");
@@ -258,7 +268,7 @@ public class Website implements Serializable {
 	 * @return return current website
 	 */
 	public static Website getCurrent() {
-		return HostingService.get().findWebsite(RequestCycle.get().getRequest().getClientUrl());
+		return getService(HostingService.class).findWebsite(RequestCycle.get().getRequest().getClientUrl());
 	}
 
 	public TemplateFile calculateProductionFile(Url url) {

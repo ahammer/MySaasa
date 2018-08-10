@@ -3,12 +3,12 @@ package com.mysaasa.core.users.service;
 import com.google.android.gcm.server.Sender;
 import com.google.gson.Gson;
 import com.mysaasa.DefaultPreferences;
+import com.mysaasa.MySaasa;
+import com.mysaasa.core.hosting.service.BaseInjectedService;
 import com.mysaasa.core.users.model.GcmKey;
 import com.mysaasa.core.users.model.User;
 import com.mysaasa.interfaces.annotations.SimpleService;
 import com.mysaasa.messages.SimpleWebSocketPushMessage;
-import com.mysaasa.Simple;
-import com.mysaasa.core.security.services.session.SecurityContext;
 import com.mysaasa.core.messaging.model.Message;
 import com.mysaasa.core.organization.model.Organization;
 import com.mysaasa.core.security.PasswordHash;
@@ -18,6 +18,7 @@ import org.apache.wicket.protocol.ws.api.IWebSocketConnection;
 import org.apache.wicket.protocol.ws.api.registry.IKey;
 import org.apache.wicket.protocol.ws.api.registry.IWebSocketConnectionRegistry;
 
+import javax.inject.Inject;
 import javax.mail.*;
 
 import javax.persistence.EntityManager;
@@ -29,12 +30,15 @@ import java.util.*;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 @SimpleService
-public class UserService {
+public class UserService extends BaseInjectedService {
+
+	@Inject
+	EntityManager em;
 
 	private final Gson gson = new Gson();
 
 	public static UserService get() {
-		return Simple.getInstance().getInjector().getProvider((UserService.class)).get();
+		return MySaasa.getInstance().getInjector().getProvider((UserService.class)).get();
 	}
 
 	public final Map<User, List<UserWebsocketEntry>> WebsocketUserRegistry = new HashMap();
@@ -52,7 +56,7 @@ public class UserService {
 	}
 
 	public Message findMessageById(long id) {
-		return Simple.getEntityManager().find(Message.class, id);
+		return em.find(Message.class, id);
 	}
 
 	private static class UserWebsocketEntry {
@@ -113,7 +117,7 @@ public class UserService {
 		if (u == null)
 			return;
 		List<UserWebsocketEntry> entries = WebsocketUserRegistry.get(u);
-		Application application = Simple.getInstance();
+		Application application = MySaasa.getInstance();
 		WebSocketSettings webSocketSettings = WebSocketSettings.Holder.get(application);
 		IWebSocketConnectionRegistry webSocketConnectionRegistry = webSocketSettings.getConnectionRegistry();
 		if (entries != null)
@@ -160,7 +164,6 @@ public class UserService {
 	 * @return the saved/tracked user
 	 */
 	public User saveUser(final User user) {
-		EntityManager em = Simple.getEntityManager();
 		em.getTransaction().begin();
 		boolean newUser = false;
 		if (user.id == 0 && user.getContactInfo() != null && user.getContactInfo().getEmail() != null) {
@@ -211,7 +214,6 @@ public class UserService {
 	}
 
 	public User findUser(String identifier, String password) throws UserDisabledException {
-		EntityManager em = Simple.getEntityManager();
 		final Query q = em.createQuery("SELECT U FROM User U WHERE UPPER(U.identifier)=:identifier");
 		q.setParameter("identifier", identifier.toUpperCase());
 		@SuppressWarnings("unchecked")
@@ -236,7 +238,6 @@ public class UserService {
 
 	public boolean userExists(String identifier) {
 		checkNotNull(identifier);
-		EntityManager em = Simple.getEntityManager();
 		final Query q = em.createQuery("SELECT U FROM User U WHERE UPPER(U.identifier)=:identifier");
 		q.setParameter("identifier", identifier.toUpperCase());
 		final List<User> list = q.getResultList();
@@ -250,7 +251,6 @@ public class UserService {
 	}
 
 	public User findUserByEmail(String email) {
-		EntityManager em = Simple.getEntityManager();
 		final Query q = em.createQuery("SELECT U FROM User U WHERE U.contactInfo.email=:identifier");
 		q.setParameter("identifier", email);
 		@SuppressWarnings("unchecked")
@@ -279,7 +279,6 @@ public class UserService {
 	}
 
 	public User findUserById(long id) {
-		EntityManager em = Simple.getEntityManager();
 		final Query q = em.createQuery("SELECT U FROM User U WHERE U.id=:id");
 		q.setParameter("id", id);
 		@SuppressWarnings("unchecked")
@@ -291,7 +290,6 @@ public class UserService {
 	}
 
 	public int getUserCount() {
-		EntityManager em = Simple.getEntityManager();
 		Query q = em.createQuery("SELECT count(x) FROM User U WHERE " + "(U.enabled!=FALSE or U.enabled IS NULL) AND (U.organization.enabled!=FALSE or U.organization.enabled IS NULL)");
 		Number result = (Number) q.getSingleResult();
 		return result.intValue();
@@ -299,7 +297,6 @@ public class UserService {
 
 	public List<User> getUsers(Organization organization) {
 		checkNotNull(organization);
-		EntityManager em = Simple.getEntityManager();
 		List<User> results = em.createQuery("SELECT U FROM User U WHERE U.organization=:organization AND" + "((U.enabled!=FALSE or U.enabled IS NULL) AND (U.organization.enabled!=FALSE or U.organization.enabled IS NULL))").setParameter("organization", organization)
 				.getResultList();
 		em.close();
@@ -307,7 +304,6 @@ public class UserService {
 	}
 
 	public List<User> getAllUsers() {
-		EntityManager em = Simple.getEntityManager();
 		List<User> results = em.createQuery("SELECT U FROM User U WHERE " + "(U.enabled!=FALSE or U.enabled IS NULL) AND (U.organization.enabled!=FALSE or U.organization.enabled IS NULL)")
 				.getResultList();
 		em.close();
@@ -315,7 +311,6 @@ public class UserService {
 	}
 
 	public User getUser(String identifier) {
-		EntityManager em = Simple.getEntityManager();
 		final Query q = em.createQuery("SELECT U FROM User U WHERE UPPER(U.identifier)=:identifier");
 		q.setParameter("identifier", identifier.toUpperCase());
 		final List<User> list = q.getResultList();

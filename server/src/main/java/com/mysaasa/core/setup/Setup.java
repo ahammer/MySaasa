@@ -2,7 +2,8 @@ package com.mysaasa.core.setup;
 
 import com.google.common.collect.Lists;
 import com.mysaasa.DefaultPreferences;
-import com.mysaasa.Simple;;
+;
+import com.mysaasa.MySaasa;
 import com.mysaasa.core.blog.model.BlogPost;
 import com.mysaasa.core.blog.services.BlogService;
 import com.mysaasa.core.hosting.service.HostingService;
@@ -34,6 +35,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
+
+import static com.mysaasa.MySaasa.getService;
 
 /**
  * Created by Adam on 3/24/14.
@@ -90,7 +93,7 @@ public class Setup extends WebPage {
 			p.setProperty(DefaultPreferences.PREF_GCM_PROJECT_ID, gcmKey);
 
 			p.setProperty(DefaultPreferences.PREF_KEYSTORE_PASSWORD, keystorePassword);
-			Simple.getInstance().saveProperties();
+			MySaasa.getInstance().saveProperties();
 
 		}
 
@@ -325,7 +328,7 @@ public class Setup extends WebPage {
 				w.setProduction(f2.getName() + "." + state.baseDomain);
 				w.setStaging(f2.getName() + "." + state.baseDomain);
 				w.setVisible(false);
-				HostingService.get().saveWebsite(w);
+				getService(HostingService.class).saveWebsite(w);
 			}
 
 		}

@@ -1,13 +1,13 @@
 package com.mysaasa.core.hosting.service;
 
 import com.mysaasa.DefaultPreferences;
+import com.mysaasa.MySaasa;
 import com.mysaasa.core.organization.model.Organization;
 import com.mysaasa.core.website.model.ContentBinding;
 import com.mysaasa.core.website.model.Domain;
 import com.mysaasa.core.website.model.Website;
 import com.mysaasa.core.website.services.WebsiteService;
 import com.mysaasa.interfaces.annotations.SimpleService;
-import com.mysaasa.Simple;
 import org.apache.wicket.request.Url;
 
 import javax.inject.Inject;
@@ -32,10 +32,6 @@ public class HostingService extends BaseInjectedService {
 
 	@Inject
 	EntityManager em;
-
-	public static HostingService get() {
-		return Simple.getInstance().getInjector().getProvider(HostingService.class).get();
-	}
 
 	public HostingService() {
 		super();
@@ -67,7 +63,7 @@ public class HostingService extends BaseInjectedService {
 
 			if (em == null)
 				return null;
-			Domain domain = HostingService.get().findDomain(host);
+			Domain domain = findDomain(host);
 			Query q = em.createQuery("SELECT W FROM Website W WHERE W.production=:domain OR W.staging=:domain OR :domainObj MEMBER OF W.domains")
 					.setParameter("domain", host)
 					.setParameter("domainObj", domain);
@@ -117,19 +113,19 @@ public class HostingService extends BaseInjectedService {
 	 * @param website the website you want to delete
 	 */
 	public void deleteWebsite(Website website) {
-		EntityManager entityManager = Simple.getEntityManager();
-		final Website trackedWebsite = entityManager.find(Website.class, website.getId());
+
+		final Website trackedWebsite = em.find(Website.class, website.getId());
 		//Delete all blog posts
 
-		entityManager.getTransaction().begin();
+		em.getTransaction().begin();
 		for (ContentBinding b : WebsiteService.get().getBindings(trackedWebsite)) {
 			WebsiteService.get().deleteContentBinding(b);
 		}
 
-		entityManager.remove(trackedWebsite);
-		entityManager.flush();
-		entityManager.getTransaction().commit();
-		entityManager.close();
+		em.remove(trackedWebsite);
+		em.flush();
+		em.getTransaction().commit();
+		em.close();
 	}
 
 	public Website saveWebsite(Website website) {

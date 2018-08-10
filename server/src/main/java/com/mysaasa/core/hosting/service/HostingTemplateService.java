@@ -9,6 +9,7 @@ import com.mysaasa.interfaces.annotations.SimpleService;
 import com.mysaasa.core.organization.model.Organization;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.mysaasa.MySaasa.getService;
 
 /**
  * The templates need to be able to create websites too
@@ -41,7 +42,7 @@ public class HostingTemplateService implements ITemplateService {
 		if (domain.toLowerCase().startsWith("admin."))
 			return false; //Admin is reserved
 
-		Website w = HostingService.get().findWebsite(domain);
+		Website w = getService(HostingService.class).findWebsite(domain);
 		return w == null;
 	}
 
@@ -53,7 +54,7 @@ public class HostingTemplateService implements ITemplateService {
 	 * @return count of websites
 	 */
 	public int getWebsiteCount() {
-		return HostingService.get().getWebsites().size();
+		return getService(HostingService.class).getWebsites().size();
 	}
 
 	/**
@@ -66,7 +67,7 @@ public class HostingTemplateService implements ITemplateService {
 	 */
 	public Website createWebsite(String domain, String password, String contact_email, String product_sku) {
 
-		HostingService hostingService = HostingService.get();
+		HostingService hostingService = getService(HostingService.class);
 		UserService userService = UserService.get();
 		OrganizationService organizationService = OrganizationService.get();
 

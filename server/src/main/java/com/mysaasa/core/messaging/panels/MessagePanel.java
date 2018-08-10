@@ -19,6 +19,7 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.PropertyModel;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.mysaasa.MySaasa.getService;
 
 import java.util.List;
 
@@ -92,7 +93,7 @@ public class MessagePanel extends Panel {
 				modal.setContent(new VerifyAdmin(modal.getContentId()) {
 					@Override
 					protected void grantAccessTemporarily(AjaxRequestTarget target) {
-						MessagingService.get().deleteMessage(model.getObject());
+						getService(MessagingService.class).deleteMessage(model.getObject());
 						MessageHelpers.notifyUpdate(target, model.getObject());
 						modal.close(target);
 					}
@@ -137,7 +138,7 @@ public class MessagePanel extends Panel {
 
 	public List<Message> getThread() {
 		if (thread == null) {
-			thread = MessagingService.get().getThread(model.getObject());
+			thread = getService(MessagingService.class).getThread(model.getObject());
 		}
 		return thread;
 	}

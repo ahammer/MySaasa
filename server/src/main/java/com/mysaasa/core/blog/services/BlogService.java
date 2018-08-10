@@ -1,10 +1,11 @@
 package com.mysaasa.core.blog.services;
 
+import com.mysaasa.MySaasa;
 import com.mysaasa.core.blog.model.BlogPost;
 import com.mysaasa.core.categories.model.Category;
+import com.mysaasa.core.hosting.service.BaseInjectedService;
 import com.mysaasa.core.users.model.User;
 import com.mysaasa.interfaces.annotations.SimpleService;
-import com.mysaasa.Simple;
 import com.mysaasa.core.blog.model.BlogComment;
 import com.mysaasa.core.messaging.services.MessagingService;
 import com.mysaasa.core.organization.model.Organization;
@@ -12,6 +13,7 @@ import com.mysaasa.core.security.services.session.AdminSession;
 import com.mysaasa.core.messaging.model.Message;
 import org.apache.commons.collections.ListUtils;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.ArrayList;
@@ -20,17 +22,20 @@ import java.util.List;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.mysaasa.MySaasa.getService;
 
 /**
  * service to manage BlogTemplateService SignInData, to keep it all DA consistent in the module.
  */
 @SimpleService
-public class BlogService {
+public class BlogService extends BaseInjectedService {
+	@Inject
+	EntityManager em;
 
 	public BlogService() {}
 
 	public static BlogService get() {
-		return Simple.getInstance().getInjector().getProvider(BlogService.class).get();
+		return MySaasa.getInstance().getInjector().getProvider(BlogService.class).get();
 	}
 
 	public List<BlogPost> getBlogPostsByCategory(Organization organization, Category c, String order, String direction) {
@@ -68,7 +73,7 @@ public class BlogService {
 		if (cats.size() == 0)
 			return getBlogPosts(organization, page, page_size, order, direction);
 		List<BlogPost> results = null;
-		EntityManager em = Simple.getEntityManager();
+		
 		String whereClause = "";
 
 		try {
@@ -105,7 +110,7 @@ public class BlogService {
 	public BlogPost getBlogPostById(long id) {
 		if (id == 0)
 			return null;
-		EntityManager em = Simple.getEntityManager();
+		
 		List<BlogPost> results = ListUtils.unmodifiableList(em.createQuery("SELECT B FROM BlogPost B WHERE B.id=:id").setParameter("id", id).getResultList());
 		em.close();
 		if (results.size() == 0) {
@@ -116,7 +121,7 @@ public class BlogService {
 
 	public List<BlogPost> getBlogPosts(Organization organization, int page, int page_size, String order, String direction) {
 		checkNotNull(organization);
-		EntityManager em = Simple.getEntityManager();
+		
 		Query query = em.createQuery("SELECT B FROM BlogPost B WHERE B.organization=:organization ORDER BY " + order + " " + direction).setParameter("organization", organization);
 		query.setFirstResult(page * page_size);
 		query.setMaxResults(page_size);
@@ -137,7 +142,7 @@ public class BlogService {
 	 */
 	public List<BlogComment> getTopLevelBlogComments(long post_id, int count) {
 
-		EntityManager em = Simple.getEntityManager();
+		
 		BlogPost post = BlogService.get().getBlogPostById(post_id);
 		List<BlogComment> results = em.createQuery("SELECT B FROM BlogComment B WHERE B.post=:post AND B.parent is null").setParameter("post", post).getResultList();
 		Collections.reverse(results);
@@ -150,8 +155,6 @@ public class BlogService {
 	}
 
 	public List<BlogComment> getBlogComments(long post_id, int count) {
-
-		EntityManager em = Simple.getEntityManager();
 		BlogPost post = BlogService.get().getBlogPostById(post_id);
 		List<BlogComment> results = em.createQuery("SELECT B FROM BlogComment B WHERE B.post=:post").setParameter("post", post).getResultList();
 		Collections.reverse(results);
@@ -164,7 +167,7 @@ public class BlogService {
 	}
 
 	public void deleteBlogPost(BlogPost blogPost) {
-		EntityManager em = Simple.getEntityManager();
+		
 		em.getTransaction().begin();
 		BlogPost tracked = em.merge(blogPost);
 		for (BlogComment bc : getTopLevelBlogComments(tracked.getId(), 0)) {
@@ -178,7 +181,7 @@ public class BlogService {
 	}
 
 	private void deleteBlogComment(BlogComment comment) {
-		EntityManager em = Simple.getEntityManager();
+		
 		BlogComment tracked = em.merge(comment);
 		em.getTransaction().begin();
 		for (BlogComment bc : getBlogComments(tracked)) {
@@ -198,7 +201,7 @@ public class BlogService {
 			if (blogPost.getAuthor() == null)
 				blogPost.setAuthor(AdminSession.get().getContext().getUser());
 		}
-		EntityManager em = Simple.getEntityManager();
+		
 		em.getTransaction().begin();
 		BlogPost tracked = em.merge(blogPost);
 		em.flush();
@@ -209,7 +212,7 @@ public class BlogService {
 
 	public BlogComment saveBlogComment(BlogComment blogComment) {
 		checkNotNull(blogComment);
-		EntityManager em = Simple.getEntityManager();
+		
 		em.getTransaction().begin();
 		BlogComment tracked = em.merge(blogComment);
 		em.flush();
@@ -224,14 +227,14 @@ public class BlogService {
 			message.setData("{type:\"Reply\",comment_id:\"" + tracked.getId() + "\",blogpost_id:" + blogComment.getPost().getId() + "}");
 			message.setRecipient(blogComment.parent.author);
 			message.setTitle("You have received a reply to your comment");
-			MessagingService.get().saveMessage(message, true);
+			getService(MessagingService.class).saveMessage(message, true);
 		}
 
 		return tracked;
 	}
 
 	public BlogComment getBlogCommentById(long id) {
-		EntityManager em = Simple.getEntityManager();
+		
 		List<BlogComment> results = ListUtils.unmodifiableList(em.createQuery("SELECT B FROM BlogComment B WHERE B.id=:id").setParameter("id", id).getResultList());
 		em.close();
 		if (results.size() == 0) {
@@ -241,7 +244,7 @@ public class BlogService {
 	}
 
 	public List<BlogComment> getBlogComments(BlogComment blogComment) {
-		EntityManager em = Simple.getEntityManager();
+		
 		List<BlogComment> results = ListUtils.unmodifiableList(em.createQuery("SELECT B FROM BlogComment B WHERE B.parent=:parent").setParameter("parent", blogComment).getResultList());
 		em.close();
 		return results;
@@ -249,7 +252,7 @@ public class BlogService {
 
 	public List<Category> getBlogCategories(Organization o) {
 
-		EntityManager em = Simple.getEntityManager();
+		
 		List<Category> list;
 		list = ListUtils.unmodifiableList(em.createQuery("SELECT C FROM Category C WHERE  C.organization=:org AND C.type=:type ORDER BY C.id DESC")
 				.setParameter("org", o)
@@ -260,7 +263,7 @@ public class BlogService {
 	}
 
 	public List<BlogPost> getBlogPosts(Organization organization) {
-		EntityManager em = Simple.getEntityManager();
+		
 		List<BlogPost> results = ListUtils.unmodifiableList(em.createQuery("SELECT B FROM BlogPost B WHERE B.organization=:id").setParameter("id", organization).getResultList());
 		em.close();
 		return results;
@@ -268,7 +271,7 @@ public class BlogService {
 
 	public void deleteComment(BlogComment comment) {
 		try {
-			EntityManager em = Simple.getEntityManager();
+			
 			em.getTransaction().begin();
 			BlogComment tracked = em.merge(comment);
 			em.remove(tracked);
@@ -285,7 +288,7 @@ public class BlogService {
 
 	public List<BlogPost> getBlogPosts(User u) {
 
-		EntityManager em = Simple.getEntityManager();
+		
 		List<BlogPost> results = ListUtils.unmodifiableList(em.createQuery("SELECT B FROM BlogPost B WHERE B.author=:id").setParameter("id", u).getResultList());
 		em.close();
 		return results;

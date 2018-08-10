@@ -1,8 +1,8 @@
 package com.mysaasa.core.setup;
 
 import com.mysaasa.DefaultPreferences;
+import com.mysaasa.MySaasa;
 import com.mysaasa.messages.SetupMessage;
-import com.mysaasa.Simple;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.event.Broadcast;
@@ -33,7 +33,7 @@ public class SetupJpaForm extends Form {
 	@Override
 	protected void onConfigure() {
 		super.onConfigure();
-		//ready.setVisible(Boolean.valueOf(Simple.getInstance().getProperties().getProperty(Simple.getInstance().PREF_JPA_INITIALIZED, "false")));
+		//ready.setVisible(Boolean.valueOf(MySaasa.getInstance().getProperties().getProperty(MySaasa.getInstance().PREF_JPA_INITIALIZED, "false")));
 	}
 
 	public static class SetupJpaFormData implements Serializable {
@@ -110,15 +110,15 @@ public class SetupJpaForm extends Form {
 					p.put(DefaultPreferences.PREF_DB_USERNAME, data.getName());
 					p.put(DefaultPreferences.PREF_DB_PASS, data.getPassword());
 					p.put(DefaultPreferences.PREF_DB_URL, data.getUrl());
-					//p.put(Simple.getInstance().PREF_JPA_INITIALIZED, "true");
-					Simple.getInstance().saveProperties();
+					//p.put(MySaasa.getInstance().PREF_JPA_INITIALIZED, "true");
+					MySaasa.getInstance().saveProperties();
 					//Should be able to initialize database now
-					EntityManager em = Simple.getEntityManager();
+					EntityManager em = MySaasa.getInstance().getInjector().getProvider(EntityManager.class).get();
 					int size = em.createQuery("SELECT U FROM User U").getResultList().size();
 					em.close();
 					if (size > 0) {
-						//  p.put(Simple.getInstance().PREF_USER_INITIALIZED, String.valueOf(true));
-						Simple.getInstance().saveProperties();
+						//  p.put(MySaasa.getInstance().PREF_USER_INITIALIZED, String.valueOf(true));
+						MySaasa.getInstance().saveProperties();
 					}
 
 					info("Success");

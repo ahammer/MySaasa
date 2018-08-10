@@ -1,32 +1,35 @@
 package com.mysaasa.core.media.services;
 
-import com.mysaasa.Simple;;
+;
+import com.mysaasa.MySaasa;
+import com.mysaasa.core.hosting.service.BaseInjectedService;
 import com.mysaasa.core.media.model.Media;
 import com.mysaasa.interfaces.annotations.SimpleService;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.util.List;
 
 @SimpleService
-public class MediaService {
+public class MediaService extends BaseInjectedService {
 
+	@Inject
+	EntityManager em;
 	public MediaService() {
 		super();
 	}
 
 	public static MediaService get() {
-		return Simple.getInstance().getInjector().getProvider(MediaService.class).get();
+		return MySaasa.getInstance().getInjector().getProvider(MediaService.class).get();
 	}
 
 	public List getMedia() {
-		EntityManager em = Simple.getEntityManager();
 		List<Media> results = em.createQuery("SELECT M FROM Media M").getResultList();
 		em.close();
 		return results;
 	}
 
 	public Media saveMedia(Media m) {
-		EntityManager em = Simple.getEntityManager();
 		em.getTransaction().begin();
 		Media tracked = em.merge(m);
 		em.flush();
@@ -41,7 +44,6 @@ public class MediaService {
 	 * @return Media that matches this UID
 	 */
 	public Media findByUid(String uid) {
-		EntityManager em = Simple.getEntityManager();
 		List<Media> results = em.createQuery("SELECT M FROM Media M WHERE M.uid=:uid").setParameter("uid", uid).getResultList();
 		em.close();
 		if (results.size() == 0)

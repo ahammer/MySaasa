@@ -1,8 +1,8 @@
 package com.mysaasa.messages;
 
+import com.mysaasa.MySaasa;
 import com.mysaasa.core.website.WebsiteModule;
 import com.mysaasa.core.website.model.Website;
-import com.mysaasa.Simple;
 import com.mysaasa.core.AbstractModule;
 import com.mysaasa.core.website.model.TemplateFile;
 import org.apache.wicket.Page;
@@ -32,18 +32,18 @@ public class MessageHelpers {
 		checkNotNull(defaultModel);
 		checkNotNull(defaultModel.getObject());
 		System.out.println("Editing Event Message for " + defaultModel.getObject().toString());
-		target.getPage().send(Simple.getInstance(), Broadcast.BREADTH, new EditContentMessage(defaultModel, target));
+		target.getPage().send(MySaasa.getInstance(), Broadcast.BREADTH, new EditContentMessage(defaultModel, target));
 	}
 
 	public static void editEventMessage(Page page, IModel<?> defaultModel) {
 		checkNotNull(defaultModel);
 		checkNotNull(defaultModel.getObject());
 		System.out.println("Editing Event Message for " + defaultModel.getObject().toString());
-		page.send(Simple.getInstance(), Broadcast.BREADTH, new EditContentMessage(defaultModel, page));
+		page.send(MySaasa.getInstance(), Broadcast.BREADTH, new EditContentMessage(defaultModel, page));
 	}
 
 	public static void notifyUpdate(AjaxRequestTarget target, Object obj) {
-		target.getPage().send(Simple.getInstance(), Broadcast.BREADTH, new DataUpdateEvent(target, obj));
+		target.getPage().send(MySaasa.getInstance(), Broadcast.BREADTH, new DataUpdateEvent(target, obj));
 	}
 
 	/**
@@ -79,7 +79,7 @@ public class MessageHelpers {
 	public static void broadcastPushEvent(Page p, WebSocketRequestHandler handler, IWebSocketPushMessage message) {
 		checkNotNull(handler);
 		checkNotNull(message);
-		p.send(Simple.getInstance(), Broadcast.BREADTH, new WebsocketEvent(handler, message));
+		p.send(MySaasa.getInstance(), Broadcast.BREADTH, new WebsocketEvent(handler, message));
 
 	}
 

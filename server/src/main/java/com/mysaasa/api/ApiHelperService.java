@@ -1,6 +1,6 @@
 package com.mysaasa.api;
 
-import com.mysaasa.Simple;
+import com.mysaasa.MySaasa;
 import com.mysaasa.interfaces.annotations.ApiCall;
 import com.mysaasa.interfaces.IApiService;
 import com.mysaasa.interfaces.annotations.SimpleService;
@@ -39,7 +39,7 @@ public class ApiHelperService {
 	public ApiHelperService() {}
 
 	public static ApiHelperService get() {
-		return Simple.getInstance().getInjector().getProvider(ApiHelperService.class).get();
+		return MySaasa.getInstance().getInjector().getProvider(ApiHelperService.class).get();
 	}
 
 	public ApiMapping getMapping(String path) {

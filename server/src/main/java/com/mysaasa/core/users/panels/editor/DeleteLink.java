@@ -1,6 +1,6 @@
 package com.mysaasa.core.users.panels.editor;
 
-import com.mysaasa.SimpleImpl;
+import com.mysaasa.MySaasa;
 import com.mysaasa.core.users.panels.VerifyAdmin;
 import com.mysaasa.core.users.service.UserService;
 import com.mysaasa.messages.MessageHelpers;
@@ -13,12 +13,18 @@ import com.mysaasa.core.users.messages.UserDataChanged.UserDeleted;
 import com.mysaasa.core.users.model.User;
 import org.apache.wicket.model.Model;
 
+import javax.inject.Inject;
+
 final class DeleteLink extends AjaxLink {
 	private final UserEditor userEditor;
 	private static final long serialVersionUID = 1L;
 
+	@Inject
+	UserService userService;
+
 	DeleteLink(UserEditor userEditor) {
 		super("deleteLink");
+		MySaasa.inject(this);
 		this.userEditor = userEditor;
 	}
 
@@ -33,8 +39,8 @@ final class DeleteLink extends AjaxLink {
 					final Object modObj = userEditor.getDefaultModelObject();
 					if (modObj instanceof UserFormData) {
 						final User u = ((UserFormData) modObj).getUser();
-						UserService service = SimpleImpl.getInstance().getInjector().getProvider(UserService.class).get();
-						service.disableUser(u);
+
+						userService.disableUser(u);
 
 						send(getPage(), Broadcast.BREADTH, new UserDeleted(u) {
 							@Override

@@ -12,6 +12,8 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
+import static com.mysaasa.MySaasa.getService;
+
 /**
  * Created by Adam on 3/23/2015.
  */
@@ -48,7 +50,7 @@ public class MessageView extends Panel {
 		add(new AjaxEventBehavior("click") {
 			@Override
 			protected void onEvent(AjaxRequestTarget target) {
-				MessagingService.get().markAsRead(m, SecurityContext.get().getUser());
+				getService(MessagingService.class).markAsRead(m, SecurityContext.get().getUser());
 				target.add(MessageView.this);
 			}
 		});

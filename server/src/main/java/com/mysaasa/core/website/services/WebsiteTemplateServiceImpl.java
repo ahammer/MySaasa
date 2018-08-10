@@ -1,7 +1,7 @@
 package com.mysaasa.core.website.services;
 
 import com.mysaasa.DefaultPreferences;
-import com.mysaasa.SimpleImpl;
+import com.mysaasa.MySaasa;
 import com.mysaasa.core.website.model.Website;
 import com.mysaasa.core.website.templating.TemplateHelperService;
 import com.mysaasa.interfaces.annotations.SimpleService;
@@ -23,8 +23,8 @@ public class WebsiteTemplateServiceImpl extends WebsiteTemplateService {
 	//  @Returns the String Content RunContext, hiding behind the Content Binding.
 	@Override
 	public String bind(String name, String defaultValue) {
-		WebsiteService service = SimpleImpl.getInstance().getInjector().getProvider(WebsiteService.class).get();
-		TemplateHelperService templateHelperService = SimpleImpl.getInstance().getInjector().getProvider(TemplateHelperService.class).get();
+		WebsiteService service = MySaasa.getInstance().getInjector().getProvider(WebsiteService.class).get();
+		TemplateHelperService templateHelperService = MySaasa.getInstance().getInjector().getProvider(TemplateHelperService.class).get();
 		TemplateHelperService.RequestProperties rp = templateHelperService.getRequestProperties();
 		Website website = rp.website;
 		boolean debugMode = rp.debugMode;

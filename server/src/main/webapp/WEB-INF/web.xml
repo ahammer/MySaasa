@@ -21,7 +21,7 @@
         <filter-class>org.apache.wicket.protocol.ws.javax.JavaxWebSocketFilter</filter-class>
         <init-param>
             <param-name>applicationClassName</param-name>
-            <param-value>com.mysaasa.SimpleImpl</param-value>
+            <param-value>com.mysaasa.MySaasa</param-value>
         </init-param>
     </filter>
 

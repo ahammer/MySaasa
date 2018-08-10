@@ -1,7 +1,6 @@
 package com.mysaasa.api;
 
-import com.mysaasa.Simple;
-import com.mysaasa.SimpleImpl;
+import com.mysaasa.MySaasa;
 import com.mysaasa.api.model.ApiError;
 import com.mysaasa.api.model.ApiResult;
 import com.mysaasa.test.mocks.TestService;
@@ -19,12 +18,12 @@ import static org.junit.Assert.assertTrue;
 
 public class ApiHelperServiceTest {
 
-	private Simple simple;
+	private MySaasa simple;
 	private ApiHelperService service;
 
 	@Before
 	public void setup() throws Exception {
-		simple = new SimpleImpl();
+		simple = new MySaasa();
 		service = new ApiHelperService();
 		TestService mockApiService = new TestService();
 		service.bindApiService(mockApiService);

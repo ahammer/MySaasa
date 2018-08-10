@@ -1,12 +1,12 @@
 package com.mysaasa.core.setup;
 
 import com.mysaasa.DefaultPreferences;
+import com.mysaasa.MySaasa;
 import com.mysaasa.core.organization.model.Organization;
 import com.mysaasa.core.organization.services.OrganizationService;
 import com.mysaasa.core.users.model.User;
 import com.mysaasa.core.users.service.UserService;
 import com.mysaasa.messages.SetupMessage;
-import com.mysaasa.Simple;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.event.Broadcast;
@@ -97,8 +97,8 @@ public class SetupUserForm extends Form {
 			u.setOrganization(o);
 			UserService.get().saveUser(u);
 			DefaultPreferences.getProperties().setProperty("baseDomain", baseDomain.getValue());
-			//                Simple.getInstance().getProperties().setProperty(Simple.getInstance().PREF_USER_INITIALIZED, "true");
-			Simple.getInstance().saveProperties();
+			//                MySaasa.getInstance().getProperties().setProperty(MySaasa.getInstance().PREF_USER_INITIALIZED, "true");
+			MySaasa.getInstance().saveProperties();
 			info("Creating user");
 			send(getPage(), Broadcast.BREADTH, new SetupMessage() {
 				@Override
@@ -114,7 +114,7 @@ public class SetupUserForm extends Form {
 		super.onConfigure();
 		ready.setVisible(false);
 		/*
-		if (Boolean.valueOf(Simple.getInstance().getProperties().getProperty(Simple.getInstance().PREF_USER_INITIALIZED, "false"))) {
+		if (Boolean.valueOf(MySaasa.getInstance().getProperties().getProperty(MySaasa.getInstance().PREF_USER_INITIALIZED, "false"))) {
 		    ready.setVisible(true);
 		    email.setVisible(false);
 		    pass.setVisible(false);

@@ -5,15 +5,9 @@ import org.apache.wicket.request.IRequestCycle;
 import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.http.WebResponse;
-import org.apache.wicket.util.file.Files;
-import org.eclipse.jetty.util.security.Credential;
-import sun.nio.ch.IOUtil;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.logging.Logger;
 
 public class BakedInFileRequestHandler implements IRequestHandler {
@@ -24,7 +18,7 @@ public class BakedInFileRequestHandler implements IRequestHandler {
 		File tempFile;
 		String path = request.getUrl().getPath();
 		String resourcePath = path;
-		stream = Simple.class.getClassLoader().getResourceAsStream(resourcePath);
+		stream = MySaasa.class.getClassLoader().getResourceAsStream(resourcePath);
 	}
 
 	public static boolean isValidRequest(Request request) {
@@ -36,7 +30,7 @@ public class BakedInFileRequestHandler implements IRequestHandler {
 		File file = null;
 		try {
 			String resourcePath = path;
-			InputStream stream = Simple.class.getClassLoader().getResourceAsStream(resourcePath);
+			InputStream stream = MySaasa.class.getClassLoader().getResourceAsStream(resourcePath);
 
 			if (stream != null) {
 				stream.close();

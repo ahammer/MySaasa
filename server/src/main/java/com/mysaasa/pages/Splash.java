@@ -1,6 +1,7 @@
 package com.mysaasa.pages;
 
 import com.mysaasa.DefaultPreferences;
+import com.mysaasa.MySaasa;
 import com.mysaasa.core.help.panels.HelpPanel;
 import com.mysaasa.core.hosting.service.HostingService;
 import com.mysaasa.core.security.services.SecurityService;
@@ -19,8 +20,11 @@ import org.apache.wicket.protocol.https.RequireHttps;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.flow.RedirectToUrlException;
 
+import javax.inject.Inject;
 import java.io.Serializable;
 import java.util.List;
+
+import static com.mysaasa.MySaasa.inject;
 
 @RequireHttps
 public class Splash extends WebPage {
@@ -28,8 +32,11 @@ public class Splash extends WebPage {
 	private static final long serialVersionUID = 1871036094132003002L;
 	private final SelectSiteForm siteSelectForm;
 
-	public Splash() {
+	@Inject
+	HostingService hostingService;
 
+	public Splash() {
+		inject(this);
 		add(signInForm = new SigninForm());
 		add(siteSelectForm = new SelectSiteForm());
 		add(new HelpPanel("help", HelpPanel.Sections.SplashSignin));
@@ -59,6 +66,8 @@ public class Splash extends WebPage {
 	}
 
 	public static class SelectSiteForm<T> extends Form<T> {
+		@Inject
+		HostingService hostingService;
 
 		private final DropDownChoice sites;
 		private final Data data = new Data();
@@ -69,9 +78,10 @@ public class Splash extends WebPage {
 
 		public SelectSiteForm() {
 			super("ChooseSite");
+			inject(this);
 			String host = RequestCycle.get().getRequest().getClientUrl().getHost();
-			List<Website> websites = HostingService.get().getWebsites();
-			Website currentWebsite = HostingService.get().findWebsite(host);
+			List<Website> websites = hostingService.getWebsites();
+			Website currentWebsite = hostingService.findWebsite(host);
 
 			if (currentWebsite != null) {
 				data.selected = currentWebsite;

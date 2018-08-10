@@ -14,6 +14,8 @@ import org.apache.wicket.model.IModel;
 
 import java.io.Serializable;
 
+import static com.mysaasa.MySaasa.getService;
+
 /**
  * Reply in a thread, should always use the ThreadRoot as the Model, because Messages are linear, not trees.
  * Created by Adam on 3/21/2015.
@@ -60,7 +62,7 @@ public abstract class MessageReplyPanel extends Panel {
 					super.onSubmit(target, form);
 
 					Message m = (Message) MessageReplyPanel.this.getDefaultModelObject();
-					MessagingService.get().replyMessage(m, model.getObject().response);
+					getService(MessagingService.class).replyMessage(m, model.getObject().response);
 					model.getObject().response = "";
 
 					target.add(MessageReplyForm.this);

@@ -11,6 +11,8 @@ import com.mysaasa.core.website.model.Website;
 
 import java.util.List;
 
+import static com.mysaasa.MySaasa.getService;
+
 final class SubmitLink extends AjaxSubmitLink {
 	/**
 	 *
@@ -33,9 +35,10 @@ final class SubmitLink extends AjaxSubmitLink {
 		final Object modObj = form.getModelObject();
 		if (modObj instanceof Website) {
 			final Website w = ((Website) modObj);
-			List<Domain> domains = HostingService.get().createDomains(hostingManagement.getForm().domains);
+			HostingService service = getService(HostingService.class);
+			List<Domain> domains = service.createDomains(hostingManagement.getForm().domains);
 			w.setDomains(domains);
-			Website w2 = HostingService.get().saveWebsite(w);
+			Website w2 = service.saveWebsite(w);
 			new WebsiteCreated(w, target).send();
 			info("Success");
 

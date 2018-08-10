@@ -1,37 +1,37 @@
 package com.mysaasa.core.messaging.services;
 
+import com.mysaasa.MySaasa;
+import com.mysaasa.core.hosting.service.BaseInjectedService;
 import com.mysaasa.core.messaging.model.MessageReadReceipt;
 import com.mysaasa.core.security.services.session.SecurityContext;
 import com.mysaasa.core.users.messages.MessageCreatedPushMessage;
 import com.mysaasa.core.users.model.User;
 import com.mysaasa.core.users.service.UserService;
 import com.mysaasa.interfaces.annotations.SimpleService;
-import com.mysaasa.Simple;
 import com.mysaasa.core.messaging.model.Message;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.*;
 
 import static com.google.gson.internal.$Gson$Preconditions.checkNotNull;
+import static com.mysaasa.MySaasa.getService;
 
 /**
  * Created by Adam on 3/27/2015.
  */
 @SimpleService
-public class MessagingService {
+public class MessagingService extends BaseInjectedService {
 
-	public static final String SUPPORT_THREAD = "Support Thread";
+	@Inject
+	EntityManager em;
 
-	public static MessagingService get() {
-		return Simple.getInstance().getInjector().getProvider(MessagingService.class).get();
-	}
+	private static final String SUPPORT_THREAD = "Support Thread";
+
 
 	public Message saveMessage(Message msg, boolean notify) {
-		System.out.println("Saving Message: " + msg.toString());
-
 		long initialId = msg.getId();
-		EntityManager em = Simple.getEntityManager();
 		em.getTransaction().begin();
 		msg = em.merge(msg);
 		em.flush();
@@ -47,7 +47,6 @@ public class MessagingService {
 	}
 
 	public MessageReadReceipt saveMetadata(MessageReadReceipt data) {
-		EntityManager em = Simple.getEntityManager();
 		em.getTransaction().begin();
 		data = em.merge(data);
 		em.flush();
@@ -58,7 +57,6 @@ public class MessagingService {
 
 	public long getMessageCount() {
 		User u = SecurityContext.get().getUser();
-		EntityManager em = Simple.getEntityManager();
 		Query q = em.createQuery("SELECT count(x) FROM Message x WHERE (x.recipient=:user OR x.sender=:user) AND x.messageThreadRoot is null").setParameter("user", u);
 		Number result = (Number) q.getSingleResult();
 		return result.intValue();
@@ -66,14 +64,13 @@ public class MessagingService {
 
 	public long getUnreadMessageCount() {
 		User u = SecurityContext.get().getUser();
-		EntityManager em = Simple.getEntityManager();
 		Query q = em.createQuery("SELECT count(x) FROM MessageReadReceipt x WHERE (x.user=:user) AND x.message.messageThreadRoot is null").setParameter("user", u);
 		Number result = (Number) q.getSingleResult();
 		return getMessageCount() - result.intValue();
 	}
 
 	public List<Message> getMessages(User u, long page, long page_size, String order, String direction) {
-		EntityManager em = Simple.getEntityManager();
+		
 		u = em.find(User.class, u.id);
 		Query q = em.createQuery("SELECT x FROM Message x WHERE (x.recipient=:user OR x.sender=:user)  AND x.messageThreadRoot is null ORDER BY _order _direction"
 				.replace("_order", order)
@@ -86,7 +83,7 @@ public class MessagingService {
 	}
 
 	public List getNewMessages(User u, Date lastKnownMessage) {
-		EntityManager em = Simple.getEntityManager();
+		
 		u = em.find(User.class, u.id);
 		Query q = em.createQuery("SELECT x FROM Message x WHERE x.timeSent > :lastKnown")
 				.setParameter("lastKnown", lastKnownMessage);
@@ -96,7 +93,7 @@ public class MessagingService {
 	}
 
 	public void deleteMessage(Message message) {
-		EntityManager em = Simple.getEntityManager();
+		
 
 		if (message == null) {
 			throw new NullPointerException("Message can not be null");
@@ -116,7 +113,7 @@ public class MessagingService {
 	}
 
 	public List<Message> getThread(Message m) {
-		EntityManager em = Simple.getEntityManager();
+		
 		Message root;
 		if (m.getMessageThreadRoot() != null) {
 			root = m.getMessageThreadRoot();
@@ -145,7 +142,7 @@ public class MessagingService {
 	}
 
 	public Message findMessage(long message_id) {
-		return Simple.getEntityManager().find(Message.class, message_id);
+		return em.find(Message.class, message_id);
 	}
 
 	public Message replyMessage(Message m, String response) {
@@ -168,7 +165,7 @@ public class MessagingService {
 
 		replyMessage.setRecipient(otherUser);
 		replyMessage.setSender(signedInUser);
-		replyMessage = MessagingService.get().saveMessage(replyMessage, true);
+		replyMessage = getService(MessagingService.class).saveMessage(replyMessage, true);
 
 		//Notify users in thread
 
@@ -180,7 +177,7 @@ public class MessagingService {
 
 	public boolean hasBeenRead(Message message, User user) {
 		User u = SecurityContext.get().getUser();
-		EntityManager em = Simple.getEntityManager();
+		
 		message = findMessage(message.id);
 		Query q = em.createQuery("SELECT count(x) FROM MessageReadReceipt x WHERE (x.user=:user AND x.message=:msg)").setParameter("user", u).setParameter("msg", message);
 		Number result = (Number) q.getSingleResult();
@@ -209,15 +206,15 @@ public class MessagingService {
 			m.setBody("");
 			m.setSender(from);
 			m.setRecipient(to);
-			m = MessagingService.get().saveMessage(m, false);
-			MessagingService.get().markAsRead(m, to);
-			MessagingService.get().markAsRead(m, from);
+			m = getService(MessagingService.class).saveMessage(m, false);
+			getService(MessagingService.class).markAsRead(m, to);
+			getService(MessagingService.class).markAsRead(m, from);
 		}
 		return m;
 	}
 
 	private Message findMessage(User from, User to, String s) {
-		EntityManager em = Simple.getEntityManager();
+		
 		final Query q = em.createQuery("select distinct M FROM Message M WHERE M.sender=:sender AND M.recipient=:recipient AND M.title=:title")
 				.setParameter("sender", from)
 				.setParameter("recipient", to)
@@ -232,7 +229,7 @@ public class MessagingService {
 	}
 
 	public List<Message> getMessages(User u) {
-		EntityManager em = Simple.getEntityManager();
+		
 		u = em.find(User.class, u.id);
 		Query q = em.createQuery("SELECT x FROM Message x WHERE (x.recipient=:user OR x.sender=:user)");
 		q.setParameter("user", u);
@@ -242,7 +239,7 @@ public class MessagingService {
 	}
 
 	public Message getMessageById(long id) {
-		EntityManager em = Simple.getEntityManager();
+		
 		Message m = em.find(Message.class, id);
 		em.close();
 		return m;

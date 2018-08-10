@@ -1,32 +1,33 @@
 package com.mysaasa.core.messaging.panels;
 
+import com.mysaasa.MySaasa;
 import com.mysaasa.core.users.model.User;
-import com.mysaasa.Simple;
 import com.mysaasa.core.messaging.model.Message;
 import com.mysaasa.core.messaging.services.MessagingService;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 
-import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import static com.mysaasa.MySaasa.getService;
 
 public class MessagesDataProvider extends SortableDataProvider<Message, String> {
 	private static final long serialVersionUID = 1L;
 	private final User user;
 
 	public MessagesDataProvider(User u) {
+		MySaasa.inject(this);
 		this.user = u;
+
 	}
 
 	@Override
 	public Iterator<? extends Message> iterator(long first, long count) {
 
 		new ArrayList<User>();
-		EntityManager em = Simple.getEntityManager();
-		final Iterator<? extends Message> result = MessagingService.get().getMessages(user, first / count, count, "timeSent", "DESC").iterator();
-		em.close();
+		final Iterator<? extends Message> result = getService(MessagingService.class).getMessages(user, first / count, count, "timeSent", "DESC").iterator();
 		return result;
 	}
 
@@ -37,6 +38,6 @@ public class MessagesDataProvider extends SortableDataProvider<Message, String> 
 
 	@Override
 	public long size() {
-		return MessagingService.get().getMessageCount();
+		return getService(MessagingService.class).getMessageCount();
 	}
 }

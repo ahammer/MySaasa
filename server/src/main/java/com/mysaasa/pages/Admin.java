@@ -43,6 +43,8 @@ import org.apache.wicket.request.flow.RedirectToUrlException;
 
 import java.util.List;
 
+import static com.mysaasa.MySaasa.getService;
+
 @RequireHttps
 public class Admin extends WebPage implements IHeaderContributor, AdminInterface {
 	private static final long serialVersionUID = 1L;
@@ -60,7 +62,7 @@ public class Admin extends WebPage implements IHeaderContributor, AdminInterface
 		setWasCreatedBookmarkable(false);
 
 		String host = RequestCycle.get().getRequest().getClientUrl().getHost();
-		Website initialWebsite = HostingService.get().findWebsite(host);
+		Website initialWebsite = getService(HostingService.class).findWebsite(host);
 		SecurityContext securityContext = SecurityContext.get();
 		DropDownChoice<Website> websiteLabel;
 
@@ -101,7 +103,7 @@ public class Admin extends WebPage implements IHeaderContributor, AdminInterface
 			@Override
 			public void onClick(AjaxRequestTarget target) {
 				sendMessageModal.setTitle("Contact Support");
-				Message m = MessagingService.get().getSupportThread();
+				Message m = getService(MessagingService.class).getSupportThread();
 				sendMessageModal.setContent(new MessagePanel(sendMessageModal.getContentId(), m));
 				//sendMessageModal.setContent(new Label(sendMessageModal.getContentId(), "blah"));
 				sendMessageModal.show(target);

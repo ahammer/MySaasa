@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 import com.google.gson.annotations.Expose;
-import com.mysaasa.SimpleImpl;
+import com.mysaasa.MySaasa;
 import com.mysaasa.core.website.services.WebsiteService;
 
 @Entity
@@ -59,7 +59,7 @@ public class ContentBinding implements Serializable {
 	}
 
 	public void save() {
-		SimpleImpl.getInstance().getInjector().getProvider(WebsiteService.class).get().saveContentBinding(this);
+		MySaasa.getInstance().getInjector().getProvider(WebsiteService.class).get().saveContentBinding(this);
 	}
 
 	public void setContent(Content content) {

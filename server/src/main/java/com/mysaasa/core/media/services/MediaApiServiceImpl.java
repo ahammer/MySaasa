@@ -1,9 +1,9 @@
 package com.mysaasa.core.media.services;
 
+import com.mysaasa.MySaasa;
 import com.mysaasa.api.model.ApiSuccess;
 import com.mysaasa.interfaces.annotations.ApiCall;
 import com.mysaasa.interfaces.annotations.SimpleService;
-import com.mysaasa.SimpleImpl;
 import com.mysaasa.api.model.ApiResult;
 
 /**
@@ -15,7 +15,7 @@ public class MediaApiServiceImpl extends MediaApiService {
 	@Override
 	@ApiCall
 	public ApiResult getAllMedia() {
-		return new ApiSuccess(SimpleImpl.getInstance().getInjector().getProvider(MediaService.class).get().getMedia());
+		return new ApiSuccess(MySaasa.getInstance().getInjector().getProvider(MediaService.class).get().getMedia());
 	}
 
 }

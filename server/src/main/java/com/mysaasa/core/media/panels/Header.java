@@ -14,7 +14,7 @@ public class Header extends Panel {
 			public void onClick(final AjaxRequestTarget ajaxRequestTarget) {
 				throw new RuntimeException("Uploading files, this is a edge case, how we do without dialog?");
 				/*
-				send(SimpleImpl.getInstance(), Broadcast.BREADTH, new CreateModalWindow() {
+				send(MySaasa.getInstance(), Broadcast.BREADTH, new CreateModalWindow() {
 				    @Override
 				    public void initialize(final ModalWindow window) {
 				        window.setTitle("Upload Files");

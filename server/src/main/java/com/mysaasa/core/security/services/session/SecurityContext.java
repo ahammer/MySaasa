@@ -1,7 +1,6 @@
 package com.mysaasa.core.security.services.session;
 
 import com.google.gson.annotations.Expose;
-import com.mysaasa.SimpleImpl;
 import com.mysaasa.core.organization.model.Organization;
 import com.mysaasa.core.users.model.User;
 import com.mysaasa.core.website.model.Website;

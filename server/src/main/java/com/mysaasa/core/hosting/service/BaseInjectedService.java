@@ -1,15 +1,13 @@
 package com.mysaasa.core.hosting.service;
 
-import com.mysaasa.Simple;
+import com.google.inject.Injector;
+import com.mysaasa.MySaasa;
 
 /**
  * These classes can be injected via annotation
- * also may get lifecycler
  */
 public class BaseInjectedService {
 	public final void inject() {
-		Simple.getInstance()
-				.getInjector()
-				.injectMembers(this);
+	    MySaasa.inject(this);
 	}
 }

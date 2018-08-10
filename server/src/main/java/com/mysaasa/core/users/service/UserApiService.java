@@ -1,6 +1,6 @@
 package com.mysaasa.core.users.service;
 
-import com.mysaasa.SimpleImpl;
+import com.mysaasa.MySaasa;
 import com.mysaasa.api.model.ApiError;
 import com.mysaasa.api.ApiNotAuthorized;
 import com.mysaasa.api.model.ApiResult;
@@ -13,7 +13,6 @@ import com.mysaasa.core.users.model.User;
 import com.mysaasa.core.website.model.Website;
 import com.mysaasa.interfaces.annotations.ApiCall;
 import com.mysaasa.interfaces.annotations.SimpleService;
-import com.mysaasa.Simple;
 import com.mysaasa.core.hosting.service.HostingService;
 import com.mysaasa.interfaces.IApiService;
 import org.apache.wicket.Session;
@@ -25,7 +24,7 @@ import org.apache.wicket.request.Url;
 @SimpleService
 public class UserApiService implements IApiService {
 	public static UserApiService get() {
-		return Simple.getInstance().getInjector().getProvider(UserApiService.class).get();
+		return MySaasa.getInstance().getInjector().getProvider(UserApiService.class).get();
 	}
 
 	public UserApiService() {}
@@ -37,7 +36,7 @@ public class UserApiService implements IApiService {
 
 	@ApiCall
 	public ApiResult<Website> WebsiteTest() {
-		return new ApiSuccess<Website>(SimpleImpl.getInstance().getInjector().getProvider(
+		return new ApiSuccess<Website>(MySaasa.getInstance().getInjector().getProvider(
 
 		HostingService.class).get().findWebsite(Url.parse("http://www.metalrain.ca")));
 	}
@@ -60,7 +59,7 @@ public class UserApiService implements IApiService {
 	@ApiCall
 	public ApiResult createUser(String identifier, String password) {
 		try {
-			UserService userService = SimpleImpl.getInstance().getInjector().getProvider(UserService.class).get();
+			UserService userService = MySaasa.getInstance().getInjector().getProvider(UserService.class).get();
 			if (userService.userExists(identifier)) {
 				return new ApiError(new IllegalStateException("User already exists"));
 			}

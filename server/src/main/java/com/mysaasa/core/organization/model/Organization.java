@@ -1,6 +1,7 @@
 package com.mysaasa.core.organization.model;
 
 import com.google.gson.annotations.Expose;
+import com.mysaasa.MySaasa;
 import com.mysaasa.core.organization.services.OrganizationService;
 import com.mysaasa.core.users.model.ContactInfo;
 import com.mysaasa.core.website.model.Website;
@@ -11,6 +12,8 @@ import org.hibernate.annotations.LazyCollectionOption;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+
+import static com.mysaasa.MySaasa.getService;
 
 /*
  * An organization is a grouping of websites and apps and users.
@@ -116,8 +119,7 @@ public class Organization implements Serializable {
 	}
 
 	public List<Website> retrieveWebsites() {
-
-		return HostingService.get().getWebsites(this);
+		return getService(HostingService.class).getWebsites(this);
 	}
 
 	public Organization save() {

@@ -13,6 +13,7 @@ import org.apache.wicket.util.file.Files;
 import java.io.File;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.mysaasa.MySaasa.getService;
 
 /**
  * Loads a Template give a Request.
@@ -34,7 +35,7 @@ public class MediaRequestHandler implements IRequestHandler {
 
 	public MediaRequestHandler(Request request) {
 		this.request = request;
-		this.website = HostingService.get().findWebsite(request.getClientUrl());
+		this.website = getService(HostingService.class).findWebsite(request.getClientUrl());
 		String[] parts = request.getClientUrl().getPath().split("/");
 		if (parts.length >= 2) {
 			uuid = parts[1];

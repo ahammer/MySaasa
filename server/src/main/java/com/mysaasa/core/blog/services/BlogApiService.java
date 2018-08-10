@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.mysaasa.MySaasa.getService;
 
 /**
  * Created by administrator on 2014-06-30.
@@ -33,7 +34,7 @@ public class BlogApiService implements IApiService {
 	public ApiResult postToBlog(String title, String subtitle, String summary, String body, String category) {
 		try {
 
-			Website w = HostingService.get().findWebsite(RequestCycle.get().getRequest().getClientUrl());
+			Website w = getService(HostingService.class).findWebsite(RequestCycle.get().getRequest().getClientUrl());
 			SessionService service = SessionService.get();
 			Session session = Session.get();
 			checkNotNull(service);
