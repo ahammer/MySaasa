@@ -105,6 +105,9 @@ public class ApiHelperService {
 
 	public ApiRequest getApiRequest(Request request) {
 		String path = request.getClientUrl().getPath();
+		if (path.startsWith("/"))
+			path = path.substring(1);
+
 		if (!getPathMapping().containsKey(path))
 			return new ApiRequestPreconditionFail("This API Path does not exist: " + path);
 		ApiMapping mapping = getPathMapping().get(path);

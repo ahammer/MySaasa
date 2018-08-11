@@ -10,6 +10,7 @@ import org.apache.wicket.mock.MockWebRequest;
 import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.http.handler.ErrorCodeRequestHandler;
+import org.apache.wicket.util.tester.WicketTester;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,7 +30,7 @@ public class MysaasaRequestMapperTest {
 	@Before
 	public void initialize() throws Exception {
 		MySaasa.IN_MEMORY_DATABASE = true;
-		new MySaasa();
+		new WicketTester(new MySaasa());
 		TestService mockApiService = new TestService();
 		ApiHelperService.get().bindApiService(mockApiService);
 
@@ -69,7 +70,7 @@ public class MysaasaRequestMapperTest {
 		assertNotNull(result);
 		assertEquals(result.getClass(), ApiRequestHandler.class);
 		ApiRequestHandler handler = (ApiRequestHandler) result;
-		assertEquals(handler.getResponseJson(), "{\"message\":\"ok\",\"success\":true,\"data\":\"test\"}");
+		assertEquals("{\"message\":\"ok\",\"success\":true,\"data\":\"test\"}", handler.getResponseJson());
 	}
 
 	@Test

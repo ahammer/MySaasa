@@ -17,8 +17,6 @@ public class TestService implements IApiService {
 		return new ApiSuccess<>("test");
 	}
 
-	;
-
 	@ApiCall
 	public ApiResult<Integer> addTwo(int a, int b) {
 		return new ApiSuccess<>(a + b);
