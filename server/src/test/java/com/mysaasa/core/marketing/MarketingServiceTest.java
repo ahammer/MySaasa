@@ -112,4 +112,13 @@ public class MarketingServiceTest {
 		assertEquals(pyramid.get(0), (Integer) 2);
 		assertEquals(pyramid.get(1), (Integer) 1);
 	}
+
+	@Test(expected = IllegalStateException.class)
+	public void testCircularReferral() {
+		MarketingService marketingService = MySaasa.getInstance().getInjector().getProvider(MarketingService.class).get();
+		marketingService.addReferral(userA.id, userB.id);
+		marketingService.addReferral(userB.id, userC.id);
+		marketingService.addReferral(userC.id, userA.id);
+
+	}
 }

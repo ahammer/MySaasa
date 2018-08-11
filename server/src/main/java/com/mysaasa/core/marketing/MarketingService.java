@@ -2,12 +2,15 @@ package com.mysaasa.core.marketing;
 
 import com.mysaasa.core.marketing.model.UserReferrals;
 import com.mysaasa.interfaces.annotations.SimpleService;
+import net.bytebuddy.implementation.bytecode.Throw;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @SimpleService
 public class MarketingService {
@@ -51,8 +54,14 @@ public class MarketingService {
 		final UserReferrals childRefferals = findReferral(childId);
 		final UserReferrals parentReferrals = findReferral(parentId);
 
-		if (childRefferals.getParentId() != null)
-			throw new IllegalStateException("This account already has a referral");
+
+		if (childRefferals.getReferrals() == null
+				|| childRefferals.getParentId() != null)  {
+			throw new IllegalStateException(
+					"User must be new to be added to referral system " +
+					"(Already has referrals or a parent)");
+		}
+
 
 		//Set the childs Parent ID
 		childRefferals.setParentId(parentId);
@@ -83,4 +92,7 @@ public class MarketingService {
 		//Save if all else is OK
 		save(childRefferals);
 	}
+
+
+
 }
