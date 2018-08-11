@@ -73,7 +73,7 @@ public class MySaasa extends WebApplication {
 		HttpsConfig config = new HttpsConfig();
 		config.setHttpsPort(DefaultPreferences.getSecurePort());
 
-		CodeGen.generateRetrofitCode();
+		//CodeGen.generateRetrofitCode();
 		new SSLGen().doSSLMagic();
 		initialized = true;
 	}

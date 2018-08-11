@@ -41,38 +41,46 @@ public class MarketingService {
 		em.getTransaction().commit();
 	}
 
-	public void addReferral(long parentId, long childId) {
-		UserReferrals childReferral = findReferral(childId);
-		if (childReferral.getParentId() != null)
+	/**
+	 * A Parent is making a referral to a Child
+	 *
+	 * @param parentId
+	 * @param childId
+	 */
+	public void addReferral(final long parentId, final long childId) {
+		final UserReferrals childRefferals = findReferral(childId);
+		final UserReferrals parentReferrals = findReferral(parentId);
+
+		if (childRefferals.getParentId() != null)
 			throw new IllegalStateException("This account already has a referral");
 
-		childReferral.setParentId(parentId);
+		//Set the childs Parent ID
+		childRefferals.setParentId(parentId);
 
-		UserReferrals userReferrals = findReferral(parentId);
-		//Add direct referal tree
-
-		List<Long> idList = userReferrals.getReferrals();
-
-		if (idList == null)
-			idList = new ArrayList<>();
-
-		idList.add(childId);
+		//Add the Parent to the Childs ID list
+		List<Long> parentReferralIdList = parentReferrals.getReferrals();
+		if (parentReferralIdList == null)
+			parentReferralIdList = new ArrayList<>();
+		parentReferralIdList.add(childId);
 
 		//Manage referal tree
-		userReferrals.setReferrals(idList);
-		userReferrals.decrementAvailableReferrals();
-		int level = 0;
-		while (userReferrals != null) {
-			if (userReferrals.getReferrals().contains(parentId))
-				throw new IllegalStateException("Circular Referral Detected");
+		parentReferrals.setReferrals(parentReferralIdList);
+		parentReferrals.decrementAvailableReferrals();
 
-			userReferrals.incrementLevel(level);
-			save(userReferrals);
-			userReferrals = findReferral(userReferrals.getParentId());
+		int level = 0;
+		UserReferrals currentReferrals = parentReferrals;
+		while (currentReferrals != null) {
+
+			currentReferrals.incrementLevel(level);
+
+			save(currentReferrals);
+
+			currentReferrals = findReferral(currentReferrals.getParentId());
+
 			level++;
 		}
 
 		//Save if all else is OK
-		save(childReferral);
+		save(childRefferals);
 	}
 }

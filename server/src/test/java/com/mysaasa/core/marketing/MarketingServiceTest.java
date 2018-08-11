@@ -104,8 +104,8 @@ public class MarketingServiceTest {
 	public void testReferralPyramid() {
 		MarketingService marketingService = MySaasa.getInstance().getInjector().getProvider(MarketingService.class).get();
 		marketingService.addReferral(userA.id, userB.id);
-		marketingService.addReferral(userA.id, userC.id);
-		marketingService.addReferral(userB.id, userD.id);
+		marketingService.addReferral(userB.id, userC.id);
+		marketingService.addReferral(userA.id, userD.id);
 
 		UserReferrals referralsA = marketingService.findReferral(userA.id);
 		List<Integer> pyramid = referralsA.getPyramid();
