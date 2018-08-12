@@ -36,8 +36,7 @@ public class BlogTemplateService implements ITemplateService {
 	public BlogTemplateService() {};
 
 	/**
-	 * This is javascript to make any content in the dom ContentEditable
-	 * It's use by interactive portions of the website
+	 * This is javascript to make any content in the dom ContentEditable It's use by interactive portions of the website
 	 *
 	 * We inject this code so that it's not generally editable, but only on request.
 	 *
@@ -47,16 +46,16 @@ public class BlogTemplateService implements ITemplateService {
 	 */
 	public final static String MAKE_WYSIWYG_CODE = " function makeWYSIWYG(editor) {\n" + "if (editor.attr('contenteditable')) return ;\n" + "       CKEDITOR.inline(document.getElementById(editor.attr('id')));\n" + "        editor.attr('contenteditable', true);\n" + "}\n" +
 
-	"function EditContent(contentName) {\n" + "   makeWYSIWYG($('#'+contentName));\n" + " }" + "" + "function getValueOrNull(element) {" + "if (element == null) return null;\n" + "return element.html();\n" + "}\n";
+			"function EditContent(contentName) {\n" + "   makeWYSIWYG($('#'+contentName));\n" + " }" + "" + "function getValueOrNull(element) {" + "if (element == null) return null;\n" + "return element.html();\n" + "}\n";
 
 	/**
 	 * We inject some CSS as well, but perhaps this can be documented and moved to client css.
 	 */
 	public final static String MAKE_WYSIWYG_CSS = ".EditableContent {\n" +
 
-	"		display:inline-block;\n" + "		cursor:pointer;\n" + "border:1px dotted grey;" + "}\n" + ".EditableContent:hover {\n" + "       border:1px dotted black;\n" +
+			"		display:inline-block;\n" + "		cursor:pointer;\n" + "border:1px dotted grey;" + "}\n" + ".EditableContent:hover {\n" + "       border:1px dotted black;\n" +
 
-	"}\n" + "" + ".simple_blog_entry_new {" + "   display:inline-block;" + "   border:1px dotted green;\n" + "   position:relative;" + "}\n" + "" + ".simple_blog_entry_new label {" + "background:green;\n" + "color:white;\n" + "margin:0px;\n" + "padding:0px;\n" + "text-size:0.4em;\n" + "padding-right:0.5em;\n" + "position:absolute;\n" + "display:inline-block;" + "left:0px;" + "top:0px;" + "" + "}";
+			"}\n" + "" + ".simple_blog_entry_new {" + "   display:inline-block;" + "   border:1px dotted green;\n" + "   position:relative;" + "}\n" + "" + ".simple_blog_entry_new label {" + "background:green;\n" + "color:white;\n" + "margin:0px;\n" + "padding:0px;\n" + "text-size:0.4em;\n" + "padding-right:0.5em;\n" + "position:absolute;\n" + "display:inline-block;" + "left:0px;" + "top:0px;" + "" + "}";
 
 	@Override
 	public String getTemplateInterfaceName() {
@@ -65,8 +64,11 @@ public class BlogTemplateService implements ITemplateService {
 
 	/**
 	 * We want to update these blog posts to have proper Edit references
-	 * @param posts posts
-	 * @param category category
+	 * 
+	 * @param posts
+	 *            posts
+	 * @param category
+	 *            category
 	 */
 	protected void processBlogPostsForInlineEditing(List<BlogPost> posts, String category) {
 
@@ -92,16 +94,16 @@ public class BlogTemplateService implements ITemplateService {
 
 				post.setTitle("<div " + "class=\"EditableContent " + ((post.getPublished()) ? " Unpublished" : " Published") + ((post.getId() == 0) ? " NewContent" : "") + "\"" + "id=\"BlogPostTitle_" + unique + "\" " + "onClick=\"EditContent('BlogPostTitle_" + unique + "');\" " + saveScript + ">" + post.getTitle() + "</div>");
 
-				post.setSubtitle("<div " + "class=\"EditableContent " + ((post.getPublished()) ? " Unpublished" : " Published") + //Tag the Class with "NewContent"
-						((post.getId() == 0) ? " NewContent" : "") + "\"" + //Tag the Class with "NewContent"
+				post.setSubtitle("<div " + "class=\"EditableContent " + ((post.getPublished()) ? " Unpublished" : " Published") + // Tag the Class with "NewContent"
+						((post.getId() == 0) ? " NewContent" : "") + "\"" + // Tag the Class with "NewContent"
 						"id=\"BlogPostSubtitle_" + unique + "\" " + "onClick=\"EditContent('BlogPostSubtitle_" + unique + "');\" " + saveScript + ">" + post.getSubtitle() + "</div>");
 
-				post.setSummary("<div " + "class=\"EditableContent " + ((post.getPublished()) ? " Unpublished" : " Published") + //Tag the Class with "NewContent"
-						((post.getId() == 0) ? " NewContent" : "") + "\"" + //Tag the Class with "NewContent"
+				post.setSummary("<div " + "class=\"EditableContent " + ((post.getPublished()) ? " Unpublished" : " Published") + // Tag the Class with "NewContent"
+						((post.getId() == 0) ? " NewContent" : "") + "\"" + // Tag the Class with "NewContent"
 						"id=\"BlogPostSummary_" + unique + "\" " + "onClick=\"EditContent('BlogPostSummary_" + unique + "');\" " + saveScript + ">" + post.getSummary() + "</div>");
 
-				post.setBody("<div " + "class=\"EditableContent " + ((post.getPublished()) ? " Unpublished" : " Published") + //Tag the Class with "NewContent"
-						((post.getId() == 0) ? " NewContent" : "") + "\"" + //Tag the Class with "NewContent"
+				post.setBody("<div " + "class=\"EditableContent " + ((post.getPublished()) ? " Unpublished" : " Published") + // Tag the Class with "NewContent"
+						((post.getId() == 0) ? " NewContent" : "") + "\"" + // Tag the Class with "NewContent"
 						"id=\"BlogPostBody_" + unique + "\" " + "onClick=\"EditContent('BlogPostBody_" + unique + "');\" " + saveScript + ">" + post.getBody() + "</div>");
 
 				if (post.getId() == 0) {
@@ -113,9 +115,10 @@ public class BlogTemplateService implements ITemplateService {
 
 				post.setFooter(post.getFooter() + ((post.getId() == 0) ? "<input type='button' onClick=\"" + rawSaveScript + "\" value='save'/>" : "<input type='button' onClick=\"window.parent.postMessage(" + "{" + "   categories:" + categoryJson + "," + "   method:'edit'," + "   id:" + title + ".attr('id')" + "},'*');\n" + "\" value='edit'/>") +
 
-				((post.getId() == 0) ? ""
-						: //If the id = 0 it's new and don't show delete
-						"<input type='button' onClick=\"window.parent.postMessage({method:'delete',id:" + title + ".attr('id')},'*');\n" + "\" value='delete'/>") + "</div>");
+						((post.getId() == 0) ? ""
+								: // If the id = 0 it's new and don't show delete
+								"<input type='button' onClick=\"window.parent.postMessage({method:'delete',id:" + title + ".attr('id')},'*');\n" + "\" value='delete'/>")
+						+ "</div>");
 
 			}
 		}
@@ -123,27 +126,27 @@ public class BlogTemplateService implements ITemplateService {
 
 	public static final String callbackFunction = "" +
 
-	//This listener is listening for window.parent.postMessage call
-	//It allows the template to communicate with the admin
-	//This function translates that message to a function call
-	//that sends to the admin
-	"function listener(event) {\n" + "   SendMessageToAdmin(" + "       event.data.title," + "       event.data.subtitle," + "       event.data.summary," + "       event.data.content," + "       event.data.id," + "       event.origin," + "       event.data.method,JSON.stringify(event.data.categories)" + "   );\n" + "}" +
+	// This listener is listening for window.parent.postMessage call
+	// It allows the template to communicate with the admin
+	// This function translates that message to a function call
+	// that sends to the admin
+			"function listener(event) {\n" + "   SendMessageToAdmin(" + "       event.data.title," + "       event.data.subtitle," + "       event.data.summary," + "       event.data.content," + "       event.data.id," + "       event.origin," + "       event.data.method,JSON.stringify(event.data.categories)" + "   );\n" + "}" +
 
-	//This attaches the above code, so that it is listening for
-	//between browser window (iframe/parent) messages.
-	"if (window.addEventListener) {\n" + "       addEventListener(\"message\", listener, false);\n" + "} else {\n" + "       attachEvent(\"onmessage\", listener);\n" + "}\n" +
+			// This attaches the above code, so that it is listening for
+			// between browser window (iframe/parent) messages.
+			"if (window.addEventListener) {\n" + "       addEventListener(\"message\", listener, false);\n" + "} else {\n" + "       attachEvent(\"onmessage\", listener);\n" + "}\n" +
 
-	//Sends the actual message to the admin.
-	//ep is Extra parameters, it's how you send custom
-	//data with wicket
-	//Wicket will provide the callbackUrl from the behaviour and
-	//it should populate %callbackUrl
-	"function SendMessageToAdmin(title,subtitle,summary, msg,id,origin,method,json) {\n" + "Wicket.Ajax.post({u:'%callbackUrl%'," + "ep:[" + "{name:'msg',value:msg}," + "{name:'origin',value:origin}," + "{name:'id',value:id}," + "{name:'method',value:method}," + "{name:'json',value:json}," + "{name:'title',value:title}," + "{name:'subtitle',value:subtitle}," + "{name:'summary',value:summary}" + "]   " + "});\n" + "}\n" + "";
+			// Sends the actual message to the admin.
+			// ep is Extra parameters, it's how you send custom
+			// data with wicket
+			// Wicket will provide the callbackUrl from the behaviour and
+			// it should populate %callbackUrl
+			"function SendMessageToAdmin(title,subtitle,summary, msg,id,origin,method,json) {\n" + "Wicket.Ajax.post({u:'%callbackUrl%'," + "ep:[" + "{name:'msg',value:msg}," + "{name:'origin',value:origin}," + "{name:'id',value:id}," + "{name:'method',value:method}," + "{name:'json',value:json}," + "{name:'title',value:title}," + "{name:'subtitle',value:subtitle}," + "{name:'summary',value:summary}" + "]   " + "});\n" + "}\n" + "";
 
-	//  Looks up the text bound to this content tag. If DebugMode is enabled
-	//  The content will be wrapped in a Span and made editable.
-	//  @Params The name of this ContentBinding
-	//  @Returns the String Content RunContext, hiding behind the Content Binding.
+	// Looks up the text bound to this content tag. If DebugMode is enabled
+	// The content will be wrapped in a Span and made editable.
+	// @Params The name of this ContentBinding
+	// @Returns the String Content RunContext, hiding behind the Content Binding.
 	public String bind(String name) {
 		TemplateHelperService templateHelperService = MySaasa.getInstance().getInjector().getProvider(TemplateHelperService.class).get();
 		TemplateHelperService.RequestProperties rp = templateHelperService.getRequestProperties();
@@ -198,10 +201,10 @@ public class BlogTemplateService implements ITemplateService {
 		if (id == null)
 			return new BlogPost(null, null);
 
-		//TemplateHelperService templateHelperService = MySaasa.getInstance().getInjector().getService(TemplateHelperService.class).getInstance();
-		//TemplateHelperService.RequestProperties rp = templateHelperService.getRequestProperties();
-		//Website website = rp.website;
-		//("Getting posts for category: "+category);
+		// TemplateHelperService templateHelperService = MySaasa.getInstance().getInjector().getService(TemplateHelperService.class).getInstance();
+		// TemplateHelperService.RequestProperties rp = templateHelperService.getRequestProperties();
+		// Website website = rp.website;
+		// ("Getting posts for category: "+category);
 		BlogService service = BlogService.get();
 		BlogPost post = service.getBlogPostById(Long.parseLong(id));
 		List<BlogPost> posts = Lists.newArrayList(post);
@@ -211,7 +214,9 @@ public class BlogTemplateService implements ITemplateService {
 
 	/**
 	 * Deletes a blog comment, uses a string because the templates are usually working with that
-	 * @param comment_id comment_id
+	 * 
+	 * @param comment_id
+	 *            comment_id
 	 * @return delete
 	 */
 	public boolean deleteBlogComment(String comment_id) {
@@ -264,7 +269,7 @@ public class BlogTemplateService implements ITemplateService {
 			BlogPost bp = BlogService.get().getBlogPostById(l_id);
 			User u = SessionService.get().getSecurityContext(Session.get()).getUser();
 			if (u == null)
-				return false; //Can't post if not signed in
+				return false; // Can't post if not signed in
 			BlogComment blogComment = new BlogComment(comment, u, bp);
 			BlogService.get().saveBlogComment(blogComment);
 		} catch (Exception e) {
@@ -276,9 +281,13 @@ public class BlogTemplateService implements ITemplateService {
 
 	/**
 	 * Post a Comment
-	 * @param id id
-	 * @param parentCommentId parent comment
-	 * @param comment the text
+	 * 
+	 * @param id
+	 *            id
+	 * @param parentCommentId
+	 *            parent comment
+	 * @param comment
+	 *            the text
 	 * @return true/false for success/fail
 	 */
 	public boolean postComment(String id, String parentCommentId, String comment) {
@@ -290,7 +299,7 @@ public class BlogTemplateService implements ITemplateService {
 
 			User u = SessionService.get().getSecurityContext(Session.get()).getUser();
 			if (u == null)
-				return false; //Can't post if not signed in
+				return false; // Can't post if not signed in
 			BlogComment blogComment = new BlogComment(comment, u, bp);
 			blogComment.setParent(parentBlogComment);
 			BlogService.get().saveBlogComment(blogComment);
@@ -315,7 +324,7 @@ public class BlogTemplateService implements ITemplateService {
 				return false;
 			User u = SessionService.get().getSecurityContext(Session.get()).getUser();
 			if (u == null)
-				return false; //Can't post if not signed in
+				return false; // Can't post if not signed in
 
 			Event command = new Event(u, String.valueOf(bp.getId()), Event.Method.BlogPostVote);
 			EventQueueService.get().submitCommand(command);
@@ -342,7 +351,7 @@ public class BlogTemplateService implements ITemplateService {
 				return false;
 			User u = SessionService.get().getSecurityContext(Session.get()).getUser();
 			if (u == null)
-				return false; //Can't post if not signed in
+				return false; // Can't post if not signed in
 
 			Event command = new Event(u, String.valueOf(bp.getId()), Event.Method.BlogCommentVote);
 			EventQueueService.get().submitCommand(command);

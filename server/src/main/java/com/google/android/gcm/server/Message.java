@@ -24,16 +24,20 @@ import java.util.Map;
  * GCM message.
  *
  * <p>
- * Instances of this class are immutable and should be created using a
- * {@link Builder}. Examples:
+ * Instances of this class are immutable and should be created using a {@link Builder}. Examples:
  *
  * <strong>Simplest message:</strong>
- * <pre><code>
+ * 
+ * <pre>
+ * <code>
  * Message message = new Message.Builder().build();
- * </code></pre>
+ * </code>
+ * </pre>
  *
  * <strong>Message with optional attributes:</strong>
- * <pre><code>
+ * 
+ * <pre>
+ * <code>
  * Message message = new Message.Builder()
  *    .collapseKey(collapseKey)
  *    .timeToLive(3)
@@ -41,10 +45,13 @@ import java.util.Map;
  *    .dryRun(true)
  *    .restrictedPackageName(restrictedPackageName)
  *    .build();
- * </code></pre>
+ * </code>
+ * </pre>
  *
  * <strong>Message with optional attributes and payload data:</strong>
- * <pre><code>
+ * 
+ * <pre>
+ * <code>
  * Message message = new Message.Builder()
  *    .collapseKey(collapseKey)
  *    .timeToLive(3)
@@ -54,7 +61,8 @@ import java.util.Map;
  *    .addData("key1", "value1")
  *    .addData("key2", "value2")
  *    .build();
- * </code></pre>
+ * </code>
+ * </pre>
  */
 public final class Message implements Serializable {
 
@@ -82,7 +90,9 @@ public final class Message implements Serializable {
 
 		/**
 		 * Sets the collapseKey property.
-		 * @param value  value
+		 * 
+		 * @param value
+		 *            value
 		 * @return this
 		 */
 		public Builder collapseKey(String value) {
@@ -92,7 +102,9 @@ public final class Message implements Serializable {
 
 		/**
 		 * Sets the delayWhileIdle property (default value is {@literal false}).
-		 * @param value  value
+		 * 
+		 * @param value
+		 *            value
 		 * @return this
 		 */
 		public Builder delayWhileIdle(boolean value) {
@@ -102,7 +114,9 @@ public final class Message implements Serializable {
 
 		/**
 		 * Sets the time to live, in seconds.
-		 * @param value  value
+		 * 
+		 * @param value
+		 *            value
 		 * @return this
 		 */
 		public Builder timeToLive(int value) {
@@ -112,8 +126,11 @@ public final class Message implements Serializable {
 
 		/**
 		 * Adds a key/value pair to the payload data.
-		 * @param key key
-		 * @param value  value
+		 * 
+		 * @param key
+		 *            key
+		 * @param value
+		 *            value
 		 * @return this
 		 */
 		public Builder addData(String key, String value) {
@@ -123,7 +140,9 @@ public final class Message implements Serializable {
 
 		/**
 		 * Sets the dryRun property (default value is {@literal false}).
-		 * @param value  value
+		 * 
+		 * @param value
+		 *            value
 		 * @return this
 		 */
 		public Builder dryRun(boolean value) {
@@ -133,7 +152,9 @@ public final class Message implements Serializable {
 
 		/**
 		 * Sets the restrictedPackageName property.
-		 * @param value  value
+		 * 
+		 * @param value
+		 *            value
 		 * @return this
 		 */
 		public Builder restrictedPackageName(String value) {
@@ -158,6 +179,7 @@ public final class Message implements Serializable {
 
 	/**
 	 * Gets the collapse key.
+	 * 
 	 * @return string
 	 */
 	public String getCollapseKey() {
@@ -166,6 +188,7 @@ public final class Message implements Serializable {
 
 	/**
 	 * Gets the delayWhileIdle flag.
+	 * 
 	 * @return string
 	 */
 	public Boolean isDelayWhileIdle() {
@@ -174,6 +197,7 @@ public final class Message implements Serializable {
 
 	/**
 	 * Gets the time to live (in seconds).
+	 * 
 	 * @return string
 	 */
 	public Integer getTimeToLive() {
@@ -182,6 +206,7 @@ public final class Message implements Serializable {
 
 	/**
 	 * Gets the dryRun flag.
+	 * 
 	 * @return string
 	 */
 	public Boolean isDryRun() {
@@ -190,6 +215,7 @@ public final class Message implements Serializable {
 
 	/**
 	 * Gets the restricted package name.
+	 * 
 	 * @return string
 	 */
 	public String getRestrictedPackageName() {
@@ -198,6 +224,7 @@ public final class Message implements Serializable {
 
 	/**
 	 * Gets the payload data, which is immutable.
+	 * 
 	 * @return string
 	 */
 	public Map<String, String> getData() {

@@ -16,8 +16,7 @@ import org.apache.wicket.protocol.ws.api.message.IWebSocketPushMessage;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Let's add some consistency to messaging, this file is for Helpers that help broadcast messages.
- * To reduce some boilerplate
+ * Let's add some consistency to messaging, this file is for Helpers that help broadcast messages. To reduce some boilerplate
  *
  * Created by adam on 2014-10-13.
  */
@@ -25,8 +24,11 @@ public class MessageHelpers {
 
 	/**
 	 * This is a helper to request editing, just to reduce a minor amount of boilerplate
-	 * @param target target
-	 * @param defaultModel defaultModel
+	 * 
+	 * @param target
+	 *            target
+	 * @param defaultModel
+	 *            defaultModel
 	 */
 	public static void editEventMessage(AjaxRequestTarget target, IModel<?> defaultModel) {
 		checkNotNull(defaultModel);
@@ -48,8 +50,11 @@ public class MessageHelpers {
 
 	/**
 	 * Sends the message that will load the Editor
-	 * @param target target
-	 * @param website website
+	 * 
+	 * @param target
+	 *            target
+	 * @param website
+	 *            website
 	 */
 	public static void loadWebsiteEditor(final AjaxRequestTarget target, Website website) {
 		checkNotNull(website);

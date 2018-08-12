@@ -60,7 +60,7 @@ public class TestBlogLinking extends WebPage implements Serializable {
 					data.blogPost = data.blogPost.save();
 
 					target.add(label);
-					//("PressedButton");
+					// ("PressedButton");
 				}
 			});
 

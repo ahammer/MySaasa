@@ -1,8 +1,7 @@
 package com.mysaasa.api.model;
 
 /**
- * A successful message
- * Created by administrator on 3/15/2014.
+ * A successful message Created by administrator on 3/15/2014.
  */
 public class ApiSuccess<T> extends ApiResult<T> {
 

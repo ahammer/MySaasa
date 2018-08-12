@@ -15,8 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * They should also be ITemplateService, and should be registered with Dependency injection similar to to others
  *
- * This doesn't directly bind, it only looks up and registers the relevant interfaces, Templating usings DI to access
- * the implementation
+ * This doesn't directly bind, it only looks up and registers the relevant interfaces, Templating usings DI to access the implementation
  *
  * It also manages the RequestProperties thread local, which is where a TemplateEngines configuration data will live
  *
@@ -65,8 +64,11 @@ public class TemplateHelperService {
 
 	/**
 	 * this is backed by a ThreadLocal, so that each request should have it's own data
-	 * @param debugMode dm
-	 * @param website website
+	 * 
+	 * @param debugMode
+	 *            dm
+	 * @param website
+	 *            website
 	 */
 	public void setRequestProperties(boolean debugMode, Website website) {
 		mRequestProperties.set(new RequestProperties(debugMode, website));

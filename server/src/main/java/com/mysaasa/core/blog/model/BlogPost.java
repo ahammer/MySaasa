@@ -18,9 +18,7 @@ import java.io.Serializable;
 import java.util.*;
 
 /**
- * A postToBlog is just a Article or stream of "Text articles" with a series of linked images.
- * They can be used to represent articles or news, depending on how you choose to categorize them.
- * They will be associated with a organization and visible to websites and apps in that organization.
+ * A postToBlog is just a Article or stream of "Text articles" with a series of linked images. They can be used to represent articles or news, depending on how you choose to categorize them. They will be associated with a organization and visible to websites and apps in that organization.
  */
 @Entity
 @Table(name = "BlogPost")
@@ -231,6 +229,7 @@ public class BlogPost implements Serializable {
 
 	/**
 	 * Is the body a URL? this is useful for some layout logic on frontend
+	 * 
 	 * @return this isn't used anymore
 	 */
 	public boolean checkBodyUrl() {

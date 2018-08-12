@@ -83,7 +83,7 @@ public class Admin extends WebPage implements IHeaderContributor, AdminInterface
 			if (o2.production == null)
 				return -1;
 			return o1.production.compareTo(o2.production);
-		} );
+		});
 
 		selectedWebsite = initialWebsite;
 
@@ -105,7 +105,7 @@ public class Admin extends WebPage implements IHeaderContributor, AdminInterface
 				sendMessageModal.setTitle("Contact Support");
 				Message m = getService(MessagingService.class).getSupportThread();
 				sendMessageModal.setContent(new MessagePanel(sendMessageModal.getContentId(), m));
-				//sendMessageModal.setContent(new Label(sendMessageModal.getContentId(), "blah"));
+				// sendMessageModal.setContent(new Label(sendMessageModal.getContentId(), "blah"));
 				sendMessageModal.show(target);
 			}
 		});

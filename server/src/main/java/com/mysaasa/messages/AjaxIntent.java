@@ -11,8 +11,7 @@ import java.util.logging.Logger;
 /**
  * Similar to a Android intent, it's an Action and a Bundle
  *
- * Reason being, it's a generic interface for generic messages, I think
- * I'd like to encourage it's use.
+ * Reason being, it's a generic interface for generic messages, I think I'd like to encourage it's use.
  *
  * Created by administrator on 2014-05-19.
  */

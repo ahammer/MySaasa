@@ -28,7 +28,7 @@ public class UserReferrals {
 	@Expose
 	List<Long> referrals;
 
-	//Index 0 = Second/Direct referrals
+	// Index 0 = Second/Direct referrals
 	//
 	@Expose
 	List<Integer> pyramid;
@@ -106,7 +106,7 @@ public class UserReferrals {
 
 	public void decrementAvailableReferrals() {
 		this.available--;
-		//Clip to 0
+		// Clip to 0
 		if (this.available < 0)
 			this.available = 0;
 	}

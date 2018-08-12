@@ -32,7 +32,7 @@ public class EventQueueService {
 	}
 
 	public void submitCommand(Event command) {
-		//eventQueue.add(command);
+		// eventQueue.add(command);
 		consume(command);
 	}
 
@@ -48,6 +48,7 @@ public class EventQueueService {
 
 	/**
 	 * Consume the event
+	 * 
 	 * @param event
 	 */
 	private void consume(Event event) {

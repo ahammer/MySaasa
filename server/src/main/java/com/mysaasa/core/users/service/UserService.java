@@ -157,9 +157,10 @@ public class UserService {
 	}
 
 	/**
-	 * Saves a user, this may be new or a edit,
-	 * however create users with createUser instead of saveUser
-	 * @param user the user we are saving
+	 * Saves a user, this may be new or a edit, however create users with createUser instead of saveUser
+	 * 
+	 * @param user
+	 *            the user we are saving
 	 * @return the saved/tracked user
 	 */
 	public User saveUser(final User user) {
@@ -187,9 +188,13 @@ public class UserService {
 	 * Creates a User,
 	 *
 	 * Throws if the User Exists or is invalid
-	 * @param identifier user id
-	 * @param password user password
-	 * @param organization the users organization
+	 * 
+	 * @param identifier
+	 *            user id
+	 * @param password
+	 *            user password
+	 * @param organization
+	 *            the users organization
 	 * @return The user that was created
 	 */
 	public User createUser(String identifier, String password, Organization organization) {

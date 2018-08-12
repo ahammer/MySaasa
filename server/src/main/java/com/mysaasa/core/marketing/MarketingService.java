@@ -54,25 +54,23 @@ public class MarketingService {
 		final UserReferrals childRefferals = findReferral(childId);
 		final UserReferrals parentReferrals = findReferral(parentId);
 
-
 		if (childRefferals.getReferrals() != null
-				|| childRefferals.getParentId() != null)  {
+				|| childRefferals.getParentId() != null) {
 			throw new IllegalStateException(
 					"User must be new to be added to referral system " +
-					"(Already has referrals or a parent)");
+							"(Already has referrals or a parent)");
 		}
 
-
-		//Set the childs Parent ID
+		// Set the childs Parent ID
 		childRefferals.setParentId(parentId);
 
-		//Add the Parent to the Childs ID list
+		// Add the Parent to the Childs ID list
 		List<Long> parentReferralIdList = parentReferrals.getReferrals();
 		if (parentReferralIdList == null)
 			parentReferralIdList = new ArrayList<>();
 		parentReferralIdList.add(childId);
 
-		//Manage referal tree
+		// Manage referal tree
 		parentReferrals.setReferrals(parentReferralIdList);
 		parentReferrals.decrementAvailableReferrals();
 
@@ -89,10 +87,8 @@ public class MarketingService {
 			level++;
 		}
 
-		//Save if all else is OK
+		// Save if all else is OK
 		save(childRefferals);
 	}
-
-
 
 }

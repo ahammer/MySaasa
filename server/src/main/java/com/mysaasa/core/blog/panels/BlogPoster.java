@@ -33,11 +33,14 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- *  Panel that manages a postToBlog
- * <p>You give it a model of a CompountPropertyModel of a postToBlog, and the fields/content
- * will all be editable/creatable.</p>
- * <p>Automatically manages saving/editing with help of the BlogService.</p>
-
+ * Panel that manages a postToBlog
+ * <p>
+ * You give it a model of a CompountPropertyModel of a postToBlog, and the fields/content will all be editable/creatable.
+ * </p>
+ * <p>
+ * Automatically manages saving/editing with help of the BlogService.
+ * </p>
+ * 
  */
 public class BlogPoster extends Panel {
 
@@ -55,7 +58,7 @@ public class BlogPoster extends Panel {
 	@Override
 	public void renderHead(IHeaderResponse response) {
 		final String initBlogPoster = "CKEDITOR.replace('" + blogPosterForm.body.getId() + "');";// +
-		//"CKEDITOR.replace('"+blogPosterForm.summary.getId()+"');";
+		// "CKEDITOR.replace('"+blogPosterForm.summary.getId()+"');";
 		response.render(OnDomReadyHeaderItem.forScript(initBlogPoster));
 
 	}
@@ -87,7 +90,7 @@ public class BlogPoster extends Panel {
 						BlogPost blogPost = (BlogPost) getModelObject();
 						blogPost.getMedia().addAll(uploads);
 					}
-					//("Uploaded some files: "+uploads);
+					// ("Uploaded some files: "+uploads);
 				}
 			});
 

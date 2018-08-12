@@ -9,8 +9,7 @@ import static com.mysaasa.MySaasa.getService;
 
 /**
  *
- * Represents a File used by the system.
- * Supports getting a debug url
+ * Represents a File used by the system. Supports getting a debug url
  */
 public class TemplateFile extends File {
 	private static final long serialVersionUID = 1l;

@@ -13,8 +13,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * This is the Current AdminSession, it may be registered against a Templates session as well, for theming.
  *
-* Created by adam on 2014-09-26.
-*/
+ * Created by adam on 2014-09-26.
+ */
 public class AdminSession implements Serializable {
 
 	public static enum Environment {
@@ -26,8 +26,8 @@ public class AdminSession implements Serializable {
 	private Website website;
 	private Website theme;
 	private Environment env = Environment.Live;
-	private boolean editMode = false; //Inline editor in edit mode
-	private boolean newPostAllowed = true; //Inline editor allow new post?
+	private boolean editMode = false; // Inline editor in edit mode
+	private boolean newPostAllowed = true; // Inline editor allow new post?
 
 	public AdminSession(SecurityContext context) {
 		this.context = context;
@@ -50,7 +50,7 @@ public class AdminSession implements Serializable {
 	}
 
 	public void setEditMode(boolean editMode) {
-		this.newPostAllowed = editMode; //Let's couple these
+		this.newPostAllowed = editMode; // Let's couple these
 		this.editMode = editMode;
 	}
 

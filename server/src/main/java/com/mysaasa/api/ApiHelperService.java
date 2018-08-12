@@ -23,12 +23,9 @@ import java.util.*;
  *
  * It expects the same arguments, in the same format, in the same order.
  *
- * If you pass ASD to a int, it will fail with a error
- * if you pass second before first, it will fail
- * If the expected arguments != query arguments, it will fail
+ * If you pass ASD to a int, it will fail with a error if you pass second before first, it will fail If the expected arguments != query arguments, it will fail
  *
- * there is no exceptions, the API will be accessed by rules, they are simple rules that
- * let it be easily expandable
+ * there is no exceptions, the API will be accessed by rules, they are simple rules that let it be easily expandable
  *
  * Created by Adam on 3/12/14.
  */
@@ -51,19 +48,9 @@ public class ApiHelperService {
 	 *
 	 * They are stored in a hash map, so this is just a array of the String keys.
 	 *
-	 * @return Array of Paths,
-	 * ServiceName/Function....
-	 * e.g. (Incomplete list
+	 * @return Array of Paths, ServiceName/Function.... e.g. (Incomplete list
 	 *
-	 * UserApiService/BlogTest
-	 * UserApiService/logout
-	 * UserApiService/WebsiteTest
-	 * UserApiService/postToBlog
-	 * UserApiService/getSession
-	 * UserApiService/loginUser
-	 * UserApiService/Media
-	 * MediaApiServiceImpl/getAllMedia
-	 * UserApiService/createUser
+	 *         UserApiService/BlogTest UserApiService/logout UserApiService/WebsiteTest UserApiService/postToBlog UserApiService/getSession UserApiService/loginUser UserApiService/Media MediaApiServiceImpl/getAllMedia UserApiService/createUser
 	 */
 	public String[] getPaths() {
 		String[] result = new String[getPathMapping().keySet().size()];
@@ -74,7 +61,8 @@ public class ApiHelperService {
 	/**
 	 * If a service is a IApiService it needs extra processing to bind it to the API so we can find it later
 	 *
-	 * @param service the service to be bound
+	 * @param service
+	 *            the service to be bound
 	 */
 	public void bindApiService(IApiService service) {
 		for (Method method : service.getClass().getMethods()) {
@@ -93,7 +81,8 @@ public class ApiHelperService {
 	/**
 	 * Registers a method to the pathMapping hash.
 	 *
-	 * @param method a java method we are mounting, it should have the @ApiCall annotation
+	 * @param method
+	 *            a java method we are mounting, it should have the @ApiCall annotation
 	 */
 	void registerMethod(Method method) {
 		if (!method.isAnnotationPresent(ApiCall.class))
@@ -112,7 +101,7 @@ public class ApiHelperService {
 			return new ApiRequestPreconditionFail("This API Path does not exist: " + path);
 		ApiMapping mapping = getPathMapping().get(path);
 
-		//Check arguments
+		// Check arguments
 		if (!hasCorrectParameterCount(request, mapping)) {
 			return processApiError(mapping, request, new IllegalArgumentException("Wrong number of parameters"));
 		}
@@ -125,7 +114,7 @@ public class ApiHelperService {
 
 	private ApiRequest processHasArgsRequest(Request request, ApiMapping mapping) {
 		Object[] args = new Object[mapping.getParameters().size()];
-		//("Args: "+args.length);
+		// ("Args: "+args.length);
 		int pos = 0;
 		try {
 			for (ApiParameter apiParameter : mapping.getParameters()) {
@@ -135,13 +124,13 @@ public class ApiHelperService {
 		} catch (Exception e) {
 			return processApiError(mapping, request, e);
 		}
-		//("Created a set of args: "+args.length);
+		// ("Created a set of args: "+args.length);
 		return new ApiRequest(mapping, args);
 	}
 
 	private boolean isNoArgsRequest(Request request, ApiMapping mapping) {
 		boolean a = mapping.getParameters().size() == 0;
-		//boolean b = request.getPostParameters().getParameterNames().size() == 0;
+		// boolean b = request.getPostParameters().getParameterNames().size() == 0;
 		return a;// && b;
 
 	}
@@ -175,6 +164,7 @@ public class ApiHelperService {
 
 	/**
 	 * Checks to see if a particular Request object has enough parameters
+	 * 
 	 * @param request
 	 * @param mapping
 	 * @return

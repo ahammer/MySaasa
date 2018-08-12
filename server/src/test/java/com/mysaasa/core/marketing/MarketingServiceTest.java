@@ -25,17 +25,17 @@ public class MarketingServiceTest {
 	private User userC;
 	private User userD;
 
-	//Rules of marketting
-	//Users get X referrals
-	//As a product owner, I should be able to generate referrals
-	//As a product userA, I should be able to assign referrals
+	// Rules of marketting
+	// Users get X referrals
+	// As a product owner, I should be able to generate referrals
+	// As a product userA, I should be able to assign referrals
 
 	@Before
 	public void initialize() throws Exception {
 		MySaasa.IN_MEMORY_DATABASE = true;
 		MySaasa simple;
 		new WicketTester(simple = new MySaasa());
-//		ThreadContext.setApplication(simple);
+		// ThreadContext.setApplication(simple);
 
 		HostingService service = getService(HostingService.class);
 		Website testWebsite = new Website();

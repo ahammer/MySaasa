@@ -9,8 +9,7 @@ import org.apache.wicket.request.http.WebResponse;
 import java.io.ByteArrayOutputStream;
 
 /**
- * Generates QR Codes for BitCoin orders
- * I'm going to mark this deprecated, it can probably be deleted from this branch
+ * Generates QR Codes for BitCoin orders I'm going to mark this deprecated, it can probably be deleted from this branch
  *
  *
  * Created by adam on 2014-10-21.
@@ -31,14 +30,7 @@ public class QrGenerator implements IRequestHandler {
 		try {
 			if (parts.length == 3) {
 				String s = "";
-				/*
-				if (parts[1].equals("order")) {
-					Cart cart = OrderService.getInstance().findCartByUid(parts[2]);
-					OrderBitcoinInfo bitcoinInfo = BitcoinService.getInstance().getOrderBitcoinInfo(cart);
-					BigDecimal amountOwed = cart.calculateBitcoinOwed();
-					s = "bitcoin:" + bitcoinInfo.getReceivingAddress() + "?amount=" + amountOwed;
-				}
-				*/
+				/* if (parts[1].equals("order")) { Cart cart = OrderService.getInstance().findCartByUid(parts[2]); OrderBitcoinInfo bitcoinInfo = BitcoinService.getInstance().getOrderBitcoinInfo(cart); BigDecimal amountOwed = cart.calculateBitcoinOwed(); s = "bitcoin:" + bitcoinInfo.getReceivingAddress() + "?amount=" + amountOwed; } */
 
 				WebResponse response = ((WebResponse) requestCycle.getResponse());
 				response.setStatus(200);
@@ -50,7 +42,7 @@ public class QrGenerator implements IRequestHandler {
 			}
 
 		} catch (Exception e) {
-			//e.printStackTrace();;
+			// e.printStackTrace();;
 		}
 		WebResponse response = ((WebResponse) requestCycle.getResponse());
 		response.setStatus(200);

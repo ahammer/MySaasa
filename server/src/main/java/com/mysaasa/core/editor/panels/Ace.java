@@ -29,8 +29,7 @@ import java.io.*;
 /**
  * The AcePanel is the Ace Editor and it's Affiliate Sidebar, Saving and Integration with the System.
  *
- * It's a bit different then the other
- * Created by Adam on 4/5/14.
+ * It's a bit different then the other Created by Adam on 4/5/14.
  */
 public class Ace extends Panel {
 	private static final Gson gson = new GsonBuilder().disableHtmlEscaping().create();
@@ -91,13 +90,13 @@ public class Ace extends Panel {
 				e.printStackTrace();
 			}
 
-			//3 Javascripts.
-			//1 - Load Editor and Load File
-			//2 - Listen for Events from Websocket (Request Save) (When this - Do the next thing Websocket in->Ajax out)
-			//3 - Wicket Ajax Postback for saving
+			// 3 Javascripts.
+			// 1 - Load Editor and Load File
+			// 2 - Listen for Events from Websocket (Request Save) (When this - Do the next thing Websocket in->Ajax out)
+			// 3 - Wicket Ajax Postback for saving
 
-			//To re-iterate, we need to load contents into the editor, we need to be able to receieve websocket request to save
-			//We also need to be able to post the results.
+			// To re-iterate, we need to load contents into the editor, we need to be able to receieve websocket request to save
+			// We also need to be able to post the results.
 			final String initAce = "var editor=ace.edit(\"" + editor.getMarkupId() + "\");editor.setValue(" + content + ");editor.getSession().setMode(\"" + mode + "\");editor.getSelection().clearSelection();\n\n";
 			response.render(OnDomReadyHeaderItem.forScript(initAce));
 
@@ -118,7 +117,7 @@ public class Ace extends Panel {
 			TemplateFile file = new TemplateFile(model.getObject());
 			add(new Label("production", file.getWebsite().getProduction()));
 			add(new Label("environment", SessionService.get().getAdminSession(Session.get()).getEnv()));
-			//Cancel and Return
+			// Cancel and Return
 
 			add(new FileDetails("fileDetails", new CompoundPropertyModel(model.getObject()), new Model(file.getWebsite())));
 
@@ -133,8 +132,7 @@ public class Ace extends Panel {
 		}
 
 		/**
-		 * Get the path to the currently edited file, and save what is posted
-		 * If it's a .scss file, let's compile as well.
+		 * Get the path to the currently edited file, and save what is posted If it's a .scss file, let's compile as well.
 		 */
 		private void saveFile() {
 			String path = Ace.this.getDefaultModelObjectAsString();
@@ -157,8 +155,7 @@ public class Ace extends Panel {
 			@Override
 			public void renderHead(IHeaderResponse response) {
 				/**
-				 * When you click THIS button (AjaxSubmitLink), it'll assign the ace editor content to a form field
-				 * before post. Because ACE is a div and not a form component.
+				 * When you click THIS button (AjaxSubmitLink), it'll assign the ace editor content to a form field before post. Because ACE is a div and not a form component.
 				 */
 				final String clickAlert = "$('#" + getMarkupId() + "')" + ".click(" + "function()" + "{" + "$('#" + hiddenValue.getMarkupId() + "').val(ace.edit(\"" + editor.getMarkupId() + "\").getValue());" + "}" + ");";
 				response.render(OnDomReadyHeaderItem.forScript(clickAlert));

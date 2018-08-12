@@ -6,8 +6,7 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 
 /**
- * This is a Panel that shows errors and allows self-hiding
- * It's meant for modal-dialog forms
+ * This is a Panel that shows errors and allows self-hiding It's meant for modal-dialog forms
  *
  * Created by adam on 1/5/14.
  */

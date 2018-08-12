@@ -22,13 +22,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Map's a request, basically if it's for a Website it has a high compatibility.
- * If it's for a website it's got a prioritized priority
+ * Map's a request, basically if it's for a Website it has a high compatibility. If it's for a website it's got a prioritized priority
  *
  * this allows fallback to bundled resources globally on all domains and 404 handling by jetty
-
-* Created by Adam on 2/13/14.
-*/
+ * 
+ * Created by Adam on 2/13/14.
+ */
 public class MysaasaRequestMapper implements IRequestMapper {
 	public static final String CANCEL_SESSION_LINK = "CancelSessionLink";
 	public static final int NO_MATCH = Integer.MIN_VALUE;
@@ -43,22 +42,17 @@ public class MysaasaRequestMapper implements IRequestMapper {
 	}
 
 	/**
-	 * If the website can be found, say we are compatible by returning MIN+2;
-	 * If a website can't be found, INTEGER_MIN_VALUE (not compatible)
+	 * If the website can be found, say we are compatible by returning MIN+2; If a website can't be found, INTEGER_MIN_VALUE (not compatible)
 	 *
-	 * TODO: It looks like we can have one RequestMapper for each type
-	 * Media/QR/Template/API
-	 * @param request the request
+	 * TODO: It looks like we can have one RequestMapper for each type Media/QR/Template/API
+	 * 
+	 * @param request
+	 *            the request
 	 * @return the score, if it should match
 	 */
 	@Override
 	public int getCompatibilityScore(Request request) {
-		/*
-		HostingService service = HostingService.getInstance();
-		Website website = service.findWebsite(request.getUrl());
-		int score = (website == null) ? NO_MATCH : MATCHING_SCORE;
-		logger.log(Level.INFO, request.getClientUrl() + " " + website + " " + score);
-		*/
+		/* HostingService service = HostingService.getInstance(); Website website = service.findWebsite(request.getUrl()); int score = (website == null) ? NO_MATCH : MATCHING_SCORE; logger.log(Level.INFO, request.getClientUrl() + " " + website + " " + score); */
 
 		return MATCHING_SCORE;
 	}

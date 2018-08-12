@@ -6,8 +6,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.Model;
 
 /**
- * Regional Container
- * Global/Regional/Local for App/Section/Item
+ * Regional Container Global/Regional/Local for App/Section/Item
  *
  * I like the verbiage, it's less confusing then what I had.
  */

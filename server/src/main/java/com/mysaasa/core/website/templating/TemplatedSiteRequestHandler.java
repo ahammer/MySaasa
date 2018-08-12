@@ -33,11 +33,10 @@ import static com.mysaasa.MySaasa.getService;
  * Loads a Template give a Request.
  *
  * <p>
- *     This is the Core of templating, When the RequestMapper recognizes the Domain as a Templated site,
- *     this class handles requests that point to a templated site.
+ * This is the Core of templating, When the RequestMapper recognizes the Domain as a Templated site, this class handles requests that point to a templated site.
  * </p>
  * <p>
- *     This handles both static JS/CSS as well as TemplatedFiles.
+ * This handles both static JS/CSS as well as TemplatedFiles.
  * </p>
  */
 public class TemplatedSiteRequestHandler implements IRequestHandler {
@@ -54,7 +53,9 @@ public class TemplatedSiteRequestHandler implements IRequestHandler {
 
 	/**
 	 * Checks to see if this is a ValidRequest for this handler
-	 * @param request request
+	 * 
+	 * @param request
+	 *            request
 	 * @return if the request if valid
 	 */
 	public static boolean IsValidRequest(final Request request) {
@@ -72,7 +73,7 @@ public class TemplatedSiteRequestHandler implements IRequestHandler {
 		Website website = service.findWebsite(request.getUrl());
 		Website theme = null;
 
-		//TODO look up admin session via Session Service and URL
+		// TODO look up admin session via Session Service and URL
 		if (SessionService.get().hasAdminSession(session_part)) {
 			AdminSession adminSession = AdminSession.get();
 			if (adminSession.getTheme() != null) {
@@ -83,7 +84,7 @@ public class TemplatedSiteRequestHandler implements IRequestHandler {
 		if (website == null)
 			return false;
 
-		//Check if there is a challenge for this domain
+		// Check if there is a challenge for this domain
 		Http01Challenge challenge = SSLGen.getActiveChallenge(host);
 		if (challenge != null) {
 			return true;
@@ -134,7 +135,8 @@ public class TemplatedSiteRequestHandler implements IRequestHandler {
 	}
 
 	/**
-	 * @param requestCycle the current Request Cycle from Wicket
+	 * @param requestCycle
+	 *            the current Request Cycle from Wicket
 	 * @return the configured encoding or the request's one as default
 	 */
 	private String getEncoding(final IRequestCycle requestCycle) {
@@ -155,8 +157,8 @@ public class TemplatedSiteRequestHandler implements IRequestHandler {
 	}
 
 	/**
-	
 	 *
+	 * 
 	 * @see org.apache.wicket.request.IRequestHandler#respond(org.apache.wicket.request.IRequestCycle)
 	 */
 	@Override
@@ -179,7 +181,7 @@ public class TemplatedSiteRequestHandler implements IRequestHandler {
 			}
 		} catch (final FileNotFoundException | ResourceNotFoundException e) {
 
-			//Maybe this is a challenge?
+			// Maybe this is a challenge?
 			Http01Challenge challenge = SSLGen.getActiveChallenge(requestCycle.getRequest().getUrl().getHost());
 			if (challenge != null) {
 				stringResponse(response, challenge.getAuthorization());
@@ -242,7 +244,7 @@ public class TemplatedSiteRequestHandler implements IRequestHandler {
 
 	private void templatedResponse(WebResponse response, AdminSession prefs) {
 		response.setHeader("cache-control", "private, max-age=0, no-cache");
-		//org.apache.wicket.protocol.ws.javax.WicketServerApplicationConfig
+		// org.apache.wicket.protocol.ws.javax.WicketServerApplicationConfig
 
 		VelocityEngine engine = getEngine();
 		synchronized (engine) {
@@ -271,7 +273,7 @@ public class TemplatedSiteRequestHandler implements IRequestHandler {
 
 				bindTemplateServices(debugMode, templateHelperService);
 
-				//TODO document this in WIKI
+				// TODO document this in WIKI
 				context.put("getInstance", new QueryParamProxy(request.getQueryParameters()));
 				context.put("post", new QueryParamProxy(request.getPostParameters()));
 				context.put("self", request.getClientUrl().toString());
@@ -280,22 +282,22 @@ public class TemplatedSiteRequestHandler implements IRequestHandler {
 				context.put("port", DefaultPreferences.getPort());
 
 				template.merge(context, writer);
-				//Do the merge here (Put the Developer stuff in)
+				// Do the merge here (Put the Developer stuff in)
 				if (debugMode) {
 					int port = DefaultPreferences.getPort();
-					//Used in inline editor
+					// Used in inline editor
 					String ckEditor = "<script type=\"text/javascript\" src=\"/ckeditor/ckeditor.js\"></script>\n";
 					String jquery = "<script type=\"text/javascript\" src=\"/jquery-ui-1.10.3.custom/js/jquery-1.9.1.js\"></script>\n";
 					String json2 = "<script type=\"text/javascript\" src=\"/json2/json2.js\"></script>\n";
 
-					//Notifies the admin with the current document.URL
+					// Notifies the admin with the current document.URL
 					String checkIframeScript = "if (window.self == window.top) {\n" + "if (window.location.indexOf(\"?\") > -1) {" + "window.location=window.location+'&" + MysaasaRequestMapper.CANCEL_SESSION_LINK + "'" + "} else {" + "window.location=window.location+'?&" + MysaasaRequestMapper.CANCEL_SESSION_LINK + "'" + "}" + "}" + "\n";
 
 					String notifyAdminScript = "window.parent.postMessage(" + "{" + "   title:''," + "   subtitle:''," + "   categories:''," + "   method:'load'," + "   content:''," + "   summary:''," + "   id:document.URL" + "},'*');";
 
 					String script = "\n" + ckEditor + jquery + json2 + "\n" + "<script type=\"text/javascript\">" + BlogTemplateService.MAKE_WYSIWYG_CODE + "\n" + notifyAdminScript + "\n" + checkIframeScript +
 
-					"</script>" + "<style type=\"text/css\">" + BlogTemplateService.MAKE_WYSIWYG_CSS + "</style>";
+							"</script>" + "<style type=\"text/css\">" + BlogTemplateService.MAKE_WYSIWYG_CSS + "</style>";
 
 					StringBuilder builder = new StringBuilder(writer.toString());
 					int index = builder.indexOf("</head>");
@@ -315,7 +317,7 @@ public class TemplatedSiteRequestHandler implements IRequestHandler {
 
 					}
 				}
-				//------------------
+				// ------------------
 				final byte[] data = writer.toString().getBytes();
 				response.setContentLength(data.length);
 				response.write(data);

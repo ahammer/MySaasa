@@ -6,8 +6,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
- * This is a Domain entry, a website might respond to multiple.
- * Created by Adam on 10/11/2014.
+ * This is a Domain entry, a website might respond to multiple. Created by Adam on 10/11/2014.
  */
 @Entity
 @Table(name = "Domain")

@@ -4,8 +4,7 @@ import com.mysaasa.api.model.ApiSuccess;
 import org.apache.wicket.request.IRequestParameters;
 
 /**
- * Proxies iRequestParameters for the template
- * Created by Adam on 3/18/14.
+ * Proxies iRequestParameters for the template Created by Adam on 3/18/14.
  */
 public class QueryParamProxy extends ApiSuccess {
 	private final IRequestParameters queryParameters;

@@ -22,15 +22,15 @@ public class WebsitesDataProvider extends SortableDataProvider<Website, String> 
 	public Iterator<? extends Website> iterator(long first, long count) {
 		List<Website> list = SessionService.get().getSecurityContext(Session.get()).getWebsites();
 
-		//Preconditions
+		// Preconditions
 		if (first < 0 || count < 0 || count == 0)
 			throw new IllegalArgumentException("Failed (first < 0 || count < 0 || count == 0) (first=" + first + " count=" + count + ")");
 
-		//Edge Cases
+		// Edge Cases
 		if (list.size() == 0)
 			return Collections.EMPTY_LIST.iterator();
 
-		//Clipping
+		// Clipping
 		if (list.size() < first + count)
 			return list.subList((int) first, list.size()).iterator();
 

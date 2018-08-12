@@ -38,7 +38,7 @@ public class MySaasaServer {
 		servletContextHandler.addServlet(servletHolder, "/*");
 		server.setHandler(servletContextHandler);
 		HttpConfiguration http_config = getHttpConfig();
-		ServerConnector httpsConnector = null; //initializeHttpsConnector(http_config);
+		ServerConnector httpsConnector = null; // initializeHttpsConnector(http_config);
 		ServerConnector httpConnector = initializeHttpConnector(http_config);
 		applyConnectors(httpsConnector, httpConnector);
 
@@ -48,7 +48,7 @@ public class MySaasaServer {
 			InputStream stream = new URL("http://localhost:" + DefaultPreferences.getPort()).openConnection().getInputStream();
 			stream.read();
 		} catch (Exception e) {
-			//We hit localhost just to launch the servlet
+			// We hit localhost just to launch the servlet
 		}
 	}
 
@@ -59,10 +59,10 @@ public class MySaasaServer {
 
 	private void applyConnectors(ServerConnector httpsConnector, ServerConnector httpConnector) {
 		if (httpsConnector != null) {
-			//Http + Https
+			// Http + Https
 			server.setConnectors(new Connector[]{httpConnector, httpsConnector});
 		} else {
-			//Http Only
+			// Http Only
 			server.setConnectors(new Connector[]{httpConnector});
 		}
 	}
@@ -70,9 +70,9 @@ public class MySaasaServer {
 	private WebAppContext initializeWebAppContent() {
 		WebAppContext bb = new WebAppContext();
 		bb.setServer(server);
-		//bb.setContextPath("./");
-		//bb.setResourceBase("./");
-		//bb.setWar("./webapp");
+		// bb.setContextPath("./");
+		// bb.setResourceBase("./");
+		// bb.setWar("./webapp");
 		return bb;
 	}
 
@@ -108,7 +108,7 @@ public class MySaasaServer {
 			sslContextFactory.setKeyStorePassword(DefaultPreferences.getProperties().getProperty(DefaultPreferences.PREF_KEYSTORE_PASSWORD));
 			sslContextFactory.setKeyManagerPassword(DefaultPreferences.getProperties().getProperty(DefaultPreferences.PREF_KEYSTORE_PASSWORD));
 
-			for (String string: sslContextFactory.getAliases()) {
+			for (String string : sslContextFactory.getAliases()) {
 				logger.log(Level.INFO, "SSL ALIAS: {0}", string);
 			}
 

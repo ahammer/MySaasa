@@ -43,7 +43,8 @@ public class HostingService {
 	 *
 	 * There is a cache to speed this up.
 	 *
-	 * @param clientUrl clienturl
+	 * @param clientUrl
+	 *            clienturl
 	 * @return the website
 	 */
 	public Website findWebsite(Url clientUrl) {
@@ -109,12 +110,14 @@ public class HostingService {
 
 	/**
 	 * Delete a website,
-	 * @param website the website you want to delete
+	 * 
+	 * @param website
+	 *            the website you want to delete
 	 */
 	public void deleteWebsite(Website website) {
 
 		final Website trackedWebsite = em.find(Website.class, website.getId());
-		//Delete all blog posts
+		// Delete all blog posts
 
 		em.getTransaction().begin();
 		for (ContentBinding b : WebsiteService.get().getBindings(trackedWebsite)) {
@@ -152,42 +155,43 @@ public class HostingService {
 	/**
 	 * Finds a website for a file
 	 *
-	 * To make sure it works cross platform, make sure to always use / instead of \ in
-	 * the SIMPLE_CONFIG and any other path's you might define.]
+	 * To make sure it works cross platform, make sure to always use / instead of \ in the SIMPLE_CONFIG and any other path's you might define.]
 	 *
-	 * @param templateFile templateFile
+	 * @param templateFile
+	 *            templateFile
 	 * @return the website for this file
 	 */
 	public Website findWebsite(File templateFile) {
-		//Preconditions
+		// Preconditions
 		checkNotNull(templateFile);
 		checkArgument(templateFile.exists(), "File Needs to exist: " + new Exception().getStackTrace()[0].getMethodName() + " " + templateFile.getAbsolutePath());
 
-		//The base path to the websites folder
-		//The absolute file path to the file you are checking
+		// The base path to the websites folder
+		// The absolute file path to the file you are checking
 		String basePath = DefaultPreferences.getConfigPath() + "websites/";
 		String filePath = templateFile.getAbsolutePath();
 
-		//Normalize the paths, helps with cross platform
+		// Normalize the paths, helps with cross platform
 		basePath = normalizePath(basePath);
 		filePath = normalizePath(filePath);
 
 		checkArgument(filePath.contains(basePath), "File needs to be in the base website folder: " + basePath);
 
-		//www.test.com/path/to/file.html
-		//www.test.com
-		//Find website by http://www.website.com
+		// www.test.com/path/to/file.html
+		// www.test.com
+		// Find website by http://www.website.com
 		String relative_web_and_file = filePath.substring(basePath.length());
 		int position_of_slash = relative_web_and_file.indexOf('/');
 		if (position_of_slash == -1)
-			return findWebsite(Url.parse("http://" + relative_web_and_file)); //No / Found, let's just assume it a website root path
+			return findWebsite(Url.parse("http://" + relative_web_and_file)); // No / Found, let's just assume it a website root path
 		return findWebsite(Url.parse("http://" + relative_web_and_file.substring(0, position_of_slash)));
 	}
 
 	/**
 	 * Helper to normalize paths in the filenames, since different OS's have different path structures
 	 *
-	 * @param substring substrint
+	 * @param substring
+	 *            substrint
 	 * @return path fixed
 	 */
 	public static String normalizePath(String substring) {

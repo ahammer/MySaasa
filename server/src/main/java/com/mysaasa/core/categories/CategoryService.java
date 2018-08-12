@@ -17,15 +17,20 @@ import java.util.List;
 public class CategoryService {
 	@Inject
 	EntityManager em;
+
 	public static CategoryService get() {
 		return MySaasa.getInstance().getInjector().getProvider(CategoryService.class).get();
 	}
 
 	/**
 	 * Finds a Category object by name.
-	 * @param name name
-	 * @param o  organization
-	 * @param type type
+	 * 
+	 * @param name
+	 *            name
+	 * @param o
+	 *            organization
+	 * @param type
+	 *            type
 	 * @return the category or null
 	 */
 	public Category findCategory(String name, Class type, Organization o) {
@@ -33,7 +38,7 @@ public class CategoryService {
 			throw new NullPointerException();
 		if (name.trim().equals(""))
 			throw new IllegalArgumentException("Blank Category");
-		
+
 		List<Category> list;
 		if (o != null) {
 			list = ListUtils.unmodifiableList(em.createQuery("SELECT C FROM Category C WHERE C.name=:name AND C.organization=:org AND C.type=:cattype ORDER BY C.id DESC")
@@ -54,13 +59,13 @@ public class CategoryService {
 
 			return saveCategory(category);
 		}
-		em.detach(list.get(0));//Need to do? Don't do this elsewhere?
+		em.detach(list.get(0));// Need to do? Don't do this elsewhere?
 
 		return list.get(0);
 	}
 
 	public Category saveCategory(Category blogCategory) {
-		
+
 		em.getTransaction().begin();
 		Category tracked = em.merge(blogCategory);
 		em.flush();
@@ -70,7 +75,7 @@ public class CategoryService {
 	}
 
 	public List<Category> getCategories(Organization organization, Class type) {
-		
+
 		if (type != null) {
 			return ListUtils.unmodifiableList(em.createQuery("SELECT C FROM Category C WHERE C.organization=:org AND C.type=:cattype ORDER BY C.type")
 					.setParameter("org", organization)

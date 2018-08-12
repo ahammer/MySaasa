@@ -159,27 +159,19 @@ public class ContactInfo implements Serializable {
 		this.email = email;
 	}
 
-	//Used by TEMPLATE
+	// Used by TEMPLATE
 
 	/**
 	 * Supported Fields
 	 *
-	 * country
-	 * email
-	 * city
-	 * province
-	 * address1
-	 * address2
-	 * postal
-	 * homePhone
-	 * mobilePhone
-	 * name
+	 * country email city province address1 address2 postal homePhone mobilePhone name
 	 *
-	 * This merges the Query Parameters (via the Template Proxy) to the address object.
-	 * If the field names match, we apply them.
+	 * This merges the Query Parameters (via the Template Proxy) to the address object. If the field names match, we apply them.
 	 *
-	 * @param prefix  Prefix used on the parameters in the Query
-	 * @param params  Query Parameters
+	 * @param prefix
+	 *            Prefix used on the parameters in the Query
+	 * @param params
+	 *            Query Parameters
 	 */
 	public void mergeAddressData(String prefix, QueryParamProxy params) {
 		if (prefix == null)
@@ -263,6 +255,7 @@ public class ContactInfo implements Serializable {
 
 	/**
 	 * Basic information validation.
+	 * 
 	 * @return if we have enough information to checkout
 	 */
 	public boolean readyForCheckout() {

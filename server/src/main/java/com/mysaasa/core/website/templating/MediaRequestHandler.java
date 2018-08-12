@@ -19,11 +19,10 @@ import static com.mysaasa.MySaasa.getService;
  * Loads a Template give a Request.
  *
  * <p>
- *     This is the Core of templating, When the RequestMapper recognizes the Domain as a Templated site,
- *     this class handles requests that point to a templated site.
+ * This is the Core of templating, When the RequestMapper recognizes the Domain as a Templated site, this class handles requests that point to a templated site.
  * </p>
  * <p>
- *     This handles both static JS/CSS as well as TemplatedFiles.
+ * This handles both static JS/CSS as well as TemplatedFiles.
  * </p>
  */
 public class MediaRequestHandler implements IRequestHandler {

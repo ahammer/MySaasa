@@ -89,10 +89,6 @@ public class FileTreeProvider implements ITreeProvider<File> {
 		}
 	}
 
-	/*
-	public void setRoot(File root) {
-	    this.root = root;
-	}
-	*/
+	/* public void setRoot(File root) { this.root = root; } */
 
 }

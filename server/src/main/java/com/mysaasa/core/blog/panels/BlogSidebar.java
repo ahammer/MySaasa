@@ -108,7 +108,7 @@ public class BlogSidebar extends Panel {
 		@Override
 		public long size() {
 			BlogService blogDataService = BlogService.get();
-			//Todo this is limited to 10
+			// Todo this is limited to 10
 			return blogDataService.getBlogPostsByCategory(SecurityContext.get().getUser().getOrganization(), selectedCategories, 0, 10, getSort().getProperty().toString(), getSort().isAscending() ? "ASC" : "DESC").size();
 		}
 

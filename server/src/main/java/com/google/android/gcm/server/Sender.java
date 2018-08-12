@@ -85,7 +85,8 @@ public class Sender {
 	/**
 	 * Default constructor.
 	 *
-	 * @param key API key obtained through the Google API Console.
+	 * @param key
+	 *            API key obtained through the Google API Console.
 	 */
 	public Sender(String key) {
 		this.key = nonNull(key);
@@ -95,19 +96,23 @@ public class Sender {
 	 * Sends a message to one device, retrying in case of unavailability.
 	 *
 	 * <p>
-	 * <strong>Note: </strong> this method uses exponential back-off to retry in
-	 * case of service unavailability and hence could block the calling thread
-	 * for many seconds.
+	 * <strong>Note: </strong> this method uses exponential back-off to retry in case of service unavailability and hence could block the calling thread for many seconds.
 	 *
-	 * @param message message to be sent, including the device's registration id.
-	 * @param registrationId device where the message will be sent.
-	 * @param retries number of retries in case of service unavailability errors.
+	 * @param message
+	 *            message to be sent, including the device's registration id.
+	 * @param registrationId
+	 *            device where the message will be sent.
+	 * @param retries
+	 *            number of retries in case of service unavailability errors.
 	 *
 	 * @return result of the request (see its javadoc for more details).
 	 *
-	 * @throws IllegalArgumentException if registrationId is {@literal null}.
-	 * @throws InvalidRequestException if GCM didn't returned a 200 or 5xx status.
-	 * @throws IOException if message could not be sent.
+	 * @throws IllegalArgumentException
+	 *             if registrationId is {@literal null}.
+	 * @throws InvalidRequestException
+	 *             if GCM didn't returned a 200 or 5xx status.
+	 * @throws IOException
+	 *             if message could not be sent.
 	 * @return the result
 	 */
 	public Result send(Message message, String registrationId, int retries)
@@ -138,16 +143,18 @@ public class Sender {
 	}
 
 	/**
-	 * Sends a message without retrying in case of service unavailability. See
-	 * {@link #send(Message, String, int)} for more info.
+	 * Sends a message without retrying in case of service unavailability. See {@link #send(Message, String, int)} for more info.
 	 *
-	 * @param message message
-	 * @param registrationId registrationId
-	 * @return result of the post, or {@literal null} if the GCM service was
-	 *         unavailable or any network exception caused the request to fail.
+	 * @param message
+	 *            message
+	 * @param registrationId
+	 *            registrationId
+	 * @return result of the post, or {@literal null} if the GCM service was unavailable or any network exception caused the request to fail.
 	 *
-	 * @throws InvalidRequestException if GCM didn't returned a 200 or 5xx status.
-	 * @throws IllegalArgumentException if registrationId is {@literal null}.
+	 * @throws InvalidRequestException
+	 *             if GCM didn't returned a 200 or 5xx status.
+	 * @throws IllegalArgumentException
+	 *             if registrationId is {@literal null}.
 	 */
 	public Result sendNoRetry(Message message, String registrationId)
 			throws IOException {
@@ -256,21 +263,23 @@ public class Sender {
 	 * Sends a message to many devices, retrying in case of unavailability.
 	 *
 	 * <p>
-	 * <strong>Note: </strong> this method uses exponential back-off to retry in
-	 * case of service unavailability and hence could block the calling thread
-	 * for many seconds.
+	 * <strong>Note: </strong> this method uses exponential back-off to retry in case of service unavailability and hence could block the calling thread for many seconds.
 	 *
-	 * @param message message to be sent.
-	 * @param regIds registration id of the devices that will receive
-	 *        the message.
-	 * @param retries number of retries in case of service unavailability errors.
+	 * @param message
+	 *            message to be sent.
+	 * @param regIds
+	 *            registration id of the devices that will receive the message.
+	 * @param retries
+	 *            number of retries in case of service unavailability errors.
 	 *
 	 * @return combined result of all requests made.
 	 *
-	 * @throws IllegalArgumentException if registrationIds is {@literal null} or
-	 *         empty.
-	 * @throws InvalidRequestException if GCM didn't returned a 200 or 503 status.
-	 * @throws IOException if message could not be sent.
+	 * @throws IllegalArgumentException
+	 *             if registrationIds is {@literal null} or empty.
+	 * @throws InvalidRequestException
+	 *             if GCM didn't returned a 200 or 503 status.
+	 * @throws IOException
+	 *             if message could not be sent.
 	 */
 	public MulticastResult send(Message message, List<String> regIds, int retries)
 			throws IOException {
@@ -342,12 +351,14 @@ public class Sender {
 	}
 
 	/**
-	 * Updates the status of the messages sent to devices and the list of devices
-	 * that should be retried.
+	 * Updates the status of the messages sent to devices and the list of devices that should be retried.
 	 *
-	 * @param unsentRegIds list of devices that are still pending an update.
-	 * @param allResults map of status that will be updated.
-	 * @param multicastResult result of the last multicast sent.
+	 * @param unsentRegIds
+	 *            list of devices that are still pending an update.
+	 * @param allResults
+	 *            map of status that will be updated.
+	 * @param multicastResult
+	 *            result of the last multicast sent.
 	 *
 	 * @return updated version of devices that should be retried.
 	 */
@@ -373,18 +384,20 @@ public class Sender {
 	}
 
 	/**
-	 * Sends a message without retrying in case of service unavailability. See
-	 * {@link #send(Message, List, int)} for more info.
+	 * Sends a message without retrying in case of service unavailability. See {@link #send(Message, List, int)} for more info.
 	 *
-	 * @param message message
-	 * @param registrationIds regisrationIds
-	 * @return multicast results if the message was sent successfully,
-	 *         {@literal null} if it failed but could be retried.
+	 * @param message
+	 *            message
+	 * @param registrationIds
+	 *            regisrationIds
+	 * @return multicast results if the message was sent successfully, {@literal null} if it failed but could be retried.
 	 *
-	 * @throws IllegalArgumentException if registrationIds is {@literal null} or
-	 *         empty.
-	 * @throws InvalidRequestException if GCM didn't returned a 200 status.
-	 * @throws IOException if there was a JSON parsing error
+	 * @throws IllegalArgumentException
+	 *             if registrationIds is {@literal null} or empty.
+	 * @throws InvalidRequestException
+	 *             if GCM didn't returned a 200 status.
+	 * @throws IOException
+	 *             if there was a JSON parsing error
 	 */
 	public MulticastResult sendNoRetry(Message message,
 			List<String> registrationIds) throws IOException {
@@ -524,9 +537,13 @@ public class Sender {
 
 	/**
 	 * Make an HTTP post to a given URL.
-	 * @param body body
-	 * @param url url
-	 * @throws IOException on network error
+	 * 
+	 * @param body
+	 *            body
+	 * @param url
+	 *            url
+	 * @throws IOException
+	 *             on network error
 	 * @return HTTP response.
 	 */
 	protected HttpURLConnection post(String url, String body)
@@ -538,16 +555,19 @@ public class Sender {
 	 * Makes an HTTP POST request to a given endpoint.
 	 *
 	 * <p>
-	 * <strong>Note: </strong> the returned connected should not be disconnected,
-	 * otherwise it would kill persistent connections made using Keep-Alive.
+	 * <strong>Note: </strong> the returned connected should not be disconnected, otherwise it would kill persistent connections made using Keep-Alive.
 	 *
-	 * @param url endpoint to post the request.
-	 * @param contentType type of request.
-	 * @param body body of the request.
+	 * @param url
+	 *            endpoint to post the request.
+	 * @param contentType
+	 *            type of request.
+	 * @param body
+	 *            body of the request.
 	 *
 	 * @return the underlying connection.
 	 *
-	 * @throws IOException propagated from underlying methods.
+	 * @throws IOException
+	 *             propagated from underlying methods.
 	 */
 	protected HttpURLConnection post(String url, String contentType, String body)
 			throws IOException {
@@ -578,8 +598,11 @@ public class Sender {
 
 	/**
 	 * Creates a map with just one key-value pair.
-	 * @param value value
-	 * @param key key
+	 * 
+	 * @param value
+	 *            value
+	 * @param key
+	 *            key
 	 * @return map
 	 */
 	protected static final Map<String, String> newKeyValues(String key,
@@ -592,8 +615,10 @@ public class Sender {
 	/**
 	 * Creates a {@link StringBuilder} to be used as the body of an HTTP POST.
 	 *
-	 * @param name initial parameter for the POST.
-	 * @param value initial value for that parameter.
+	 * @param name
+	 *            initial parameter for the POST.
+	 * @param value
+	 *            initial value for that parameter.
 	 * @return StringBuilder to be used an HTTP POST body.
 	 */
 	protected static StringBuilder newBody(String name, String value) {
@@ -603,9 +628,12 @@ public class Sender {
 	/**
 	 * Adds a new parameter to the HTTP POST body.
 	 *
-	 * @param body HTTP POST body.
-	 * @param name parameter's name.
-	 * @param value parameter's value.
+	 * @param body
+	 *            HTTP POST body.
+	 * @param name
+	 *            parameter's name.
+	 * @param value
+	 *            parameter's value.
 	 */
 	protected static void addParameter(StringBuilder body, String name,
 			String value) {
@@ -615,9 +643,12 @@ public class Sender {
 
 	/**
 	 * Gets an {@link HttpURLConnection} given an URL.
-	 * @param url url
+	 * 
+	 * @param url
+	 *            url
 	 * @return url connection
-	 * @throws IOException a network error
+	 * @throws IOException
+	 *             a network error
 	 */
 	protected HttpURLConnection getConnection(String url) throws IOException {
 		HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
@@ -631,9 +662,11 @@ public class Sender {
 	 * <p>
 	 * If the stream is {@literal null}, returns an empty string.
 	 *
-	 * @param stream the stream
+	 * @param stream
+	 *            the stream
 	 * @return stream to string
-	 * @throws IOException when the stream fails
+	 * @throws IOException
+	 *             when the stream fails
 	 */
 	protected static String getString(InputStream stream) throws IOException {
 		if (stream == null) {

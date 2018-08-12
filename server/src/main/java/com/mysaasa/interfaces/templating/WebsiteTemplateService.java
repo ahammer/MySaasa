@@ -15,10 +15,10 @@ public abstract class WebsiteTemplateService implements ITemplateService {
 		return TEMPLATE_SHORT_NAME;
 	}
 
-	//  Looks up the text bound to this content tag. If DebugMode is enabled
-	//  The content will be wrapped in a Span and made editable.
-	//  @Params The name of this ContentBinding
-	//  @Returns the String Content RunContext, hiding behind the Content Binding.
+	// Looks up the text bound to this content tag. If DebugMode is enabled
+	// The content will be wrapped in a Span and made editable.
+	// @Params The name of this ContentBinding
+	// @Returns the String Content RunContext, hiding behind the Content Binding.
 	public abstract String bind(String name);
 
 	public abstract String bind(String name, String defaultValue);

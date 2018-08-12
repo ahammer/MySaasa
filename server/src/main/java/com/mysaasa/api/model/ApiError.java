@@ -4,7 +4,7 @@ package com.mysaasa.api.model;
  * When the API has an error, we return this.
  *
  *
- * T            Any class that plays nice with ApiSerializable (should be a bulk of them, but it's intended for simple data objects.
+ * T Any class that plays nice with ApiSerializable (should be a bulk of them, but it's intended for simple data objects.
  *
  * Created by administrator on 3/15/2014.
  */

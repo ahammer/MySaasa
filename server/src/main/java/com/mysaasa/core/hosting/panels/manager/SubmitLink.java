@@ -42,7 +42,7 @@ final class SubmitLink extends AjaxSubmitLink {
 			new WebsiteCreated(w, target).send();
 			info("Success");
 
-			//MessageHelpers.loadWebsiteEditor(target,w2);
+			// MessageHelpers.loadWebsiteEditor(target,w2);
 		}
 
 	}

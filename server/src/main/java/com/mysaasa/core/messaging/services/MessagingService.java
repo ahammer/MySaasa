@@ -27,7 +27,6 @@ public class MessagingService {
 
 	private static final String SUPPORT_THREAD = "Support Thread";
 
-
 	public Message saveMessage(Message msg, boolean notify) {
 		long initialId = msg.getId();
 		em.getTransaction().begin();
@@ -35,7 +34,7 @@ public class MessagingService {
 		em.flush();
 		em.getTransaction().commit();
 
-		//TODO send a message, which can be used to intercept this in panels that use websocket
+		// TODO send a message, which can be used to intercept this in panels that use websocket
 
 		if (initialId == 0 && notify) {
 			MessageCreatedPushMessage message = new MessageCreatedPushMessage(msg);
@@ -68,7 +67,7 @@ public class MessagingService {
 	}
 
 	public List<Message> getMessages(User u, long page, long page_size, String order, String direction) {
-		
+
 		u = em.find(User.class, u.id);
 		Query q = em.createQuery("SELECT x FROM Message x WHERE (x.recipient=:user OR x.sender=:user)  AND x.messageThreadRoot is null ORDER BY _order _direction"
 				.replace("_order", order)
@@ -81,7 +80,7 @@ public class MessagingService {
 	}
 
 	public List getNewMessages(User u, Date lastKnownMessage) {
-		
+
 		u = em.find(User.class, u.id);
 		Query q = em.createQuery("SELECT x FROM Message x WHERE x.timeSent > :lastKnown")
 				.setParameter("lastKnown", lastKnownMessage);
@@ -91,7 +90,6 @@ public class MessagingService {
 	}
 
 	public void deleteMessage(Message message) {
-		
 
 		if (message == null) {
 			throw new NullPointerException("Message can not be null");
@@ -107,11 +105,10 @@ public class MessagingService {
 		em.flush();
 		em.getTransaction().commit();
 
-
 	}
 
 	public List<Message> getThread(Message m) {
-		
+
 		Message root;
 		if (m.getMessageThreadRoot() != null) {
 			root = m.getMessageThreadRoot();
@@ -145,7 +142,7 @@ public class MessagingService {
 
 	public Message replyMessage(Message m, String response) {
 
-		//Add sender data to source message
+		// Add sender data to source message
 		Message replyMessage = new Message(m);
 		replyMessage.setBody(response);
 
@@ -165,7 +162,7 @@ public class MessagingService {
 		replyMessage.setSender(signedInUser);
 		replyMessage = getService(MessagingService.class).saveMessage(replyMessage, true);
 
-		//Notify users in thread
+		// Notify users in thread
 
 		if (m.getMessageThreadRoot() != null)
 			m = m.getMessageThreadRoot();
@@ -175,7 +172,7 @@ public class MessagingService {
 
 	public boolean hasBeenRead(Message message, User user) {
 		User u = SecurityContext.get().getUser();
-		
+
 		message = findMessage(message.id);
 		Query q = em.createQuery("SELECT count(x) FROM MessageReadReceipt x WHERE (x.user=:user AND x.message=:msg)").setParameter("user", u).setParameter("msg", message);
 		Number result = (Number) q.getSingleResult();
@@ -212,7 +209,7 @@ public class MessagingService {
 	}
 
 	private Message findMessage(User from, User to, String s) {
-		
+
 		final Query q = em.createQuery("select distinct M FROM Message M WHERE M.sender=:sender AND M.recipient=:recipient AND M.title=:title")
 				.setParameter("sender", from)
 				.setParameter("recipient", to)
@@ -227,7 +224,7 @@ public class MessagingService {
 	}
 
 	public List<Message> getMessages(User u) {
-		
+
 		u = em.find(User.class, u.id);
 		Query q = em.createQuery("SELECT x FROM Message x WHERE (x.recipient=:user OR x.sender=:user)");
 		q.setParameter("user", u);
@@ -237,7 +234,7 @@ public class MessagingService {
 	}
 
 	public Message getMessageById(long id) {
-		
+
 		Message m = em.find(Message.class, id);
 
 		return m;

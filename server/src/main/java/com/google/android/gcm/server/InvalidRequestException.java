@@ -46,14 +46,14 @@ public final class InvalidRequestException extends IOException {
 	}
 
 	/**
-	* @return  Gets the HTTP Status Code.
-	*/
+	 * @return Gets the HTTP Status Code.
+	 */
 	public int getHttpStatusCode() {
 		return status;
 	}
 
 	/**
-	 * @return  Gets the error description.
+	 * @return Gets the error description.
 	 */
 	public String getDescription() {
 		return description;

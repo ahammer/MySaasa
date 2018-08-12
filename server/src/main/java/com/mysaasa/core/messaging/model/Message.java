@@ -43,11 +43,11 @@ public class Message implements Serializable {
 			if (RequestCycle.get() != null)
 				sender = SecurityContext.get().getUser();
 		} catch (Exception e) {
-			//No Request Cycle
+			// No Request Cycle
 		}
 	}
 
-	//Reply from message
+	// Reply from message
 	public Message(Message message) {
 		this.messageThreadRoot = message;
 		this.title = message.getTitle();

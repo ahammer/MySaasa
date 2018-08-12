@@ -18,7 +18,8 @@ final class DeleteLink extends AjaxLink {
 	private final HostingManagement hostingManagement;
 	private static final long serialVersionUID = 1L;
 
-	@Inject HostingService hostingService;
+	@Inject
+	HostingService hostingService;
 
 	DeleteLink(HostingManagement hostingManagement) {
 		super("deleteLink");

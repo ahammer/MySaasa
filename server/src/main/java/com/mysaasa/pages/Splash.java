@@ -48,7 +48,7 @@ public class Splash extends WebPage {
 
 		add(new Label("node", "N/A").setVisible(false));
 
-		//If a nonce is provided, use it to log in
+		// If a nonce is provided, use it to log in
 		if (getRequest().getQueryParameters().getParameterNames().contains("nonce")) {
 			String nonce_key = getRequest().getQueryParameters().getParameterValue("nonce").toOptionalString();
 			SecurityService.SigninNonce nonce = SecurityService.get().getNonce(nonce_key);

@@ -46,8 +46,7 @@ public final class Constants {
 	public static final String PARAM_DRY_RUN = "dry_run";
 
 	/**
-	 * HTTP parameter for package name that can be used to restrict message delivery by matching
-	 * against the package name used to generate the registration id.
+	 * HTTP parameter for package name that can be used to restrict message delivery by matching against the package name used to generate the registration id.
 	 */
 	public static final String PARAM_RESTRICTED_PACKAGE_NAME = "restricted_package_name";
 
@@ -67,14 +66,12 @@ public final class Constants {
 	public static final String ERROR_QUOTA_EXCEEDED = "QuotaExceeded";
 
 	/**
-	 * Too many messages sent by the senderContactInfo to a specific device.
-	 * Retry after a while.
+	 * Too many messages sent by the senderContactInfo to a specific device. Retry after a while.
 	 */
 	public static final String ERROR_DEVICE_QUOTA_EXCEEDED = "DeviceQuotaExceeded";
 
 	/**
-	 * Missing registration_id.
-	 * Sender should always add the registration_id to the request.
+	 * Missing registration_id. Sender should always add the registration_id to the request.
 	 */
 	public static final String ERROR_MISSING_REGISTRATION = "MissingRegistration";
 
@@ -84,22 +81,17 @@ public final class Constants {
 	public static final String ERROR_INVALID_REGISTRATION = "InvalidRegistration";
 
 	/**
-	 * The sender_id contained in the registration_id does not match the
-	 * sender_id used to register with the GCM servers.
+	 * The sender_id contained in the registration_id does not match the sender_id used to register with the GCM servers.
 	 */
 	public static final String ERROR_MISMATCH_SENDER_ID = "MismatchSenderId";
 
 	/**
-	 * The user has uninstalled the application or turned off notifications.
-	 * Sender should stop sending messages to this device and delete the
-	 * registration_id. The client needs to re-register with the GCM servers to
-	 * receive notifications again.
+	 * The user has uninstalled the application or turned off notifications. Sender should stop sending messages to this device and delete the registration_id. The client needs to re-register with the GCM servers to receive notifications again.
 	 */
 	public static final String ERROR_NOT_REGISTERED = "NotRegistered";
 
 	/**
-	 * The payload of the message is too big, see the limitations.
-	 * Reduce the size of the message.
+	 * The payload of the message is too big, see the limitations. Reduce the size of the message.
 	 */
 	public static final String ERROR_MESSAGE_TOO_BIG = "MessageTooBig";
 
@@ -109,16 +101,12 @@ public final class Constants {
 	public static final String ERROR_MISSING_COLLAPSE_KEY = "MissingCollapseKey";
 
 	/**
-	 * A particular message could not be sent because the GCM servers were not
-	 * available. Used only on JSON requests, as in plain text requests
-	 * unavailability is indicated by a 503 response.
+	 * A particular message could not be sent because the GCM servers were not available. Used only on JSON requests, as in plain text requests unavailability is indicated by a 503 response.
 	 */
 	public static final String ERROR_UNAVAILABLE = "Unavailable";
 
 	/**
-	 * A particular message could not be sent because the GCM servers encountered
-	 * an error. Used only on JSON requests, as in plain text requests internal
-	 * errors are indicated by a 500 response.
+	 * A particular message could not be sent because the GCM servers encountered an error. Used only on JSON requests, as in plain text requests internal errors are indicated by a 500 response.
 	 */
 	public static final String ERROR_INTERNAL_SERVER_ERROR = "InternalServerError";
 
@@ -133,8 +121,7 @@ public final class Constants {
 	public static final String TOKEN_MESSAGE_ID = "id";
 
 	/**
-	 * Token returned by GCM when the requested registration id has a canonical
-	 * value.
+	 * Token returned by GCM when the requested registration id has a canonical value.
 	 */
 	public static final String TOKEN_CANONICAL_REG_ID = "registration_id";
 
@@ -164,8 +151,7 @@ public final class Constants {
 	public static final String JSON_FAILURE = "failure";
 
 	/**
-	 * JSON-only field representing the number of messages with a canonical
-	 * registration id.
+	 * JSON-only field representing the number of messages with a canonical registration id.
 	 */
 	public static final String JSON_CANONICAL_IDS = "canonical_ids";
 

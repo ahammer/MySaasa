@@ -56,7 +56,7 @@ public class MessagePanel extends Panel {
 		add(new Label("sender.identifier"));
 		add(new Label("recipient.identifier"));
 
-		//add(new Label("body"));
+		// add(new Label("body"));
 		add(list = new ListView("messageList", new PropertyModel(this, "thread")) {
 			@Override
 			protected void populateItem(ListItem item) {
@@ -81,7 +81,7 @@ public class MessagePanel extends Panel {
 				@Override
 				protected void replyComplete(AjaxRequestTarget target) {
 					MessagePanel.this.resetThreadList();
-					//target.add(MessagePanel.this);
+					// target.add(MessagePanel.this);
 				}
 			});
 		}
@@ -109,9 +109,9 @@ public class MessagePanel extends Panel {
 			}
 		});
 
-		//Mark as read
-		//model.getObject().setRead(true);
-		//MessagingService.getInstance().saveMessage(model.getObject());
+		// Mark as read
+		// model.getObject().setRead(true);
+		// MessagingService.getInstance().saveMessage(model.getObject());
 	}
 
 	@Override
@@ -121,7 +121,7 @@ public class MessagePanel extends Panel {
 			WebsocketEvent evt = (WebsocketEvent) event.getPayload();
 			if (evt.message instanceof MessageThreadUpdatedMessaged) {
 				MessageThreadUpdatedMessaged msg = (MessageThreadUpdatedMessaged) evt.message;
-				//Message m = model.getObject();
+				// Message m = model.getObject();
 				MessagePanel.this.resetThreadList();
 
 				evt.handler.add(MessagePanel.this);

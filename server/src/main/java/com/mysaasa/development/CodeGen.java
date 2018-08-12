@@ -7,8 +7,7 @@ import com.mysaasa.api.ApiParameter;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Code generation utilities
- * Created by adam on 2014-10-16.
+ * Code generation utilities Created by adam on 2014-10-16.
  */
 public class CodeGen {
 	/**

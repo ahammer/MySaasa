@@ -35,15 +35,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Think of this class as a script.
  *
- * It attempts to getInstance certificates and prepare a .jks file that
- * jetty can use to host SSL for MySaasa domains
+ * It attempts to getInstance certificates and prepare a .jks file that jetty can use to host SSL for MySaasa domains
  *
  *
- * Edit: Revise to be like this
- * 1) Create Keystore if none exists
- * 2) Iterate over the certificates and if they are valid
- * 3) If missing or old, getInstance auth and add to keystore
- * 5) Notify SSL to regenerate
+ * Edit: Revise to be like this 1) Create Keystore if none exists 2) Iterate over the certificates and if they are valid 3) If missing or old, getInstance auth and add to keystore 5) Notify SSL to regenerate
  */
 public class SSLGen {
 
@@ -66,17 +61,13 @@ public class SSLGen {
 	}
 
 	/**
-	 * Do the SSL stuff
-	 * Create account with LetsEncrypt
-	 * - Generate Certificates
-	 * - Generate Account
-	 * Request Appropriate Challenges
-	 * -
+	 * Do the SSL stuff Create account with LetsEncrypt - Generate Certificates - Generate Account Request Appropriate Challenges -
 	 */
 	public void doSSLMagic() {
 		if (MySaasaDaemon.isLocalMode())
 			return;
-		if (1==1) return;
+		if (1 == 1)
+			return;
 		new Thread(() -> {
 			System.out.println("Updating Certificate Process");
 
@@ -92,7 +83,7 @@ public class SSLGen {
 				System.out.println("Certificate Process Uncaught Exception!!");
 				e.printStackTrace();
 			}
-		} ).start();
+		}).start();
 
 	}
 
@@ -149,9 +140,7 @@ public class SSLGen {
 	}
 
 	/**
-	 * Check if we have a
-	 * /opt/mysaasa/certificates/instance.? <- Account Certificate
-	 * /opt/mysaasa/certificates/domain/certificate.?
+	 * Check if we have a /opt/mysaasa/certificates/instance.? <- Account Certificate /opt/mysaasa/certificates/domain/certificate.?
 	 */
 	private void loadApplicationCertificate() throws IOException {
 		String certificatePath = getCertPath();
@@ -186,7 +175,7 @@ public class SSLGen {
 					if (!website.organization.enabled)
 						return false;
 					return !website.production.contains(".test");
-				} )
+				})
 				.flatMap(website -> {
 					ArrayList<String> activeDomains = new ArrayList<>();
 					if (website.production != null)
@@ -194,7 +183,7 @@ public class SSLGen {
 					List<Domain> domains = website.getDomains();
 					domains.forEach(domain -> activeDomains.add(domain.domain));
 					return activeDomains.stream();
-				} )
+				})
 				.collect(Collectors.toList());
 	}
 
@@ -237,7 +226,7 @@ public class SSLGen {
 				certs = new X509Certificate[]{cert, chain[0]};
 			}
 
-			//Wipe and reload
+			// Wipe and reload
 			if (mainKeyStore.containsAlias(site)) {
 				mainKeyStore.deleteEntry(site);
 			}
@@ -249,8 +238,8 @@ public class SSLGen {
 			System.out.println("Added cert to keystore: " + site);
 		} catch (AcmeRateLimitExceededException e) {
 			System.out.println("Rate Limit Exceeded: " + site);
-			//Skip this one
-			//Rate Limit Exceeded
+			// Skip this one
+			// Rate Limit Exceeded
 		}
 	}
 

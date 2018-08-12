@@ -59,15 +59,11 @@ public class OrganizationManagement extends Panel {
 			}
 		});
 
-		/*
-		add(linkSubscription = new AjaxLink("subscription") {
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				//MessageHelpers.editEventMessage(target, new CompoundPropertyModel<Cart>(model.getObject().getSubscription()));
-			}
-		});*/
+		/* add(linkSubscription = new AjaxLink("subscription") {
+		 * 
+		 * @Override public void onClick(AjaxRequestTarget target) { //MessageHelpers.editEventMessage(target, new CompoundPropertyModel<Cart>(model.getObject().getSubscription())); } }); */
 
-		//add(wallet = new OrganizationWalletManager("wallet", model));
+		// add(wallet = new OrganizationWalletManager("wallet", model));
 		add(feedback = new FeedbackPanel("feedback"));
 		add(new ContactInfoEditor("contactInfo", new CompoundPropertyModel<ContactInfo>(model.getObject().getContactInfo())) {
 			@Override
@@ -111,8 +107,8 @@ public class OrganizationManagement extends Panel {
 		Organization o = (Organization) getDefaultModelObject();
 		labelEdit.setVisible(o.getId() != 0);
 		labelNew.setVisible(o.getId() == 0);
-		//linkSubscription.setVisible((o.getSubscription() != null));
-		//wallet.setVisible(o.getId() != 0);
+		// linkSubscription.setVisible((o.getSubscription() != null));
+		// wallet.setVisible(o.getId() != 0);
 
 	}
 

@@ -62,13 +62,13 @@ public class User implements Serializable {
 		this.organization = org;
 	}
 
-	/*
-	* Converts a PlainText password into a hashed password.
-	*
-	* @Param password
-	* @Throws NullPointerException if password = null
-	* @Throws IllegalStateException if Password can't be hashed because of Exception.
-	*/
+	/* Converts a PlainText password into a hashed password.
+	 *
+	 * @Param password
+	 * 
+	 * @Throws NullPointerException if password = null
+	 * 
+	 * @Throws IllegalStateException if Password can't be hashed because of Exception. */
 	public static String calculatePasswordHash(String password) {
 		if (password == null)
 			throw new NullPointerException("password can not be null");
@@ -168,7 +168,7 @@ public class User implements Serializable {
 
 	public void setContactInfo(ContactInfo contactInfo) {
 		if (contactInfo == null)
-			contactInfo = new ContactInfo(); //Fix for old accounts without default Contact Info
+			contactInfo = new ContactInfo(); // Fix for old accounts without default Contact Info
 		this.contactInfo = contactInfo;
 
 	}
@@ -179,7 +179,8 @@ public class User implements Serializable {
 	}
 
 	/**
-	 * @param identifier the expected identifier
+	 * @param identifier
+	 *            the expected identifier
 	 */
 	public void setIdentifier(String identifier) {
 		this.identifier = identifier;
@@ -205,7 +206,7 @@ public class User implements Serializable {
 		this.password_md5 = password_md5;
 	}
 
-	//Hashes and set's the password
+	// Hashes and set's the password
 	public void setPassword(String password) {
 		setPassword_md5(PasswordHash.createHash(password));
 	}
@@ -240,10 +241,10 @@ public class User implements Serializable {
 	}
 
 	public enum AccessLevel {
-		ROOT(100), //All Access (hosting+all)
-		ORG(70), //All Organization Access (blog+website+users)
-		WWW(30), //All Website access (blog+website)
-		GUEST(0); //Visitors, Members, whatever you want to call them, but not Admin users
+		ROOT(100), // All Access (hosting+all)
+		ORG(70), // All Organization Access (blog+website+users)
+		WWW(30), // All Website access (blog+website)
+		GUEST(0); // Visitors, Members, whatever you want to call them, but not Admin users
 		public final int priority;
 
 		AccessLevel(int i) {

@@ -14,8 +14,7 @@ import javax.servlet.http.HttpSession;
 import java.util.Date;
 
 /**
- * Some information about the session for the client
- * So they can make more informed decisions about whether to login or not
+ * Some information about the session for the client So they can make more informed decisions about whether to login or not
  */
 public class SessionSummary {
 	@Expose
@@ -35,7 +34,7 @@ public class SessionSummary {
 			HttpSession session = wr.getContainerRequest().getSession();
 			this.lengthSeconds = session.getMaxInactiveInterval();
 		} else {
-			this.lengthSeconds = 0; //Unknown
+			this.lengthSeconds = 0; // Unknown
 		}
 	}
 

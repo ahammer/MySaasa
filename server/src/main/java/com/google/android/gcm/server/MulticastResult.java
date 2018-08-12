@@ -89,35 +89,35 @@ public final class MulticastResult implements Serializable {
 	}
 
 	/**
-	 *  @return Gets the number of successful messages.
+	 * @return Gets the number of successful messages.
 	 */
 	public int getSuccess() {
 		return success;
 	}
 
 	/**
-	 *  @return Gets the total number of messages sent, regardless of the status.
+	 * @return Gets the total number of messages sent, regardless of the status.
 	 */
 	public int getTotal() {
 		return success + failure;
 	}
 
 	/**
-	 *  @return Gets the number of failed messages.
+	 * @return Gets the number of failed messages.
 	 */
 	public int getFailure() {
 		return failure;
 	}
 
 	/**
-	 *  @return Gets the number of successful messages that also returned a canonical registration id.
+	 * @return Gets the number of successful messages that also returned a canonical registration id.
 	 */
 	public int getCanonicalIds() {
 		return canonicalIds;
 	}
 
 	/**
-	 *  @return Gets the results of each individual message, which is immutable.
+	 * @return Gets the results of each individual message, which is immutable.
 	 */
 	public List<Result> getResults() {
 		return results;

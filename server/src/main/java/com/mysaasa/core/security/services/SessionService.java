@@ -21,7 +21,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class SessionService {
 	public static final String NAME = "SecurityService";
 
-	//These fields are for the current local Session
+	// These fields are for the current local Session
 	private Session currentLocalSession;
 	private User currentLocalUser;
 
@@ -29,11 +29,11 @@ public class SessionService {
 		return NAME;
 	}
 
-	//A map of all sessions by their ID for lookup
-	private final Map<String, Session> sessionMap = new HashMap<>(); //To be able to find sessions by string
-	private final Map<Session, WebsiteSession> websiteSessionMap = new HashMap<>(); //A Map of Website Sessions. Contains reference to Users Cart
-	private final Map<Session, SecurityContext> authenticationMap = new HashMap<>(); //A Map of Security Contexts to Sessions
-	private final Map<Session, AdminSession> adminSessionMap = new HashMap<>(); //A Map of Admin Sessions
+	// A map of all sessions by their ID for lookup
+	private final Map<String, Session> sessionMap = new HashMap<>(); // To be able to find sessions by string
+	private final Map<Session, WebsiteSession> websiteSessionMap = new HashMap<>(); // A Map of Website Sessions. Contains reference to Users Cart
+	private final Map<Session, SecurityContext> authenticationMap = new HashMap<>(); // A Map of Security Contexts to Sessions
+	private final Map<Session, AdminSession> adminSessionMap = new HashMap<>(); // A Map of Admin Sessions
 
 	public static SessionService get() {
 		MySaasa s = MySaasa.getInstance();
@@ -48,7 +48,8 @@ public class SessionService {
 	/**
 	 * Unregister/Signout of a session, this will clear the mappings for the session
 	 *
-	 * @param session session
+	 * @param session
+	 *            session
 	 */
 	public void unregisterSession(Session session) {
 		authenticationMap.remove(session);
@@ -67,7 +68,7 @@ public class SessionService {
 	}
 
 	public SecurityContext getSecurityContext(Session mSession) {
-		//When we are in Local Dev mode we will always use the last registered sess
+		// When we are in Local Dev mode we will always use the last registered sess
 		if (DefaultPreferences.isLocalDevMode()) {
 			return authenticationMap.get(currentLocalSession);
 		}
@@ -77,8 +78,10 @@ public class SessionService {
 	/**
 	 * Register a User to a Session
 	 *
-	 * @param mSession session
-	 * @param user user
+	 * @param mSession
+	 *            session
+	 * @param user
+	 *            user
 	 */
 	public void registerUser(Session mSession, User user) {
 		adminSessionMap.remove(mSession);
@@ -117,8 +120,8 @@ public class SessionService {
 		}
 	}
 
-	//If we want to notify the system durint a ajax request that a setting has been updated
-	//This is useful to reload controls that might rely on the settings.
+	// If we want to notify the system durint a ajax request that a setting has been updated
+	// This is useful to reload controls that might rely on the settings.
 	public void notifyAdminSessionUpdate(AjaxRequestTarget target) {
 		AjaxIntent intent = new AjaxIntent(target);
 		intent.setAction(ACTIONS.ACTION_USER_PREFS_UPDATED);
@@ -136,8 +139,11 @@ public class SessionService {
 
 	/**
 	 * An AdminSession. Sometimes shared between the JPA and Website
-	 * @param session session
-	 * @param adminSession adminSession
+	 * 
+	 * @param session
+	 *            session
+	 * @param adminSession
+	 *            adminSession
 	 */
 	public void registerAdminSession(Session session, AdminSession adminSession) {
 		checkNotNull(session);

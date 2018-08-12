@@ -7,9 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This maps a Method with a list of expected parameters and names
- * names must be manually annotated because they are not available at run time
- * via reflection
+ * This maps a Method with a list of expected parameters and names names must be manually annotated because they are not available at run time via reflection
  */
 public class ApiMapping implements Serializable {
 	private final List<ApiParameter> parameters = new ArrayList<>();

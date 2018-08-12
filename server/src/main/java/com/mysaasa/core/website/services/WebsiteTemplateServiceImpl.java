@@ -17,10 +17,10 @@ import org.apache.wicket.request.cycle.RequestCycle;
 public class WebsiteTemplateServiceImpl extends WebsiteTemplateService {
 	public WebsiteTemplateServiceImpl() {}
 
-	//  Looks up the text bound to this content tag. If DebugMode is enabled
-	//  The content will be wrapped in a Span and made editable.
-	//  @Params The name of this ContentBinding
-	//  @Returns the String Content RunContext, hiding behind the Content Binding.
+	// Looks up the text bound to this content tag. If DebugMode is enabled
+	// The content will be wrapped in a Span and made editable.
+	// @Params The name of this ContentBinding
+	// @Returns the String Content RunContext, hiding behind the Content Binding.
 	@Override
 	public String bind(String name, String defaultValue) {
 		WebsiteService service = MySaasa.getInstance().getInjector().getProvider(WebsiteService.class).get();

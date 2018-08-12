@@ -42,23 +42,23 @@ public class MySaasaModule extends com.google.inject.AbstractModule {
 	protected void configure() {
 
 		Set<Class> bound = new HashSet<>();
-		//Phase 1 Create Appropriate Services
+		// Phase 1 Create Appropriate Services
 		for (Class _class : reflections.getTypesAnnotatedWith(SimpleService.class)) {
 			Class abstractParent = findAbstractParent(_class);
 
-			//If a class is already bound, we can skip this one
+			// If a class is already bound, we can skip this one
 			if (bound.contains(_class) || bound.contains(abstractParent))
 				continue;
 
-			//Deprecated? Not sure why we have this
+			// Deprecated? Not sure why we have this
 			if (abstractParent == Object.class)
 				throw new RuntimeException(abstractParent + "->" + _class);
 
-			//Look up the service, and bind it in the module
+			// Look up the service, and bind it in the module
 			try {
 				SimpleService service = (SimpleService) _class.getAnnotations()[0];
 				if (abstractParent != _class) {
-					//Always bind by the Abstract parents class name, not the implementation
+					// Always bind by the Abstract parents class name, not the implementation
 					bound.add(abstractParent);
 					bind(abstractParent).toProvider(new ServiceProvider(_class.newInstance())).asEagerSingleton();
 				} else {
@@ -83,6 +83,7 @@ public class MySaasaModule extends com.google.inject.AbstractModule {
 	}
 
 	Logger logger = LoggerFactory.getLogger(MySaasa.class);
+
 	@Provides
 	public Logger providesLogger() {
 		return logger;
@@ -112,7 +113,7 @@ public class MySaasaModule extends com.google.inject.AbstractModule {
 
 		Map<String, String> map = new HashMap<>();
 
-		//Could be reduced with cohesion of arguments
+		// Could be reduced with cohesion of arguments
 		String url = DefaultPreferences.getProperties().getProperty(DefaultPreferences.PREF_DB_URL);
 		String driver = DefaultPreferences.getProperties().getProperty(DefaultPreferences.PREF_DB_DRIVER);
 		String username = DefaultPreferences.getProperties().getProperty(DefaultPreferences.PREF_DB_USERNAME);
@@ -135,7 +136,7 @@ public class MySaasaModule extends com.google.inject.AbstractModule {
 		for (Class aClass : subTypesOf) {
 			Provider provider = injector.getProvider(aClass);
 
-			//If Da
+			// If Da
 			if (provider != null) {
 				Object target = provider.get();
 				injector.injectMembers(target);

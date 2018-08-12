@@ -20,8 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
-This is abstract class so that a AutoCompleteText box can be Paired with a ListView of some sort
- in order to manage the list etc.
+ * This is abstract class so that a AutoCompleteText box can be Paired with a ListView of some sort in order to manage the list etc.
  */
 public abstract class MultiSelectWidget<T> extends Panel {
 	private final SelectedChoicesListView selectedChoicesView;
@@ -31,11 +30,15 @@ public abstract class MultiSelectWidget<T> extends Panel {
 
 	/**
 	 * Creates a new MultiSelectWidget, provide it a list of selected items of type T
-	
-	 * @param id id
-	 * @param model model
-	 * @param placeholderModel pm
-	 * @param buttonModel bm
+	 * 
+	 * @param id
+	 *            id
+	 * @param model
+	 *            model
+	 * @param placeholderModel
+	 *            pm
+	 * @param buttonModel
+	 *            bm
 	 */
 	public MultiSelectWidget(String id, IModel<List<T>> model, IModel<String> placeholderModel, IModel<String> buttonModel) {
 
@@ -51,7 +54,7 @@ public abstract class MultiSelectWidget<T> extends Panel {
 			throw (new IllegalArgumentException("Not of type list " + getDefaultModelObject()));
 		}
 
-		//Setup
+		// Setup
 		setOutputMarkupId(true);
 		Iterator<T> choices = getChoices();
 		List<T> choices_list = IteratorUtils.toList(choices);
@@ -65,7 +68,9 @@ public abstract class MultiSelectWidget<T> extends Panel {
 	 * Refreshes a list
 	 *
 	 * Should be done with model but it's a little funny
-	 * @param target target
+	 * 
+	 * @param target
+	 *            target
 	 */
 	public void refresh(AjaxRequestTarget target) {
 		List<T> list = (List<T>) MultiSelectWidget.this.getDefaultModel().getObject();
@@ -175,7 +180,8 @@ public abstract class MultiSelectWidget<T> extends Panel {
 	/**
 	 * Convert a String into Type T.
 	 *
-	 * @param string string
+	 * @param string
+	 *            string
 	 * @return to the type
 	 */
 	public abstract T fromString(String string);
@@ -183,7 +189,8 @@ public abstract class MultiSelectWidget<T> extends Panel {
 	/**
 	 * Convert a object into a String
 	 *
-	 * @param object object
+	 * @param object
+	 *            object
 	 * @return string
 	 */
 	protected abstract String convertToString(T object);
@@ -191,8 +198,10 @@ public abstract class MultiSelectWidget<T> extends Panel {
 	/**
 	 * Each list item needs to be created by the implementing class
 	 *
-	 * @param item item
-	 * @param selected selected
+	 * @param item
+	 *            item
+	 * @param selected
+	 *            selected
 	 */
 	public abstract void populateListItem(final ListItem<T> item, boolean selected);
 

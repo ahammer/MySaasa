@@ -40,29 +40,28 @@ public class MySaasa extends WebApplication {
 	private ModuleManager moduleManager;
 	private boolean initialized = false;
 
-	public MySaasa()  {
+	public MySaasa() {
 		if (MySaasaDaemon.isLocalMode()) {
 			setOfflineMode(true);
 		}
 	}
 
-
 	/**
 	 * Injection typing shortcut
+	 * 
 	 * @param instance
 	 */
 	public static void inject(Object instance) {
-		((MySaasa)WebApplication.get()).getInjector().injectMembers(instance);
+		((MySaasa) WebApplication.get()).getInjector().injectMembers(instance);
 	}
 
 	public static MySaasa getInstance() {
-		return ((MySaasa)WebApplication.get());
+		return ((MySaasa) WebApplication.get());
 	}
 
 	public static <T> T getService(Class<T> type) {
 		return getInstance().getInjector().getProvider(type).get();
 	}
-
 
 	@Override
 	public void init() {
@@ -80,7 +79,7 @@ public class MySaasa extends WebApplication {
 		HttpsConfig config = new HttpsConfig();
 		config.setHttpsPort(DefaultPreferences.getSecurePort());
 
-		//CodeGen.generateRetrofitCode();
+		// CodeGen.generateRetrofitCode();
 		new SSLGen().doSSLMagic();
 		initialized = true;
 
@@ -120,8 +119,7 @@ public class MySaasa extends WebApplication {
 	}
 
 	/**
-	 * Checks the two properties for setup, userInitialized and dbInitialized
-	 * These are optimizations
+	 * Checks the two properties for setup, userInitialized and dbInitialized These are optimizations
 	 *
 	 * @return True if setup correctly, with a root user/organization and
 	 */
@@ -130,14 +128,12 @@ public class MySaasa extends WebApplication {
 		return p.keySet().size() > 0;
 	}
 
-
-
 	private String getPropertiesFilePath() {
 		return DefaultPreferences.getConfigPath() + "/" + DefaultPreferences.SETTINGS_FILE;
 	}
 
 	/**
-	 *  Saves the properties files, if you have modified them call this and it'll write the new ones to disk.
+	 * Saves the properties files, if you have modified them call this and it'll write the new ones to disk.
 	 */
 	public void saveProperties() {
 		try {
@@ -167,10 +163,10 @@ public class MySaasa extends WebApplication {
 	}
 
 	public static IClassPanelAdapter getClassPanelAdapter(Class aClass) {
-		return ((MySaasa)WebApplication.get()).moduleManager.getClassPanelAdapter(aClass);
+		return ((MySaasa) WebApplication.get()).moduleManager.getClassPanelAdapter(aClass);
 	}
 
-	//Can set before this starts
+	// Can set before this starts
 	protected void setOfflineMode(boolean b) {
 		this.IN_MEMORY_DATABASE = b;
 	}

@@ -19,11 +19,9 @@ import static com.google.common.base.Preconditions.checkArgument;
  *
  * Basically, we look for SimpleService annotated classes, we bindTemplateService them to the system
  *
- * If they are a ApiService, we bind them with the ApiHelperService, which will make them available
- * to API urls, visible in /ApiGuide
+ * If they are a ApiService, we bind them with the ApiHelperService, which will make them available to API urls, visible in /ApiGuide
  *
- * For templating, if it extends TemplateService and has a TEMPLATE_SIMPLE_NAME static string,
- * it will be bound to the Template engine and available at runtime.
+ * For templating, if it extends TemplateService and has a TEMPLATE_SIMPLE_NAME static string, it will be bound to the Template engine and available at runtime.
  *
  * For templating, an additional annotation is required on the Interface that is to be exposed . See @TemplateEntryPoint
  *
@@ -65,9 +63,7 @@ public class ModuleManager {
 		return modules;
 	}
 
-	/*
-	Move to annotation based loading
-	 */
+	/* Move to annotation based loading */
 	private void loadModules() {
 
 		Reflections reflections;
@@ -108,7 +104,7 @@ public class ModuleManager {
 		}
 	}
 
-	//TODO use the DI system to calculate what to load
+	// TODO use the DI system to calculate what to load
 	private static void loadServices() {
 		Collection<Binding<?>> bindings = MySaasa.getInstance().getInjector().getBindings().values();
 		for (Binding b : bindings) {
@@ -124,7 +120,9 @@ public class ModuleManager {
 
 	/**
 	 * The Modules register panels to classes for editing, this is how it's looked up
-	 * @param aClass class
+	 * 
+	 * @param aClass
+	 *            class
 	 * @return adapter
 	 */
 	public IClassPanelAdapter getClassPanelAdapter(Class aClass) {

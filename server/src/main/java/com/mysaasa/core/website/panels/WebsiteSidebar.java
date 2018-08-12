@@ -51,17 +51,12 @@ public class WebsiteSidebar extends Panel {
 
 	@Override
 	public void renderHead(IHeaderResponse response) {
-		//        if(ajaxInlineEditorCallback == null) throw new NullPointerException();
+		// if(ajaxInlineEditorCallback == null) throw new NullPointerException();
 		String callbackUrl = ajaxInlineEditorCallback.getCallbackUrl().toString();
 
-		/*
-		SendMessageToAdmin
-		    IN: msg (string), origin (source from browser)
-		    Sends a message to the callback Url of the behaviour.
-		    It sends both the msg and the origin.
-		
-		    Output: Async call to send the update.
-		*/
+		/* SendMessageToAdmin IN: msg (string), origin (source from browser) Sends a message to the callback Url of the behaviour. It sends both the msg and the origin.
+		 * 
+		 * Output: Async call to send the update. */
 
 		response.render(JavaScriptHeaderItem.forScript(BlogTemplateService.callbackFunction.replace("%callbackUrl%", callbackUrl), "MessageHook"));
 	}
@@ -89,7 +84,7 @@ public class WebsiteSidebar extends Panel {
 		add(templateOptions = new AjaxLink("templateOptions", new Model("Test")) {
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				//Install this template and then refresh the panel, clear the theme selection
+				// Install this template and then refresh the panel, clear the theme selection
 				AdminSession adminSession = AdminSession.get();
 				WebsiteService.get().installTemplateIntoWebsiteStaging(adminSession.getTheme(), (Website) WebsiteSidebar.this.getDefaultModelObject());
 				adminSession.setTheme(null);
@@ -120,7 +115,9 @@ public class WebsiteSidebar extends Panel {
 
 	/**
 	 * Internal Event Bus
-	 * @param event event
+	 * 
+	 * @param event
+	 *            event
 	 */
 	@Override
 	public void onEvent(IEvent event) {
@@ -161,7 +158,7 @@ public class WebsiteSidebar extends Panel {
 				String json = postParameters.getParameterValue("json").toString();
 
 				if (id.startsWith("http")) {
-					//This is when you click something in the iframe, it updates the FileDetails on the left
+					// This is when you click something in the iframe, it updates the FileDetails on the left
 					System.out.println("Path: " + id);
 					Url url = Url.parse(id);
 					Website w = getService(HostingService.class).findWebsite(url);
@@ -206,9 +203,9 @@ public class WebsiteSidebar extends Panel {
 
 	private void editBlogPost(final AjaxRequestTarget target, String id) {
 		BlogService service = BlogService.get();
-		//if (1==1)throw new RuntimeException(id);
+		// if (1==1)throw new RuntimeException(id);
 		Organization org = ((Website) WebsiteSidebar.this.getDefaultModelObject()).getOrganization();
-		Long _id = Long.parseLong(id.split("_ID_")[1]); //Same ID but as a long
+		Long _id = Long.parseLong(id.split("_ID_")[1]); // Same ID but as a long
 		BlogPost post = null;
 		if (_id != 0) {
 			post = service.getBlogPostById(_id);
@@ -222,7 +219,7 @@ public class WebsiteSidebar extends Panel {
 	private void inlineSaveBlogPost(final AjaxRequestTarget target, String title, String subtitle, String summary, String msg, String id, String json, boolean publish) {
 		BlogService service = BlogService.get();
 		Organization org = ((Website) WebsiteSidebar.this.getDefaultModelObject()).getOrganization();
-		Long _id = Long.parseLong(id.split("_ID_")[1]); //Same ID but as a long
+		Long _id = Long.parseLong(id.split("_ID_")[1]); // Same ID but as a long
 		BlogPost post;
 		if (_id != 0) {
 			post = service.getBlogPostById(_id);
@@ -253,9 +250,9 @@ public class WebsiteSidebar extends Panel {
 
 		service.saveBlogPost(post);
 		if (_id == 0 || publish) {
-			//If this is new, send the broadcast that it was saved/updated.
-			//Normal inline editing is WYSIWYG so no update necessary, but after created a new post we should refresh
-			//so User can create another
+			// If this is new, send the broadcast that it was saved/updated.
+			// Normal inline editing is WYSIWYG so no update necessary, but after created a new post we should refresh
+			// so User can create another
 			send(MySaasa.getInstance(), Broadcast.BREADTH, new BlogPostModifiedMessage() {
 				@Override
 				public AjaxRequestTarget getAjaxRequestTarget() {

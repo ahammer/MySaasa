@@ -32,8 +32,10 @@ public class OrganizationService {
 	/**
 	 * TODO Maybe inline some of this and make it one big transaction
 	 *
-	 * @param organization org
-	 * @throws IllegalStateException exception
+	 * @param organization
+	 *            org
+	 * @throws IllegalStateException
+	 *             exception
 	 */
 	public void disableOrganization(Organization organization) throws IllegalStateException {
 		checkNotNull(organization);

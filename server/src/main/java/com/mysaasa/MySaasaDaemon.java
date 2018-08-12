@@ -33,29 +33,20 @@ public class MySaasaDaemon implements Daemon {
 	/**
 	 * The Java entry point.
 	 *
-	 * @param args Command line arguments, all ignored.
+	 * @param args
+	 *            Command line arguments, all ignored.
 	 */
 	public static void main(String[] args) throws Exception {
 		if (hasArgument("localmode", args)) {
 			enableLocalMode();
 			serverLauncher.start();
 
-
-			 /*
-*/
 			/*
-			HostingService hostingService = getService(HostingService.class);
-			OrganizationService orgService = OrganizationService.get();
-			Organization organization = new Organization();
-			organization.setName("test");
-			organization.setContactInfo(new ContactInfo());
-			organization = organization.save();
-
-
-			User test = new User("test", "test", User.AccessLevel.ROOT);
-			test.setOrganization(organization);
-			UserService.get().saveUser(test);
 			*/
+			/* HostingService hostingService = getService(HostingService.class); OrganizationService orgService = OrganizationService.get(); Organization organization = new Organization(); organization.setName("test"); organization.setContactInfo(new ContactInfo()); organization = organization.save();
+			 * 
+			 * 
+			 * User test = new User("test", "test", User.AccessLevel.ROOT); test.setOrganization(organization); UserService.get().saveUser(test); */
 
 		} else {
 			serverLauncher.start();
@@ -67,7 +58,7 @@ public class MySaasaDaemon implements Daemon {
 					if (sc.hasNext()) {
 						String nextLine = sc.nextLine();
 						if (nextLine.trim().equalsIgnoreCase("")) {
-							//Do Nothing
+							// Do Nothing
 						} else if (nextLine.toLowerCase().trim().equals("stop")) {
 							serverLauncher.stop();
 							running = false;
@@ -76,7 +67,7 @@ public class MySaasaDaemon implements Daemon {
 							System.out.println("Command not recognized: " + nextLine);
 						}
 					} else {
-						//Do Nothing
+						// Do Nothing
 					}
 				} catch (NoSuchElementException e) {
 					e.printStackTrace();
@@ -89,12 +80,12 @@ public class MySaasaDaemon implements Daemon {
 	private static void enableLocalMode() {
 
 		System.out.println("Enabling Test/Localhost Mode");
-		//Use in memory database
+		// Use in memory database
 		MySaasaDaemon.LOCAL_MODE = true;
 		MySaasa.IN_MEMORY_DATABASE = true;
 
-		//Add localhost
-		//Add default users
+		// Add localhost
+		// Add default users
 	}
 
 	private static boolean hasArgument(String desired, String[] args) {
@@ -113,7 +104,7 @@ public class MySaasaDaemon implements Daemon {
 	// Implementing the Daemon interface is not required for Windows but is for Linux
 	@Override
 	public void init(DaemonContext arg0) throws Exception {
-		//log.debug("Daemon init");
+		// log.debug("Daemon init");
 	}
 
 	@Override
@@ -125,7 +116,7 @@ public class MySaasaDaemon implements Daemon {
 	@Override
 	public void stop() throws Exception {
 		server.stop();
-		//System.exit(0);
+		// System.exit(0);
 	}
 
 	@Override

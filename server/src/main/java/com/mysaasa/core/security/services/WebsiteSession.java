@@ -5,12 +5,11 @@ import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 
 /**
- * This class represents a basic user session, it contains a cart right now and nothing else
- * Created by adam on 2014-10-20.
+ * This class represents a basic user session, it contains a cart right now and nothing else Created by adam on 2014-10-20.
  */
 public class WebsiteSession implements Serializable {
 
-	//The Users Order ID
+	// The Users Order ID
 	@Expose
 	private String orderUid;
 
@@ -26,12 +25,7 @@ public class WebsiteSession implements Serializable {
 	 */
 	public void createNewCart() {
 		throw new RuntimeException("This needs to move");
-		/*
-		Cart cart = new Cart();
-		cart.setOrganization(Website.getCurrent().getOrganization());
-		cart = OrderService.getInstance().save(cart);
-		orderUid = cart.getUid();
-		*/
+		/* Cart cart = new Cart(); cart.setOrganization(Website.getCurrent().getOrganization()); cart = OrderService.getInstance().save(cart); orderUid = cart.getUid(); */
 	}
 
 	/**
@@ -39,10 +33,8 @@ public class WebsiteSession implements Serializable {
 	 *
 	 * @return
 	 *
-	 * public Cart getCart() {
-	return OrderService.getInstance().findCartByUid(orderUid);
-	}
-	
+	 * 		public Cart getCart() { return OrderService.getInstance().findCartByUid(orderUid); }
+	 * 
 	 */
 
 }

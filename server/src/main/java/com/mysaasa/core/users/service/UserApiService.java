@@ -38,7 +38,7 @@ public class UserApiService implements IApiService {
 	public ApiResult<Website> WebsiteTest() {
 		return new ApiSuccess<Website>(MySaasa.getInstance().getInjector().getProvider(
 
-		HostingService.class).get().findWebsite(Url.parse("http://www.metalrain.ca")));
+				HostingService.class).get().findWebsite(Url.parse("http://www.metalrain.ca")));
 	}
 
 	@ApiCall
@@ -94,7 +94,7 @@ public class UserApiService implements IApiService {
 	public ApiResult loginUser(String identifier, String password) {
 		Session s = Session.get();
 		SessionService.get().unregisterSession(s);
-		//Look for user
+		// Look for user
 		User u = null;
 		try {
 			u = UserService.get().findUser(identifier, password);
@@ -123,6 +123,7 @@ public class UserApiService implements IApiService {
 
 	/**
 	 * Keep-alive
+	 * 
 	 * @return "pong"
 	 */
 	@ApiCall

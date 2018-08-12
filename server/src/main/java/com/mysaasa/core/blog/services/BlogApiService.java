@@ -186,7 +186,9 @@ public class BlogApiService implements IApiService {
 	 * Comments without children will be deleted
 	 *
 	 * Comment with children will be marked [DELETED]
-	 * @param comment_id the id of the comment we want to delete
+	 * 
+	 * @param comment_id
+	 *            the id of the comment we want to delete
 	 * @return the result of the delete
 	 */
 	@ApiCall

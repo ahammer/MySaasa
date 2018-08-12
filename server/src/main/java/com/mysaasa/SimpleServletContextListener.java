@@ -11,8 +11,7 @@ import java.sql.SQLException;
 /**
  * We handle the life span of the servlet,
  *
- * which is the startup/shutdown of the internal DB as well.
- * Created by Adam on 3/23/14.
+ * which is the startup/shutdown of the internal DB as well. Created by Adam on 3/23/14.
  */
 public class SimpleServletContextListener implements ServletContextListener {
 	private final Logger logger = org.slf4j.LoggerFactory.getLogger(SimpleServletContextListener.class);

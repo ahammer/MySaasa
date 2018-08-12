@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
-* Created by adam on 2014-09-26.
-*/
+ * Created by adam on 2014-09-26.
+ */
 public class SecurityContext implements Serializable {
 	@Expose
 	private final User user;
@@ -45,8 +45,8 @@ public class SecurityContext implements Serializable {
 
 	public List<Website> getWebsites() {
 		switch (getUser().getAccessLevel()) {
-			//case ROOT:
-			//			return HostingService.getInstance().getWebsites();
+		// case ROOT:
+		// return HostingService.getInstance().getWebsites();
 		case GUEST:
 			return ListUtils.EMPTY_LIST;
 

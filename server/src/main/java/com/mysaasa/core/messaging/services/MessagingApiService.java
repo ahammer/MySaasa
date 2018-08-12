@@ -26,7 +26,7 @@ import javax.inject.Inject;
 public class MessagingApiService implements IApiService {
 	@Inject
 	MessagingService messagingService;
-	
+
 	@ApiCall
 	public ApiResult getMessageCount() {
 		SecurityContext sc = SessionService.get().getSecurityContext(Session.get());

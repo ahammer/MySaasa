@@ -19,8 +19,8 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import java.io.Serializable;
 
 /**
-* Created by Adam on 4/11/14.
-*/
+ * Created by Adam on 4/11/14.
+ */
 public class SetupUserForm extends Form {
 
 	private final WebMarkupContainer ready;
@@ -97,7 +97,7 @@ public class SetupUserForm extends Form {
 			u.setOrganization(o);
 			UserService.get().saveUser(u);
 			DefaultPreferences.getProperties().setProperty("baseDomain", baseDomain.getValue());
-			//                MySaasa.getInstance().getProperties().setProperty(MySaasa.getInstance().PREF_USER_INITIALIZED, "true");
+			// MySaasa.getInstance().getProperties().setProperty(MySaasa.getInstance().PREF_USER_INITIALIZED, "true");
 			MySaasa.getInstance().saveProperties();
 			info("Creating user");
 			send(getPage(), Broadcast.BREADTH, new SetupMessage() {
@@ -113,19 +113,7 @@ public class SetupUserForm extends Form {
 	public void onConfigure() {
 		super.onConfigure();
 		ready.setVisible(false);
-		/*
-		if (Boolean.valueOf(MySaasa.getInstance().getProperties().getProperty(MySaasa.getInstance().PREF_USER_INITIALIZED, "false"))) {
-		    ready.setVisible(true);
-		    email.setVisible(false);
-		    pass.setVisible(false);
-		    org.setVisible(false);
-		    button.setVisible(false);
-		    usernameLabel.setVisible(false);
-		    passwordLabel.setVisible(false);
-		    orgLabel.setVisible(false);
-		    info("Already Initialized");
-		}
-		*/
+		/* if (Boolean.valueOf(MySaasa.getInstance().getProperties().getProperty(MySaasa.getInstance().PREF_USER_INITIALIZED, "false"))) { ready.setVisible(true); email.setVisible(false); pass.setVisible(false); org.setVisible(false); button.setVisible(false); usernameLabel.setVisible(false); passwordLabel.setVisible(false); orgLabel.setVisible(false); info("Already Initialized"); } */
 	}
 
 	public SetupUserForm(String id) {

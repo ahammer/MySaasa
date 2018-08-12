@@ -26,7 +26,7 @@ public class WebViewer extends Panel {
 	public WebViewer(String id, IModel<TemplateFile> model) {
 		super(id, model);
 		setOutputMarkupId(true);
-		//add( new Label("frame", model));
+		// add( new Label("frame", model));
 		if (model.getObject() != null) {
 			add(frame = new WebMarkupContainer("frame").add(new AttributeModifier("src", model.getObject().getDebugUrl())));
 		} else {
@@ -34,15 +34,13 @@ public class WebViewer extends Panel {
 		}
 	}
 
-	/*
-	 * Handle 3 events - Media Context Changed - File has been clicked - BlogAdmin has changed
+	/* Handle 3 events - Media Context Changed - File has been clicked - BlogAdmin has changed
 	 *
 	 * In both cases we show the most relevant thing
 	 *
 	 * (non-Javadoc)
 	 *
-	 * @see org.apache.wicket.Component#onEvent(org.apache.wicket.event.IEvent)
-	 */
+	 * @see org.apache.wicket.Component#onEvent(org.apache.wicket.event.IEvent) */
 	@Override
 	public void onEvent(IEvent event) {
 		if (event.getPayload() instanceof WebsiteContentUpdated) {

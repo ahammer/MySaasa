@@ -17,8 +17,7 @@ import java.io.Serializable;
 import static com.mysaasa.MySaasa.getService;
 
 /**
- * Reply in a thread, should always use the ThreadRoot as the Model, because Messages are linear, not trees.
- * Created by Adam on 3/21/2015.
+ * Reply in a thread, should always use the ThreadRoot as the Model, because Messages are linear, not trees. Created by Adam on 3/21/2015.
  */
 public abstract class MessageReplyPanel extends Panel {
 	public MessageReplyPanel(String id, IModel<Message> model) {
@@ -46,9 +45,9 @@ public abstract class MessageReplyPanel extends Panel {
 
 		@Override
 		public void renderHead(IHeaderResponse response) {
-			//On enter in text-area, submit this form
+			// On enter in text-area, submit this form
 			response.render(OnDomReadyHeaderItem.forScript("$(function(){\n" + "    $('form > textarea').on('keyup', function(e){\n" + "        if (e.keyCode == 13 && !e.altKey && !e.shiftKey && !e.ctrlKey) {\n" + "            document.getElementById('" + submitLink.getMarkupId() + "').click();\n" + "            document.getElementById('" + textArea.getMarkupId() + "').style.enabled='false';\n" + "}\n" + "    });\n" + "});"));
-			//On load/render head, we need to focus on the textarea
+			// On load/render head, we need to focus on the textarea
 			response.render(OnDomReadyHeaderItem.forScript("document.getElementById('" + textArea.getMarkupId() + "').focus()"));
 			;
 		}

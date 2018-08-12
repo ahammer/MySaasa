@@ -30,7 +30,8 @@ public class PasswordHash {
 	/**
 	 * Returns a salted PBKDF2 hash of the password.
 	 *
-	 * @param password the password to hash
+	 * @param password
+	 *            the password to hash
 	 * @return a salted PBKDF2 hash of the password
 	 */
 	private static String createHash(char[] password) {
@@ -56,7 +57,8 @@ public class PasswordHash {
 	/**
 	 * Returns a salted PBKDF2 hash of the password.
 	 *
-	 * @param password the password to hash
+	 * @param password
+	 *            the password to hash
 	 * @return a salted PBKDF2 hash of the password
 	 */
 	public static String createHash(String password) {
@@ -66,7 +68,8 @@ public class PasswordHash {
 	/**
 	 * Converts a string of hexadecimal characters into a byte array.
 	 *
-	 * @param hex the hex string
+	 * @param hex
+	 *            the hex string
 	 * @return the hex string decoded into a byte array
 	 */
 	private static byte[] fromHex(String hex) {
@@ -80,53 +83,58 @@ public class PasswordHash {
 	/**
 	 * Tests the services functionality of the PasswordHash class
 	 *
-	 * @param args ignored
+	 * @param args
+	 *            ignored
 	 */
 	public static void main(String[] args) {
 		try {
 			// Print out 10 hashes
 			for (int i = 0; i < 10; i++) {
-				//(PasswordHash.createHash("p\r\nassw0Rd!"));
+				// (PasswordHash.createHash("p\r\nassw0Rd!"));
 			}
 
 			// Test password validation
 			boolean failure = false;
-			//("Running tests...");
+			// ("Running tests...");
 			for (int i = 0; i < 100; i++) {
 				final String password = "" + i;
 				final String hash = createHash(password);
 				final String secondHash = createHash(password);
 				if (hash.equals(secondHash)) {
-					//("FAILURE: TWO HASHES ARE EQUAL!");
+					// ("FAILURE: TWO HASHES ARE EQUAL!");
 					failure = true;
 				}
 				final String wrongPassword = "" + (i + 1);
 				if (validatePassword(wrongPassword, hash)) {
-					//("FAILURE: WRONG PASSWORD ACCEPTED!");
+					// ("FAILURE: WRONG PASSWORD ACCEPTED!");
 					failure = true;
 				}
 				if (!validatePassword(password, hash)) {
-					//("FAILURE: GOOD PASSWORD NOT ACCEPTED!");
+					// ("FAILURE: GOOD PASSWORD NOT ACCEPTED!");
 					failure = true;
 				}
 			}
 			if (failure) {
-				//("TESTS FAILED!");
+				// ("TESTS FAILED!");
 			} else {
-				//("TESTS PASSED!");
+				// ("TESTS PASSED!");
 			}
 		} catch (final Exception ex) {
-			//("ERROR: " + ex);
+			// ("ERROR: " + ex);
 		}
 	}
 
 	/**
 	 * Computes the PBKDF2 hash of a password.
 	 *
-	 * @param password   the password to hash.
-	 * @param salt       the salt
-	 * @param iterations the iteration count (slowness factor)
-	 * @param bytes      the length of the hash to compute in bytes
+	 * @param password
+	 *            the password to hash.
+	 * @param salt
+	 *            the salt
+	 * @param iterations
+	 *            the iteration count (slowness factor)
+	 * @param bytes
+	 *            the length of the hash to compute in bytes
 	 * @return the PBDKF2 hash of the password
 	 */
 	private static byte[] pbkdf2(char[] password, byte[] salt, int iterations, int bytes) throws NoSuchAlgorithmException, InvalidKeySpecException {
@@ -136,12 +144,12 @@ public class PasswordHash {
 	}
 
 	/**
-	 * Compares two byte arrays in length-constant time. This comparison method is
-	 * used so that password hashes cannot be extracted from an on-line system
-	 * using a timing attack and then attacked off-line.
+	 * Compares two byte arrays in length-constant time. This comparison method is used so that password hashes cannot be extracted from an on-line system using a timing attack and then attacked off-line.
 	 *
-	 * @param a the first byte array
-	 * @param b the second byte array
+	 * @param a
+	 *            the first byte array
+	 * @param b
+	 *            the second byte array
 	 * @return true if both byte arrays are the same, false if not
 	 */
 	private static boolean slowEquals(byte[] a, byte[] b) {
@@ -155,7 +163,8 @@ public class PasswordHash {
 	/**
 	 * Converts a byte array into a hexadecimal string.
 	 *
-	 * @param array the byte array to convert
+	 * @param array
+	 *            the byte array to convert
 	 * @return a length*2 character string encoding the byte array
 	 */
 	private static String toHex(byte[] array) {
@@ -171,11 +180,15 @@ public class PasswordHash {
 	/**
 	 * Validates a password using a hash.
 	 *
-	 * @param password    the password to check
-	 * @param correctHash the hash of the valid password
+	 * @param password
+	 *            the password to check
+	 * @param correctHash
+	 *            the hash of the valid password
 	 * @return true if the password is correct, false if not
-	 * @throws  NoSuchAlgorithmException no algorithm
-	 * @throws InvalidKeySpecException invalid key
+	 * @throws NoSuchAlgorithmException
+	 *             no algorithm
+	 * @throws InvalidKeySpecException
+	 *             invalid key
 	 */
 	private static boolean validatePassword(char[] password, String correctHash) throws NoSuchAlgorithmException, InvalidKeySpecException {
 		// Decode the hash into its parameters
@@ -194,11 +207,15 @@ public class PasswordHash {
 	/**
 	 * Validates a password using a hash.
 	 *
-	 * @param password    the password to check
-	 * @param correctHash the hash of the valid password
+	 * @param password
+	 *            the password to check
+	 * @param correctHash
+	 *            the hash of the valid password
 	 * @return true if the password is correct, false if not
-	 * @throws  NoSuchAlgorithmException no algorithm
-	 * @throws InvalidKeySpecException invalid key
+	 * @throws NoSuchAlgorithmException
+	 *             no algorithm
+	 * @throws InvalidKeySpecException
+	 *             invalid key
 	 */
 	public static boolean validatePassword(String password, String correctHash) throws NoSuchAlgorithmException, InvalidKeySpecException {
 		if (password == null)

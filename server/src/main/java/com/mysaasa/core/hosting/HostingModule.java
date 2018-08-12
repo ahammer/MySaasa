@@ -75,45 +75,22 @@ public class HostingModule extends AbstractModule {
 	}
 
 	/**
-	public static class CreateHostingEditModalWindow extends CreateModalWindow {
-	
-	    private final ManageWebsiteRegistration rum;
-	    private AjaxRequestTarget target;
-	
-	    public CreateHostingEditModalWindow(ManageWebsiteRegistration rum, AjaxRequestTarget target) {
-	        this.rum = rum;
-	        this.target = target;
-	    }
-	
-	    @Override
-	    public void initialize(final ModalWindow window) {
-	        window.setTitle("Hosting Registry");
-	        window.setContent(new MyHostingManagement(window));
-	        window.setInitialWidth(400);
-	        window.setAutoSize(true);
-	        window.show(target);
-	        target = null;
-	    }
-	
-	    @Override
-	    public AjaxRequestTarget getAjaxRequestTarget() {
-	        return target;
-	    }
-	
-	    private class MyHostingManagement extends HostingManagement {
-	
-	        private final ModalWindow window;
-	
-	        public MyHostingManagement(ModalWindow window) {
-	            super(window.getContentId(), new CompoundPropertyModel<>(CreateHostingEditModalWindow.this.rum.getWebsite()));
-	            this.window = window;
-	        }
-	
-	        @Override
-	        public void done(AjaxRequestTarget target) {
-	            window.close(target);
-	        }
-	    }
-	}
-	        */
+	 * public static class CreateHostingEditModalWindow extends CreateModalWindow {
+	 * 
+	 * private final ManageWebsiteRegistration rum; private AjaxRequestTarget target;
+	 * 
+	 * public CreateHostingEditModalWindow(ManageWebsiteRegistration rum, AjaxRequestTarget target) { this.rum = rum; this.target = target; }
+	 * 
+	 * @Override public void initialize(final ModalWindow window) { window.setTitle("Hosting Registry"); window.setContent(new MyHostingManagement(window)); window.setInitialWidth(400); window.setAutoSize(true); window.show(target); target = null; }
+	 * 
+	 * @Override public AjaxRequestTarget getAjaxRequestTarget() { return target; }
+	 * 
+	 *           private class MyHostingManagement extends HostingManagement {
+	 * 
+	 *           private final ModalWindow window;
+	 * 
+	 *           public MyHostingManagement(ModalWindow window) { super(window.getContentId(), new CompoundPropertyModel<>(CreateHostingEditModalWindow.this.rum.getWebsite())); this.window = window; }
+	 * 
+	 * @Override public void done(AjaxRequestTarget target) { window.close(target); } } }
+	 */
 }

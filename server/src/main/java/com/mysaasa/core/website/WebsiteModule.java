@@ -70,7 +70,7 @@ public class WebsiteModule extends AbstractModule {
 		return new Label(id, model);
 	}
 
-	//This is null because I don't want it to show.
+	// This is null because I don't want it to show.
 	@Override
 	public String getMenuTitle() {
 		return null;

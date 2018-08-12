@@ -4,8 +4,7 @@ import org.apache.wicket.Page;
 import org.apache.wicket.markup.html.pages.RedirectPage;
 
 /**
- * No default constructor, it's a bug in redirectpage.
- * Created by administrator on 2014-07-10.
+ * No default constructor, it's a bug in redirectpage. Created by administrator on 2014-07-10.
  */
 public class MyRedirectPage extends RedirectPage {
 

@@ -28,8 +28,7 @@ public class DefaultPreferences {
 	private static Properties PROPERTIES = null;
 
 	/**
-	 * This is the Port gotten from the "port" property of the settings.properties file.
-	 * The default is 80, but it can be over-ridden in the file
+	 * This is the Port gotten from the "port" property of the settings.properties file. The default is 80, but it can be over-ridden in the file
 	 *
 	 * @return the non https port
 	 */
@@ -50,8 +49,7 @@ public class DefaultPreferences {
 	}
 
 	/**
-	 * Get's the default setting/config path for the OS
-	 * There is one for windows and another for linux/mac
+	 * Get's the default setting/config path for the OS There is one for windows and another for linux/mac
 	 *
 	 * @return PATH_DEFAULT_WIN for windows, PATH_DEFAULT_NIX for other
 	 */
@@ -64,8 +62,7 @@ public class DefaultPreferences {
 	/**
 	 * Check to see if Local Dev Mode is enabled
 	 *
-	 * When local dev mode is enabled, we use a simplified edit mode
-	 * that can work with the localhost file and not wildcard domains
+	 * When local dev mode is enabled, we use a simplified edit mode that can work with the localhost file and not wildcard domains
 	 *
 	 * @return True if in Local Mode, Otherwise False
 	 */
@@ -74,8 +71,7 @@ public class DefaultPreferences {
 	}
 
 	/**
-	 * Location of the configs, either the SIMPLE_PLATFORM_PATH environment variable or
-	 * /opt/simple as a default
+	 * Location of the configs, either the SIMPLE_PLATFORM_PATH environment variable or /opt/simple as a default
 	 *
 	 * @return the config path
 	 */
@@ -88,7 +84,7 @@ public class DefaultPreferences {
 			if (path != null)
 				return path + "/";
 		} catch (Exception e) {
-			//Use default
+			// Use default
 		}
 		return getPathDefault().replace('\\', '/');
 

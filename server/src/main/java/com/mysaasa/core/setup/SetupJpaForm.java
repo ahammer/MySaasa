@@ -24,8 +24,8 @@ import java.util.List;
 import java.util.Properties;
 
 /**
-* Created by Adam on 4/11/14.
-*/
+ * Created by Adam on 4/11/14.
+ */
 public class SetupJpaForm extends Form {
 
 	private final WebMarkupContainer ready;
@@ -33,7 +33,7 @@ public class SetupJpaForm extends Form {
 	@Override
 	protected void onConfigure() {
 		super.onConfigure();
-		//ready.setVisible(Boolean.valueOf(MySaasa.getInstance().getProperties().getProperty(MySaasa.getInstance().PREF_JPA_INITIALIZED, "false")));
+		// ready.setVisible(Boolean.valueOf(MySaasa.getInstance().getProperties().getProperty(MySaasa.getInstance().PREF_JPA_INITIALIZED, "false")));
 	}
 
 	public static class SetupJpaFormData implements Serializable {
@@ -110,14 +110,14 @@ public class SetupJpaForm extends Form {
 					p.put(DefaultPreferences.PREF_DB_USERNAME, data.getName());
 					p.put(DefaultPreferences.PREF_DB_PASS, data.getPassword());
 					p.put(DefaultPreferences.PREF_DB_URL, data.getUrl());
-					//p.put(MySaasa.getInstance().PREF_JPA_INITIALIZED, "true");
+					// p.put(MySaasa.getInstance().PREF_JPA_INITIALIZED, "true");
 					MySaasa.getInstance().saveProperties();
-					//Should be able to initialize database now
+					// Should be able to initialize database now
 					EntityManager em = MySaasa.getInstance().getInjector().getProvider(EntityManager.class).get();
 					int size = em.createQuery("SELECT U FROM User U").getResultList().size();
 
 					if (size > 0) {
-						//  p.put(MySaasa.getInstance().PREF_USER_INITIALIZED, String.valueOf(true));
+						// p.put(MySaasa.getInstance().PREF_USER_INITIALIZED, String.valueOf(true));
 						MySaasa.getInstance().saveProperties();
 					}
 

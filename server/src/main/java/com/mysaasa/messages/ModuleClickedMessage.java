@@ -13,7 +13,7 @@ public class ModuleClickedMessage extends AjaxIntent {
 	private final AbstractModule module;
 	private final IModel model;
 
-	//Should not allow null models in the future
+	// Should not allow null models in the future
 	public ModuleClickedMessage(AbstractModule module, AjaxRequestTarget target) {
 		super(target);
 		setAction(ACTIONS.ACTION_MODULE_CLICKED);
@@ -22,7 +22,7 @@ public class ModuleClickedMessage extends AjaxIntent {
 
 	}
 
-	//Should not allow null models in the future
+	// Should not allow null models in the future
 	public ModuleClickedMessage(AbstractModule module, IEventSource source) {
 		super(source);
 		setAction(ACTIONS.ACTION_MODULE_CLICKED);

@@ -6,6 +6,7 @@ import com.mysaasa.api.model.ApiResult;
 import com.mysaasa.test.mocks.TestService;
 import org.apache.wicket.mock.MockWebRequest;
 import org.apache.wicket.request.Url;
+import org.apache.wicket.util.tester.WicketTester;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,7 +24,7 @@ public class ApiHelperServiceTest {
 
 	@Before
 	public void setup() throws Exception {
-		simple = new MySaasa();
+		new WicketTester(simple = new MySaasa());
 		service = new ApiHelperService();
 		TestService mockApiService = new TestService();
 		service.bindApiService(mockApiService);

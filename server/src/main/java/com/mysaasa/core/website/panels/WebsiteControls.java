@@ -65,7 +65,7 @@ public class WebsiteControls extends Panel {
 			@Override
 			protected void onConfigure() {
 				super.onConfigure();
-				setEnabled(AdminSession.get().getEditMode());//Can only use in edit mode;
+				setEnabled(AdminSession.get().getEditMode());// Can only use in edit mode;
 			}
 		});
 
@@ -85,13 +85,13 @@ public class WebsiteControls extends Panel {
 			}
 		});
 
-		//TODO upgrade theme from String to Website
+		// TODO upgrade theme from String to Website
 		DropDownChoice<String> themeChoice = new DropDownChoice<String>("themes",
 				new PropertyModel<String>(WebsiteControls.this, "theme"),
 				new LoadableDetachableModel<List<String>>() {
 					@Override
 					protected List<String> load() {
-						List<Website> website_list = Collections.EMPTY_LIST;//InventoryService.getInstance().getThemesAsWebsites();
+						List<Website> website_list = Collections.EMPTY_LIST;// InventoryService.getInstance().getThemesAsWebsites();
 						String[] websites = new String[website_list.size() + 1];
 						websites[0] = "No Selection";
 						int i = 1;
@@ -135,8 +135,7 @@ public class WebsiteControls extends Panel {
 	}
 
 	/**
-	 * This is for when the Environment Switch in the header is selected, it brings the form value over via ajax
-	 * after a update
+	 * This is for when the Environment Switch in the header is selected, it brings the form value over via ajax after a update
 	 */
 	private class EnvironmentSelected extends AjaxFormComponentUpdatingBehavior {
 		public EnvironmentSelected() {
@@ -145,8 +144,8 @@ public class WebsiteControls extends Panel {
 
 		@Override
 		protected void onUpdate(AjaxRequestTarget target) {
-			//   SessionService.getInstance().notifyAdminSessionUpdate(target);
-			//   target.add(WebsiteControls.this);
+			// SessionService.getInstance().notifyAdminSessionUpdate(target);
+			// target.add(WebsiteControls.this);
 
 			MessageHelpers.loadWebsiteEditor(target, (Website) WebsiteControls.this.getDefaultModelObject());
 		}

@@ -3,8 +3,7 @@ package com.mysaasa.interfaces;
 /**
  * This interface means that there is @ApiCall annotations, and that this service is Api Call accessible.
  *
- * It is used by the Module System to detect if it should parse for the metadata, it comes with a reflection
- * cost.
+ * It is used by the Module System to detect if it should parse for the metadata, it comes with a reflection cost.
  *
  * I encourage using it only on classes dedicated for it.
  *

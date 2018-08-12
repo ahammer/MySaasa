@@ -9,8 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * This is a comment on a blog post
- * Created by adam on 2014-09-16.
+ * This is a comment on a blog post Created by adam on 2014-09-16.
  */
 @Entity
 @Table(name = "BlogComment")
@@ -20,7 +19,7 @@ public class BlogComment {
 	@Expose
 	public long id;
 	@Expose
-	public long parent_id = 0; //We provide this so we can link on the client without providing the hierarchy (waste of space, shared parents)
+	public long parent_id = 0; // We provide this so we can link on the client without providing the hierarchy (waste of space, shared parents)
 	@Expose
 	public String content;
 	@Expose

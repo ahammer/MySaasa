@@ -18,17 +18,17 @@ import java.util.List;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * The WebsiteService provides
- * Created by Adam on 2/26/14.
+ * The WebsiteService provides Created by Adam on 2/26/14.
  */
 @SimpleService
 public class WebsiteService {
 
 	@Inject
 	EntityManager em;
+
 	public void saveContentBinding(ContentBinding contentBinding) {
-		//("Saving a content binding");
-		
+		// ("Saving a content binding");
+
 		try {
 			em.getTransaction().begin();
 			ContentBinding tracked = em.merge(contentBinding);
@@ -44,7 +44,7 @@ public class WebsiteService {
 	}
 
 	public ContentBinding findBinding(String name, Website w, String defaultText) {
-		
+
 		Query q = em.createQuery("SELECT B FROM ContentBinding B WHERE B.website=:website AND B.name=:name");
 		q.setParameter("name", name);
 		q.setParameter("website", w);
@@ -70,7 +70,7 @@ public class WebsiteService {
 		}
 		result.getContent();
 
-		return result; //To change body of created methods use File | Settings | File Templates.
+		return result; // To change body of created methods use File | Settings | File Templates.
 	}
 
 	public static WebsiteService get() {
@@ -135,12 +135,12 @@ public class WebsiteService {
 	}
 
 	public void deleteContentBinding(ContentBinding b) {
-		
+
 		try {
 			em.getTransaction().begin();
 			ContentBinding tracked = em.merge(b);
 			em.remove(tracked);
-			//em.persist(tracked);
+			// em.persist(tracked);
 			em.getTransaction().commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -153,7 +153,6 @@ public class WebsiteService {
 
 	public List<ContentBinding> getBindings(Website w) {
 
-		
 		Query q = em.createQuery("SELECT B FROM ContentBinding B WHERE B.website=:website");
 		q.setParameter("website", w);
 		List<ContentBinding> bindingList = q.getResultList();

@@ -32,17 +32,17 @@ import java.util.List;
 public class UserEditor extends Panel {
 	private static final long serialVersionUID = 1L;
 
-	//Feedback and Modals
+	// Feedback and Modals
 	final ModalWindow modal;
 	final ModalWindow passwordModal;
 	final FeedbackPanel feedbackIdentifier;
 	final FeedbackPanel feedback;
 
-	//Header Labels
+	// Header Labels
 	final WebMarkupContainer labelEdit;
 	final WebMarkupContainer labelNew;
 
-	//Controls
+	// Controls
 	final DropDownChoice<Organization> dropDownOrgChoice;
 	final DropDownChoice<User.AccessLevel> accessLevel;
 	final AjaxEditableLabel editableIdentifier;
@@ -105,7 +105,7 @@ public class UserEditor extends Panel {
 	private void persistModel(AjaxRequestTarget target) {
 		UserFormData formData = (UserFormData) this.getDefaultModelObject();
 		User user = formData.getUser();
-		//If ready to create (id == 0 and we have a ID and Email
+		// If ready to create (id == 0 and we have a ID and Email
 		if (!userReadyToCreate()) {
 			error("Email and ID Required");
 		} else {

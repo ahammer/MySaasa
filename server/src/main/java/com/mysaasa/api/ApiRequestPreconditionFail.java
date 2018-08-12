@@ -8,8 +8,7 @@ import com.mysaasa.api.model.ApiResult;
  *
  * It invokes a Method with a set of Parameters, and returns a APIResult, it's a reflection proxy
  *
- * The API looks up the Method with the ApiHelperService based on the URL, once found, it's passed here, invoked,
- * and the api success is returned.
+ * The API looks up the Method with the ApiHelperService based on the URL, once found, it's passed here, invoked, and the api success is returned.
  *
  * The method is invoked against it's Injected
  *

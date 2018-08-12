@@ -23,13 +23,15 @@ import static com.google.common.base.Preconditions.checkNotNull;
  *
  * Usually the Modules Edit Mappings will load the appropriate view for the appropriate model into here.
  *
- * <p>This responds to ModuleClickedMessage, when it's received it loads the AbstractModules main panel </p>
+ * <p>
+ * This responds to ModuleClickedMessage, when it's received it loads the AbstractModules main panel
+ * </p>
  */
 public class LocalEditorPanel extends PanelContainer {
 	private static final long serialVersionUID = 8007394055642359017L;
 	private AbstractDefaultAjaxBehavior ajaxInlineEditorCallback;
 
-	//This is the Style we are going to apply to left: in order to push it over
+	// This is the Style we are going to apply to left: in order to push it over
 	private String leftStyle = "";
 
 	public String getLeftStyle() {
@@ -57,7 +59,7 @@ public class LocalEditorPanel extends PanelContainer {
 
 	@Override
 	public void renderHead(IHeaderResponse response) {
-		//Listen for CTRL-S in the Browser
+		// Listen for CTRL-S in the Browser
 		response.render(JavaScriptHeaderItem.forScript(
 				("$(window).keypress(function(event) {\n" + "    if (!(event.which == 115 && event.ctrlKey) && !(event.which == 19)) return true;\n" + "    Wicket.Ajax.post({u:'%callbackUrl%'});\n" + "    event.preventDefault();\n" + "    return false;\n" + "});")
 						.replace("%callbackUrl%", ajaxInlineEditorCallback.getCallbackUrl().toString()),
@@ -67,7 +69,7 @@ public class LocalEditorPanel extends PanelContainer {
 	@Override
 	public void onEvent(IEvent<?> event) {
 		final Object payload = event.getPayload();
-		//If through a EditMessage
+		// If through a EditMessage
 		if (payload instanceof EditContentMessage) {
 			final EditContentMessage msg = (EditContentMessage) (payload);
 			Object obj = msg.getModel().getObject();
@@ -79,7 +81,7 @@ public class LocalEditorPanel extends PanelContainer {
 			 */
 			IClassPanelAdapter adapter = MySaasa.getClassPanelAdapter(obj.getClass());
 			if (adapter.isFullscreen()) {
-				leftStyle = "left:0px;"; //Shove the left over to absolute 0
+				leftStyle = "left:0px;"; // Shove the left over to absolute 0
 			} else {
 				leftStyle = "";
 			}
@@ -90,8 +92,8 @@ public class LocalEditorPanel extends PanelContainer {
 				msg.getAjaxRequestTarget().add(this);
 		}
 
-		//When a module loads by clicking, it getInstance's to choose the menu and main section, so it over-rides this
-		//Through ModuleClickedMessage
+		// When a module loads by clicking, it getInstance's to choose the menu and main section, so it over-rides this
+		// Through ModuleClickedMessage
 		if (payload instanceof ModuleClickedMessage) {
 			ModuleClickedMessage mcm = (ModuleClickedMessage) payload;
 			leftStyle = "";

@@ -21,8 +21,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 
 /**
- * This handles file browsing
- * There is a Tree-layout that shows the browsing.
+ * This handles file browsing There is a Tree-layout that shows the browsing.
  */
 public abstract class FileBrowser extends Panel {
 	private static final long serialVersionUID = 4128140560372545323L;
@@ -62,7 +61,7 @@ public abstract class FileBrowser extends Panel {
 	}
 
 	/**
-	 *  We need a default theme for the tree, this code applies the theme
+	 * We need a default theme for the tree, this code applies the theme
 	 */
 	private static class ApplyThemeBehaviour extends Behavior {
 		private static final WindowsTheme theme = new WindowsTheme();

@@ -20,7 +20,7 @@ public class MessageCreatedPushMessage extends SimpleWebSocketPushMessage {
 		this.message = m;
 		data = new HashMap<>();
 
-		//We want to truncate data for display but not send over the 4k limit
+		// We want to truncate data for display but not send over the 4k limit
 		String title = message.getTitle();
 		String body = message.getBody();
 

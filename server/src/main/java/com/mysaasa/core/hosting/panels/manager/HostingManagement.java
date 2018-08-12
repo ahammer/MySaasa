@@ -76,7 +76,7 @@ public class HostingManagement extends Panel {
 			add(new TextField<String>("staging"));
 			add(feedback = new FeedbackPanel("feedback"));
 			feedback.setOutputMarkupId(true);
-			//TODO upgrade website from String to Website
+			// TODO upgrade website from String to Website
 			DropDownChoice<Organization> organization = new DropDownChoice<Organization>("organization",
 					new PropertyModel<Organization>(HostingForm.this.getDefaultModelObject(), "organization"),
 					new LoadableDetachableModel<List<Organization>>() {

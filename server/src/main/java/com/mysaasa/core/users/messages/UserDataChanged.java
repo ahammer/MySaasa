@@ -3,7 +3,7 @@ package com.mysaasa.core.users.messages;
 import com.mysaasa.core.users.model.User;
 import com.mysaasa.messages.AjaxMessage;
 
-@Deprecated //move to AjaxIntent
+@Deprecated // move to AjaxIntent
 public abstract class UserDataChanged extends AjaxMessage {
 
 	public abstract static class UserDeleted extends UserDataChanged {

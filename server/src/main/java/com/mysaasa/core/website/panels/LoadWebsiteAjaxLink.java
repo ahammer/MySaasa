@@ -8,8 +8,8 @@ import org.apache.wicket.ajax.markup.html.AjaxLink;
 /**
  * Put this link on a page reference a website, and it will broadcast the message that will load the parts
  *
-* Created by adam on 2014-10-13.
-*/
+ * Created by adam on 2014-10-13.
+ */
 public class LoadWebsiteAjaxLink extends AjaxLink {
 	private final Website website;
 
