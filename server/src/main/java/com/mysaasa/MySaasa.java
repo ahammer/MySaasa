@@ -90,9 +90,6 @@ public class MySaasa extends WebApplication {
 		new SSLGen(this).doSSLMagic();
 	}
 
-
-
-
 	private void setupMockData() {
 		Organization o = new Organization();
 		o.setName("Test Organization");

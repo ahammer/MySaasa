@@ -38,13 +38,11 @@ public class MySaasaServer {
 		servletContextHandler.addServlet(servletHolder, "/*");
 		server.setHandler(servletContextHandler);
 		HttpConfiguration http_config = getHttpConfig();
-		ServerConnector httpsConnector = null; // initializeHttpsConnector(http_config);
+		ServerConnector httpsConnector = initializeHttpsConnector(http_config);
 		ServerConnector httpConnector = initializeHttpConnector(http_config);
 		applyConnectors(httpsConnector, httpConnector);
 
 		server.start();
-
-
 
 		try {
 			InputStream stream = new URL("http://localhost:" + DefaultPreferences.getPort()).openConnection().getInputStream();
