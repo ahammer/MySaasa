@@ -19,13 +19,9 @@ public class MySaasaClientTests {
     @BeforeClass
     public static void Setup() throws Exception {
         MySaasaDaemon.main(new String[]{"localmode"});
-        client = new MySaasaClient("localhost", 8080, "http");
+        client = new MySaasaClient("localhost", 80, "http");
     }
 
-    @AfterClass
-    public static  void TearDown() throws Exception {
-        MySaasaDaemon.stopNow();
-    }
 
     @Test
     public void createAccountThenSignoutThenLoginTest() throws InterruptedException {
@@ -51,18 +47,16 @@ public class MySaasaClientTests {
 
     @Test
     public void testReferralSystem() {
-        client.createUser("userA", "testpassword").blockingFirst();
-        SessionSummary userASummary = client.observeSessionSummary().blockingFirst();
+        SessionSummary userASummary = client.createUser("ReferralUserA", "testpassword").blockingFirst().getData();
         client.logout().blockingFirst();
+        SessionSummary userBSummary = client.createUser("ReferralUserB", "testpassword").blockingFirst().getData();
 
-        client.createUser("userB", "testpassword").blockingFirst();
-        SessionSummary userBSummary = client.observeSessionSummary().blockingFirst();
 
         User userA = userASummary.getContext().getUser();
         User userB = userBSummary.getContext().getUser();
 
         AddReferralResponse addReferralResponse = client
-                .addReferral(userB.id, userA.id)
+                .addReferral(userA.id, userB.id)
                 .blockingFirst();
 
         assertTrue(addReferralResponse.isSuccess());

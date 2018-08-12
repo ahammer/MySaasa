@@ -119,6 +119,5 @@ public class MarketingServiceTest {
 		marketingService.addReferral(userA.id, userB.id);
 		marketingService.addReferral(userB.id, userC.id);
 		marketingService.addReferral(userC.id, userA.id);
-
 	}
 }

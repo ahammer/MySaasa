@@ -55,7 +55,7 @@ public class MarketingService {
 		final UserReferrals parentReferrals = findReferral(parentId);
 
 
-		if (childRefferals.getReferrals() == null
+		if (childRefferals.getReferrals() != null
 				|| childRefferals.getParentId() != null)  {
 			throw new IllegalStateException(
 					"User must be new to be added to referral system " +

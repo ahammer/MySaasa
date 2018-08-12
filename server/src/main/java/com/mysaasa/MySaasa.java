@@ -4,7 +4,13 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.mysaasa.core.AbstractModule;
 import com.mysaasa.core.ModuleManager;
+import com.mysaasa.core.hosting.service.HostingService;
+import com.mysaasa.core.organization.model.Organization;
+import com.mysaasa.core.organization.services.OrganizationService;
 import com.mysaasa.core.setup.Setup;
+import com.mysaasa.core.users.model.User;
+import com.mysaasa.core.users.service.UserService;
+import com.mysaasa.core.website.model.Website;
 import com.mysaasa.development.CodeGen;
 import com.mysaasa.injection.MySaasaModule;
 import com.mysaasa.interfaces.IClassPanelAdapter;
@@ -15,6 +21,7 @@ import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.protocol.https.HttpsConfig;
+import org.h2.server.web.WebApp;
 import org.slf4j.Logger;
 
 import java.io.FileOutputStream;
@@ -76,14 +83,40 @@ public class MySaasa extends WebApplication {
 		//CodeGen.generateRetrofitCode();
 		new SSLGen().doSSLMagic();
 		initialized = true;
+
+		if (MySaasaDaemon.isLocalMode()) {
+			setupMockData();
+		}
+
+	}
+
+	private void setupMockData() {
+		Organization o = new Organization();
+		o.setName("Test Organization");
+		o = OrganizationService.get().saveOrganization(o);
+		User u = new User("admin", "admin", User.AccessLevel.ROOT);
+		u.setOrganization(o);
+		u = UserService.get().saveUser(u);
+
+		Website website = new Website();
+		website.setOrganization(u.getOrganization());
+		website.setProduction("localhost");
+		getService(HostingService.class).saveWebsite(website);
+
 	}
 
 	public Injector getInjector() {
 		return injector;
 	}
 
-	public boolean isInitialized() {
-		return initialized;
+	public static boolean isInitialized() {
+		try {
+			return getInstance().initialized;
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}
+		return false;
 	}
 
 	/**

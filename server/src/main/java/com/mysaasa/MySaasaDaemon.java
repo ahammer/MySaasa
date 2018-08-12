@@ -38,27 +38,11 @@ public class MySaasaDaemon implements Daemon {
 	public static void main(String[] args) throws Exception {
 		if (hasArgument("localmode", args)) {
 			enableLocalMode();
-
 			serverLauncher.start();
 
-			while (!MySaasa.getInstance().isInitialized()) {
-				//Wait for simple to initialize
-				System.out.println("Waiting for init");
-				Thread.sleep(50);
-			}
 
-			Organization o = new Organization();
-			o.setName("Test Organization");
-			o = OrganizationService.get().saveOrganization(o);
-			User u = new User("admin", "admin", User.AccessLevel.ROOT);
-			u.setOrganization(o);
-			u = UserService.get().saveUser(u);
-
-			Website website = new Website();
-			website.setOrganization(u.getOrganization());
-			website.setProduction("localhost");
-			getService(HostingService.class).saveWebsite(website);
-
+			 /*
+*/
 			/*
 			HostingService hostingService = getService(HostingService.class);
 			OrganizationService orgService = OrganizationService.get();
@@ -66,8 +50,8 @@ public class MySaasaDaemon implements Daemon {
 			organization.setName("test");
 			organization.setContactInfo(new ContactInfo());
 			organization = organization.save();
-			
-			
+
+
 			User test = new User("test", "test", User.AccessLevel.ROOT);
 			test.setOrganization(organization);
 			UserService.get().saveUser(test);
