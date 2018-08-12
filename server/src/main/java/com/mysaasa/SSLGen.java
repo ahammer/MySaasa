@@ -23,10 +23,7 @@ import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -45,7 +42,7 @@ public class SSLGen {
 	static final String ROOT_KEY_URL = "https://letsencrypt.org/certs/isrgrootx1.pem.txt";
 	static final String INTERMEDIATE_KEY_URL = "https://letsencrypt.org/certs/letsencryptauthorityx3.pem.txt";
 	public static final int CERTIFICATE_LOOK_AHEAD_TIME_MS = 1000 * 60 * 60 * 24 * 14;
-	public static final String LETS_ENCRYPT_URL = "acme://letsencrypt.org/";
+	public static final String LETS_ENCRYPT_URL = "acme://letsencrypt.org/staging";
 	@Inject
 	HostingService hostingService;
 
@@ -56,8 +53,8 @@ public class SSLGen {
 	public static Map<String, Http01Challenge> activeChallengeMap = new ConcurrentHashMap();
 	private KeyStore mainKeyStore;
 
-	public SSLGen() {
-		MySaasa.getInstance().getInjector().injectMembers(this);
+	public SSLGen(MySaasa mySaasa) {
+		mySaasa.getInjector().injectMembers(this);
 	}
 
 	/**
@@ -65,8 +62,6 @@ public class SSLGen {
 	 */
 	public void doSSLMagic() {
 		if (MySaasaDaemon.isLocalMode())
-			return;
-		if (1 == 1)
 			return;
 		new Thread(() -> {
 			System.out.println("Updating Certificate Process");

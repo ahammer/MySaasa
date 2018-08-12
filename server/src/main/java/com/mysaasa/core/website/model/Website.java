@@ -31,8 +31,6 @@ public class Website implements Serializable {
 	public final static String DIRECT_INTEGRATION_PATH = DefaultPreferences.getConfigPath() + "websites/";
 	private static final long serialVersionUID = 2L;
 
-	@Inject
-	transient private HostingService hostingService;
 
 	@Expose
 	public int id;
@@ -49,7 +47,6 @@ public class Website implements Serializable {
 	public List<Domain> domains = new ArrayList();
 
 	public Website() {
-		inject(this);
 	}
 
 	@LazyCollection(LazyCollectionOption.FALSE)
@@ -222,7 +219,7 @@ public class Website implements Serializable {
 		Website w = this;
 		checkNotNull(w);
 		if (w.getId() == 0) {
-			w = hostingService.findWebsite(w.getProduction());
+			w = MySaasa.getService(HostingService.class).findWebsite(w.getProduction());
 		}
 		if (w == null)
 			throw new RuntimeException("Null Website in Website Admin, how does that make sense?");

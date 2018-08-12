@@ -102,9 +102,7 @@ public class HostingService {
 	 * @return a list of all websites
 	 */
 	public List<Website> getWebsites() {
-
 		List<Website> results = em.createQuery("SELECT W FROM Website W").getResultList();
-		//
 		return results;
 	}
 

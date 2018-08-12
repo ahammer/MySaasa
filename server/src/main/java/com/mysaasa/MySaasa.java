@@ -80,14 +80,18 @@ public class MySaasa extends WebApplication {
 		config.setHttpsPort(DefaultPreferences.getSecurePort());
 
 		// CodeGen.generateRetrofitCode();
-		new SSLGen().doSSLMagic();
+
 		initialized = true;
 
 		if (MySaasaDaemon.isLocalMode()) {
 			setupMockData();
 		}
 
+		new SSLGen(this).doSSLMagic();
 	}
+
+
+
 
 	private void setupMockData() {
 		Organization o = new Organization();

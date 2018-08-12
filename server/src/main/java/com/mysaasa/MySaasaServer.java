@@ -44,12 +44,15 @@ public class MySaasaServer {
 
 		server.start();
 
+
+
 		try {
 			InputStream stream = new URL("http://localhost:" + DefaultPreferences.getPort()).openConnection().getInputStream();
 			stream.read();
 		} catch (Exception e) {
 			// We hit localhost just to launch the servlet
 		}
+
 	}
 
 	private void setupWebSocketContext(WebAppContext bb) throws ServletException, DeploymentException {
