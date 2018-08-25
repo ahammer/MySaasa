@@ -78,6 +78,12 @@ public class MySaasaClientTests {
         UserReferralDataResponse response = client.getUserReferralData().blockingFirst();
         assertTrue(response.isSuccess());
 
+        client.logout().blockingFirst();
+        userASummary = client.loginUser("ReferralUserA", "testpassword").blockingFirst().getData();
+        response = client.getUserReferralData().blockingFirst();
+        assertTrue(response.isSuccess());
+
+
     }
 
 

@@ -10,17 +10,9 @@ public class ApiErrorTest {
 	public void testApiError() throws Exception {
 		Exception e = new RuntimeException("Exception");
 		ApiError<Exception> error = new ApiError(e);
-		assertEquals(error.message, e.toString());
+		assertEquals(error.message, e.getMessage());
 		assertEquals(error.getData(), null);
 		assertFalse(error.isSuccess());
 	}
 
-	@Test
-	public void testApiErrorNPE() throws Exception {
-		Exception e = new NullPointerException();
-		ApiError<Exception> error = new ApiError(e);
-		assertEquals(error.message, ApiError.NPE_ERROR_MESSAGE);
-		assertEquals(error.getData(), null);
-		assertFalse(error.isSuccess());
-	}
 }

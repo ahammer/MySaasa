@@ -1,5 +1,8 @@
 package com.mysaasa.api.model;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 /**
  * When the API has an error, we return this.
  *
@@ -14,10 +17,7 @@ public class ApiError<T> extends ApiResult<T> {
 
 	public ApiError(Exception e) {
 		super(e);
-		if (e instanceof NullPointerException) {
-			message = NPE_ERROR_MESSAGE;
-		} else {
-			message = e.toString();
-		}
+		message = e.getMessage();
+		e.printStackTrace();
 	}
 }
