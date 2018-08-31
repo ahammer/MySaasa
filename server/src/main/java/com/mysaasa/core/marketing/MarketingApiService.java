@@ -7,6 +7,7 @@ import com.mysaasa.core.security.services.session.SecurityContext;
 import com.mysaasa.interfaces.IApiService;
 import com.mysaasa.interfaces.annotations.ApiCall;
 import com.mysaasa.interfaces.annotations.SimpleService;
+import com.mysaasa.server.ErrorCode;
 
 import javax.inject.Inject;
 
@@ -21,7 +22,7 @@ public class MarketingApiService implements IApiService {
 			service.addReferral(parentId, childId);
 			return new ApiSuccess(true);
 		} catch (Exception e) {
-			return new ApiError(e);
+			return new ApiError(e, ErrorCode.UNKNOWN_ERROR);
 		}
 	}
 

@@ -1,7 +1,7 @@
 package com.mysaasa.api.model;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import com.mysaasa.server.ErrorCode;
+import org.apache.commons.lang.exception.ExceptionUtils;
 
 /**
  * When the API has an error, we return this.
@@ -12,12 +12,20 @@ import java.io.StringWriter;
  * Created by administrator on 3/15/2014.
  */
 public class ApiError<T> extends ApiResult<T> {
+	public final String errorcode;
+	public final String stacktrace;
 
-	static final String NPE_ERROR_MESSAGE = "Server Error: NullPointerException";
+	public ApiError(Exception e, ErrorCode code) {
+		super(e);
+		message = e.getMessage();
+		this.errorcode = code.name();
+		this.stacktrace = ExceptionUtils.getStackTrace(e);
+	}
 
 	public ApiError(Exception e) {
 		super(e);
 		message = e.getMessage();
-		e.printStackTrace();
+		this.errorcode = ErrorCode.UNKNOWN_ERROR.name();
+		this.stacktrace = ExceptionUtils.getStackTrace(e);
 	}
 }

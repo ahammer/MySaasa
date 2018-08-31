@@ -3,7 +3,7 @@ package com.mysaasa.api.responses;
 /**
  * Created by Adam on 2/29/2016.
  */
-public class LoginUserResponse extends SimpleResponse{
+public class LoginUserResponse extends SimpleResponse {
 
     private SessionSummary data;
 
