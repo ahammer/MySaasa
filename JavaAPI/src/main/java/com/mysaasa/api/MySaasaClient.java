@@ -41,8 +41,9 @@ public class MySaasaClient implements MySaasaGateway {
      *
      * Point it to a Simple platform Domain, and the running port, and the rest should work.
      *
-     * @param domain
-     * @param port
+     * @param domain the domain we are connecting to
+     * @param port  the port we are connecting on
+     * @param scheme    http or https
      */
     public MySaasaClient(String domain, int port, String scheme) {
 

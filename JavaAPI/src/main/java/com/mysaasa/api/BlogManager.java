@@ -26,12 +26,12 @@ public class BlogManager {
 
     /**
      * Returns a cached observable object for these blogposts
-     * @param c
-     * @return
+     * @param category you want to search for
+     * @return  An observable that emits BlogPosts
      */
-    public Observable<BlogPost> getBlogPosts(final Category c) {
+    public Observable<BlogPost> getBlogPosts(final Category category) {
         return mySaasa.retrofitGateway
-                .getBlogPosts(c.name, 0, 20, "date", "desc")
+                .getBlogPosts(category.name, 0, 20, "date", "desc")
                 .flatMapIterable(response->response.getData());
     }
 

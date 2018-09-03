@@ -32,8 +32,10 @@ public class AuthenticationManager {
     /**
      * Log the lastAuthenticatedUser in. Will not execute if already in progress,
      *
-     * @param username
-     * @param password
+     * @param username      The Username
+     * @param password      The Password
+     *
+     * @return The login User Response
      */
     public Observable<LoginUserResponse> login(final String username, final String password) {
         return mySaasa.retrofitGateway.loginUser(username, password);
