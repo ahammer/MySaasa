@@ -33,8 +33,8 @@ public class MySaasaDaemon implements Daemon {
 	/**
 	 * The Java entry point.
 	 *
-	 * @param args
-	 *            Command line arguments, all ignored.
+	 * @param args Command line arguments, all ignored.
+	 * @throws Exception when ServerLauncher can't run
 	 */
 	public static void main(String[] args) throws Exception {
 		if (hasArgument("localmode", args)) {

@@ -47,8 +47,8 @@ public class MarketingService {
 	/**
 	 * A Parent is making a referral to a Child
 	 *
-	 * @param parentId
-	 * @param childId
+	 * @param parentId the parent User ID of the Referral
+	 * @param childId	the referred User ID (Child)
 	 */
 	public void addReferral(final long parentId, final long childId) {
 		final UserReferrals childRefferals = findReferral(childId);

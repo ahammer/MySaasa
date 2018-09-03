@@ -49,7 +49,7 @@ public class MySaasa extends WebApplication {
 	/**
 	 * Injection typing shortcut
 	 * 
-	 * @param instance
+	 * @param instance	The object that we want to inject into
 	 */
 	public static void inject(Object instance) {
 		((MySaasa) WebApplication.get()).getInjector().injectMembers(instance);
